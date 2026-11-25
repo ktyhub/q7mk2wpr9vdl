@@ -1,0 +1,258 @@
+<!DOCTYPE html><html lang="ja" dir="ltr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>rust 1.99.0 — STAGS NextStack</title><meta name="description" content="Add allow-by-default raw_borrows_via_references lint that checks for references that decay immediately into raw borrows · Extend unconditional_panic lint to function calls that panic when the chunks/windows size is zero"><meta name="keywords" content="オープンソース release note、リリース トラッカー、changelog アグリゲーター、重大な変更、非推奨トラッカー、Kafka リリース、Spring Boot リリース、Kubernetes リリース"><meta name="generator" content="Astro v5.18.2"><link rel="canonical" href="https://www.stags.cn/ja/releases/rust/1.99.0/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="STAGS NextStack — releases" href="/ja/releases.xml"><link rel="alternate" hreflang="en" href="https://www.stags.cn/releases/rust/1.99.0/"><link rel="alternate" hreflang="zh-Hans" href="https://www.stags.cn/releases/rust/1.99.0/"><link rel="alternate" hreflang="x-default" href="https://www.stags.cn/releases/rust/1.99.0/"><meta property="og:site_name" content="STAGS"><meta property="og:type" content="article"><meta property="og:title" content="rust 1.99.0 — STAGS NextStack"><meta property="og:description" content="Add allow-by-default raw_borrows_via_references lint that checks for references that decay immediately into raw borrows · Extend unconditional_panic lint to function calls that panic when the chunks/windows size is zero"><meta property="og:url" content="https://www.stags.cn/ja/releases/rust/1.99.0/"><meta property="og:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><meta property="og:locale" content="ja_JP"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="de_DE"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:locale:alternate" content="es_ES"><meta property="og:locale:alternate" content="pt_BR"><meta property="og:locale:alternate" content="ko_KR"><meta property="og:locale:alternate" content="it_IT"><meta property="og:locale:alternate" content="ru_RU"><meta property="og:locale:alternate" content="tr_TR"><meta property="og:locale:alternate" content="id_ID"><meta property="og:locale:alternate" content="vi_VN"><meta property="og:locale:alternate" content="ar_SA"><meta property="og:locale:alternate" content="sv_SE"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.stags.cn/#website","name":"STAGS","url":"https://www.stags.cn/","inLanguage":"ja","description":"NextStack はインフラストラクチャおよび AI プロジェクトのリリースノートを索引化し、破壊的変更・非推奨・移行情報を英語優先の単一フィードで提供します。","publisher":{"@id":"https://www.stags.cn/#org"}},{"@type":"Organization","@id":"https://www.stags.cn/#org","name":"STAGS","alternateName":"NextStack","url":"https://www.stags.cn/"},{"@type":"TechArticle","@id":"https://www.stags.cn/ja/releases/rust/1.99.0/#article","headline":"rust 1.99.0 release notes","datePublished":"2026-10-01","inLanguage":"en","isPartOf":{"@id":"https://www.stags.cn/#website"},"about":{"@type":"SoftwareSourceCode","codeRepository":"https://github.com/rust-lang/rust"}}]}</script><!-- 第三方脚本的连接预热：这两个域名几乎每页都要连，
+         提前建连能省掉 DNS + TCP + TLS 一个往返（移动网络 100~300ms）。
+         AdSense 只在开关打开时预热——关掉广告后连这个域名都没必要。 --><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://pagead2.googlesyndication.com"><!-- Google AdSense：站点所有权校验与广告投放共用同一段脚本，全站只加载一次。
+         未创建广告单元时页面上不渲染任何广告容器，站点保持干净。
+         fetchpriority=low：它不参与首屏渲染，不该跟正文抢带宽。 --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184355057086168" crossorigin="anonymous" fetchpriority="low"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-RFRF1TVRMP" fetchpriority="low"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RFRF1TVRMP");
+    </script><!-- 百度统计（国内流量统计）。官方标准片段，is:inline 原样输出，
+         hm.js 动态插到首个 script 前，异步不阻塞首屏渲染。 --><script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?299e5b4e65b86ed16879bdcbe70531d6";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script><link rel="stylesheet" href="/assets/index.DQGt3qLZ.css">
+<style>.ad-slot[data-astro-cid-fgwukgf6]{margin:var(--s10) 0 0;padding-top:var(--s5);border-top:1px solid var(--line)}.ad-slot-label[data-astro-cid-fgwukgf6]{margin-bottom:var(--s3);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{display:block;min-height:100px}@media(min-width:640px){.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{min-height:250px}}
+</style></head> <body> <a class="skip" href="#main">本文へスキップ</a> <header class="hdr" data-header> <div class="wrap hdr-inner"> <a href="/ja/" class="brand" aria-label="STAGS NextStack — オープンソースのリリース情報"> <span class="brand-mark" aria-hidden="true">S</span> <span class="brand-main">STAGS</span> <span class="brand-sub" aria-hidden="true">NextStack</span> </a> <nav class="nav" aria-label="Primary"> <a href="/ja/releases">リリース</a><a href="/ja/projects">プロジェクト</a> </nav>  <details class="navmenu" data-navmenu> <summary class="navmenu-btn" aria-label="Open menu"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> </summary> <div class="navmenu-panel" role="group" aria-label="Primary"> <a href="/ja/releases" class="navmenu-item">リリース</a><a href="/ja/projects" class="navmenu-item">プロジェクト</a> </div> </details> <div class="hdr-tools"> <button class="searchbtn" type="button" data-search-open aria-label="リリースを検索"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <span class="lbl">検索</span> <span class="kbd">⌘K</span> </button> <details class="langmenu" data-langmenu> <summary class="langmenu-btn" aria-label="言語"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"> <circle cx="12" cy="12" r="9"></circle> <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path> </svg> <span class="langmenu-cur">日</span> <svg class="langmenu-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m2 4 4 4 4-4"></path></svg> </summary> <div class="langmenu-panel" role="group" aria-label="言語"> <p class="langmenu-head">言語</p> <a class="langmenu-item" href="/releases/rust/1.99.0/" hreflang="en" lang="en" data-on="false"> <span class="langmenu-label">English</span> <span class="langmenu-code">EN</span> </a><a class="langmenu-item" href="/zh/release_note/rust/rust_1.99.0" hreflang="zh-Hans" lang="zh-CN" data-on="false"> <span class="langmenu-label">中文</span> <span class="langmenu-code">中</span> </a><a class="langmenu-item" href="/ja/releases/rust/1.99.0/" hreflang="ja" lang="ja" aria-current="true" data-on="true"> <span class="langmenu-label">日本語</span> <span class="langmenu-code">日</span> </a><a class="langmenu-item" href="/de/releases/rust/1.99.0/" hreflang="de" lang="de" data-on="false"> <span class="langmenu-label">Deutsch</span> <span class="langmenu-code">DE</span> </a><a class="langmenu-item" href="/fr/releases/rust/1.99.0/" hreflang="fr" lang="fr" data-on="false"> <span class="langmenu-label">Français</span> <span class="langmenu-code">FR</span> </a><a class="langmenu-item" href="/es/releases/rust/1.99.0/" hreflang="es" lang="es" data-on="false"> <span class="langmenu-label">Español</span> <span class="langmenu-code">ES</span> </a><a class="langmenu-item" href="/pt/releases/rust/1.99.0/" hreflang="pt-BR" lang="pt-BR" data-on="false"> <span class="langmenu-label">Português</span> <span class="langmenu-code">PT</span> </a><a class="langmenu-item" href="/ko/releases" hreflang="ko" lang="ko" data-on="false"> <span class="langmenu-label">한국어</span> <span class="langmenu-code">한</span> </a><a class="langmenu-item" href="/it/releases" hreflang="it" lang="it" data-on="false"> <span class="langmenu-label">Italiano</span> <span class="langmenu-code">IT</span> </a><a class="langmenu-item" href="/ru/releases" hreflang="ru" lang="ru" data-on="false"> <span class="langmenu-label">Русский</span> <span class="langmenu-code">RU</span> </a><a class="langmenu-item" href="/tr/releases" hreflang="tr" lang="tr" data-on="false"> <span class="langmenu-label">Türkçe</span> <span class="langmenu-code">TR</span> </a><a class="langmenu-item" href="/id/releases" hreflang="id" lang="id" data-on="false"> <span class="langmenu-label">Bahasa Indonesia</span> <span class="langmenu-code">ID</span> </a><a class="langmenu-item" href="/vi/releases" hreflang="vi" lang="vi" data-on="false"> <span class="langmenu-label">Tiếng Việt</span> <span class="langmenu-code">VI</span> </a><a class="langmenu-item" href="/ar/releases" hreflang="ar" lang="ar" data-on="false"> <span class="langmenu-label">العربية</span> <span class="langmenu-code">ع</span> </a><a class="langmenu-item" href="/sv/releases" hreflang="sv" lang="sv" data-on="false"> <span class="langmenu-label">Svenska</span> <span class="langmenu-code">SV</span> </a> </div> </details> <a class="iconlink" href="/releases.xml" aria-label="RSS"> <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"> <path d="M2 12.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM2 7.5a6.5 6.5 0 0 1 6.5 6.5h-2A4.5 4.5 0 0 0 2 9.5v-2ZM2 2.5A11.5 11.5 0 0 1 13.5 14h-2A9.5 9.5 0 0 0 2 4.5v-2Z"></path> </svg> </a> </div> </div> </header> <main id="main">  <div class="wrap"> <div class="detail"> <article> <header class="detail-hd"> <nav class="crumbs" aria-label="Breadcrumb"> <a href="/ja/">ホーム</a> <span class="sep">/</span> <a href="/ja/releases">リリース</a> <span class="sep">/</span> <a href="/ja/releases/rust">rust</a> </nav> <h1 class="detail-title"> <span class="p">rust</span> 1.99.0 </h1> <div class="detail-meta"> <span class="chip chip--minor">マイナー</span> <span><span class="k">公開日</span>2026年10月1日</span>  <span class="sep" aria-hidden="true"></span> <a href="https://github.com/rust-lang/rust" target="_blank" rel="noopener"> <span class="k">出典</span>rust-lang/rust </a>   <span class="sep" aria-hidden="true"></span> <a href="/releases/rust/1.99.0/"> English original </a>  <span class="sep" aria-hidden="true"></span> <button class="btn btn--ghost btn--sm" type="button" data-copy="https://www.stags.cn/ja/releases/rust/1.99.0/">リンクをコピー</button> </div> </header> <div class="prose" style="margin-top:var(--s8)"> <p class="mt-notice" role="note">このページは機械翻訳です。内容は必ず英文原文をご確認ください。</p>  <div><h1>rust 1.99.0</h1>
+<p>&lt;a id=&quot;1.99.0-Language&quot;&gt;&lt;/a&gt;</p>
+<h2>言語</h2>
+<ul>
+<li><a href="https://github.com/rust-lang/rust/pull/138230">生の借用に直ちに減衰する参照をチェックする、デフォルトで許可される <code>raw_borrows_via_references</code> lint を追加</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/153563">チャンク/ウィンドウ サイズがゼロの場合にパニックを起こす関数呼び出しに <code>unconditional_panic</code> lint を拡張</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/155697">C 可変個引数関数定義の安定化</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/159746"><code>#[unsafe(naked)]</code> 関数を使用して C 可変個引数関数 (<code>#![feature(c_variadic_naked_functions)]</code>) を定義する機能を安定させます。</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/156047">特性メソッドは調整された Never タイプで解決されるようになりました (FCW を生成します)</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/157820">推論変数がサブタイプを介して <code>Sized</code> であることが知られている型に関連付けられている場合、推論変数から特性オブジェクトに強制変換します</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/157857">安定化<code>#[my_macro] mod foo;</code></a>。これにより、カスタム属性または派生マクロの本文のどこにでもアウトライン化されたモジュール (<code>mod foo;</code>) を使用できるようになります。</li>
+<li><a href="https://github.com/rust-lang/rust/pull/158302">否定が繰り返される <code>overflowing_literals</code> lint を修正</a>。たとえば、<code>arithmetic_overflow</code> lint によってすでに検出されている <code>--128_i8</code> では lint が発生しなくなります。</li>
+<li><a href="https://github.com/rust-lang/rust/pull/158522"><code>invalid_runtime_symbol_definitions</code> および <code>suspicious_runtime_symbol_definitions</code> lint に POSIX シンボルを追加</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/158835">インライン モジュールでの LINT の未使用 <code>#[path]</code> 属性</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/159179"><code>unreachable_cfg_select_predicates</code> lint を <code>unused</code> lint グループの一部として有効にする</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/159525">x86 上の <code>asm!</code> を使用したベクトル レジスタ経由の 128 ビット整数の受け渡しを安定化</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/159729">一部の割り当てはその場で拡大できることを明示的に文書化します (ただし、縮小は許可されません)</a></li>
+<li><code>UnsafeCell</code> のコンテンツが <code>get</code> を経由せずにアクセスできることを <a href="https://github.com/rust-lang/rust/pull/159730">保証</a> します。
+<ul>
+<li><a href="https://github.com/rust-lang/rust/pull/159960"><code>invalid_reference_casting</code> 糸くずはそれに応じて調整されました</a></li>
+</ul>
+</li>
+<li><a href="https://github.com/rust-lang/rust/pull/160594"><code>global_asm!</code> でグローバルに有効になっているターゲット機能を考慮</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/161003">マクロ呼び出しで無効な <code>doc</code> 属性が使用されている場合に警告する</a>
+&lt;a id=&quot;1.99.0-Compiler&quot;&gt;&lt;/a&gt;</li>
+</ul>
+<h2>コンパイラ</h2>
+<ul>
+<li><a href="https://github.com/rust-lang/rust/pull/150732"><code>-Ctarget-cpu</code> を AVR、AMDGCN、NVPTX のターゲット修飾子に変換</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/158510">すべての GNU ターゲットで <code>static_position_independent_executables</code> を有効にする</a></li>
+<li>欠落しているメソッドに関する提案を提供する場合、rustc は、他のメソッド名からの類似性検索よりも、<a href="https://doc.rust-lang.org/rustdoc/advanced-features.html#add-aliases-for-an-item-in-documentation-search">ドキュメント エイリアス属性</a> から完全に一致する名前を優先するようになりました。新しいユーザーが別の名前のメソッドを期待している場合がある場合、ドキュメント エイリアスを追加すると、rustdoc 検索で見つけやすくなるだけでなく、rustc 候補でも見つけやすくなります: <a href="https://github.com/rust-lang/rust/pull/160369">メソッド名を提案するときは、類似した名前より <em>正確な</em> ドキュメント エイリアスを優先してください</a>
+&lt;a id=&quot;1.99.0-Platform-Support&quot;&gt;&lt;/a&gt;</li>
+</ul>
+<h2>プラットフォームのサポート</h2>
+<ul>
+<li><a href="https://github.com/rust-lang/rust/pull/158766">ホスト ツールを使用して <code>riscv64-unknown-linux-musl</code> を Tier 2 に昇格する</a>
+Rust の階層型プラットフォーム サポートの詳細については、Rust の <a href="https://doc.rust-lang.org/rustc/platform-support.html">プラットフォーム サポート ページ</a> を参照してください。
+&lt;a id=&quot;1.99.0-Libraries&quot;&gt;&lt;/a&gt;</li>
+</ul>
+<h2>ライブラリ</h2>
+<ul>
+<li><code>RangeInclusive</code> (<code>a..=b</code> 範囲) の反復が [状況によっては最適化が向上] (https://github.com/rust-lang/rust/pull/155114) になりました。この副作用として、(反復子として) すでに使い果たされた <code>RangeInclusive</code> 値の動作が変更されました。たとえば、そのような範囲の <code>start()</code> と <code>end()</code> の戻り値は異なる値を返す場合があり、そのような範囲をスライス インデックスとして使用すると動作が異なる場合があります。これらの動作は安定していることが保証されていないため、これらの変更は破壊的変更ではないと考えられます。</li>
+<li><a href="https://github.com/rust-lang/rust/pull/155989"><code>transmute_copy</code> をリラックスして <code>?Sized</code> タイプを受け入れます</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/155989">非巻き戻しパニックを使用するように <code>transmute_copy</code> を更新</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/158057"><code>escape_debug_ext</code> では U+FF9E と U+FF9F をエスケープしない</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/161430"><code>core::fmt::NumBuffer</code> を <code>alloc</code> (および <code>std</code>) で再エクスポート</a>
+&lt;a id=&quot;1.99.0-Stabilized-APIs&quot;&gt;&lt;/a&gt;</li>
+</ul>
+<h2>安定化された API</h2>
+<ul>
+<li><a href="https://doc.rust-lang.org/stable/std/iter/trait.IntoIterator.html#impl-IntoIterator-for-Box%3C%5BT;+N%5D,+A%3E"><code>IntoIterator</code>用<code>Box&lt;[T; N]&gt;</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/iter/trait.IntoIterator.html#impl-IntoIterator-for-%26Box%3C%5BT;+N%5D,+A%3E"><code>IntoIterator</code>用<code>&amp;Box&lt;[T; N]&gt;</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/iter/trait.IntoIterator.html#impl-IntoIterator-for-%26mut+Box%3C%5BT;+N%5D,+A%3E"><code>IntoIterator</code>用<code>&amp;mut Box&lt;[T; N]&gt;</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/collections/struct.VecDeque.html#method.retain_back"><code>VecDeque::retain_back</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/core/ffi/struct.VaList.html"><code>core::ffi::VaList</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/boxed/struct.Box.html#method.into_non_null"><code>Box::into_non_null</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/boxed/struct.Box.html#method.from_non_null"><code>Box::from_non_null</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/vec/struct.Vec.html#method.into_parts"><code>Vec::into_parts</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/vec/struct.Vec.html#method.from_parts"><code>Vec::from_parts</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/core/mem/fn.size_of_val_raw.html"><code>core::mem::size_of_val_raw</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/core/mem/fn.align_of_val_raw.html"><code>core::mem::align_of_val_raw</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/core/alloc/struct.Layout.html#method.for_value_raw"><code>core::alloc::Layout::for_value_raw</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/string/struct.String.html#method.from_utf8_lossy_owned"><code>String::from_utf8_lossy_owned</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/string/struct.FromUtf8Error.html#method.into_utf8_lossy"><code>string::FromUtf8Error::into_utf8_lossy</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/iter/struct.StepBy.html#impl-FusedIterator-for-StepBy%3CI%3E"><code>FusedIterator for StepBy&lt;I&gt;</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/fs/fn.set_times.html"><code>std::fs::set_times</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/fs/fn.set_times_nofollow.html"><code>std::fs::set_times_nofollow</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/thread/struct.LocalKey.html#method.update"><code>&lt;LocalKey&lt;Cell&lt;T&gt;&gt;&gt;::update</code></a>
+&lt;a id=&quot;1.99.0-Cargo&quot;&gt;&lt;/a&gt;</li>
+</ul>
+<h2>貨物</h2>
+<ul>
+<li>新しい組み込みプロファイル <code>debug</code> を追加します。これは、<code>dev</code> プロファイルをデバッグから移行して、より迅速な開発反復のためのより健全なデフォルトを提供するための準備です。現時点では、<code>dev</code> プロファイルと <code>debug</code> プロファイルの間に違いはありません。 <a href="https://doc.rust-lang.org/nightly/cargo/reference/profiles.html#debug-1">ドキュメント</a> <a href="https://github.com/rust-lang/cargo/pull/17214">#17214</a></li>
+<li>エディション 2024 以降のワークスペース メンバーは、継承されたワークスペース依存関係の <code>default-features</code> フィールドをオーバーライドできるようになりました。たとえば、ワークスペース定義でデフォルトの機能が有効になっている場合でも、<code>serde = { workspace = true, default-features = false }</code> はデフォルトの機能を無効にするようになりました。以前のエディションでは、<code>default-features = false</code> は警告とともに無視されます。 (<a href="https://github.com/rust-lang/rfcs/pull/3945">RFC 3945</a>) <a href="https://github.com/rust-lang/cargo/pull/17126">#17126</a>
+<a href="https://doc.rust-lang.org/nightly/cargo/CHANGELOG.html#cargo-199-2026-10-01">フルカーゴchangelog</a>もご覧ください。
+&lt;a id=&quot;1.99.0-Rustdoc&quot;&gt;&lt;/a&gt;</li>
+</ul>
+<h2>Rustdoc</h2>
+<ul>
+<li><a href="https://github.com/rust-lang/rust/pull/137858">新しい <code>unused_footnote_definition</code> rustdoc lint を追加</a></li>
+<li>trait impls のよりスマートなフィルタリングにより、パフォーマンスが平均 20%、一部の現実世界のクレートでは最大 40% 向上します。 (<a href="https://github.com/rust-lang/rust/pull/159623">1</a>、<a href="https://github.com/rust-lang/rust/pull/159721">2</a>、<a href="https://github.com/rust-lang/rust/pull/159779">3</a>、<a href="https://github.com/rust-lang/rust/pull/159854">4</a>、<a href="https://github.com/rust-lang/rust/pull/159091">5</a>)
+&lt;a id=&quot;1.99.0-Compatibility-Notes&quot;&gt;&lt;/a&gt;</li>
+</ul>
+<h2>互換性に関する注意事項</h2>
+<ul>
+<li><a href="https://github.com/rust-lang/rust/pull/146882">従来の統合モジュールを完全に非推奨にする</a>。たとえば、<code>std::i32::MAX</code> には、代わりに <code>i32::MAX</code> 経由でアクセスする必要があります。</li>
+<li><a href="https://github.com/rust-lang/rust/pull/154585"><code>no_mangle_generic_items</code>をハードエラーにアップグレード</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/156935"><code>Pin::new_unchecked</code> は安全性の不変条件がわずかに変更されました</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/157641">外部静的への参照を促進しない</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/157841"><code>let</code> パターンの推論型がタイプチェックされていることを確認</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/158247">隠者/fs: <code>from_raw_os_error(22)</code> の代わりに <code>unsupported()</code> を返す</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/158523">安定版 Rust でのマクロ呼び出しで <code>#[repr(simd)]</code> が誤って許可されるバグを修正しました</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/159504">生成される値の型にジェネリックがある場合は const-eval を中止する</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/159849">どこにも適用されない属性は、ドキュメント コメントのコード ブロックでエラーになる</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/160323"><code>Box::leak</code>: 漏洩を避けるよう人々に伝えます</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/160441">PowerPC インライン ASM: リトル エンディアンで間違ったベクトル レーンにあるスカラー浮動小数点を修正</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/159014">doctest をフィルタリングするときに <code>doc(cfg())</code> を考慮しない</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/156508">関連する定数の型の匿名ライフタイムを <code>'static</code> として推測する</a></li>
+<li>セミコロンに展開されるマクロは、マクロが別のクレートからのものであっても、警告 lint (<code>semicolon_in_expressions_from_non_local_macros</code>) を生成するようになりました。以前は、ローカルで修正できない警告が表示されるのを避けるために、このような警告は同じクレートのマクロに対してのみ表示されていました。ただし、マクロを提供するクレートからの統合テストは別のクレートとしてコンパイルされるため、テストではこの問題が明らかにならないことが多いため、これにより問題が隠蔽されました。このような lint に遭遇した場合は、マクロを提供しているクレートに必ず報告して、修正できるようにしてください。自分の箱の中で黙らせるだけではだめです。
+<ul>
+<li><a href="https://github.com/rust-lang/rust/pull/159222"><code>semicolon_in_expressions_from_macros</code>: ローカル以外のマクロでも lint が発生する</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/159700">非ローカル <code>semicolon_in_expressions_from_macros</code> を別の lint に分割</a></li>
+</ul>
+</li>
+<li>Cargo では、CI で実行する場合、インクリメンタル コンパイルがデフォルトで無効になりました。 CI は、<code>CI</code> 環境変数を介して検出されます。 <a href="https://github.com/rust-lang/cargo/pull/17220">#17220</a></li>
+<li><a href="https://github.com/rust-lang/reference/pull/2303">Rust リファレンスでは、手動で作成されたタグ付き共用体など、単一のパターンを使用して共用体を別の値と一致させることを推奨しなくなりました</a>。これは、そのようなコードでは、状況によっては、コンパイラーが検査対象の残りの部分がパターンの残りの部分と一致するかどうかをチェックする前に、共用体の内容を読み取ることになることが判明したためです。これにより、以前にリファレンスで推奨されていたものと同様の未定義の動作がコード内で発生する可能性があります。
+&lt;a id=&quot;1.99.0-Internal-Changes&quot;&gt;&lt;/a&gt;</li>
+</ul>
+<h2>内部変更</h2>
+<p>これらの変更は、Rust のパブリック インターフェイスには影響しませんが、rustc および関連ツールのパフォーマンスや内部機能が大幅に向上します。</p>
+<ul>
+<li><a href="https://github.com/rust-lang/rust/pull/158734">LLVM 23 へのアップデート</a></li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>ソース</strong> <a href="https://github.com/rust-lang/rust">rust-lang/rust</a> · <code>1.99.0</code> · 2026-10-01 · <a href="https://github.com/rust-lang/rust/releases/tag/1.99.0">アップストリーム リリース</a>
+<em>インデックス作成のためにそのままミラーリングされます。すべての権利は上流プロジェクトに帰属します。</em></p>
+</blockquote></div>  <details class="mt-original"> <summary>English original / English original</summary> <div class="prose mt-original-body"><h1>rust 1.99.0</h1>
+<p>&lt;a id=&quot;1.99.0-Language&quot;&gt;&lt;/a&gt;</p>
+<h2>Language</h2>
+<ul>
+<li><a href="https://github.com/rust-lang/rust/pull/138230">Add allow-by-default <code>raw_borrows_via_references</code> lint that checks for references that decay immediately into raw borrows</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/153563">Extend <code>unconditional_panic</code> lint to function calls that panic when the chunks/windows size is zero</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/155697">Stabilize C-variadic function definitions</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/159746">Stabilize the ability to use <code>#[unsafe(naked)]</code> functions to define C-variadic functions (<code>#![feature(c_variadic_naked_functions)]</code>).</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/156047">Trait methods are now resolved on an adjusted never type (producing a FCW)</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/157820">Coerce from inference variables to trait objects if the inference variable is related via subtyping to a type that is known to be <code>Sized</code></a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/157857">Stabilize <code>#[my_macro] mod foo;</code></a>. This allows outlined modules (<code>mod foo;</code>) anywhere in the body of a custom attribute or derive macro.</li>
+<li><a href="https://github.com/rust-lang/rust/pull/158302">Fix the <code>overflowing_literals</code> lint with repeated negation</a>. For instance, it will now no longer lint on <code>--128_i8</code>, which is already detected by the <code>arithmetic_overflow</code> lint.</li>
+<li><a href="https://github.com/rust-lang/rust/pull/158522">Add POSIX symbols to the <code>invalid_runtime_symbol_definitions</code> and <code>suspicious_runtime_symbol_definitions</code> lints</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/158835">Lint unused <code>#[path]</code> attributes on inline modules</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/159179">Enable <code>unreachable_cfg_select_predicates</code> lint as part of <code>unused</code> lint group</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/159525">Stabilize passing 128-bit integers via vector registers with <code>asm!</code> on x86</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/159729">Explicitly document that some allocations are allowed to grow in-place (but none are allowed to shrink)</a></li>
+<li>We now <a href="https://github.com/rust-lang/rust/pull/159730">guarantee</a> that the contents of an <code>UnsafeCell</code> can be accessed without going through <code>get</code>
+<ul>
+<li><a href="https://github.com/rust-lang/rust/pull/159960">The <code>invalid_reference_casting</code> lint was adjusted accordingly</a></li>
+</ul>
+</li>
+<li><a href="https://github.com/rust-lang/rust/pull/160594">Account for globally enabled target features in <code>global_asm!</code></a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/161003">Warn if an invalid <code>doc</code> attribute is used on a macro invocation</a></li>
+</ul>
+<p>&lt;a id=&quot;1.99.0-Compiler&quot;&gt;&lt;/a&gt;</p>
+<h2>Compiler</h2>
+<ul>
+<li><a href="https://github.com/rust-lang/rust/pull/150732">Convert <code>-Ctarget-cpu</code> into a target-modifier for AVR, AMDGCN and NVPTX</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/158510">Enable <code>static_position_independent_executables</code> on all gnu targets</a></li>
+<li>When providing a suggestion about a missing method, rustc now prefers an exactly matching name from a <a href="https://doc.rust-lang.org/rustdoc/advanced-features.html#add-aliases-for-an-item-in-documentation-search">doc alias attribute</a> over a similarity search from other method names. If your new users sometimes expect a method under a different name, adding a doc alias will now help them find it via rustc suggestions, in addition to helping them find it via rustdoc search: <a href="https://github.com/rust-lang/rust/pull/160369">When suggesting method names, prefer <em>exact</em> doc aliases over similar names</a></li>
+</ul>
+<p>&lt;a id=&quot;1.99.0-Platform-Support&quot;&gt;&lt;/a&gt;</p>
+<h2>Platform Support</h2>
+<ul>
+<li><a href="https://github.com/rust-lang/rust/pull/158766">Promote <code>riscv64-unknown-linux-musl</code> to Tier 2 with host tools</a></li>
+</ul>
+<p>Refer to Rust's <a href="https://doc.rust-lang.org/rustc/platform-support.html">platform support page</a> for more information on Rust's tiered platform support.</p>
+<p>&lt;a id=&quot;1.99.0-Libraries&quot;&gt;&lt;/a&gt;</p>
+<h2>Libraries</h2>
+<ul>
+<li>Iteration on <code>RangeInclusive</code> (<code>a..=b</code> ranges) is now <a href="https://github.com/rust-lang/rust/pull/155114">optimized better in some circumstances</a>. As a side effect of this, the behavior of <code>RangeInclusive</code> values that has already been exhausted (as an iterator) has changed. For example, the return values of <code>start()</code> and <code>end()</code> on such ranges may return different values, and using such ranges as slice indexes may have different behavior. These behaviors were not guaranteed to be stable, so these changes are considered to not be breaking changes.</li>
+<li><a href="https://github.com/rust-lang/rust/pull/155989">Relax <code>transmute_copy</code> to accept <code>?Sized</code> types</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/155989">Update <code>transmute_copy</code> to use a non-unwinding panic</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/158057">Don't escape U+FF9E and U+FF9F in <code>escape_debug_ext</code></a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/161430">Re-export <code>core::fmt::NumBuffer</code> in <code>alloc</code> (and <code>std</code>)</a></li>
+</ul>
+<p>&lt;a id=&quot;1.99.0-Stabilized-APIs&quot;&gt;&lt;/a&gt;</p>
+<h2>Stabilized APIs</h2>
+<ul>
+<li><a href="https://doc.rust-lang.org/stable/std/iter/trait.IntoIterator.html#impl-IntoIterator-for-Box%3C%5BT;+N%5D,+A%3E"><code>IntoIterator</code> for <code>Box&lt;[T; N]&gt;</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/iter/trait.IntoIterator.html#impl-IntoIterator-for-%26Box%3C%5BT;+N%5D,+A%3E"><code>IntoIterator</code> for <code>&amp;Box&lt;[T; N]&gt;</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/iter/trait.IntoIterator.html#impl-IntoIterator-for-%26mut+Box%3C%5BT;+N%5D,+A%3E"><code>IntoIterator</code> for <code>&amp;mut Box&lt;[T; N]&gt;</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/collections/struct.VecDeque.html#method.retain_back"><code>VecDeque::retain_back</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/core/ffi/struct.VaList.html"><code>core::ffi::VaList</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/boxed/struct.Box.html#method.into_non_null"><code>Box::into_non_null</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/boxed/struct.Box.html#method.from_non_null"><code>Box::from_non_null</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/vec/struct.Vec.html#method.into_parts"><code>Vec::into_parts</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/vec/struct.Vec.html#method.from_parts"><code>Vec::from_parts</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/core/mem/fn.size_of_val_raw.html"><code>core::mem::size_of_val_raw</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/core/mem/fn.align_of_val_raw.html"><code>core::mem::align_of_val_raw</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/core/alloc/struct.Layout.html#method.for_value_raw"><code>core::alloc::Layout::for_value_raw</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/string/struct.String.html#method.from_utf8_lossy_owned"><code>String::from_utf8_lossy_owned</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/string/struct.FromUtf8Error.html#method.into_utf8_lossy"><code>string::FromUtf8Error::into_utf8_lossy</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/iter/struct.StepBy.html#impl-FusedIterator-for-StepBy%3CI%3E"><code>FusedIterator for StepBy&lt;I&gt;</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/fs/fn.set_times.html"><code>std::fs::set_times</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/fs/fn.set_times_nofollow.html"><code>std::fs::set_times_nofollow</code></a></li>
+<li><a href="https://doc.rust-lang.org/stable/std/thread/struct.LocalKey.html#method.update"><code>&lt;LocalKey&lt;Cell&lt;T&gt;&gt;&gt;::update</code></a></li>
+</ul>
+<p>&lt;a id=&quot;1.99.0-Cargo&quot;&gt;&lt;/a&gt;</p>
+<h2>Cargo</h2>
+<ul>
+<li>Add a new built-in profile <code>debug</code>. This is a preparation for transitioning the <code>dev</code> profile away from debugging to give a saner default for faster development iterations. Currently there is no difference between <code>dev</code> and <code>debug</code> profiles. <a href="https://doc.rust-lang.org/nightly/cargo/reference/profiles.html#debug-1">docs</a> <a href="https://github.com/rust-lang/cargo/pull/17214">#17214</a></li>
+<li>Workspace members on edition 2024 or later can now override an inherited workspace dependency's <code>default-features</code> field. For example, <code>serde = { workspace = true, default-features = false }</code> now turns off default features even when the workspace definition enables them. On earlier editions, <code>default-features = false</code> is ignored with a warning. (<a href="https://github.com/rust-lang/rfcs/pull/3945">RFC 3945</a>) <a href="https://github.com/rust-lang/cargo/pull/17126">#17126</a></li>
+</ul>
+<p>See also the <a href="https://doc.rust-lang.org/nightly/cargo/CHANGELOG.html#cargo-199-2026-10-01">full Cargo changelog</a></p>
+<p>&lt;a id=&quot;1.99.0-Rustdoc&quot;&gt;&lt;/a&gt;</p>
+<h2>Rustdoc</h2>
+<ul>
+<li><a href="https://github.com/rust-lang/rust/pull/137858">Add new <code>unused_footnote_definition</code> rustdoc lint</a></li>
+<li>Smarter filtering of trait impls yields performance improvements of 20% on average and up to 40% on some real-world crates. (<a href="https://github.com/rust-lang/rust/pull/159623">1</a>, <a href="https://github.com/rust-lang/rust/pull/159721">2</a>, <a href="https://github.com/rust-lang/rust/pull/159779">3</a>, <a href="https://github.com/rust-lang/rust/pull/159854">4</a>, <a href="https://github.com/rust-lang/rust/pull/159091">5</a>)</li>
+</ul>
+<p>&lt;a id=&quot;1.99.0-Compatibility-Notes&quot;&gt;&lt;/a&gt;</p>
+<h2>Compatibility Notes</h2>
+<ul>
+<li><a href="https://github.com/rust-lang/rust/pull/146882">Fully deprecate the legacy integral modules</a>. For example, <code>std::i32::MAX</code> should be accessed via <code>i32::MAX</code> instead.</li>
+<li><a href="https://github.com/rust-lang/rust/pull/154585">Upgrade <code>no_mangle_generic_items</code> into hard error</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/156935">The <code>Pin::new_unchecked</code> has had its safety invariants changed slightly</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/157641">Do not promote references to extern statics</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/157841">Ensure that the inferred types of <code>let</code> patterns typecheck</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/158247">hermit/fs: Return <code>unsupported()</code> instead of <code>from_raw_os_error(22)</code></a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/158523">Fixed a bug where <code>#[repr(simd)]</code> was accidentally allowed on macro invocations on stable Rust</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/159504">Abort const-eval when there are generics in the type of the value being produced</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/159849">Attributes not applying to anything are now an error in code blocks in doc comments</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/160323"><code>Box::leak</code>: tell people to avoid unleaking</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/160441">PowerPC inline ASM: Fix scalar floats being in the wrong vector lane on little endian</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/159014">Do not take <code>doc(cfg())</code> into account when filtering doctests</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/156508">Infer anonymous lifetimes in the types of associated consts as <code>'static</code></a></li>
+<li>Macros that expand to a semicolon now produce a warning lint (<code>semicolon_in_expressions_from_non_local_macros</code>) even when the macro comes from another crate. Previously, such warnings only appeared for macros from the same crate, to avoid showing warnings that can't be fixed locally; however, this masked problems, as integration tests from the crate providing the macro get compiled as a separate crate, so tests often wouldn't reveal this issue. If you encounter a lint like this, please make sure to report it to the crate providing the macro so they can fix it; don't just silence it in your own crate.
+<ul>
+<li><a href="https://github.com/rust-lang/rust/pull/159222"><code>semicolon_in_expressions_from_macros</code>: Lint on non-local macros too</a></li>
+<li><a href="https://github.com/rust-lang/rust/pull/159700">Split non-local <code>semicolon_in_expressions_from_macros</code> into a separate lint</a></li>
+</ul>
+</li>
+<li>In Cargo, incremental compilation is now disabled by default when running in CI. CI is detected via the <code>CI</code> environment variable. <a href="https://github.com/rust-lang/cargo/pull/17220">#17220</a></li>
+<li><a href="https://github.com/rust-lang/reference/pull/2303">The Rust Reference no longer recommends using a single pattern to match a union alongside another value, such as in a manually-written tagged union</a>. This was because it was found that such code would, in some circumstances, result in the compiler reading the contents of the union before checking if the rest of the scrutinee matches the rest of the pattern. This can cause undefined behavior in code similar to what the reference previously recommended.</li>
+</ul>
+<p>&lt;a id=&quot;1.99.0-Internal-Changes&quot;&gt;&lt;/a&gt;</p>
+<h2>Internal Changes</h2>
+<p>These changes do not affect any public interfaces of Rust, but they represent significant improvements to the performance or internals of rustc and related tools.</p>
+<ul>
+<li><a href="https://github.com/rust-lang/rust/pull/158734">Update to LLVM 23</a></li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>Source</strong> <a href="https://github.com/rust-lang/rust">rust-lang/rust</a> · <code>1.99.0</code> · 2026-10-01 · <a href="https://github.com/rust-lang/rust/releases/tag/1.99.0">upstream release</a></p>
+</blockquote>
+<p><em>Mirrored verbatim for indexing. All rights belong to the upstream project.</em></p></div> </details> </div> <p class="muted" style="margin-top:var(--s8);font-size:12.5px;border-top:1px solid var(--line);padding-top:var(--s4)"> リリースノートは上流プロジェクトが公開したものです。私たちはそれらを整理し、関連付けて、バージョンを一眼で比較できるようにしています。コンテンツの権利はすべて原作者に属します。 </p> <nav class="pager" aria-label="Release navigation"> <a href="/releases/rust/1.99.1"> <span class="k">← 次へ</span> <span class="t">1.99.1</span> </a> <a href="/releases/rust/1.98.1"> <span class="k">前へ →</span> <span class="t">1.98.1</span> </a> </nav> <aside class="ad-slot" aria-label="Advertisement" data-astro-cid-fgwukgf6><div class="ad-slot-label" data-astro-cid-fgwukgf6>Advertisement</div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4184355057086168" data-ad-slot="9133765584" data-ad-format="auto" data-full-width-responsive="true" data-astro-cid-fgwukgf6></ins><script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script></aside> </article> <aside class="rail"> <div class="rail-card"> <div class="rail-title">Source</div> <ul class="rail-list"> <li> <a href="https://github.com/rust-lang/rust/releases/tag/1.99.0" target="_blank" rel="noopener"> <span>GitHub で見る</span> <span class="d">↗</span> </a> </li> <li> <a href="https://github.com/rust-lang/rust" target="_blank" rel="noopener"> <span>rust-lang/rust</span> <span class="d">↗</span> </a> </li> </ul> </div> <div class="rail-card rail-toc"> <div class="rail-title">このページの目次</div> <nav> <a href="#" class>言語</a><a href="#" class>コンパイラ</a><a href="#" class>プラットフォームのサポート</a><a href="#" class>ライブラリ</a><a href="#" class>安定化された API</a><a href="#" class>貨物</a><a href="#" class>Rustdoc</a><a href="#" class>互換性に関する注意事項</a><a href="#" class>内部変更</a> </nav> </div> <div class="rail-card"> <div class="rail-title">バージョン履歴</div> <ul class="rail-list"> <li> <a href="/releases/rust/1.100.0"> <span class="v">1.100.0</span> <span class="d">26-11-12</span> </a> </li><li> <a href="/releases/rust/1.99.1"> <span class="v">1.99.1</span> <span class="d">26-10-16</span> </a> </li><li> <a href="/releases/rust/1.99.0" aria-current="true"> <span class="v">1.99.0</span> <span class="d">26-10-01</span> </a> </li><li> <a href="/releases/rust/1.98.1"> <span class="v">1.98.1</span> <span class="d">26-09-03</span> </a> </li><li> <a href="/releases/rust/1.98.0"> <span class="v">1.98.0</span> <span class="d">26-08-20</span> </a> </li><li> <a href="/releases/rust/1.97.1"> <span class="v">1.97.1</span> <span class="d">26-07-16</span> </a> </li><li> <a href="/releases/rust/1.97.0"> <span class="v">1.97.0</span> <span class="d">26-07-09</span> </a> </li><li> <a href="/releases/rust/1.96.1"> <span class="v">1.96.1</span> <span class="d">26-07-05</span> </a> </li> </ul> <a href="/ja/releases/rust" class="mono" style="display:inline-block;margin-top:var(--s3);font-size:11.5px;color:var(--ink-3)"> すべての 20 件を見る →
+</a> </div> </aside> </div> </div>  </main> <footer class="site-footer"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/ja/" class="brand" aria-label="STAGS NextStack"><span class="brand-mark" aria-hidden="true">S</span><span class="brand-main">STAGS</span><span class="brand-sub" aria-hidden="true">NextStack</span></a> <p>オープンソースのリリース インテリジェンスが毎日公開されます。</p> </div> <div class="footer-col"> <h3>追跡</h3> <ul> <li><a href="/ja/releases">リリース</a></li> <li><a href="/ja/projects">プロジェクト</a></li> <li><a href="/ja/releases.xml">RSS フィード</a></li> </ul> </div> <div class="footer-col"> <h3>アーカイブ</h3> <ul> <li><a href="/zh/release_note" hreflang="zh-Hans">中文アーカイブ</a></li> <li><a href="/zh/chapters/" hreflang="zh-Hans">技術ノート</a></li> <li><a href="/zh/downloads/">Stags Tracker</a></li> </ul> </div> <div class="footer-col"> <h3>情報</h3> <ul> <li><a href="/privacy">プライバシーポリシー</a></li> <li><a href="/releases.xml">RSS</a></li> <li><a href="/sitemap-index.xml">Sitemap</a></li> </ul> </div> </div> <div class="footer-btm"> <span>© 2026 STAGS</span> <span>Release note は上流プロジェクトに属します。</span> </div> </div> </footer> <!-- 搜索面板 --> <div class="palette-bg" data-palette-bg data-open="false"> <div class="palette" role="dialog" aria-modal="true" aria-label="リリースを検索"> <div class="palette-in"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ink-4);flex:none"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <input type="search" data-palette-input placeholder="リリース、プロジェクト、バージョンを検索…" autocomplete="off" spellcheck="false"> <span class="kbd">esc</span> </div> <ul class="palette-res" data-palette-res></ul> <div class="palette-ft"> <span>↑↓ navigate</span> <span>↵ open</span> <span style="margin-left:auto" data-palette-count></span> </div> </div> </div> <script type="module" src="/assets/Shell.astro_astro_type_script_index_0_lang.0ZkKXV47.js"></script> </body> </html>

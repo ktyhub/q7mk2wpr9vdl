@@ -1,0 +1,486 @@
+<!DOCTYPE html><html lang="ja" dir="ltr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>trl v1.11.0 — STAGS NextStack</title><meta name="description" content="trl vllm-serve used to run a custom FastAPI app around vLLM's LLM, with its own data-parallel fan-out and a worker extension for weight sync. vLLM's own server covers all of that."><meta name="keywords" content="オープンソース release note、リリース トラッカー、changelog アグリゲーター、重大な変更、非推奨トラッカー、Kafka リリース、Spring Boot リリース、Kubernetes リリース"><meta name="generator" content="Astro v5.18.2"><link rel="canonical" href="https://www.stags.cn/ja/releases/trl/1.11.0/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="STAGS NextStack — releases" href="/ja/releases.xml"><link rel="alternate" hreflang="en" href="https://www.stags.cn/releases/trl/1.11.0/"><link rel="alternate" hreflang="zh-Hans" href="https://www.stags.cn/releases/trl/1.11.0/"><link rel="alternate" hreflang="x-default" href="https://www.stags.cn/releases/trl/1.11.0/"><meta property="og:site_name" content="STAGS"><meta property="og:type" content="article"><meta property="og:title" content="trl v1.11.0 — STAGS NextStack"><meta property="og:description" content="trl vllm-serve used to run a custom FastAPI app around vLLM's LLM, with its own data-parallel fan-out and a worker extension for weight sync. vLLM's own server covers all of that."><meta property="og:url" content="https://www.stags.cn/ja/releases/trl/1.11.0/"><meta property="og:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><meta property="og:locale" content="ja_JP"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="de_DE"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:locale:alternate" content="es_ES"><meta property="og:locale:alternate" content="pt_BR"><meta property="og:locale:alternate" content="ko_KR"><meta property="og:locale:alternate" content="it_IT"><meta property="og:locale:alternate" content="ru_RU"><meta property="og:locale:alternate" content="tr_TR"><meta property="og:locale:alternate" content="id_ID"><meta property="og:locale:alternate" content="vi_VN"><meta property="og:locale:alternate" content="ar_SA"><meta property="og:locale:alternate" content="sv_SE"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.stags.cn/#website","name":"STAGS","url":"https://www.stags.cn/","inLanguage":"ja","description":"NextStack はインフラストラクチャおよび AI プロジェクトのリリースノートを索引化し、破壊的変更・非推奨・移行情報を英語優先の単一フィードで提供します。","publisher":{"@id":"https://www.stags.cn/#org"}},{"@type":"Organization","@id":"https://www.stags.cn/#org","name":"STAGS","alternateName":"NextStack","url":"https://www.stags.cn/"},{"@type":"TechArticle","@id":"https://www.stags.cn/ja/releases/trl/1.11.0/#article","headline":"trl v1.11.0 release notes","datePublished":"2026-08-26","inLanguage":"en","isPartOf":{"@id":"https://www.stags.cn/#website"},"about":{"@type":"SoftwareSourceCode","codeRepository":"https://github.com/huggingface/trl"}}]}</script><!-- 第三方脚本的连接预热：这两个域名几乎每页都要连，
+         提前建连能省掉 DNS + TCP + TLS 一个往返（移动网络 100~300ms）。
+         AdSense 只在开关打开时预热——关掉广告后连这个域名都没必要。 --><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://pagead2.googlesyndication.com"><!-- Google AdSense：站点所有权校验与广告投放共用同一段脚本，全站只加载一次。
+         未创建广告单元时页面上不渲染任何广告容器，站点保持干净。
+         fetchpriority=low：它不参与首屏渲染，不该跟正文抢带宽。 --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184355057086168" crossorigin="anonymous" fetchpriority="low"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-RFRF1TVRMP" fetchpriority="low"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RFRF1TVRMP");
+    </script><!-- 百度统计（国内流量统计）。官方标准片段，is:inline 原样输出，
+         hm.js 动态插到首个 script 前，异步不阻塞首屏渲染。 --><script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?299e5b4e65b86ed16879bdcbe70531d6";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script><link rel="stylesheet" href="/assets/index.DQGt3qLZ.css">
+<style>.ad-slot[data-astro-cid-fgwukgf6]{margin:var(--s10) 0 0;padding-top:var(--s5);border-top:1px solid var(--line)}.ad-slot-label[data-astro-cid-fgwukgf6]{margin-bottom:var(--s3);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{display:block;min-height:100px}@media(min-width:640px){.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{min-height:250px}}
+</style></head> <body> <a class="skip" href="#main">本文へスキップ</a> <header class="hdr" data-header> <div class="wrap hdr-inner"> <a href="/ja/" class="brand" aria-label="STAGS NextStack — オープンソースのリリース情報"> <span class="brand-mark" aria-hidden="true">S</span> <span class="brand-main">STAGS</span> <span class="brand-sub" aria-hidden="true">NextStack</span> </a> <nav class="nav" aria-label="Primary"> <a href="/ja/releases">リリース</a><a href="/ja/projects">プロジェクト</a> </nav>  <details class="navmenu" data-navmenu> <summary class="navmenu-btn" aria-label="Open menu"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> </summary> <div class="navmenu-panel" role="group" aria-label="Primary"> <a href="/ja/releases" class="navmenu-item">リリース</a><a href="/ja/projects" class="navmenu-item">プロジェクト</a> </div> </details> <div class="hdr-tools"> <button class="searchbtn" type="button" data-search-open aria-label="リリースを検索"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <span class="lbl">検索</span> <span class="kbd">⌘K</span> </button> <details class="langmenu" data-langmenu> <summary class="langmenu-btn" aria-label="言語"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"> <circle cx="12" cy="12" r="9"></circle> <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path> </svg> <span class="langmenu-cur">日</span> <svg class="langmenu-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m2 4 4 4 4-4"></path></svg> </summary> <div class="langmenu-panel" role="group" aria-label="言語"> <p class="langmenu-head">言語</p> <a class="langmenu-item" href="/releases/trl/1.11.0/" hreflang="en" lang="en" data-on="false"> <span class="langmenu-label">English</span> <span class="langmenu-code">EN</span> </a><a class="langmenu-item" href="/zh/release_note/trl/trl_v1.11.0" hreflang="zh-Hans" lang="zh-CN" data-on="false"> <span class="langmenu-label">中文</span> <span class="langmenu-code">中</span> </a><a class="langmenu-item" href="/ja/releases/trl/1.11.0/" hreflang="ja" lang="ja" aria-current="true" data-on="true"> <span class="langmenu-label">日本語</span> <span class="langmenu-code">日</span> </a><a class="langmenu-item" href="/de/releases/trl/1.11.0/" hreflang="de" lang="de" data-on="false"> <span class="langmenu-label">Deutsch</span> <span class="langmenu-code">DE</span> </a><a class="langmenu-item" href="/fr/releases/trl/1.11.0/" hreflang="fr" lang="fr" data-on="false"> <span class="langmenu-label">Français</span> <span class="langmenu-code">FR</span> </a><a class="langmenu-item" href="/es/releases/trl/1.11.0/" hreflang="es" lang="es" data-on="false"> <span class="langmenu-label">Español</span> <span class="langmenu-code">ES</span> </a><a class="langmenu-item" href="/pt/releases/trl/1.11.0/" hreflang="pt-BR" lang="pt-BR" data-on="false"> <span class="langmenu-label">Português</span> <span class="langmenu-code">PT</span> </a><a class="langmenu-item" href="/ko/releases" hreflang="ko" lang="ko" data-on="false"> <span class="langmenu-label">한국어</span> <span class="langmenu-code">한</span> </a><a class="langmenu-item" href="/it/releases" hreflang="it" lang="it" data-on="false"> <span class="langmenu-label">Italiano</span> <span class="langmenu-code">IT</span> </a><a class="langmenu-item" href="/ru/releases" hreflang="ru" lang="ru" data-on="false"> <span class="langmenu-label">Русский</span> <span class="langmenu-code">RU</span> </a><a class="langmenu-item" href="/tr/releases" hreflang="tr" lang="tr" data-on="false"> <span class="langmenu-label">Türkçe</span> <span class="langmenu-code">TR</span> </a><a class="langmenu-item" href="/id/releases" hreflang="id" lang="id" data-on="false"> <span class="langmenu-label">Bahasa Indonesia</span> <span class="langmenu-code">ID</span> </a><a class="langmenu-item" href="/vi/releases" hreflang="vi" lang="vi" data-on="false"> <span class="langmenu-label">Tiếng Việt</span> <span class="langmenu-code">VI</span> </a><a class="langmenu-item" href="/ar/releases" hreflang="ar" lang="ar" data-on="false"> <span class="langmenu-label">العربية</span> <span class="langmenu-code">ع</span> </a><a class="langmenu-item" href="/sv/releases" hreflang="sv" lang="sv" data-on="false"> <span class="langmenu-label">Svenska</span> <span class="langmenu-code">SV</span> </a> </div> </details> <a class="iconlink" href="/releases.xml" aria-label="RSS"> <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"> <path d="M2 12.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM2 7.5a6.5 6.5 0 0 1 6.5 6.5h-2A4.5 4.5 0 0 0 2 9.5v-2ZM2 2.5A11.5 11.5 0 0 1 13.5 14h-2A9.5 9.5 0 0 0 2 4.5v-2Z"></path> </svg> </a> </div> </div> </header> <main id="main">  <div class="wrap"> <div class="detail"> <article> <header class="detail-hd"> <nav class="crumbs" aria-label="Breadcrumb"> <a href="/ja/">ホーム</a> <span class="sep">/</span> <a href="/ja/releases">リリース</a> <span class="sep">/</span> <a href="/ja/releases/trl">trl</a> </nav> <h1 class="detail-title"> <span class="p">trl</span> v1.11.0 </h1> <div class="detail-meta"> <span class="chip chip--minor">マイナー</span> <span><span class="k">公開日</span>2026年8月26日</span>  <span class="sep" aria-hidden="true"></span> <a href="https://github.com/huggingface/trl" target="_blank" rel="noopener"> <span class="k">出典</span>huggingface/trl </a>   <span class="sep" aria-hidden="true"></span> <a href="/releases/trl/1.11.0/"> English original </a>  <span class="sep" aria-hidden="true"></span> <button class="btn btn--ghost btn--sm" type="button" data-copy="https://www.stags.cn/ja/releases/trl/1.11.0/">リンクをコピー</button> </div> </header> <div class="prose" style="margin-top:var(--s8)"> <p class="mt-notice" role="note">このページは機械翻訳です。内容は必ず英文原文をご確認ください。</p>  <div><h1>trl v1.11.0</h1>
+<h2>特徴</h2>
+<h3>TRL の代わりに vLLM 独自のサーバーを使用する</h3>
+<p><code>trl vllm-serve</code> は、独自のデータ並列ファンアウトと重み同期用のワーカー拡張機能を備えた、vLLM の <code>LLM</code> を中心としたカスタム FastAPI アプリを実行していました。 vLLM 独自のサーバーがすべてをカバーします。カスタム サーバーはなくなりました。<code>trl/scripts/vllm_serve.py</code> は <strong>1218 行から約 130 行</strong>に減り、フラグを <code>vllm serve</code> に変換し、同等のコマンドを出力し、追加の引数を転送して、TRL に必要な 3 つの設定 (<code>--weight-transfer-config</code>、<code>--logprobs-mode processed_logprobs</code>、<code>--max-logprobs -1</code>) を設定します。 <code>fastapi</code>、<code>uvicorn</code>、<code>pydantic</code> は <code>vllm</code> を余分に残します。
+ウェイト同期では、vLLM の NCCL ウェイト転送エンジンが使用されるようになりました。テンソルは 1 回アナウンスされ、テンソルごとに 1 つの HTTP リクエスト + ブロードキャストではなく、単一のパックされたブロードキャストでストリーミングされます。蒸留教師のログプロブは <code>prompt_logprobs</code> から来ています。
+<strong>ベンチマーク</strong> (H100、Qwen2.5-1.5B / Qwen2.5-VL-3B の GRPO サーバー モード、同じシード、同じデータ):
+|セットアップ |前 |後 |スピードアップ |
+| --- | --- | --- | --- |
+|テキスト、TP=1 | 1.08、0.91 s/ステップ | <strong>0.63、0.62 s/ステップ</strong> | <strong>1.59×</strong> |
+|テキスト、TP=2 | 0.96、0.96 s/ステップ | <strong>0.62、0.60 s/ステップ</strong> | <strong>1.57×</strong> |
+| VLM、TP=1 | 2.14、2.13 s/ステップ | <strong>1.48、1.48 s/ステップ</strong> | <strong>1.44×</strong> |
+古いサーバーと比較したビット同一の完了 (4 プロンプトで 16/16 × n=4、logprobs は 499 トークンで 0.0 と同一)。 <code>trl vllm-serve</code> は引き続き同じフラグを受け入れます。現在は <code>vllm serve</code> に転送するだけです。
+@qgallouedec 著、https://github.com/huggingface/trl/pull/6765</p>
+<h3>新しい実験用 <code>AsyncDistillationTrainer</code> (+ マルチ教師 MOPD)</h3>
+<p><code>AsyncGRPOTrainer</code> のように設計された非同期ポリシー蒸留: バックグラウンド ロールアウト ワーカーが生徒自身の完了を生成し、HTTP 経由で提供される教師に対してスコアを付けるため、生成とトレーニングは交互ではなく重複します。教師はローカルにロードされることはなく、vLLM サーバー URL のみがロードされます。
+<strong>MOPD (マルチ教師オンポリシー蒸留)</strong> もサポートしています。<code>teacher_server_urls</code> で複数のエントリを渡し、<code>teacher_id</code> 列を介して各サンプルを教師にルーティングします (例: 数学教師とコード教師、それぞれが独立して提供されます)。</p>
+<pre><code class="language-python">from trl.experimental.async_distillation import AsyncDistillationConfig, AsyncDistillationTrainer
+
+trainer = AsyncDistillationTrainer(
+    model=&quot;Qwen/Qwen3-4B&quot;,
+    args=AsyncDistillationConfig(
+        teacher_server_urls=[&quot;http://teacher-math:8000&quot;, &quot;http://teacher-code:8000&quot;],
+        teacher_top_k=16,
+    ),
+    train_dataset=dataset,  # rows carry a `teacher_id` column for MOPD
+)
+trainer.train()
+</code></pre>
+<p>@kashif 著、https://github.com/huggingface/trl/pull/6705</p>
+<h3>新しいモデルとテンプレートのサポート</h3>
+<ul>
+<li><strong>Muse Glimmer</strong> (+ チャット テンプレート) by @qgallouedec (https://github.com/huggingface/trl/pull/6738 および https://github.com/huggingface/trl/pull/6739)</li>
+<li><strong>Nemotron 3.5 ライトニング</strong> by @qgallouedec (https://github.com/huggingface/trl/pull/6736)</li>
+<li><strong>LFM2.5-VL</strong> by @qgallouedec (https://github.com/huggingface/trl/pull/6737)</li>
+<li><strong>Qwen3.8</strong>、@qgallouedec 著 (https://github.com/huggingface/trl/pull/6764)</li>
+<li><strong>DeepSeek-R1-Distill チャット テンプレート</strong> (https://github.com/huggingface/trl/pull/6766 の @qgallouedec による)</li>
+</ul>
+<h3>例ごとのフォルダーに再編成された例</h3>
+<p><code>examples/</code> は形式ごとに分割され (<code>scripts/</code> 対 <code>notebooks/</code>)、関連ファイルが分散されました (例: <code>sft_nemotron_3</code> はスクリプト * とノート* の両方として異なるフォルダーに存在しました。OpenEnv ノートブックは OpenEnv スクリプトとは別に存在していました)。すべてが<strong>ストーリーごとに 1 つのフォルダー</strong> になりました。名前にはメソッドとタスク (<code>grpo_wordle</code>、<code>sft_gpt_oss</code>、<code>ppo_tldr</code>) が示されており、フォルダーにはサンプルに必要なすべてのファイル (スクリプト、ノートブック、プロンプト、チャット テンプレート、評価コード) が保持されています。薄い単一トレーナーのデモ スクリプトは削除されました (これらは <code>trl/scripts/</code> に存在し、各トレーナーのドキュメント ページには実行可能なスニペットがあります)。古い <code>examples/scripts/…</code> および <code>examples/notebooks/…</code> GitHub / Colab リンクは 404 になります。ダウンストリームの投稿でフラグを立てる価値があります。
+@qgallouedec 著、https://github.com/huggingface/trl/pull/6820</p>
+<h3>AsyncGRPO: メトリクスの再加工、dtype 制御、およびクリーンアップ</h3>
+<ul>
+<li><strong>AsyncGRPO メトリクスとドキュメントを再作成</strong> (https://github.com/huggingface/trl/pull/6715 の @AmineDiro による)</li>
+<li><strong><code>AsyncGRPOConfig</code> での dtype のトレーニング</strong> (https://github.com/huggingface/trl/pull/6774 の @AmineDiro による)</li>
+<li><strong><code>AsyncGRPOTrainer</code> を簡素化</strong> — 冗長なメトリック ガードを削除し、https://github.com/huggingface/trl/pull/6378 の @qgallouedec による train-begin コールバックをマージします。</li>
+<li><strong>不要な vLLM 推論をトリガーするチェックポイント再開を修正</strong> (https://github.com/huggingface/trl/pull/5911 の @AmmarHassona による)</li>
+</ul>
+<h3>書き換えられた TRL スキル (Python-API 最初) + <code>trl skills install</code> をドロップ</h3>
+<p>TRL スキルは現在、Python API (トレーナーの選択、データセット形式、耐荷重構成フィールド、GRPO 報酬関数コントラクト) を中心に記述されており、脚注として CLI が付けられています。 <code>trl skills install</code> が削除され、スキル ソースがパッケージの外に移動します。</p>
+<ul>
+<li>https://github.com/huggingface/trl/pull/6794 の @qgallouedec による Python API 周りの TRL スキルを書き直す</li>
+<li><code>trl skills install</code> を削除し、https://github.com/huggingface/trl/pull/6793 の @qgallouedec によってスキル ソースをパッケージの外に移動します</li>
+</ul>
+<h3><code>DistillationTrainer</code> はツール呼び出しをサポートします</h3>
+<p>v1.10からの卒業サイクルを継続します。
+@qgallouedec 著、https://github.com/huggingface/trl/pull/6723</p>
+<h3>GKD 構成が完全にカバーされたら、<code>DistillationTrainer</code> への移行を提案します</h3>
+<p><code>GKDTrainer</code> は、設定が安定した <code>DistillationTrainer</code> で完全にカバーされている場合にヒントを発行するようになりました。動作の変更はなく、まだ古い API を使用しているユーザーに対する単なるナッジです。
+@qgallouedec 著、https://github.com/huggingface/trl/pull/6847</p>
+<h3>その他</h3>
+<ul>
+<li>https://github.com/huggingface/trl/pull/6792 の @qgallouedec によってコマンド ラインから dict config フィールドを設定できるようにします</li>
+<li>パッキングが https://github.com/huggingface/trl/pull/6843 の @qgallouedec によるコンテキスト並列処理と結合される場合に発生します</li>
+<li>https://github.com/huggingface/trl/pull/6812 の @qgallouedec によってシーケンス並列処理が有効になっている場合、SFT コレーターから <code>position_ids</code> を出力します。</li>
+<li>https://github.com/huggingface/trl/pull/6842 の @qgallouedec による SFT <code>chunked_nll</code> 損失から 1 つのホスト同期を削除</li>
+<li>https://github.com/huggingface/trl/pull/6744 の @qgallouedec による SFT と蒸留の間のチャンク損失構成アクセスを調整します</li>
+<li>https://github.com/huggingface/trl/pull/6599 の @qgallouedec によりテレメトリに <code>dataset_source</code> を追加</li>
+<li>https://github.com/huggingface/trl/pull/6714 の @albertvillanova による生成で完了が返されない場合に明確なエラーを発生させる</li>
+<li>https://github.com/huggingface/trl/pull/6741 の @qgallouedec により GPU CI を T4 から L40S に移動</li>
+<li>https://github.com/huggingface/trl/pull/6342 に @sergiopaniego によるポリシー上のマルチモーダル GKD 回帰テストを追加</li>
+</ul>
+<h3>vLLM バージョン スイープ</h3>
+<ul>
+<li>https://github.com/huggingface/trl/pull/6742 の @qgallouedec による vLLM 0.27.0 および 0.27.1 のサポートを追加</li>
+<li>@qgallouedec による vLLM 0.17 を https://github.com/huggingface/trl/pull/6722 にドロップ</li>
+<li>@qgallouedec による vLLM 0.18 を https://github.com/huggingface/trl/pull/6844 にドロップ</li>
+<li><code>liger-kernel</code> 0.8.2 が必要で、https://github.com/huggingface/trl/pull/6768 の @albertvillanova による SAPO 警告フィルターを削除します</li>
+</ul>
+<h2>修正</h2>
+<ul>
+<li><strong>グリッド メタデータのない VLM の複数のイメージを使用した GRPO/RLOO トレーニングを修正</strong> (https://github.com/huggingface/trl/pull/6570 の @qgallouedec)</li>
+<li><strong>ダイナミック タイル VLM (InternVL) を使用して GRPO/RLOO を修正</strong> (https://github.com/huggingface/trl/pull/6619 の @qgallouedec による)</li>
+<li><strong>GRPO 重要度サンプリングで vLLM からの <code>None</code> トークン logprobs を処理します</strong> (https://github.com/huggingface/trl/pull/6693 の @behroozazarkhalili により)</li>
+<li><strong><code>[GRPO]</code> ライガー <code>dapo</code> / <code>cispo</code> / <code>vespo</code> ノーマライザーを非ライガー パスに一致させる</strong> — ライガー パス上の v1.10 (#6024) からの修正を完了します。 @kashif 著、https://github.com/huggingface/trl/pull/5890</li>
+<li><strong><code>[SFT]</code> https://github.com/huggingface/trl/pull/6686 の @Hakureirm によるモデル出力で <code>past_key_values</code> と <code>attentions</code> をオプションとして扱います</strong></li>
+<li><strong>環境が所有するデータセットでクラッシュする <code>AsyncGRPOTrainer</code> を修正</strong> (@albertvillanova による https://github.com/huggingface/trl/pull/6824)</li>
+<li><strong>SDPO <code>scale_rewards</code> CLI 解析を修正</strong>し、https://github.com/huggingface/trl/pull/6341 での @sergiopaniego による無視されたフィードバックについて警告します</li>
+<li>OpenEnv が https://github.com/huggingface/trl/pull/6672 の @sergiopaniego によって関数に移動された後の <code>opencode.py</code> プロキシ トレース/ログ パスを修正</li>
+</ul>
+<h2>ドキュメントと例</h2>
+<ul>
+<li>メトリクスの再作成と並行して AsyncGRPO ドキュメントも再作成 (@AmineDiro、#6715)</li>
+<li>サンプルをサンプルごとの自己完結型フォルダーに再編成します (上記を参照)</li>
+<li>GKD 構成がカバーされている場合は、<code>DistillationTrainer</code> への移行を提案します (上記を参照)</li>
+</ul>
+<h2>CI</h2>
+<p>@albertvillanova による大きな CI 衛生サイクル。ハイライト:</p>
+<ul>
+<li>PR で 1 つの Python バージョンをテストし、https://github.com/huggingface/trl/pull/6763 の @qgallouedec によって毎晩マトリックスをテストします</li>
+<li>最新リリースのテストが失敗したときに Slack に通知 by @albertvillanova (https://github.com/huggingface/trl/pull/6900)</li>
+<li>Docker イメージのビルド結果を、https://github.com/huggingface/trl/pull/6903 の @albertvillanova によって共有 CI Slack チャネルに投稿します。</li>
+<li>https://github.com/huggingface/trl/pull/6895 の @albertvillanova による Slack 通知をローカル複合アクションに組み込む (+ #6896、#6897、#6908、#6934、#6936 の更新)</li>
+<li>低速テスト ジョブのステータス処理、依存関係、およびレポートを Slack に移動 (@albertvillanova (https://github.com/huggingface/trl/pull/6752, https://github.com/huggingface/trl/pull/6754, https://github.com/huggingface/trl/pull/6756))</li>
+<li>TruffleHog スキャナー画像をダイジェストでピン留めし、https://github.com/huggingface/trl/pull/6677, https://github.com/huggingface/trl/pull/6757, https://github.com/huggingface/trl/pull/6758, https://github.com/huggingface/trl/pull/6759 で @albertvillanova によるシークレット スキャンを強化します</li>
+<li>サイクル全体にわたるさまざまなホットフィックスのピンと復帰 (bitsandbytes / liger-kernel / peft dev builds / transformers dev) @albertvillanova による https://github.com/huggingface/trl/pull/6517, https://github.com/huggingface/trl/pull/6835, https://github.com/huggingface/trl/pull/6840, https://github.com/huggingface/trl/pull/6841, https://github.com/huggingface/trl/pull/6838, https://github.com/huggingface/trl/pull/6915, https://github.com/huggingface/trl/pull/6919</li>
+<li>https://github.com/huggingface/trl/pull/6727 および https://github.com/huggingface/trl/pull/6902 の @dependabot[bot] による 8 つの更新を含む 1 つのディレクトリにアクション グループをバンプします。</li>
+<li>https://github.com/huggingface/trl/pull/6783 の @albertvillanova によるテスト間のライガー カーネルのグローバル パッチを復元します。</li>
+<li>https://github.com/huggingface/trl/pull/6826 の @albertvillanova による AsyncGRPO エポックストップ テストでの重量移動をスタブします。</li>
+<li>https://github.com/huggingface/trl/pull/6825 の @albertvillanova による初期化前の引数で AsyncDistillationTrainer と AsyncGRPOTrainer を調整します</li>
+<li>https://github.com/huggingface/trl/pull/6853 および https://github.com/huggingface/trl/pull/6854 の @albertvillanova による連続バッチング テスト / 非同期トレーナー テストでは Flash アテンション対応モデルを使用します</li>
+<li>モデル設定で https://github.com/huggingface/trl/pull/6855 の @albertvillanova によって宣言されていない場合は、<code>head_dim</code> を導出</li>
+<li>https://github.com/huggingface/trl/pull/6889 の @albertvillanova によるデータセットのダウンキャスト警告を回避するために、GRPO VLM テスト イメージを PIL イメージとして構築します。</li>
+<li>https://github.com/huggingface/trl/pull/6912 の @albertvillanova による遅い GRPO VLM トレーニング テストを削除</li>
+<li>https://github.com/huggingface/trl/pull/6850 および https://github.com/huggingface/trl/pull/6851 における @albertvillanova による CI の良性の NumPy <code>__array_wrap__</code> 非推奨とトーチ インダクター TF32 勧告警告を無視します</li>
+<li>https://github.com/huggingface/trl/pull/6920, https://github.com/huggingface/trl/pull/6921 (+ #6926) の @albertvillanova による TruffleHog <code>lob</code> / <code>postgres</code> 検出器の除外を停止</li>
+<li>誤解を招く SFT ステップ名、不整列の失敗テスト レポート ヘッダーを修正し、https://github.com/huggingface/trl/pull/6726, https://github.com/huggingface/trl/pull/6753, https://github.com/huggingface/trl/pull/6749 で @albertvillanova による組み込み <code>GITHUB_ACTIONS</code> を使用します</li>
+<li>パブリッシュ ワークフローで Python バージョンを固定する / 実験テスト ワークフローで Python バージョンを調整する (@albertvillanova による https://github.com/huggingface/trl/pull/6883, https://github.com/huggingface/trl/pull/6881, https://github.com/huggingface/trl/pull/6882, https://github.com/huggingface/trl/pull/6884)</li>
+<li>ドキュメントビルダーのコミット前のリビジョンをバンプし、 @albertvillanova による ruff 回避策をドロップ (https://github.com/huggingface/trl/pull/6784, https://github.com/huggingface/trl/pull/6790)</li>
+<li>Docker ビルド ステップから冗長な <code>VERSION</code> 環境を削除 / https://github.com/huggingface/trl/pull/6931, https://github.com/huggingface/trl/pull/6932 の @albertvillanova による TRL Docker イメージ ビルド ジョブの Slack タイトルを修正</li>
+<li>https://github.com/huggingface/trl/pull/6748 の @albertvillanova により、未使用の <code>RUN_SLOW</code> 環境変数を低速テスト ワークフローから削除しました</li>
+<li>https://github.com/huggingface/trl/pull/6785 の @albertvillanova により、docstring から不要な <code>docstyle-ignore</code> タグを削除</li>
+<li>https://github.com/huggingface/trl/pull/6886 の @albertvillanova によるコード品質ジョブのコミット前アクションをインライン化</li>
+</ul>
+<h2>新しい貢献者</h2>
+<ul>
+<li>@Hakureirm が https://github.com/huggingface/trl/pull/6686 に初めて投稿しました</li>
+<li>@AmmarHassona が https://github.com/huggingface/trl/pull/5911 で最初の投稿を行いました</li>
+</ul>
+<h2>何が変わったのか</h2>
+<ul>
+<li>⬆️ @qgallouedec による開発バージョンのバンプ (https://github.com/huggingface/trl/pull/6725)</li>
+<li>ホットフィックス CI: @albertvillanova によるプリアンペア GPU でのトランス連続バッチ テストのスキップ (https://github.com/huggingface/trl/pull/6712)</li>
+<li>https://github.com/huggingface/trl/pull/6714 の @albertvillanova による生成で完了が返されない場合に明確なエラーを発生させる</li>
+<li>https://github.com/huggingface/trl/pull/6677 の @albertvillanova によるダイジェストによる TruffleHog スキャナー画像をピン留めします</li>
+<li>https://github.com/huggingface/trl/pull/6693 の @behroozazarkhalili による GRPO 重要度サンプリングの vLLM からの None トークン logprobs を処理します</li>
+<li>https://github.com/huggingface/trl/pull/6722 で @qgallouedec による vLLM 0.17 サポートを削除</li>
+<li>遅いテスト CI ワークフローで誤解を招く SFT ステップ名を修正 (https://github.com/huggingface/trl/pull/6726 の @albertvillanova による)</li>
+<li>https://github.com/huggingface/trl/pull/6727 の @dependabot[bot] による 8 つの更新を含む 1 つのディレクトリにアクション グループをバンプします</li>
+<li>[SFT] https://github.com/huggingface/trl/pull/6686 の @Hakureirm によって出力されたモデルで past_key_values と tentions をオプションとして扱います</li>
+<li>https://github.com/huggingface/trl/pull/6742 の @qgallouedec による vLLM 0.27.0 および 0.27.1 のサポートを追加</li>
+<li>https://github.com/huggingface/trl/pull/6748 の @albertvillanova により、低速テスト ワークフローから未使用の RUN_SLOW 環境変数を削除</li>
+<li>https://github.com/huggingface/trl/pull/6752 の @albertvillanova によるセットアップ手順が失敗した場合は、遅いテストを実行しないでください。</li>
+<li>https://github.com/huggingface/trl/pull/6753 の @albertvillanova による失敗したテスト レポート テーブルのヘッダーの位置がずれている問題を修正</li>
+<li>https://github.com/huggingface/trl/pull/6749 の @albertvillanova によるカスタム IS_GITHUB_CI の代わりに組み込みの GITHUB_ACTIONS 変数を使用します</li>
+<li>OpenEnv が https://github.com/huggingface/trl/pull/6672 の @sergiopaniego によって関数に移動された後の opencode.py プロキシ トレース/ログ パスを修正</li>
+<li>https://github.com/huggingface/trl/pull/6766 に @qgallouedec による DeepSeek-R1-Distill チャット テンプレートを追加</li>
+<li>ジョブ ステータスに基づいて遅いテスト結果を Slack に報告 (https://github.com/huggingface/trl/pull/6754 の @albertvillanova による)</li>
+<li>https://github.com/huggingface/trl/pull/6756 の @albertvillanova による追加テストでテスト レポートの依存関係を宣言します。</li>
+<li>https://github.com/huggingface/trl/pull/6750 の @albertvillanova による Makefile の代わりにワークフローから pytest レポート ログ フラグを渡します</li>
+<li>Muse Glimmer のサポートと @qgallouedec によるテストを https://github.com/huggingface/trl/pull/6738 に追加</li>
+<li>Nemotron 3.5 Lightning サポートと @qgallouedec によるテストを https://github.com/huggingface/trl/pull/6736 に追加</li>
+<li>LFM2.5-VL のサポートと @qgallouedec によるテストを https://github.com/huggingface/trl/pull/6737 に追加</li>
+<li>https://github.com/huggingface/trl/pull/6764 に @qgallouedec による Qwen3.8 のサポートとテストを追加</li>
+<li>https://github.com/huggingface/trl/pull/6739 に @qgallouedec による Muse Glimmer チャット テンプレートを追加</li>
+<li>https://github.com/huggingface/trl/pull/6783 の @albertvillanova によるテスト間のライガー カーネルのグローバル パッチを復元します。</li>
+<li>https://github.com/huggingface/trl/pull/6784 の @albertvillanova によるドキュメント ビルダーのプリコミット リビジョンをバンプ</li>
+<li>https://github.com/huggingface/trl/pull/6757 の @albertvillanova によるシークレット スキャン ワークフローでのトークン アクセスを制限する</li>
+<li>https://github.com/huggingface/trl/pull/6758 の @albertvillanova によってスキャン エラーが発生すると、シークレット スキャン ジョブが失敗します</li>
+<li>https://github.com/huggingface/trl/pull/6785 の @albertvillanova により、docstring から不要な docstyle-ignore タグを削除</li>
+<li>https://github.com/huggingface/trl/pull/6715 の @AmineDiro による AsyncGRPO メトリクスのメトリクスとドキュメントを作り直す</li>
+<li>https://github.com/huggingface/trl/pull/6759 の @albertvillanova によるシークレット スキャン ワークフローでプッシュされたコミットをスキャンします</li>
+<li>https://github.com/huggingface/trl/pull/6790 の @albertvillanova による doc-builder のコミット前フックから ruff 回避策を削除</li>
+<li>liger-kernel 0.8.2 が必要で、https://github.com/huggingface/trl/pull/6768 の @albertvillanova による SAPO 警告フィルターを削除します</li>
+<li>AsyncGRPOConfig : @AmineDiro による dtype asyncgrpo トレーニング (https://github.com/huggingface/trl/pull/6774)</li>
+<li>https://github.com/huggingface/trl/pull/6705 に @kashif による AsyncDistillationTrainer を追加</li>
+<li>AsyncGRPOTrainer を簡素化: 冗長なメトリック ガードを削除し、https://github.com/huggingface/trl/pull/6378 の @qgallouedec による train-begin コールバックをマージ</li>
+<li>[GRPO] https://github.com/huggingface/trl/pull/5890 の @kashif により Liger dapo/cispo/vespo ノーマライザーを非 Liger パスに一致させます</li>
+<li>https://github.com/huggingface/trl/pull/5911 の @AmmarHassona による不要な vLLM 推論をトリガーする AsyncGRPO チェックポイント再開を修正</li>
+<li>環境所有のデータセットでクラッシュする AsyncGRPOTrainer を修正 (https://github.com/huggingface/trl/pull/6824 の @albertvillanova による)</li>
+<li>https://github.com/huggingface/trl/pull/6741 の @qgallouedec により GPU CI を T4 から L40S に移動</li>
+<li>https://github.com/huggingface/trl/pull/6744 の @qgallouedec による SFT と蒸留間のチャンク損失構成アクセスを調整します</li>
+<li>https://github.com/huggingface/trl/pull/6792 の @qgallouedec によってコマンド ラインから dict config フィールドを設定できるようにします</li>
+<li>ホットフィックス CI: https://github.com/huggingface/trl/pull/6835 の @albertvillanova によるトランスフォーマーの連続バッチング テストに xfail</li>
+<li>ホットフィックス CI: https://github.com/huggingface/trl/pull/6840 の @albertvillanova によって複数のアクセラレータが表示される場合、オフロード テストをスキップします。</li>
+<li>ホットフィックス CI: https://github.com/huggingface/trl/pull/6841 の @albertvillanova による複数の GPU で DataParallel が中断するテストに xfail</li>
+<li>https://github.com/huggingface/trl/pull/6599 の @qgallouedec によりテレメトリに <code>dataset_source</code> を追加</li>
+<li>PR で 1 つの Python バージョンをテストし、https://github.com/huggingface/trl/pull/6763 の @qgallouedec によって毎晩マトリックスをテストします</li>
+<li>https://github.com/huggingface/trl/pull/6570 の @qgallouedec によるグリッド メタデータのない VLM の複数の画像を使用した GRPO/RLOO トレーニングを修正</li>
+<li>ホットフィックス CI: https://github.com/huggingface/trl/pull/6838 で @albertvillanova による実験的な非同期トレーナー トレーニング テストが失敗する</li>
+<li>https://github.com/huggingface/trl/pull/6619 の @qgallouedec による動的タイリング VLM (InternVL) による GRPO/RLOO を修正</li>
+<li>https://github.com/huggingface/trl/pull/6850 の @albertvillanova による CI の無害な NumPy <code>__array_wrap__</code> 非推奨警告を無視する</li>
+<li>https://github.com/huggingface/trl/pull/6851 の @albertvillanova による CI の良性トーチ インダクタ TF32 アドバイザリ警告を無視します</li>
+<li>https://github.com/huggingface/trl/pull/6853の@albertvillanovaによる連続バッチテストではFlash Attendant対応モデルを使用してください</li>
+<li>https://github.com/huggingface/trl/pull/6826 の @albertvillanova による AsyncGRPO エポックストップ テストの重量移動をスタブします</li>
+<li>モデル設定が https://github.com/huggingface/trl/pull/6855 の @albertvillanova によって宣言されていない場合に head_dim を導出</li>
+<li>https://github.com/huggingface/trl/pull/6854 の @albertvillanova による非同期トレーナー テストでは、Flash Attendant 対応モデルを使用してください</li>
+<li>SDPO のscale_rewards CLI 解析を修正し、https://github.com/huggingface/trl/pull/6341 で @sergiopaniego による無視されたフィードバックを警告する</li>
+<li>https://github.com/huggingface/trl/pull/6342 に @sergiopaniego によるポリシー上のマルチモーダル GKD 回帰テストを追加</li>
+<li>https://github.com/huggingface/trl/pull/6825 の @albertvillanova による初期化前の引数で AsyncDistillationTrainer と AsyncGRPOTrainer を調整します</li>
+<li>https://github.com/huggingface/trl/pull/6881 の @albertvillanova による実験テスト ワークフローで Python バージョンを調整します</li>
+<li>https://github.com/huggingface/trl/pull/6882 の @albertvillanova によるテスト ワークフローで python-version 値を引用します</li>
+<li>https://github.com/huggingface/trl/pull/6884 の @albertvillanova による低速テスト ワークフローで Python を明示的に設定します</li>
+<li>https://github.com/huggingface/trl/pull/6891 の @albertvillanova により、変更可能なポスト Slack アクション参照をコミット SHA に固定します</li>
+<li>https://github.com/huggingface/trl/pull/6892 の @albertvillanova によって固定されたポスト Slack アクション SHA を現在のメインにバンプします</li>
+<li>https://github.com/huggingface/trl/pull/6812 で @qgallouedec によってシーケンス並列処理が有効になっている場合、SFT コレーターからposition_ids を出力します。</li>
+<li>https://github.com/huggingface/trl/pull/6886 の @albertvillanova によるコード品質ジョブのコミット前アクションをインライン化</li>
+<li>https://github.com/huggingface/trl/pull/6883 の @albertvillanova によって公開ワークフローに Python バージョンを固定します</li>
+<li>最新リリースのテストが失敗したときに Slack に通知 by @albertvillanova (https://github.com/huggingface/trl/pull/6900)</li>
+<li>https://github.com/huggingface/trl/pull/6820 の @qgallouedec により、サンプルを自己完結型のサンプルごとのフォルダーに再編成します。</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6723 の @qgallouedec によるツール呼び出しをサポート</li>
+<li>Slack 通知をローカル複合アクションに組み込む (https://github.com/huggingface/trl/pull/6895 の @albertvillanova による)</li>
+<li>https://github.com/huggingface/trl/pull/6896 の @albertvillanova によるローカル Slack アクションで、slack-github-action を v1 から v4 に更新します。</li>
+<li>https://github.com/huggingface/trl/pull/6897 の @albertvillanova によってローカル複合アクションに固定されたアクションを dependabot に更新させます</li>
+<li>https://github.com/huggingface/trl/pull/6889 の @albertvillanova によるデータセットのダウンキャスト警告を回避するために、GRPO VLM テスト イメージを PIL イメージとして構築します。</li>
+<li>ホットフィックス CI: @albertvillanova による https://github.com/huggingface/trl/pull/6915 の壊れた peft dev ビルドに対する Xfail MoE LoRA テスト</li>
+<li>https://github.com/huggingface/trl/pull/6902 の @dependabot[bot] による 8 つの更新を含む 1 つのディレクトリにアクション グループをバンプします</li>
+<li>peft#3602 が https://github.com/huggingface/trl/pull/6919 の @albertvillanova による autocast dtype のバグを修正したため、MoE LoRA テストの xfail を元に戻しました。</li>
+<li>https://github.com/huggingface/trl/pull/6920 の @albertvillanova による trufflehog lob 検出器の除外を停止する</li>
+<li>https://github.com/huggingface/trl/pull/6921 の @albertvillanova による trufflehog postgres 検出器の除外を停止する</li>
+<li>https://github.com/huggingface/trl/pull/6926 の @albertvillanova による古い検出器の除外コメントを削除</li>
+<li>https://github.com/huggingface/trl/pull/6912 の @albertvillanova による遅い GRPO VLM トレーニング テストを削除</li>
+<li>Docker イメージのビルド結果を、https://github.com/huggingface/trl/pull/6903 の @albertvillanova によって共有 CI Slack チャネルに投稿します。</li>
+<li>https://github.com/huggingface/trl/pull/6931 の @albertvillanova による TRL Docker イメージ ビルド ジョブの Slack タイトルを修正</li>
+<li>https://github.com/huggingface/trl/pull/6932 の @albertvillanova による Docker ビルド ステップから冗長な VERSION 環境を削除</li>
+<li>https://github.com/huggingface/trl/pull/6908 の @albertvillanova によるローカル Slack アクションのジョブ コンテキストからジョブ ステータスを読み取ります</li>
+<li>https://github.com/huggingface/trl/pull/6844 で @qgallouedec による vLLM 0.18 サポートを削除</li>
+<li>https://github.com/huggingface/trl/pull/6765 の @qgallouedec による TRL の代わりに vLLM 独自のサーバーを使用する</li>
+<li><code>trl skills install</code> を削除し、https://github.com/huggingface/trl/pull/6793 の @qgallouedec によってスキル ソースをパッケージの外に移動します</li>
+<li>https://github.com/huggingface/trl/pull/6934 の @qgallouedec により Slack CI レポートを一目で判読できるようにしました</li>
+<li>https://github.com/huggingface/trl/pull/6936 で @qgallouedec による Slack レポートの 2 回投稿を修正</li>
+<li>https://github.com/huggingface/trl/pull/6794 の @qgallouedec による Python API に関する TRL スキルを書き直す</li>
+<li>パッキングが https://github.com/huggingface/trl/pull/6843 の @qgallouedec によるコンテキスト並列処理と結合される場合に発生します</li>
+<li>GKD 構成が https://github.com/huggingface/trl/pull/6847 の @qgallouedec によって完全にカバーされている場合は、DistillationTrainer への移行を提案します。</li>
+<li>https://github.com/huggingface/trl/pull/6842 の @qgallouedec による SFT chunked_nll 損失から 1 つのホスト同期を削除</li>
+<li>リリース: v1.11 (@qgallouedec 著、https://github.com/huggingface/trl/pull/6937)
+<strong>フル Changelog</strong>: https://github.com/huggingface/trl/compare/v1.10.0...v1.11.0</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>ソース</strong> <a href="https://github.com/huggingface/trl">huggingface/trl</a> · <code>v1.11.0</code> · 2026-08-26 · <a href="https://github.com/huggingface/trl/releases/tag/v1.11.0">アップストリーム リリース</a>
+<em>インデックス作成のためにそのままミラーリングされます。すべての権利は上流プロジェクトに帰属します。</em></p>
+</blockquote></div>  <details class="mt-original"> <summary>English original / English original</summary> <div class="prose mt-original-body"><h1>trl v1.11.0</h1>
+<h2>Features</h2>
+<h3>Use vLLM's own server instead of TRL's</h3>
+<p><code>trl vllm-serve</code> used to run a custom FastAPI app around vLLM's <code>LLM</code>, with its own data-parallel fan-out and a worker extension for weight sync. vLLM's own server covers all of that. The custom server is gone: <code>trl/scripts/vllm_serve.py</code> drops from <strong>1218 to ~130 lines</strong> and now translates its flags into <code>vllm serve</code>, prints the equivalent command, forwards any extra argument, and sets the three settings TRL needs (<code>--weight-transfer-config</code>, <code>--logprobs-mode processed_logprobs</code>, <code>--max-logprobs -1</code>). <code>fastapi</code>, <code>uvicorn</code> and <code>pydantic</code> leave the <code>vllm</code> extra.</p>
+<p>Weight sync now uses vLLM's NCCL weight-transfer engine — tensors are announced once and streamed in a single packed broadcast, instead of one HTTP request + broadcast per tensor. Distillation teacher logprobs come from <code>prompt_logprobs</code>.</p>
+<p><strong>Benchmark</strong> (GRPO server-mode on H100, Qwen2.5-1.5B / Qwen2.5-VL-3B, same seed, same data):</p>
+<p>| Setup | before | after | speedup |
+| --- | --- | --- | --- |
+| Text, TP=1 | 1.08, 0.91 s/step | <strong>0.63, 0.62 s/step</strong> | <strong>1.59×</strong> |
+| Text, TP=2 | 0.96, 0.96 s/step | <strong>0.62, 0.60 s/step</strong> | <strong>1.57×</strong> |
+| VLM, TP=1 | 2.14, 2.13 s/step | <strong>1.48, 1.48 s/step</strong> | <strong>1.44×</strong> |</p>
+<p>Bit-identical completions vs the old server (16/16 over 4 prompts × n=4, logprobs identical to 0.0 over 499 tokens). <code>trl vllm-serve</code> still accepts the same flags — it just forwards to <code>vllm serve</code> now.</p>
+<p>by @qgallouedec in https://github.com/huggingface/trl/pull/6765</p>
+<h3>New experimental <code>AsyncDistillationTrainer</code> (+ multi-teacher MOPD)</h3>
+<p>Async on-policy distillation, architected like <code>AsyncGRPOTrainer</code>: a background rollout worker generates the student's own completions and scores them against a teacher served over HTTP, so generation and training overlap instead of alternating. The teacher is never loaded locally — just a vLLM server URL.</p>
+<p>Also supports <strong>MOPD (multi-teacher on-policy distillation)</strong>: pass more than one entry in <code>teacher_server_urls</code> and route each sample to a teacher via a <code>teacher_id</code> column (e.g. a math teacher and a code teacher, each served independently).</p>
+<pre><code class="language-python">from trl.experimental.async_distillation import AsyncDistillationConfig, AsyncDistillationTrainer
+
+trainer = AsyncDistillationTrainer(
+    model=&quot;Qwen/Qwen3-4B&quot;,
+    args=AsyncDistillationConfig(
+        teacher_server_urls=[&quot;http://teacher-math:8000&quot;, &quot;http://teacher-code:8000&quot;],
+        teacher_top_k=16,
+    ),
+    train_dataset=dataset,  # rows carry a `teacher_id` column for MOPD
+)
+trainer.train()
+</code></pre>
+<p>by @kashif in https://github.com/huggingface/trl/pull/6705</p>
+<h3>New model &amp; template support</h3>
+<ul>
+<li><strong>Muse Glimmer</strong> (+ chat template) by @qgallouedec in https://github.com/huggingface/trl/pull/6738 and https://github.com/huggingface/trl/pull/6739</li>
+<li><strong>Nemotron 3.5 Lightning</strong> by @qgallouedec in https://github.com/huggingface/trl/pull/6736</li>
+<li><strong>LFM2.5-VL</strong> by @qgallouedec in https://github.com/huggingface/trl/pull/6737</li>
+<li><strong>Qwen3.8</strong> by @qgallouedec in https://github.com/huggingface/trl/pull/6764</li>
+<li><strong>DeepSeek-R1-Distill chat template</strong> by @qgallouedec in https://github.com/huggingface/trl/pull/6766</li>
+</ul>
+<h3>Examples reorganized into per-example folders</h3>
+<p><code>examples/</code> was split by format (<code>scripts/</code> vs <code>notebooks/</code>), which scattered related files (e.g. <code>sft_nemotron_3</code> existed as both a script <em>and</em> a notebook, in different folders; OpenEnv notebooks lived apart from OpenEnv scripts). Everything is now <strong>one folder per story</strong> — the name says the method and the task (<code>grpo_wordle</code>, <code>sft_gpt_oss</code>, <code>ppo_tldr</code>), and the folder holds every file the example needs (scripts, notebooks, prompts, chat templates, eval code). Thin single-trainer demo scripts are removed (they live in <code>trl/scripts/</code> and each trainer doc page has a runnable snippet). Old <code>examples/scripts/…</code> and <code>examples/notebooks/…</code> GitHub / Colab links will 404 — worth flagging in downstream posts.</p>
+<p>by @qgallouedec in https://github.com/huggingface/trl/pull/6820</p>
+<h3>AsyncGRPO: metrics rework, dtype control, and cleanup</h3>
+<ul>
+<li><strong>Rework AsyncGRPO metrics + docs</strong> by @AmineDiro in https://github.com/huggingface/trl/pull/6715</li>
+<li><strong>Training dtype in <code>AsyncGRPOConfig</code></strong> by @AmineDiro in https://github.com/huggingface/trl/pull/6774</li>
+<li><strong>Simplify <code>AsyncGRPOTrainer</code></strong> — drop redundant metric guards, merge train-begin callbacks by @qgallouedec in https://github.com/huggingface/trl/pull/6378</li>
+<li><strong>Fix checkpoint resume triggering unnecessary vLLM inference</strong> by @AmmarHassona in https://github.com/huggingface/trl/pull/5911</li>
+</ul>
+<h3>Rewritten TRL skill (Python-API first) + drop <code>trl skills install</code></h3>
+<p>The TRL skill is now written around the Python API — trainer selection, dataset format, load-bearing config fields, GRPO reward-function contract — with the CLI as a footnote. <code>trl skills install</code> is dropped and the skill source moves out of the package.</p>
+<ul>
+<li>Rewrite the TRL skill around the Python API by @qgallouedec in https://github.com/huggingface/trl/pull/6794</li>
+<li>Drop <code>trl skills install</code> and move the skill source out of the package by @qgallouedec in https://github.com/huggingface/trl/pull/6793</li>
+</ul>
+<h3><code>DistillationTrainer</code> supports tool calling</h3>
+<p>Continuing the graduation cycle from v1.10.</p>
+<p>by @qgallouedec in https://github.com/huggingface/trl/pull/6723</p>
+<h3>Suggest migrating to <code>DistillationTrainer</code> when the GKD config is fully covered</h3>
+<p><code>GKDTrainer</code> now emits a hint when the config is fully covered by the stable <code>DistillationTrainer</code> — no behavior change, just a nudge for users still on the older API.</p>
+<p>by @qgallouedec in https://github.com/huggingface/trl/pull/6847</p>
+<h3>Other</h3>
+<ul>
+<li>Allow dict config fields to be set from the command line by @qgallouedec in https://github.com/huggingface/trl/pull/6792</li>
+<li>Raise when packing is combined with context parallelism by @qgallouedec in https://github.com/huggingface/trl/pull/6843</li>
+<li>Emit <code>position_ids</code> from the SFT collator when sequence parallelism is enabled by @qgallouedec in https://github.com/huggingface/trl/pull/6812</li>
+<li>Remove one host sync from SFT <code>chunked_nll</code> loss by @qgallouedec in https://github.com/huggingface/trl/pull/6842</li>
+<li>Align the chunked-loss config access between SFT and Distillation by @qgallouedec in https://github.com/huggingface/trl/pull/6744</li>
+<li>Add <code>dataset_source</code> to telemetry by @qgallouedec in https://github.com/huggingface/trl/pull/6599</li>
+<li>Raise a clear error when generation returns no completions by @albertvillanova in https://github.com/huggingface/trl/pull/6714</li>
+<li>Move GPU CI from T4 to L40S by @qgallouedec in https://github.com/huggingface/trl/pull/6741</li>
+<li>Add on-policy multimodal GKD regression test by @sergiopaniego in https://github.com/huggingface/trl/pull/6342</li>
+</ul>
+<h3>vLLM version sweep</h3>
+<ul>
+<li>Add support for vLLM 0.27.0 and 0.27.1 by @qgallouedec in https://github.com/huggingface/trl/pull/6742</li>
+<li>Drop vLLM 0.17 by @qgallouedec in https://github.com/huggingface/trl/pull/6722</li>
+<li>Drop vLLM 0.18 by @qgallouedec in https://github.com/huggingface/trl/pull/6844</li>
+<li>Require <code>liger-kernel</code> 0.8.2 and drop the SAPO warning filter by @albertvillanova in https://github.com/huggingface/trl/pull/6768</li>
+</ul>
+<h2>Fixes</h2>
+<ul>
+<li><strong>Fix GRPO/RLOO training with multiple images for VLMs without grid metadata</strong> by @qgallouedec in https://github.com/huggingface/trl/pull/6570</li>
+<li><strong>Fix GRPO/RLOO with dynamic-tiling VLMs (InternVL)</strong> by @qgallouedec in https://github.com/huggingface/trl/pull/6619</li>
+<li><strong>Handle <code>None</code> token logprobs from vLLM in GRPO importance sampling</strong> by @behroozazarkhalili in https://github.com/huggingface/trl/pull/6693</li>
+<li><strong><code>[GRPO]</code> Match the Liger <code>dapo</code> / <code>cispo</code> / <code>vespo</code> normalizer to the non-Liger path</strong> — completes the fix from v1.10 (#6024) on the Liger path. By @kashif in https://github.com/huggingface/trl/pull/5890</li>
+<li><strong><code>[SFT]</code> Treat <code>past_key_values</code> and <code>attentions</code> as optional on the model output</strong> by @Hakureirm in https://github.com/huggingface/trl/pull/6686</li>
+<li><strong>Fix <code>AsyncGRPOTrainer</code> crashing on environment-owned datasets</strong> by @albertvillanova in https://github.com/huggingface/trl/pull/6824</li>
+<li><strong>Fix SDPO <code>scale_rewards</code> CLI parsing</strong> and warn on ignored feedback by @sergiopaniego in https://github.com/huggingface/trl/pull/6341</li>
+<li>Fix <code>opencode.py</code> proxy trace / log paths after OpenEnv moved them to functions by @sergiopaniego in https://github.com/huggingface/trl/pull/6672</li>
+</ul>
+<h2>Documentation and Examples</h2>
+<ul>
+<li>Rework AsyncGRPO docs alongside the metrics rework (@AmineDiro, #6715)</li>
+<li>Reorganize examples into self-contained per-example folders (see above)</li>
+<li>Suggest migrating to <code>DistillationTrainer</code> when GKD config is covered (see above)</li>
+</ul>
+<h2>CI</h2>
+<p>Big CI-hygiene cycle by @albertvillanova. Highlights:</p>
+<ul>
+<li>Test one Python version on PRs, matrix nightly by @qgallouedec in https://github.com/huggingface/trl/pull/6763</li>
+<li>Notify Slack when the tests of the latest release fail by @albertvillanova in https://github.com/huggingface/trl/pull/6900</li>
+<li>Post the Docker image build results to the shared CI Slack channel by @albertvillanova in https://github.com/huggingface/trl/pull/6903</li>
+<li>Factor the Slack notification into a local composite action by @albertvillanova in https://github.com/huggingface/trl/pull/6895 (+ updates in #6896, #6897, #6908, #6934, #6936)</li>
+<li>Move slow-test job status handling, dependencies, and reporting to Slack by @albertvillanova in https://github.com/huggingface/trl/pull/6752, https://github.com/huggingface/trl/pull/6754, https://github.com/huggingface/trl/pull/6756</li>
+<li>Pin the TruffleHog scanner image by digest + tighten secret scanning by @albertvillanova in https://github.com/huggingface/trl/pull/6677, https://github.com/huggingface/trl/pull/6757, https://github.com/huggingface/trl/pull/6758, https://github.com/huggingface/trl/pull/6759</li>
+<li>Various hotfix pins and reverts across the cycle (bitsandbytes / liger-kernel / peft dev builds / transformers dev) by @albertvillanova in https://github.com/huggingface/trl/pull/6517, https://github.com/huggingface/trl/pull/6835, https://github.com/huggingface/trl/pull/6840, https://github.com/huggingface/trl/pull/6841, https://github.com/huggingface/trl/pull/6838, https://github.com/huggingface/trl/pull/6915, https://github.com/huggingface/trl/pull/6919</li>
+<li>Bump the actions group across 1 directory with 8 updates by @dependabot[bot] in https://github.com/huggingface/trl/pull/6727 and https://github.com/huggingface/trl/pull/6902</li>
+<li>Restore Liger Kernel's global patches between tests by @albertvillanova in https://github.com/huggingface/trl/pull/6783</li>
+<li>Stub the weight transfer in the AsyncGRPO epoch-stop test by @albertvillanova in https://github.com/huggingface/trl/pull/6826</li>
+<li>Align AsyncDistillationTrainer with AsyncGRPOTrainer on pre-init args by @albertvillanova in https://github.com/huggingface/trl/pull/6825</li>
+<li>Use Flash Attention compatible models in the continuous batching test / async trainer tests by @albertvillanova in https://github.com/huggingface/trl/pull/6853 and https://github.com/huggingface/trl/pull/6854</li>
+<li>Derive <code>head_dim</code> when the model config does not declare it by @albertvillanova in https://github.com/huggingface/trl/pull/6855</li>
+<li>Build the GRPO VLM test images as PIL images to avoid a datasets downcast warning by @albertvillanova in https://github.com/huggingface/trl/pull/6889</li>
+<li>Remove the slow GRPO VLM training test by @albertvillanova in https://github.com/huggingface/trl/pull/6912</li>
+<li>Ignore benign NumPy <code>__array_wrap__</code> deprecation and torch inductor TF32 advisory warnings in CI by @albertvillanova in https://github.com/huggingface/trl/pull/6850 and https://github.com/huggingface/trl/pull/6851</li>
+<li>Stop excluding the TruffleHog <code>lob</code> / <code>postgres</code> detectors by @albertvillanova in https://github.com/huggingface/trl/pull/6920, https://github.com/huggingface/trl/pull/6921 (+ #6926)</li>
+<li>Fix misleading SFT step names, misaligned failed-test report headers, use built-in <code>GITHUB_ACTIONS</code> by @albertvillanova in https://github.com/huggingface/trl/pull/6726, https://github.com/huggingface/trl/pull/6753, https://github.com/huggingface/trl/pull/6749</li>
+<li>Pin Python version in the publish workflow / align Python version in the experimental tests workflow by @albertvillanova in https://github.com/huggingface/trl/pull/6883, https://github.com/huggingface/trl/pull/6881, https://github.com/huggingface/trl/pull/6882, https://github.com/huggingface/trl/pull/6884</li>
+<li>Bump doc-builder pre-commit revision + drop ruff workaround by @albertvillanova in https://github.com/huggingface/trl/pull/6784, https://github.com/huggingface/trl/pull/6790</li>
+<li>Remove the redundant <code>VERSION</code> env from the Docker build step / fix the Slack title of the TRL Docker image build job by @albertvillanova in https://github.com/huggingface/trl/pull/6931, https://github.com/huggingface/trl/pull/6932</li>
+<li>Remove unused <code>RUN_SLOW</code> env variable from the slow tests workflow by @albertvillanova in https://github.com/huggingface/trl/pull/6748</li>
+<li>Remove unnecessary <code>docstyle-ignore</code> tag from docstrings by @albertvillanova in https://github.com/huggingface/trl/pull/6785</li>
+<li>Inline the pre-commit action in the code-quality jobs by @albertvillanova in https://github.com/huggingface/trl/pull/6886</li>
+</ul>
+<h2>New Contributors</h2>
+<ul>
+<li>@Hakureirm made their first contribution in https://github.com/huggingface/trl/pull/6686</li>
+<li>@AmmarHassona made their first contribution in https://github.com/huggingface/trl/pull/5911</li>
+</ul>
+<h2>What's Changed</h2>
+<ul>
+<li>⬆️ Bump dev version by @qgallouedec in https://github.com/huggingface/trl/pull/6725</li>
+<li>Hotfix CI: Skip transformers continuous batching test on pre-Ampere GPUs by @albertvillanova in https://github.com/huggingface/trl/pull/6712</li>
+<li>Raise a clear error when generation returns no completions by @albertvillanova in https://github.com/huggingface/trl/pull/6714</li>
+<li>Pin the TruffleHog scanner image by digest by @albertvillanova in https://github.com/huggingface/trl/pull/6677</li>
+<li>Handle None token logprobs from vLLM in GRPO importance sampling by @behroozazarkhalili in https://github.com/huggingface/trl/pull/6693</li>
+<li>Drop vLLM 0.17 support by @qgallouedec in https://github.com/huggingface/trl/pull/6722</li>
+<li>Fix misleading SFT step names in slow tests CI workflow by @albertvillanova in https://github.com/huggingface/trl/pull/6726</li>
+<li>Bump the actions group across 1 directory with 8 updates by @dependabot[bot] in https://github.com/huggingface/trl/pull/6727</li>
+<li>[SFT] Treat past_key_values and attentions as optional on the model output by @Hakureirm in https://github.com/huggingface/trl/pull/6686</li>
+<li>Add support for vLLM 0.27.0 and 0.27.1 by @qgallouedec in https://github.com/huggingface/trl/pull/6742</li>
+<li>Remove unused RUN_SLOW env variable from slow tests workflow by @albertvillanova in https://github.com/huggingface/trl/pull/6748</li>
+<li>Do not run slow tests when the setup steps failed by @albertvillanova in https://github.com/huggingface/trl/pull/6752</li>
+<li>Fix misaligned headers in the failed tests report table by @albertvillanova in https://github.com/huggingface/trl/pull/6753</li>
+<li>Use built-in GITHUB_ACTIONS variable instead of custom IS_GITHUB_CI by @albertvillanova in https://github.com/huggingface/trl/pull/6749</li>
+<li>Fix opencode.py proxy trace/log paths after OpenEnv moved them to functions by @sergiopaniego in https://github.com/huggingface/trl/pull/6672</li>
+<li>Add DeepSeek-R1-Distill chat template by @qgallouedec in https://github.com/huggingface/trl/pull/6766</li>
+<li>Report slow tests results to Slack based on the job status by @albertvillanova in https://github.com/huggingface/trl/pull/6754</li>
+<li>Declare the test report dependencies in the test extra by @albertvillanova in https://github.com/huggingface/trl/pull/6756</li>
+<li>Pass the pytest report log flag from the workflow instead of the Makefile by @albertvillanova in https://github.com/huggingface/trl/pull/6750</li>
+<li>Add Muse Glimmer support and testing by @qgallouedec in https://github.com/huggingface/trl/pull/6738</li>
+<li>Add Nemotron 3.5 Lightning support and testing by @qgallouedec in https://github.com/huggingface/trl/pull/6736</li>
+<li>Add LFM2.5-VL support and testing by @qgallouedec in https://github.com/huggingface/trl/pull/6737</li>
+<li>Add Qwen3.8 support and testing by @qgallouedec in https://github.com/huggingface/trl/pull/6764</li>
+<li>Add Muse Glimmer chat template by @qgallouedec in https://github.com/huggingface/trl/pull/6739</li>
+<li>Restore Liger Kernel's global patches between tests by @albertvillanova in https://github.com/huggingface/trl/pull/6783</li>
+<li>Bump doc-builder pre-commit revision by @albertvillanova in https://github.com/huggingface/trl/pull/6784</li>
+<li>Restrict token access in the secret scanning workflow by @albertvillanova in https://github.com/huggingface/trl/pull/6757</li>
+<li>Fail the secret scanning job when the scan errors out by @albertvillanova in https://github.com/huggingface/trl/pull/6758</li>
+<li>Remove unnecessary docstyle-ignore tag from docstrings by @albertvillanova in https://github.com/huggingface/trl/pull/6785</li>
+<li>Rework AsyncGRPO metrics metrics and docs by @AmineDiro in https://github.com/huggingface/trl/pull/6715</li>
+<li>Scan the pushed commits in the secret scanning workflow by @albertvillanova in https://github.com/huggingface/trl/pull/6759</li>
+<li>Drop ruff workaround from doc-builder pre-commit hook by @albertvillanova in https://github.com/huggingface/trl/pull/6790</li>
+<li>Require liger-kernel 0.8.2 and drop the SAPO warning filter by @albertvillanova in https://github.com/huggingface/trl/pull/6768</li>
+<li>AsyncGRPOConfig : dtype asyncgrpo training by @AmineDiro in https://github.com/huggingface/trl/pull/6774</li>
+<li>Add AsyncDistillationTrainer by @kashif in https://github.com/huggingface/trl/pull/6705</li>
+<li>Simplify AsyncGRPOTrainer: drop redundant metric guards, merge train-begin callbacks by @qgallouedec in https://github.com/huggingface/trl/pull/6378</li>
+<li>[GRPO] Match the Liger dapo/cispo/vespo normalizer to the non-Liger path by @kashif in https://github.com/huggingface/trl/pull/5890</li>
+<li>Fix AsyncGRPO checkpoint resume triggering unnecessary vLLM inference by @AmmarHassona in https://github.com/huggingface/trl/pull/5911</li>
+<li>Fix AsyncGRPOTrainer crashing on environment-owned datasets by @albertvillanova in https://github.com/huggingface/trl/pull/6824</li>
+<li>Move GPU CI from T4 to L40S by @qgallouedec in https://github.com/huggingface/trl/pull/6741</li>
+<li>Align the chunked-loss config access between SFT and Distillation by @qgallouedec in https://github.com/huggingface/trl/pull/6744</li>
+<li>Allow dict config fields to be set from the command line by @qgallouedec in https://github.com/huggingface/trl/pull/6792</li>
+<li>Hotfix CI: xfail the transformers continuous batching test by @albertvillanova in https://github.com/huggingface/trl/pull/6835</li>
+<li>Hotfix CI: skip the offloading test when several accelerators are visible by @albertvillanova in https://github.com/huggingface/trl/pull/6840</li>
+<li>Hotfix CI: xfail the tests that DataParallel breaks on multiple GPUs by @albertvillanova in https://github.com/huggingface/trl/pull/6841</li>
+<li>Add <code>dataset_source</code> to telemetry by @qgallouedec in https://github.com/huggingface/trl/pull/6599</li>
+<li>Test one Python version on PRs, matrix nightly by @qgallouedec in https://github.com/huggingface/trl/pull/6763</li>
+<li>Fix GRPO/RLOO training with multiple images for VLMs without grid metadata by @qgallouedec in https://github.com/huggingface/trl/pull/6570</li>
+<li>Hotfix CI: xfail the experimental async trainer training tests by @albertvillanova in https://github.com/huggingface/trl/pull/6838</li>
+<li>Fix GRPO/RLOO with dynamic-tiling VLMs (InternVL) by @qgallouedec in https://github.com/huggingface/trl/pull/6619</li>
+<li>Ignore benign NumPy <code>__array_wrap__</code> deprecation warning in CI by @albertvillanova in https://github.com/huggingface/trl/pull/6850</li>
+<li>Ignore benign torch inductor TF32 advisory warning in CI by @albertvillanova in https://github.com/huggingface/trl/pull/6851</li>
+<li>Use Flash Attention compatible models in the continuous batching test by @albertvillanova in https://github.com/huggingface/trl/pull/6853</li>
+<li>Stub the weight transfer in the AsyncGRPO epoch-stop test by @albertvillanova in https://github.com/huggingface/trl/pull/6826</li>
+<li>Derive head_dim when the model config does not declare it by @albertvillanova in https://github.com/huggingface/trl/pull/6855</li>
+<li>Use a Flash Attention compatible model in the async trainer tests by @albertvillanova in https://github.com/huggingface/trl/pull/6854</li>
+<li>Fix SDPO scale_rewards CLI parsing and warn on ignored feedback by @sergiopaniego in https://github.com/huggingface/trl/pull/6341</li>
+<li>Add on-policy multimodal GKD regression test by @sergiopaniego in https://github.com/huggingface/trl/pull/6342</li>
+<li>Align AsyncDistillationTrainer with AsyncGRPOTrainer on pre-init args by @albertvillanova in https://github.com/huggingface/trl/pull/6825</li>
+<li>Align Python version in the experimental tests workflow by @albertvillanova in https://github.com/huggingface/trl/pull/6881</li>
+<li>Quote python-version value in the tests workflow by @albertvillanova in https://github.com/huggingface/trl/pull/6882</li>
+<li>Set up Python explicitly in the slow tests workflow by @albertvillanova in https://github.com/huggingface/trl/pull/6884</li>
+<li>Pin the mutable post-slack action reference to a commit SHA by @albertvillanova in https://github.com/huggingface/trl/pull/6891</li>
+<li>Bump the pinned post-slack action SHA to the current main by @albertvillanova in https://github.com/huggingface/trl/pull/6892</li>
+<li>Emit position_ids from the SFT collator when sequence parallelism is enabled by @qgallouedec in https://github.com/huggingface/trl/pull/6812</li>
+<li>Inline the pre-commit action in the code quality jobs by @albertvillanova in https://github.com/huggingface/trl/pull/6886</li>
+<li>Pin Python version in the publish workflow by @albertvillanova in https://github.com/huggingface/trl/pull/6883</li>
+<li>Notify Slack when the tests of the latest release fail by @albertvillanova in https://github.com/huggingface/trl/pull/6900</li>
+<li>Reorganize examples into self-contained per-example folders by @qgallouedec in https://github.com/huggingface/trl/pull/6820</li>
+<li>[DistillationTrainer refactor] Support tool calling by @qgallouedec in https://github.com/huggingface/trl/pull/6723</li>
+<li>Factor the Slack notification into a local composite action by @albertvillanova in https://github.com/huggingface/trl/pull/6895</li>
+<li>Update slack-github-action from v1 to v4 in the local Slack action by @albertvillanova in https://github.com/huggingface/trl/pull/6896</li>
+<li>Let Dependabot update actions pinned in local composite actions by @albertvillanova in https://github.com/huggingface/trl/pull/6897</li>
+<li>Build the GRPO VLM test images as PIL images to avoid a datasets downcast warning by @albertvillanova in https://github.com/huggingface/trl/pull/6889</li>
+<li>Hotfix CI: Xfail MoE LoRA tests against a broken peft dev build by @albertvillanova in https://github.com/huggingface/trl/pull/6915</li>
+<li>Bump the actions group across 1 directory with 8 updates by @dependabot[bot] in https://github.com/huggingface/trl/pull/6902</li>
+<li>Revert xfail for MoE LoRA tests now that peft#3602 fixed the autocast dtype bug by @albertvillanova in https://github.com/huggingface/trl/pull/6919</li>
+<li>Stop excluding the trufflehog lob detector by @albertvillanova in https://github.com/huggingface/trl/pull/6920</li>
+<li>Stop excluding the trufflehog postgres detector by @albertvillanova in https://github.com/huggingface/trl/pull/6921</li>
+<li>Remove the stale detector exclusion comment by @albertvillanova in https://github.com/huggingface/trl/pull/6926</li>
+<li>Remove the slow GRPO VLM training test by @albertvillanova in https://github.com/huggingface/trl/pull/6912</li>
+<li>Post the Docker image build results to the shared CI Slack channel by @albertvillanova in https://github.com/huggingface/trl/pull/6903</li>
+<li>Fix the Slack title of the TRL Docker image build job by @albertvillanova in https://github.com/huggingface/trl/pull/6931</li>
+<li>Remove the redundant VERSION env from the Docker build step by @albertvillanova in https://github.com/huggingface/trl/pull/6932</li>
+<li>Read the job status from the job context in the local Slack action by @albertvillanova in https://github.com/huggingface/trl/pull/6908</li>
+<li>Drop vLLM 0.18 support by @qgallouedec in https://github.com/huggingface/trl/pull/6844</li>
+<li>Use vLLM's own server instead of TRL's by @qgallouedec in https://github.com/huggingface/trl/pull/6765</li>
+<li>Drop <code>trl skills install</code> and move the skill source out of the package by @qgallouedec in https://github.com/huggingface/trl/pull/6793</li>
+<li>Make the Slack CI report readable at a glance by @qgallouedec in https://github.com/huggingface/trl/pull/6934</li>
+<li>Fix the Slack report posting twice by @qgallouedec in https://github.com/huggingface/trl/pull/6936</li>
+<li>Rewrite the TRL skill around the Python API by @qgallouedec in https://github.com/huggingface/trl/pull/6794</li>
+<li>Raise when packing is combined with context parallelism by @qgallouedec in https://github.com/huggingface/trl/pull/6843</li>
+<li>Suggest migrating to DistillationTrainer when the GKD config is fully covered by @qgallouedec in https://github.com/huggingface/trl/pull/6847</li>
+<li>Remove one host sync from SFT chunked_nll loss by @qgallouedec in https://github.com/huggingface/trl/pull/6842</li>
+<li>Release: v1.11 by @qgallouedec in https://github.com/huggingface/trl/pull/6937</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/huggingface/trl/compare/v1.10.0...v1.11.0</p>
+<hr />
+<blockquote>
+<p><strong>Source</strong> <a href="https://github.com/huggingface/trl">huggingface/trl</a> · <code>v1.11.0</code> · 2026-08-26 · <a href="https://github.com/huggingface/trl/releases/tag/v1.11.0">upstream release</a></p>
+</blockquote>
+<p><em>Mirrored verbatim for indexing. All rights belong to the upstream project.</em></p></div> </details> </div> <p class="muted" style="margin-top:var(--s8);font-size:12.5px;border-top:1px solid var(--line);padding-top:var(--s4)"> リリースノートは上流プロジェクトが公開したものです。私たちはそれらを整理し、関連付けて、バージョンを一眼で比較できるようにしています。コンテンツの権利はすべて原作者に属します。 </p> <nav class="pager" aria-label="Release navigation"> <a href="/releases/trl/1.12.0"> <span class="k">← 次へ</span> <span class="t">v1.12.0</span> </a> <a href="/releases/trl/1.10.0"> <span class="k">前へ →</span> <span class="t">v1.10.0</span> </a> </nav> <aside class="ad-slot" aria-label="Advertisement" data-astro-cid-fgwukgf6><div class="ad-slot-label" data-astro-cid-fgwukgf6>Advertisement</div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4184355057086168" data-ad-slot="9133765584" data-ad-format="auto" data-full-width-responsive="true" data-astro-cid-fgwukgf6></ins><script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script></aside> </article> <aside class="rail"> <div class="rail-card"> <div class="rail-title">Source</div> <ul class="rail-list"> <li> <a href="https://github.com/huggingface/trl/releases/tag/v1.11.0" target="_blank" rel="noopener"> <span>GitHub で見る</span> <span class="d">↗</span> </a> </li> <li> <a href="https://github.com/huggingface/trl" target="_blank" rel="noopener"> <span>huggingface/trl</span> <span class="d">↗</span> </a> </li> </ul> </div> <div class="rail-card rail-toc"> <div class="rail-title">このページの目次</div> <nav> <a href="#" class>特徴</a><a href="#" class="lv3">TRL の代わりに vLLM 独自のサーバーを使用する</a><a href="#" class="lv3">新しい実験用 AsyncDistillationTrainer (+ マルチ教師 MOPD)</a><a href="#" class="lv3">新しいモデルとテンプレートのサポート</a><a href="#" class="lv3">例ごとのフォルダーに再編成された例</a><a href="#" class="lv3">AsyncGRPO: メトリクスの再加工、dtype 制御、およびクリーンアップ</a><a href="#" class="lv3">書き換えられた TRL スキル (Python-API 最初) + trl skills install をドロップ</a><a href="#" class="lv3">DistillationTrainer はツール呼び出しをサポートします</a><a href="#" class="lv3">GKD 構成が完全にカバーされたら、DistillationTrainer への移行を提案します</a><a href="#" class="lv3">その他</a><a href="#" class="lv3">vLLM バージョン スイープ</a><a href="#" class>修正</a><a href="#" class>ドキュメントと例</a><a href="#" class>CI</a><a href="#" class>新しい貢献者</a><a href="#" class>何が変わったのか</a> </nav> </div> <div class="rail-card"> <div class="rail-title">バージョン履歴</div> <ul class="rail-list"> <li> <a href="/releases/trl/1.18.2"> <span class="v">v1.18.2</span> <span class="d">26-11-19</span> </a> </li><li> <a href="/releases/trl/1.18.1"> <span class="v">v1.18.1</span> <span class="d">26-11-17</span> </a> </li><li> <a href="/releases/trl/1.18.0"> <span class="v">v1.18.0</span> <span class="d">26-11-13</span> </a> </li><li> <a href="/releases/trl/1.17.1"> <span class="v">v1.17.1</span> <span class="d">26-10-30</span> </a> </li><li> <a href="/releases/trl/1.17.0"> <span class="v">v1.17.0</span> <span class="d">26-10-29</span> </a> </li><li> <a href="/releases/trl/1.16.0"> <span class="v">v1.16.0</span> <span class="d">26-10-15</span> </a> </li><li> <a href="/releases/trl/1.15.0"> <span class="v">v1.15.0</span> <span class="d">26-10-08</span> </a> </li><li> <a href="/releases/trl/1.14.2"> <span class="v">v1.14.2</span> <span class="d">26-10-06</span> </a> </li> </ul> <a href="/ja/releases/trl" class="mono" style="display:inline-block;margin-top:var(--s3);font-size:11.5px;color:var(--ink-3)"> すべての 20 件を見る →
+</a> </div> </aside> </div> </div>  </main> <footer class="site-footer"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/ja/" class="brand" aria-label="STAGS NextStack"><span class="brand-mark" aria-hidden="true">S</span><span class="brand-main">STAGS</span><span class="brand-sub" aria-hidden="true">NextStack</span></a> <p>オープンソースのリリース インテリジェンスが毎日公開されます。</p> </div> <div class="footer-col"> <h3>追跡</h3> <ul> <li><a href="/ja/releases">リリース</a></li> <li><a href="/ja/projects">プロジェクト</a></li> <li><a href="/ja/releases.xml">RSS フィード</a></li> </ul> </div> <div class="footer-col"> <h3>アーカイブ</h3> <ul> <li><a href="/zh/release_note" hreflang="zh-Hans">中文アーカイブ</a></li> <li><a href="/zh/chapters/" hreflang="zh-Hans">技術ノート</a></li> <li><a href="/zh/downloads/">Stags Tracker</a></li> </ul> </div> <div class="footer-col"> <h3>情報</h3> <ul> <li><a href="/privacy">プライバシーポリシー</a></li> <li><a href="/releases.xml">RSS</a></li> <li><a href="/sitemap-index.xml">Sitemap</a></li> </ul> </div> </div> <div class="footer-btm"> <span>© 2026 STAGS</span> <span>Release note は上流プロジェクトに属します。</span> </div> </div> </footer> <!-- 搜索面板 --> <div class="palette-bg" data-palette-bg data-open="false"> <div class="palette" role="dialog" aria-modal="true" aria-label="リリースを検索"> <div class="palette-in"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ink-4);flex:none"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <input type="search" data-palette-input placeholder="リリース、プロジェクト、バージョンを検索…" autocomplete="off" spellcheck="false"> <span class="kbd">esc</span> </div> <ul class="palette-res" data-palette-res></ul> <div class="palette-ft"> <span>↑↓ navigate</span> <span>↵ open</span> <span style="margin-left:auto" data-palette-count></span> </div> </div> </div> <script type="module" src="/assets/Shell.astro_astro_type_script_index_0_lang.0ZkKXV47.js"></script> </body> </html>

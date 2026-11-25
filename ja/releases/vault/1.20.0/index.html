@@ -1,0 +1,382 @@
+<!DOCTYPE html><html lang="ja" dir="ltr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>vault v1.20.0 — STAGS NextStack</title><meta name="description" content="core: require a nonce when cancelling a rekey operation that was initiated within the last 10 minutes. [GH-30794]"><meta name="keywords" content="オープンソース release note、リリース トラッカー、changelog アグリゲーター、重大な変更、非推奨トラッカー、Kafka リリース、Spring Boot リリース、Kubernetes リリース"><meta name="generator" content="Astro v5.18.2"><link rel="canonical" href="https://www.stags.cn/ja/releases/vault/1.20.0/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="STAGS NextStack — releases" href="/ja/releases.xml"><link rel="alternate" hreflang="en" href="https://www.stags.cn/releases/vault/1.20.0/"><link rel="alternate" hreflang="zh-Hans" href="https://www.stags.cn/releases/vault/1.20.0/"><link rel="alternate" hreflang="x-default" href="https://www.stags.cn/releases/vault/1.20.0/"><meta property="og:site_name" content="STAGS"><meta property="og:type" content="article"><meta property="og:title" content="vault v1.20.0 — STAGS NextStack"><meta property="og:description" content="core: require a nonce when cancelling a rekey operation that was initiated within the last 10 minutes. [GH-30794]"><meta property="og:url" content="https://www.stags.cn/ja/releases/vault/1.20.0/"><meta property="og:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><meta property="og:locale" content="ja_JP"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="de_DE"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:locale:alternate" content="es_ES"><meta property="og:locale:alternate" content="pt_BR"><meta property="og:locale:alternate" content="ko_KR"><meta property="og:locale:alternate" content="it_IT"><meta property="og:locale:alternate" content="ru_RU"><meta property="og:locale:alternate" content="tr_TR"><meta property="og:locale:alternate" content="id_ID"><meta property="og:locale:alternate" content="vi_VN"><meta property="og:locale:alternate" content="ar_SA"><meta property="og:locale:alternate" content="sv_SE"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.stags.cn/#website","name":"STAGS","url":"https://www.stags.cn/","inLanguage":"ja","description":"NextStack はインフラストラクチャおよび AI プロジェクトのリリースノートを索引化し、破壊的変更・非推奨・移行情報を英語優先の単一フィードで提供します。","publisher":{"@id":"https://www.stags.cn/#org"}},{"@type":"Organization","@id":"https://www.stags.cn/#org","name":"STAGS","alternateName":"NextStack","url":"https://www.stags.cn/"},{"@type":"TechArticle","@id":"https://www.stags.cn/ja/releases/vault/1.20.0/#article","headline":"vault v1.20.0 release notes","datePublished":"2025-06-25","inLanguage":"en","isPartOf":{"@id":"https://www.stags.cn/#website"},"about":{"@type":"SoftwareSourceCode","codeRepository":"https://github.com/hashicorp/vault"}}]}</script><!-- 第三方脚本的连接预热：这两个域名几乎每页都要连，
+         提前建连能省掉 DNS + TCP + TLS 一个往返（移动网络 100~300ms）。
+         AdSense 只在开关打开时预热——关掉广告后连这个域名都没必要。 --><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://pagead2.googlesyndication.com"><!-- Google AdSense：站点所有权校验与广告投放共用同一段脚本，全站只加载一次。
+         未创建广告单元时页面上不渲染任何广告容器，站点保持干净。
+         fetchpriority=low：它不参与首屏渲染，不该跟正文抢带宽。 --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184355057086168" crossorigin="anonymous" fetchpriority="low"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-RFRF1TVRMP" fetchpriority="low"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RFRF1TVRMP");
+    </script><!-- 百度统计（国内流量统计）。官方标准片段，is:inline 原样输出，
+         hm.js 动态插到首个 script 前，异步不阻塞首屏渲染。 --><script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?299e5b4e65b86ed16879bdcbe70531d6";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script><link rel="stylesheet" href="/assets/index.DQGt3qLZ.css">
+<style>.ad-slot[data-astro-cid-fgwukgf6]{margin:var(--s10) 0 0;padding-top:var(--s5);border-top:1px solid var(--line)}.ad-slot-label[data-astro-cid-fgwukgf6]{margin-bottom:var(--s3);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{display:block;min-height:100px}@media(min-width:640px){.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{min-height:250px}}
+</style></head> <body> <a class="skip" href="#main">本文へスキップ</a> <header class="hdr" data-header> <div class="wrap hdr-inner"> <a href="/ja/" class="brand" aria-label="STAGS NextStack — オープンソースのリリース情報"> <span class="brand-mark" aria-hidden="true">S</span> <span class="brand-main">STAGS</span> <span class="brand-sub" aria-hidden="true">NextStack</span> </a> <nav class="nav" aria-label="Primary"> <a href="/ja/releases">リリース</a><a href="/ja/projects">プロジェクト</a> </nav>  <details class="navmenu" data-navmenu> <summary class="navmenu-btn" aria-label="Open menu"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> </summary> <div class="navmenu-panel" role="group" aria-label="Primary"> <a href="/ja/releases" class="navmenu-item">リリース</a><a href="/ja/projects" class="navmenu-item">プロジェクト</a> </div> </details> <div class="hdr-tools"> <button class="searchbtn" type="button" data-search-open aria-label="リリースを検索"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <span class="lbl">検索</span> <span class="kbd">⌘K</span> </button> <details class="langmenu" data-langmenu> <summary class="langmenu-btn" aria-label="言語"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"> <circle cx="12" cy="12" r="9"></circle> <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path> </svg> <span class="langmenu-cur">日</span> <svg class="langmenu-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m2 4 4 4 4-4"></path></svg> </summary> <div class="langmenu-panel" role="group" aria-label="言語"> <p class="langmenu-head">言語</p> <a class="langmenu-item" href="/releases/vault/1.20.0/" hreflang="en" lang="en" data-on="false"> <span class="langmenu-label">English</span> <span class="langmenu-code">EN</span> </a><a class="langmenu-item" href="/zh/release_note/vault/vault_v1.20.0" hreflang="zh-Hans" lang="zh-CN" data-on="false"> <span class="langmenu-label">中文</span> <span class="langmenu-code">中</span> </a><a class="langmenu-item" href="/ja/releases/vault/1.20.0/" hreflang="ja" lang="ja" aria-current="true" data-on="true"> <span class="langmenu-label">日本語</span> <span class="langmenu-code">日</span> </a><a class="langmenu-item" href="/de/releases/vault/1.20.0/" hreflang="de" lang="de" data-on="false"> <span class="langmenu-label">Deutsch</span> <span class="langmenu-code">DE</span> </a><a class="langmenu-item" href="/fr/releases/vault/1.20.0/" hreflang="fr" lang="fr" data-on="false"> <span class="langmenu-label">Français</span> <span class="langmenu-code">FR</span> </a><a class="langmenu-item" href="/es/releases/vault/1.20.0/" hreflang="es" lang="es" data-on="false"> <span class="langmenu-label">Español</span> <span class="langmenu-code">ES</span> </a><a class="langmenu-item" href="/pt/releases/vault/1.20.0/" hreflang="pt-BR" lang="pt-BR" data-on="false"> <span class="langmenu-label">Português</span> <span class="langmenu-code">PT</span> </a><a class="langmenu-item" href="/ko/releases" hreflang="ko" lang="ko" data-on="false"> <span class="langmenu-label">한국어</span> <span class="langmenu-code">한</span> </a><a class="langmenu-item" href="/it/releases" hreflang="it" lang="it" data-on="false"> <span class="langmenu-label">Italiano</span> <span class="langmenu-code">IT</span> </a><a class="langmenu-item" href="/ru/releases" hreflang="ru" lang="ru" data-on="false"> <span class="langmenu-label">Русский</span> <span class="langmenu-code">RU</span> </a><a class="langmenu-item" href="/tr/releases" hreflang="tr" lang="tr" data-on="false"> <span class="langmenu-label">Türkçe</span> <span class="langmenu-code">TR</span> </a><a class="langmenu-item" href="/id/releases" hreflang="id" lang="id" data-on="false"> <span class="langmenu-label">Bahasa Indonesia</span> <span class="langmenu-code">ID</span> </a><a class="langmenu-item" href="/vi/releases" hreflang="vi" lang="vi" data-on="false"> <span class="langmenu-label">Tiếng Việt</span> <span class="langmenu-code">VI</span> </a><a class="langmenu-item" href="/ar/releases" hreflang="ar" lang="ar" data-on="false"> <span class="langmenu-label">العربية</span> <span class="langmenu-code">ع</span> </a><a class="langmenu-item" href="/sv/releases" hreflang="sv" lang="sv" data-on="false"> <span class="langmenu-label">Svenska</span> <span class="langmenu-code">SV</span> </a> </div> </details> <a class="iconlink" href="/releases.xml" aria-label="RSS"> <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"> <path d="M2 12.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM2 7.5a6.5 6.5 0 0 1 6.5 6.5h-2A4.5 4.5 0 0 0 2 9.5v-2ZM2 2.5A11.5 11.5 0 0 1 13.5 14h-2A9.5 9.5 0 0 0 2 4.5v-2Z"></path> </svg> </a> </div> </div> </header> <main id="main">  <div class="wrap"> <div class="detail"> <article> <header class="detail-hd"> <nav class="crumbs" aria-label="Breadcrumb"> <a href="/ja/">ホーム</a> <span class="sep">/</span> <a href="/ja/releases">リリース</a> <span class="sep">/</span> <a href="/ja/releases/vault">vault</a> </nav> <h1 class="detail-title"> <span class="p">vault</span> v1.20.0 </h1> <div class="detail-meta"> <span class="chip chip--minor">マイナー</span> <span><span class="k">公開日</span>2025年6月25日</span>  <span class="sep" aria-hidden="true"></span> <a href="https://github.com/hashicorp/vault" target="_blank" rel="noopener"> <span class="k">出典</span>hashicorp/vault </a>   <span class="sep" aria-hidden="true"></span> <a href="/releases/vault/1.20.0/"> English original </a>  <span class="sep" aria-hidden="true"></span> <button class="btn btn--ghost btn--sm" type="button" data-copy="https://www.stags.cn/ja/releases/vault/1.20.0/">リンクをコピー</button> </div> </header> <div class="prose" style="margin-top:var(--s8)"> <p class="mt-notice" role="note">このページは機械翻訳です。内容は必ず英文原文をご確認ください。</p>  <div><h1>保管庫 v1.20.0</h1>
+<h2>1.20.0</h2>
+<h3>2025 年 6 月 25 日</h3>
+<p>セキュリティ:</p>
+<ul>
+<li>core: 過去 10 分以内に開始されたキー再生成操作をキャンセルする場合は nonce が必要です。 [<a href="https://github.com/hashicorp/vault/pull/30794">GH-30794</a>]
+変更点:</li>
+<li>UI: 古くなった不要な JS 文字列拡張子を削除 [<a href="https://github.com/hashicorp/vault/pull/29834">GH-29834</a>]</li>
+<li>activity (enterprise): sys/internal/counters/activity エンドポイントは、当月の新しい client の実際の値を返します。</li>
+<li>アクティビティ (エンタープライズ): <code>sys/internal/counters/activity</code> の <code>start_time</code> および <code>end_time</code> に指定された値は、対応する請求期間に合わせて調整されます。</li>
+<li>アクティビティ: <code>sys/internal/counters/activity</code> の <code>end_time</code> に指定された値は、最後に完了した月の月末に制限されるようになりました。 [<a href="https://github.com/hashicorp/vault/pull/30164">GH-30164</a>]</li>
+<li>api: デフォルトの API client を更新して、<code>Retry-After</code> ヘッダーを確認し、存在する場合は、要求を再試行する前に指定された期間待機します。 [<a href="https://github.com/hashicorp/vault/pull/30887">GH-30887</a>]</li>
+<li>auth/alicloud: プラグインを v0.21.0 に更新 [<a href="https://github.com/hashicorp/vault/pull/30810">GH-30810</a>]</li>
+<li>auth/azure: プラグインを v0.20.2 に更新します。ログインには、トークン要求と一致する <code>resource_group_name</code>、<code>vm_name</code>、および <code>vmss_name</code> が必要です [<a href="https://github.com/hashicorp/vault/pull/30052">GH-30052</a>]</li>
+<li>認証/Azure: プラグインを v0.20.3 に更新 [<a href="https://github.com/hashicorp/vault/pull/30082">GH-30082</a>]</li>
+<li>認証/Azure: プラグインを v0.20.4 に更新 [<a href="https://github.com/hashicorp/vault/pull/30543">GH-30543</a>]</li>
+<li>認証/Azure: プラグインを v0.21.0 に更新 [<a href="https://github.com/hashicorp/vault/pull/30872">GH-30872</a>]</li>
+<li>認証/Azure: プラグインを v0.21.1 [<a href="https://github.com/hashicorp/vault/pull/31010">GH-31010</a>] に更新します。</li>
+<li>auth/cf: プラグインを v0.20.1 に更新 [<a href="https://github.com/hashicorp/vault/pull/30583">GH-30583</a>]</li>
+<li>auth/cf: プラグインを v0.21.0 に更新 [<a href="https://github.com/hashicorp/vault/pull/30842">GH-30842</a>]</li>
+<li>auth/gcp: プラグインを v0.20.2 に更新 [<a href="https://github.com/hashicorp/vault/pull/30081">GH-30081</a>]</li>
+<li>auth/jwt: プラグインを v0.23.2 に更新 [<a href="https://github.com/hashicorp/vault/pull/30431">GH-30431</a>]</li>
+<li>auth/jwt: プラグインを v0.24.1 に更新 [<a href="https://github.com/hashicorp/vault/pull/30876">GH-30876</a>]</li>
+<li>認証/ケルベロス: プラグインを v0.15.0 に更新 [<a href="https://github.com/hashicorp/vault/pull/30845">GH-30845</a>]</li>
+<li>auth/kubernetes: プラグインを v0.22.1 に更新 [<a href="https://github.com/hashicorp/vault/pull/30910">GH-30910</a>]</li>
+<li>auth/oci: プラグインを v0.19.0 に更新 [<a href="https://github.com/hashicorp/vault/pull/30841">GH-30841</a>]</li>
+<li>auth/saml: プラグインを v0.6.0 に更新します</li>
+<li>コア: 1.24.4 への Bump Go バージョン。</li>
+<li>コア: X-Forwarded-For ヘッダーから抽出された client IP アドレスが有効な IPv4 または IPv6 アドレスであることを確認する [<a href="https://github.com/hashicorp/vault/pull/29774">GH-29774</a>]</li>
+<li>データベース/カウチベース: プラグインを v0.14.0 に更新 [<a href="https://github.com/hashicorp/vault/pull/30836">GH-30836</a>]</li>
+<li>データベース/elasticsearch: プラグインを v0.18.0 に更新 [<a href="https://github.com/hashicorp/vault/pull/30796">GH-30796</a>]</li>
+<li>データベース/mongodbatlas: プラグインを v0.15.0 [<a href="https://github.com/hashicorp/vault/pull/30856">GH-30856</a>] に更新</li>
+<li>データベース/redis-elasticache: プラグインを v0.7.0 に更新 [<a href="https://github.com/hashicorp/vault/pull/30785">GH-30785</a>]</li>
+<li>データベース/redis: プラグインを v0.6.0 に更新 [<a href="https://github.com/hashicorp/vault/pull/30797">GH-30797</a>]</li>
+<li>データベース/スノーフレーク: プラグインを v0.14.0 [<a href="https://github.com/hashicorp/vault/pull/30748">GH-30748</a>] に更新</li>
+<li>データベース/スノーフレーク: プラグインを v0.14.1 [<a href="https://github.com/hashicorp/vault/pull/30868">GH-30868</a>] に更新</li>
+<li>論理/システム: プラグイン カタログ処理用の ent スタブを追加 [<a href="https://github.com/hashicorp/vault/pull/30890">GH-30890</a>]</li>
+<li>クォータ/レート制限: 再試行遅延を計算するときに、<code>Retry-After</code> 値を最も近い秒に切り上げます。 [<a href="https://github.com/hashicorp/vault/pull/30887">GH-30887</a>]</li>
+<li>シークレット/広告: プラグインを v0.21.0 に更新 [<a href="https://github.com/hashicorp/vault/pull/30819">GH-30819</a>]</li>
+<li>Secrets/alicloud: プラグインを v0.20.0 [<a href="https://github.com/hashicorp/vault/pull/30809">GH-30809</a>] に更新</li>
+<li>Secrets/azure: プラグインを v0.21.2 に更新 [<a href="https://github.com/hashicorp/vault/pull/30037">GH-30037</a>]</li>
+<li>Secrets/azure: プラグインを v0.21.3 に更新 [<a href="https://github.com/hashicorp/vault/pull/30083">GH-30083</a>]</li>
+<li>Secrets/azure: プラグインを v0.22.0 に更新 [<a href="https://github.com/hashicorp/vault/pull/30832">GH-30832</a>]</li>
+<li>Secrets/gcp: プラグインを v0.21.2 [<a href="https://github.com/hashicorp/vault/pull/29970">GH-29970</a>] に更新します</li>
+<li>Secrets/gcp: プラグインを v0.21.3 に更新 [<a href="https://github.com/hashicorp/vault/pull/30080">GH-30080</a>]</li>
+<li>Secrets/gcp: プラグインを v0.22.0 に更新 [<a href="https://github.com/hashicorp/vault/pull/30846">GH-30846</a>]</li>
+<li>Secrets/gcpkms: プラグインを v0.21.0 に更新 [<a href="https://github.com/hashicorp/vault/pull/30835">GH-30835</a>]</li>
+<li>秘密/kubernetes: プラグインを v0.11.0 に更新 [<a href="https://github.com/hashicorp/vault/pull/30855">GH-30855</a>]</li>
+<li>Secrets/kv: プラグインを v0.24.0 に更新 [<a href="https://github.com/hashicorp/vault/pull/30826">GH-30826</a>]</li>
+<li>Secrets/mongodbatlas: プラグインを v0.15.0 に更新 [<a href="https://github.com/hashicorp/vault/pull/30860">GH-30860</a>]</li>
+<li>secrets/openldap: プラグインを v0.15.2 に更新 [<a href="https://github.com/hashicorp/vault/pull/30079">GH-30079</a>]</li>
+<li>secrets/openldap: プラグインを v0.15.4 に更新 [<a href="https://github.com/hashicorp/vault/pull/30279">GH-30279</a>]</li>
+<li>secrets/openldap: プラグインを v0.16.0 に更新 [<a href="https://github.com/hashicorp/vault/pull/30844">GH-30844</a>]</li>
+<li>シークレット/terraform: プラグインを v0.12.0 に更新 [<a href="https://github.com/hashicorp/vault/pull/30905">GH-30905</a>]</li>
+<li>サーバー: disable_mlock 構成オプションは統合ストレージに必須になり、デフォルトはなくなりました。統合ストレージでデフォルト値を使用している場合は、明示的に disable_mlock を true または false に設定する必要があります。そうしないと、Vault サーバーの起動に失敗します。 [<a href="https://github.com/hashicorp/vault/pull/29974">GH-29974</a>]</li>
+<li>ui/アクティビティ: マウントと名前空間の属性チャートをテーブルに置き換えて、並べ替えを可能にします。
+client は、<code>namespace</code>、<code>mount_path</code>、<code>mount_type</code>、または client の数によるデータをカウントします。
+選択した月。 [<a href="https://github.com/hashicorp/vault/pull/30678">GH-30678</a>]</li>
+<li>ui: Client カウント側のナビゲーション リンク「Vault 使用状況メトリック」が「Client 使用状況」に名前変更されました [<a href="https://github.com/hashicorp/vault/pull/30765">GH-30765</a>]</li>
+<li>ui: Client カウントの「累計」チャートに新しい client のみが反映されるようになりました [<a href="https://github.com/hashicorp/vault/pull/30506">GH-30506</a>]</li>
+<li>ui: 削除された <code>FormError</code> コンポーネント (未使用) [<a href="https://github.com/hashicorp/vault/pull/34699">GH-34699</a>]</li>
+<li>ui: ログイン フォームで別の方法を選択しても、<code>/vault/auth?with=</code> クエリ パラメーターが更新されなくなりました [<a href="https://github.com/hashicorp/vault/pull/30500">GH-30500</a>]</li>
+<li>ui: <code>/vault/auth?with=</code> クエリ パラメーターは認証マウント パスのみを参照し、簡略化された形式 [<a href="https://github.com/hashicorp/vault/pull/30500">GH-30500</a>] をレンダリングするようになりました。
+特徴:</li>
+<li><strong>取消不能リースの自動削除 (エンタープライズ)</strong>: Vault Enterprise 構成パラメータ <code>remove_irrevocable_lease_after</code> を追加します。ゼロ以外の値に設定すると、設定された期間がリースの有効期限を超えた後、取消不能なリースが自動的に削除されます。このフィールドに許可される最小期間は 2 日です。 [<a href="https://github.com/hashicorp/vault/pull/30703">GH-30703</a>]</li>
+<li><strong>開発クラスタ構成 (エンタープライズ)</strong>: Vault の使用率レポートにフィールドとして <code>development_cluster</code> を追加しました。
+このフィールドは HCL 経由で構成可能で、クラスターが開発環境で使用されているかどうかを示します。設定されていない場合はデフォルトで false になります。 [<a href="https://github.com/hashicorp/vault/pull/30659">GH-30659</a>]</li>
+<li><strong>エンティティ ベースおよび集合レート制限クォータ (エンタープライズ)</strong>: さまざまなグループ化モードをサポートするために、新しい <code>group_by</code> フィールドをレート制限クォータ API に追加します。</li>
+<li><strong>ログイン フォームのカスタマイズ (エンタープライズ)</strong>: Web UI ログイン エクスペリエンスを合理化するために、Web UI ログイン フォームのデフォルトおよび/またはバックアップ認証方法を選択するサポートを追加します。 [<a href="https://github.com/hashicorp/vault/pull/30700">GH-30700</a>]</li>
+<li><strong>プラグインのダウンロード</strong>: releases.bashicorp.com (ベータ版) からの公式 HashiCorp シークレットおよび認証プラグインの自動ダウンロードをサポートします。</li>
+<li><strong>SSH キー署名の改善 (エンタープライズ)</strong>: SSH シークレット エンジンで SSH キーに署名するためのマネージド キーの使用のサポートを追加します。</li>
+<li><strong>Secret Recovery from Snapshot (Enterprise)</strong>: 統合ストレージをロードするためのフレームワークを追加します
+スナップショットを Vault に保存し、スナップショットから KV v1 と cubbyhole シークレットを読み取り、リストし、回復します。 [<a href="https://github.com/hashicorp/vault/pull/30739">GH-30739</a>]</li>
+<li><strong>UI シークレット エンジン</strong>: TOTP シークレット エンジンがサポートされるようになりました。 [<a href="https://github.com/hashicorp/vault/pull/29751">GH-29751</a>]</li>
+<li><strong>UI テレメトリ</strong>: Vault 専用管理対象クラスターでの UI テレメトリ追跡用に Posthog を追加 [<a href="https://github.com/hashicorp/vault/pull/30425">GH-30425</a>]</li>
+<li><strong>Vault Namespace Picker</strong>: Vault Namespace Picker を更新して、検索機能を有効にし、ネストされた名前空間への直接ナビゲーションを可能にし、アクセシビリティを向上させます。 [<a href="https://github.com/hashicorp/vault/pull/30490">GH-30490</a>]</li>
+<li><strong>Vault PKI SCEP サーバー (エンタープライズ)</strong>: Simple Certificate Enrollment Protocol (SCEP) のサポートが Vault PKI プラグインに追加されました。これにより、標準の SCEP client は、Vault API の知識がなくても、Vault サーバーから証明書を要求できるようになります。
+改善点:</li>
+<li>アクティビティ (エンタープライズ): 現在の請求期間で使用される個別の client の合計数に関する情報を出力する vault.client.billing_period.activity テレメトリ メトリクスを追加しました。</li>
+<li>activity: mount_type が sys/internal/counters/activity [<a href="https://github.com/hashicorp/vault/pull/30071">GH-30071</a>] の API 応答に追加されました</li>
+<li>activity: mount_type が sys/internal/counters/activity の API 応答に追加されました</li>
+<li>api (エンタープライズ): 新しい API、<code>/sys/utilization-report</code> が追加され、Vault の使用率の概要を高レベルでスナップショットで示します。</li>
+<li>api/client: 証明書認証方法のサポートを追加します。これにより、client は client 証明書を使用して認証できるようになります。 [<a href="https://github.com/hashicorp/vault/pull/29546">GH-29546</a>]</li>
+<li>コア (エンタープライズ): FIPS 140-3 準拠のアルゴリズムをサポートするためにコードとドキュメントを更新しました。</li>
+<li>コア (エンタープライズ): 名前空間 API ロック機能によってロックされた名前空間をルート トークンが再ロックできるようにします。</li>
+<li>コア (エンタープライズ): エントロピーを取得するときに、基礎となるシールからのエラーを報告します。</li>
+<li>コア (エンタープライズ): FIPS ビルドの FIPS 140-3 暗号化モジュールに更新します。</li>
+<li>コア/メトリクス: Vault が処理するリクエストに対するすべての応答のステータス コードの詳細を示す 2 つのラベル <code>code</code> および <code>type</code> を持つ新しいテレメトリ メトリクス <code>vault.core.response_status_code</code> を追加しました。 [<a href="https://github.com/hashicorp/vault/pull/30354">GH-30354</a>]</li>
+<li>コア: ネームスペース、認証メソッド、シークレット エンジンのパス管理のメモリ使用量を改善します。今後、Vault は、より多くの名前空間と、同じシークレット エンジンまたは認証メソッドの複数のインスタンスをより効率的に処理できるようになります。 [<a href="https://github.com/hashicorp/vault/pull/31022">GH-31022</a>]</li>
+<li>コア: FIPS 140-3 準拠のアルゴリズムをサポートするためにコードとドキュメントを更新しました。 [<a href="https://github.com/hashicorp/vault/pull/30576">GH-30576</a>]</li>
+<li>コア: Go TLS スタックでの X25519MLKEM768 (ポスト量子鍵合意) のサポート。 [<a href="https://github.com/hashicorp/vault/pull/30603">GH-30603</a>]</li>
+<li>イベント: メタデータに <code>modified=true</code> が含まれる場合、イベントのメタデータに <code>vault_index</code> を追加して、ストレージが変更されたイベントに応答して Vault から読み取るときに client 整合性制御をサポートします。 [<a href="https://github.com/hashicorp/vault/pull/30725">GH-30725</a>]</li>
+<li>物理/postgres: クラウド ベースの ID (AWS IAM、Azure MSI、および GCP IAM) を使用した PostgreSQL バックエンド サーバーでの認証のサポートを追加 [<a href="https://github.com/hashicorp/vault/pull/30681">GH-30681</a>]</li>
+<li>プラグイン: 抽出されたアーティファクト ディレクトリへの CE プラグインの登録をサポートします。 [<a href="https://github.com/hashicorp/vault/pull/30673">GH-30673</a>]</li>
+<li>Secrets/aws: LIST エンドポイントを AWS シークレット エンジンの静的ロールに追加します。 [<a href="https://github.com/hashicorp/vault/pull/29842">GH-29842</a>]</li>
+<li>secrets/pki: デルタ (最新) CRL サポートを AIA 情報に追加します (マウント レベルと発行者の両方の構成) [<a href="https://github.com/hashicorp/vault/pull/30319">GH-30319</a>]</li>
+<li>シークレット/トランジット (エンタープライズ): AES CMAC の 192 ビット キーの使用を有効にします。</li>
+<li>storage/mysql: 環境変数 <code>VAULT_MYSQL_USERNAME</code> および <code>VAULT_MYSQL_PASSWORD</code> から mysql バックエンド ユーザー名とパスワードを取得するためのサポートを追加しました。 [<a href="https://github.com/hashicorp/vault/pull/30136">GH-30136</a>]</li>
+<li>storage/raft: hachicorp/raft ライブラリを v1.7.3 にアップグレードします。これには、スナップショットを開いてフォロワーに送信する際のリーダーに関する追加のログが含まれます。 [<a href="https://github.com/hashicorp/vault/pull/29976">GH-29976</a>]</li>
+<li>transit: transit/keys LIST 操作から部分ラッピング キー パスを除外します。 [<a href="https://github.com/hashicorp/vault/pull/30728">GH-30728</a>]</li>
+<li>ui (エンタープライズ): client カウント使用状況ページの日付セレクターを、より関連性の高い client カウント データを返すために、請求期間に合わせた固定の開始日と終了日に置き換えます。 [<a href="https://github.com/hashicorp/vault/pull/30349">GH-30349</a>]</li>
+<li>ui/database: データベース接続構成のスキップ静的ロール パスワード ローテーションを設定するための入力フィールドを追加し、トグル ボタンを使用するように静的ロール スキップ フィールドを更新 [<a href="https://github.com/hashicorp/vault/pull/29820">GH-29820</a>]</li>
+<li>ui/database: 静的ロールを作成するためのパスワード入力フィールドを追加 [<a href="https://github.com/hashicorp/vault/pull/30275">GH-30275</a>]</li>
+<li>ui/データベース: すぐにローテーションされる静的ロールを作成するときに警告モーダル ポップアップを追加 [<a href="https://github.com/hashicorp/vault/pull/30119">GH-30119</a>]</li>
+<li>ui/データベース: ロール作成への検証と追加 [<a href="https://github.com/hashicorp/vault/pull/29754">GH-29754</a>]</li>
+<li>ui/database: 表示される値と api に送信される値の極性を逆にするために、skip_rotation_import のトグル ボタンを更新 [<a href="https://github.com/hashicorp/vault/pull/30055">GH-30055</a>]</li>
+<li>ui: 名前空間リスト ページに「リストを更新」ボタンを追加します。 [<a href="https://github.com/hashicorp/vault/pull/30692">GH-30692</a>]</li>
+<li>ui: ネームスペース リスト ページでネームスペースの検索を有効にします。 [<a href="https://github.com/hashicorp/vault/pull/30680">GH-30680</a>]</li>
+<li>ui: マウントが <code>listing_visibility=&quot;unauth&quot;</code> で構成されている場合、「その他」タブを非表示にします。すべての方法には、「他の方法でサインイン」リンク [<a href="https://github.com/hashicorp/vault/pull/30500">GH-30500</a>] からアクセスできます。</li>
+<li>ui: a11y 規格を満たすためにログイン フォームのアクセシビリティを改善 [<a href="https://github.com/hashicorp/vault/pull/30500">GH-30500</a>]</li>
+<li>ui: 非推奨のevent.keyCodeのすべてのインスタンスをevent.keyに置き換えます [<a href="https://github.com/hashicorp/vault/pull/30493">GH-30493</a>]</li>
+<li>ui: client カウント使用状況ページの日付セレクターを更新して、ライセンスのない Vault クラスターの今月の選択を無効にします。 [<a href="https://github.com/hashicorp/vault/pull/30488">GH-30488</a>]</li>
+<li>ui: Hds::CodeBlock コンポーネントを使用して読み取り専用 JsonEditor インスタンスを置き換えます [<a href="https://github.com/hashicorp/vault/pull/29720">GH-29720</a>]</li>
+<li>ui: ラップ ツールのオプションの形式としてキーと値のペアの文字列入力を追加 [<a href="https://github.com/hashicorp/vault/pull/29677">GH-29677</a>]</li>
+<li>ui: ember-svg-jar 依存関係を削除 [<a href="https://github.com/hashicorp/vault/pull/30181">GH-30181</a>]
+廃止予定:</li>
+<li>api: <code>/sys/internal/counters/tokens</code> エンドポイントは非推奨になりました。このエンドポイントを呼び出そうとすると、403「サポートされていないパス」例外が返されます。 [<a href="https://github.com/hashicorp/vault/pull/30561">GH-30561</a>]</li>
+<li>コア: HCL 構成ファイルとポリシー定義の重複属性を非推奨にする [<a href="https://github.com/hashicorp/vault/pull/30386">GH-30386</a>]
+バグ修正:</li>
+<li>api/tokenhelper: シェルなしで token_helper を実行 [<a href="https://github.com/hashicorp/vault/pull/29653">GH-29653</a>]</li>
+<li>auth/aws: パフォーマンス スタンバイ ノードが設定の書き込み/更新を試みたときのパニックを修正しました。 [<a href="https://github.com/hashicorp/vault/pull/30039">GH-30039</a>]</li>
+<li>auth/ldap: 大文字と小文字を区別するオプションがオフの場合に、ユーザーとグループの名前を最初に小文字に変換することによって、ユーザーとグループが適切に削除されないバグを修正しました。 [<a href="https://github.com/hashicorp/vault/pull/29922">GH-29922</a>]</li>
+<li>auth/ldap: パフォーマンス スタンバイ ノードが設定の書き込み/更新を試みたときのパニックを修正しました。 [<a href="https://github.com/hashicorp/vault/pull/30039">GH-30039</a>]</li>
+<li>aws/secrets: リージョンまたはエンドポイントが設定されていないシークレット ロール設定を Vault が拒否しないようにします [<a href="https://github.com/hashicorp/vault/pull/29996">GH-29996</a>]</li>
+<li>コア (エンタープライズ): ローテーション マネージャー操作を使用する前に nil チェックを追加します。</li>
+<li>コア (エンタープライズ): プラグインの自動ルート回転がシール/シール解除操作後に停止するバグを修正</li>
+<li>コア (エンタープライズ): HSM ログインの失敗時にエラーが飲み込まれる問題を修正。
+core/managed-keys (enterprise): マネージド キーの OAEP を使用した RSA 暗号化/復号化を修正します。</li>
+<li>core: 特定のロガーがログ ファイルに書き込めなくなるバグを修正しました。 [<a href="https://github.com/hashicorp/vault/pull/29917">GH-29917</a>]</li>
+<li>core: ID API のチェックインに含まれる文字列が大文字と小文字を区別しないように修正しました。 [<a href="https://github.com/hashicorp/vault/pull/31045">GH-31045</a>]</li>
+<li>コア: コンパイルされた Vault バイナリからメイン モジュールの自動バージョン管理情報を省略します [<a href="https://github.com/hashicorp/vault/pull/30926">GH-30926</a>]</li>
+<li>データベース: 1.15.0 より前のバージョンで作成された静的ロールがバックエンドの再起動時にローテーションされないようにします。 [<a href="https://github.com/hashicorp/vault/pull/30320">GH-30320</a>]</li>
+<li>データベース: 別の警告が返されたときに、特定の SQL データベース シークレット構成操作に対して「認識されないパラメーター」警告が誤って追加されなくなりました [<a href="https://github.com/hashicorp/vault/pull/30327">GH-30327</a>]</li>
+<li>アイデンティティ: 2 つのエンティティが存在する場合の非決定的なマージ動作を修正
+ローカルエイリアスが競合しています。 [<a href="https://github.com/hashicorp/vault/pull/30390">GH-30390</a>]</li>
+<li>アイデンティティ: グループ作成のための RPC 機能を再導入し、パフォーマンス スタンバイがログインおよびトークン更新中に外部グループの変更を処理できるようにします [<a href="https://github.com/hashicorp/vault/pull/30069">GH-30069</a>]</li>
+<li>プラグイン (エンタープライズ): スタンバイ ノードでエンタープライズ プラグインを実行できない問題を修正
+プラグインがアクティブになったとき、スタンバイ ノードはアーティファクトを抽出しないため、
+が登録されています。 Vault からの抽出を削除し、オペレーターに配置を要求します。
+登録前に抽出されたアーティファクトをプラグイン ディレクトリに保存します。</li>
+<li>プラグイン (エンタープライズ): 同じプラグインのバイナリが既にプラグイン ディレクトリに存在する場合の、アーティファクトへのプラグインの登録を修正しました。</li>
+<li>プラグイン: プラグインの登録は <code>plugin_tmpdir</code> 設定 [<a href="https://github.com/hashicorp/vault/pull/29978">GH-29978</a>] を尊重する必要があります</li>
+<li>プラグイン: プラグインの登録は <code>plugin_tmpdir</code> 設定を尊重する必要があります</li>
+<li>raft/retry_join: エスケープ文字を含む <code>auto_join</code> 構成のデコードを修正 [<a href="https://github.com/hashicorp/vault/pull/29874">GH-29874</a>]</li>
+<li>Secrets/aws: 環境および共有認証情報プロバイダーが WIF 設定をオーバーライドしていたバグを修正 [<a href="https://github.com/hashicorp/vault/pull/29982">GH-29982</a>]</li>
+<li>Secrets/aws: GovCloud が考慮されていないケースを修正。地域設定が尊重されない問題を修正 [<a href="https://github.com/hashicorp/vault/pull/30312">GH-30312</a>]</li>
+<li>Secrets/aws: パフォーマンス スタンバイ ノードが設定の書き込み/更新を試みたときのパニックを修正。 [<a href="https://github.com/hashicorp/vault/pull/30039">GH-30039</a>]</li>
+<li>Secrets/database: データベース接続のいずれかが利用できない場合にグローバル データベース プラグインのリロードが終了するバグを修正 [<a href="https://github.com/hashicorp/vault/pull/29519">GH-29519</a>]</li>
+<li>Secrets/database: 一貫した動作を保証するために、すべてのrotation_schedule 値を UTC として扱います。 [<a href="https://github.com/hashicorp/vault/pull/30606">GH-30606</a>]</li>
+<li>secrets/db: パフォーマンス スタンバイ ノードが設定の書き込み/更新を試みたときのパニックを修正。 [<a href="https://github.com/hashicorp/vault/pull/30039">GH-30039</a>]</li>
+<li>secrets/openldap: <code>NextVaultRotation</code> が nil の場合、アップグレード時に静的ロールのローテーションを防止します。
+<code>NextVaultRotation</code> 値が欠落しているために、アップグレード後に静的ロールが予期せずローテーションされる問題を修正します。
+ここで、<code>LastVaultRotation + RotationPeriod</code> または <code>now + RotationPeriod</code> のいずれかに設定します。 [<a href="https://github.com/hashicorp/vault/pull/30265">GH-30265</a>]</li>
+<li>Secrets/pki (エンタープライズ): 有効性フィールドを含む CMPv2 リクエストを拒否する解析バグに対処しました。</li>
+<li>secrets/pki: CMPv2 nonce ストアの自動整理を有効にできないバグを修正。 [<a href="https://github.com/hashicorp/vault/pull/29852">GH-29852</a>]</li>
+<li>secrets/pki: ルート証明書の生成時と特定の署名の際に key_usage が無視されるバグを修正
+中間証明書。 [<a href="https://github.com/hashicorp/vault/pull/30034">GH-30034</a>]</li>
+<li>シークレット/トランジット (エンタープライズ): CMAC を使用して、エンドポイントが常に batch_results の有効なフィールドを返すことを確認します。</li>
+<li>シークレット/トランジット (エンタープライズ): PKCS#11 管理キーに対する RSA による暗号化/復号化を修正</li>
+<li>シークレット/トランジット: エンドポイントが HMAC [<a href="https://github.com/hashicorp/vault/pull/30852">GH-30852</a>] を使用して、batch_results で常に有効なフィールドを返すことを確認します。</li>
+<li>シークレット/トランジット: マネージド キーをローテーションするとエラーが返されるときのパニックを修正 [<a href="https://github.com/hashicorp/vault/pull/30214">GH-30214</a>]</li>
+<li>ui/database: 静的ロールを作成するときに「skip_import_rotation」を設定するための入力フィールドを追加しました [<a href="https://github.com/hashicorp/vault/pull/29633">GH-29633</a>]</li>
+<li>ui/kmip: KMIP 認証情報ビューを修正し、[<a href="https://github.com/hashicorp/vault/pull/30778">GH-30778</a>] 生成後に <code>private_key</code> を表示します。</li>
+<li>ui: UI で名前空間を作成または削除した後、名前空間ピッカー内の名前空間リストを自動的に更新します。 [<a href="https://github.com/hashicorp/vault/pull/30737">GH-30737</a>]</li>
+<li>ui: Web REPL ヘルプ内の Hashicorp Vault 開発者サイトへのリンク切れを修正。 [<a href="https://github.com/hashicorp/vault/pull/30670">GH-30670</a>]</li>
+<li>ui: <code>config</code> ブロック内にネストされたパラメーターのフォーム トグル入力の初期設定を修正 [<a href="https://github.com/hashicorp/vault/pull/30960">GH-30960</a>]</li>
+<li>ui: 名前空間を削除した後の名前空間リストの更新を修正しました。 [<a href="https://github.com/hashicorp/vault/pull/30680">GH-30680</a>]</li>
+<li>ui: MFA メソッドは、名前空間 ID の代わりに名前空間パスを表示するようになりました。 [<a href="https://github.com/hashicorp/vault/pull/29588">GH-29588</a>]</li>
+<li>ui: トークンの有効期限が切れたときに、OIDC プロバイダーとして Vault で認証しているユーザーを再度ログインするようにリダイレクトします。 [<a href="https://github.com/hashicorp/vault/pull/30838">GH-30838</a>]</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>ソース</strong> <a href="https://github.com/hashicorp/vault">bashicorp/vault</a> · <code>v1.20.0</code> · 2025-06-25 · <a href="https://github.com/hashicorp/vault/releases/tag/v1.20.0">アップストリーム リリース</a>
+<em>インデックス作成のためにそのままミラーリングされます。すべての権利は上流プロジェクトに帰属します。</em></p>
+</blockquote></div>  <details class="mt-original"> <summary>English original / English original</summary> <div class="prose mt-original-body"><h1>vault v1.20.0</h1>
+<h2>1.20.0</h2>
+<h3>June 25, 2025</h3>
+<p>SECURITY:</p>
+<ul>
+<li>core: require a nonce when cancelling a rekey operation that was initiated within the last 10 minutes. [<a href="https://github.com/hashicorp/vault/pull/30794">GH-30794</a>]</li>
+</ul>
+<p>CHANGES:</p>
+<ul>
+<li>UI: remove outdated and unneeded js string extensions [<a href="https://github.com/hashicorp/vault/pull/29834">GH-29834</a>]</li>
+<li>activity (enterprise): The sys/internal/counters/activity endpoint will return actual values for new clients in the current month.</li>
+<li>activity (enterprise): provided values for <code>start_time</code> and <code>end_time</code> in <code>sys/internal/counters/activity</code> are aligned to the corresponding billing period.</li>
+<li>activity: provided value for <code>end_time</code> in <code>sys/internal/counters/activity</code> is now capped at the end of the last completed month. [<a href="https://github.com/hashicorp/vault/pull/30164">GH-30164</a>]</li>
+<li>api: Update the default API client to check for the <code>Retry-After</code> header and, if it exists, wait for the specified duration before retrying the request. [<a href="https://github.com/hashicorp/vault/pull/30887">GH-30887</a>]</li>
+<li>auth/alicloud: Update plugin to v0.21.0 [<a href="https://github.com/hashicorp/vault/pull/30810">GH-30810</a>]</li>
+<li>auth/azure: Update plugin to v0.20.2. Login requires <code>resource_group_name</code>, <code>vm_name</code>, and <code>vmss_name</code> to match token claims [<a href="https://github.com/hashicorp/vault/pull/30052">GH-30052</a>]</li>
+<li>auth/azure: Update plugin to v0.20.3 [<a href="https://github.com/hashicorp/vault/pull/30082">GH-30082</a>]</li>
+<li>auth/azure: Update plugin to v0.20.4 [<a href="https://github.com/hashicorp/vault/pull/30543">GH-30543</a>]</li>
+<li>auth/azure: Update plugin to v0.21.0 [<a href="https://github.com/hashicorp/vault/pull/30872">GH-30872</a>]</li>
+<li>auth/azure: Update plugin to v0.21.1 [<a href="https://github.com/hashicorp/vault/pull/31010">GH-31010</a>]</li>
+<li>auth/cf: Update plugin to v0.20.1 [<a href="https://github.com/hashicorp/vault/pull/30583">GH-30583</a>]</li>
+<li>auth/cf: Update plugin to v0.21.0 [<a href="https://github.com/hashicorp/vault/pull/30842">GH-30842</a>]</li>
+<li>auth/gcp: Update plugin to v0.20.2 [<a href="https://github.com/hashicorp/vault/pull/30081">GH-30081</a>]</li>
+<li>auth/jwt: Update plugin to v0.23.2 [<a href="https://github.com/hashicorp/vault/pull/30431">GH-30431</a>]</li>
+<li>auth/jwt: Update plugin to v0.24.1 [<a href="https://github.com/hashicorp/vault/pull/30876">GH-30876</a>]</li>
+<li>auth/kerberos: Update plugin to v0.15.0 [<a href="https://github.com/hashicorp/vault/pull/30845">GH-30845</a>]</li>
+<li>auth/kubernetes: Update plugin to v0.22.1 [<a href="https://github.com/hashicorp/vault/pull/30910">GH-30910</a>]</li>
+<li>auth/oci: Update plugin to v0.19.0 [<a href="https://github.com/hashicorp/vault/pull/30841">GH-30841</a>]</li>
+<li>auth/saml: Update plugin to v0.6.0</li>
+<li>core: Bump Go version to 1.24.4.</li>
+<li>core: Verify that the client IP address extracted from an X-Forwarded-For header is a valid IPv4 or IPv6 address [<a href="https://github.com/hashicorp/vault/pull/29774">GH-29774</a>]</li>
+<li>database/couchbase: Update plugin to v0.14.0 [<a href="https://github.com/hashicorp/vault/pull/30836">GH-30836</a>]</li>
+<li>database/elasticsearch: Update plugin to v0.18.0 [<a href="https://github.com/hashicorp/vault/pull/30796">GH-30796</a>]</li>
+<li>database/mongodbatlas: Update plugin to v0.15.0 [<a href="https://github.com/hashicorp/vault/pull/30856">GH-30856</a>]</li>
+<li>database/redis-elasticache: Update plugin to v0.7.0 [<a href="https://github.com/hashicorp/vault/pull/30785">GH-30785</a>]</li>
+<li>database/redis: Update plugin to v0.6.0 [<a href="https://github.com/hashicorp/vault/pull/30797">GH-30797</a>]</li>
+<li>database/snowflake: Update plugin to v0.14.0 [<a href="https://github.com/hashicorp/vault/pull/30748">GH-30748</a>]</li>
+<li>database/snowflake: Update plugin to v0.14.1 [<a href="https://github.com/hashicorp/vault/pull/30868">GH-30868</a>]</li>
+<li>logical/system: add ent stub for plugin catalog handling [<a href="https://github.com/hashicorp/vault/pull/30890">GH-30890</a>]</li>
+<li>quotas/rate-limit: Round up the <code>Retry-After</code> value to the nearest second when calculating the retry delay. [<a href="https://github.com/hashicorp/vault/pull/30887">GH-30887</a>]</li>
+<li>secrets/ad: Update plugin to v0.21.0 [<a href="https://github.com/hashicorp/vault/pull/30819">GH-30819</a>]</li>
+<li>secrets/alicloud: Update plugin to v0.20.0 [<a href="https://github.com/hashicorp/vault/pull/30809">GH-30809</a>]</li>
+<li>secrets/azure: Update plugin to v0.21.2 [<a href="https://github.com/hashicorp/vault/pull/30037">GH-30037</a>]</li>
+<li>secrets/azure: Update plugin to v0.21.3 [<a href="https://github.com/hashicorp/vault/pull/30083">GH-30083</a>]</li>
+<li>secrets/azure: Update plugin to v0.22.0 [<a href="https://github.com/hashicorp/vault/pull/30832">GH-30832</a>]</li>
+<li>secrets/gcp: Update plugin to v0.21.2 [<a href="https://github.com/hashicorp/vault/pull/29970">GH-29970</a>]</li>
+<li>secrets/gcp: Update plugin to v0.21.3 [<a href="https://github.com/hashicorp/vault/pull/30080">GH-30080</a>]</li>
+<li>secrets/gcp: Update plugin to v0.22.0 [<a href="https://github.com/hashicorp/vault/pull/30846">GH-30846</a>]</li>
+<li>secrets/gcpkms: Update plugin to v0.21.0 [<a href="https://github.com/hashicorp/vault/pull/30835">GH-30835</a>]</li>
+<li>secrets/kubernetes: Update plugin to v0.11.0 [<a href="https://github.com/hashicorp/vault/pull/30855">GH-30855</a>]</li>
+<li>secrets/kv: Update plugin to v0.24.0 [<a href="https://github.com/hashicorp/vault/pull/30826">GH-30826</a>]</li>
+<li>secrets/mongodbatlas: Update plugin to v0.15.0 [<a href="https://github.com/hashicorp/vault/pull/30860">GH-30860</a>]</li>
+<li>secrets/openldap: Update plugin to v0.15.2 [<a href="https://github.com/hashicorp/vault/pull/30079">GH-30079</a>]</li>
+<li>secrets/openldap: Update plugin to v0.15.4 [<a href="https://github.com/hashicorp/vault/pull/30279">GH-30279</a>]</li>
+<li>secrets/openldap: Update plugin to v0.16.0 [<a href="https://github.com/hashicorp/vault/pull/30844">GH-30844</a>]</li>
+<li>secrets/terraform: Update plugin to v0.12.0 [<a href="https://github.com/hashicorp/vault/pull/30905">GH-30905</a>]</li>
+<li>server: disable_mlock configuration option is now required for integrated storage and no longer has a default. If you are using the default value with integrated storage, you must now explicitly set disable_mlock to true or false or Vault server will fail to start. [<a href="https://github.com/hashicorp/vault/pull/29974">GH-29974</a>]</li>
+<li>ui/activity: Replaces mount and namespace attribution charts with a table to allow sorting
+client count data by <code>namespace</code>, <code>mount_path</code>, <code>mount_type</code> or number of clients for
+a selected month. [<a href="https://github.com/hashicorp/vault/pull/30678">GH-30678</a>]</li>
+<li>ui: Client count side nav link 'Vault Usage Metrics' renamed to 'Client Usage' [<a href="https://github.com/hashicorp/vault/pull/30765">GH-30765</a>]</li>
+<li>ui: Client counting &quot;running total&quot; charts now reflect new clients only [<a href="https://github.com/hashicorp/vault/pull/30506">GH-30506</a>]</li>
+<li>ui: Removed <code>FormError</code> component (not used) [<a href="https://github.com/hashicorp/vault/pull/34699">GH-34699</a>]</li>
+<li>ui: Selecting a different method in the login form no longer updates the <code>/vault/auth?with=</code> query parameter [<a href="https://github.com/hashicorp/vault/pull/30500">GH-30500</a>]</li>
+<li>ui: <code>/vault/auth?with=</code> query parameter now exclusively refers to the auth mount path and renders a simplified form [<a href="https://github.com/hashicorp/vault/pull/30500">GH-30500</a>]</li>
+</ul>
+<p>FEATURES:</p>
+<ul>
+<li><strong>Auto Irrevocable Lease Removal (Enterprise)</strong>: Add the Vault Enterprise configuration param, <code>remove_irrevocable_lease_after</code>. When set to a non-zero value, this will automatically delete irrevocable leases after the configured duration exceeds the lease's expire time. The minimum duration allowed for this field is two days. [<a href="https://github.com/hashicorp/vault/pull/30703">GH-30703</a>]</li>
+<li><strong>Development Cluster Configuration (Enterprise)</strong>: Added <code>development_cluster</code> as a field to Vault's utilization reports.
+The field is configurable via HCL and indicates whether the cluster is being used in a development environment, defaults to false if not set. [<a href="https://github.com/hashicorp/vault/pull/30659">GH-30659</a>]</li>
+<li><strong>Entity-based and collective rate limit quotas (Enterprise)</strong>: Add new <code>group_by</code> field to the rate limit quota API to support different grouping modes.</li>
+<li><strong>Login form customization (Enterprise)</strong>: Adds support to choose a default and/or backup auth methods for the web UI login form to streamline the web UI login experience. [<a href="https://github.com/hashicorp/vault/pull/30700">GH-30700</a>]</li>
+<li><strong>Plugin Downloads</strong>: Support automatically downloading official HashiCorp secret and auth plugins from releases.hashicorp.com (beta)</li>
+<li><strong>SSH Key Signing Improvements (Enterprise)</strong>: Add support for using managed keys to sign SSH keys in the SSH secrets engine.</li>
+<li><strong>Secret Recovery from Snapshot (Enterprise)</strong>: Adds a framework to load an integrated storage
+snapshot into Vault and read, list, and recover KV v1 and cubbyhole secrets from the snapshot. [<a href="https://github.com/hashicorp/vault/pull/30739">GH-30739</a>]</li>
+<li><strong>UI Secrets Engines</strong>: TOTP secrets engine is now supported. [<a href="https://github.com/hashicorp/vault/pull/29751">GH-29751</a>]</li>
+<li><strong>UI Telemetry</strong>: Add Posthog for UI telemetry tracking on Vault Dedicated managed clusters [<a href="https://github.com/hashicorp/vault/pull/30425">GH-30425</a>]</li>
+<li><strong>Vault Namespace Picker</strong>: Updating the Vault Namespace Picker to enable search functionality, allow direct navigation to nested namespaces and improve accessibility. [<a href="https://github.com/hashicorp/vault/pull/30490">GH-30490</a>]</li>
+<li><strong>Vault PKI SCEP Server (Enterprise)</strong>: Support for the Simple Certificate Enrollment Protocol (SCEP) has been added to the Vault PKI Plugin. This allows standard SCEP clients to request certificates from a Vault server with no knowledge of Vault APIs.</li>
+</ul>
+<p>IMPROVEMENTS:</p>
+<ul>
+<li>activity (enterprise): Added vault.client.billing_period.activity telemetry metric to emit information about the total number of distinct clients used in the current billing period.</li>
+<li>activity: mount_type was added to the API response of sys/internal/counters/activity [<a href="https://github.com/hashicorp/vault/pull/30071">GH-30071</a>]</li>
+<li>activity: mount_type was added to the API response of sys/internal/counters/activity</li>
+<li>api (enterprise): Added a new API, <code>/sys/utilization-report</code>, giving a snapshot overview of Vault's utilization at a high level.</li>
+<li>api/client: Add Cert auth method support. This allows the client to authenticate using a client certificate. [<a href="https://github.com/hashicorp/vault/pull/29546">GH-29546</a>]</li>
+<li>core (enterprise): Updated code and documentation to support FIPS 140-3 compliant algorithms.</li>
+<li>core (enterprise): allow a root token to relock a namespace locked by the Namespace API Lock feature.</li>
+<li>core (enterprise): report errors from the underlying seal when getting entropy.</li>
+<li>core (enterprise): update to FIPS 140-3 cryptographic module in the FIPS builds.</li>
+<li>core/metrics: added a new telemetry metric, <code>vault.core.response_status_code</code>, with two labels, <code>code</code>, and <code>type</code>, detailing the status codes of all responses to requests that Vault handles. [<a href="https://github.com/hashicorp/vault/pull/30354">GH-30354</a>]</li>
+<li>core: Improve memory use of path management for namespaces, auth methods, and secrets engines. Now Vault should handle larger numbers of namespaces and multiple instances of the same secrets engine or auth method more efficiently. [<a href="https://github.com/hashicorp/vault/pull/31022">GH-31022</a>]</li>
+<li>core: Updated code and documentation to support FIPS 140-3 compliant algorithms. [<a href="https://github.com/hashicorp/vault/pull/30576">GH-30576</a>]</li>
+<li>core: support for X25519MLKEM768 (post quantum key agreement) in the Go TLS stack. [<a href="https://github.com/hashicorp/vault/pull/30603">GH-30603</a>]</li>
+<li>events: Add <code>vault_index</code> to an event's metadata if the metadata contains <code>modified=true</code>, to support client consistency controls when reading from Vault in response to an event where storage was modified. [<a href="https://github.com/hashicorp/vault/pull/30725">GH-30725</a>]</li>
+<li>physical/postgres: Adds support to authenticate with the PostgreSQL Backend server with cloud based identities (AWS IAM, Azure MSI and GCP IAM) [<a href="https://github.com/hashicorp/vault/pull/30681">GH-30681</a>]</li>
+<li>plugins: Support registration of CE plugins with extracted artifact directory. [<a href="https://github.com/hashicorp/vault/pull/30673">GH-30673</a>]</li>
+<li>secrets/aws: Add LIST endpoint to the AWS secrets engine static roles. [<a href="https://github.com/hashicorp/vault/pull/29842">GH-29842</a>]</li>
+<li>secrets/pki: Add Delta (Freshest) CRL support to AIA information (both mount-level and issuer configured) [<a href="https://github.com/hashicorp/vault/pull/30319">GH-30319</a>]</li>
+<li>secrets/transit (enterprise): enable the use of 192-bit keys for AES CMAC</li>
+<li>storage/mysql: Added support for getting mysql backend username and password from the environment variables <code>VAULT_MYSQL_USERNAME</code> and <code>VAULT_MYSQL_PASSWORD</code>. [<a href="https://github.com/hashicorp/vault/pull/30136">GH-30136</a>]</li>
+<li>storage/raft: Upgrade hashicorp/raft library to v1.7.3 which includes additional logging on the leader when opening and sending a snapshot to a follower. [<a href="https://github.com/hashicorp/vault/pull/29976">GH-29976</a>]</li>
+<li>transit: Exclude the partial wrapping key path from the transit/keys LIST operation. [<a href="https://github.com/hashicorp/vault/pull/30728">GH-30728</a>]</li>
+<li>ui (enterprise): Replace date selector in client count usage page with fixed start and end dates that align with billing periods in order to return more relevant client counting data. [<a href="https://github.com/hashicorp/vault/pull/30349">GH-30349</a>]</li>
+<li>ui/database: Adding input field for setting skip static role password rotation for database connection config, updating static role skip field to use toggle button [<a href="https://github.com/hashicorp/vault/pull/29820">GH-29820</a>]</li>
+<li>ui/database: Adding password input field for creating a static role [<a href="https://github.com/hashicorp/vault/pull/30275">GH-30275</a>]</li>
+<li>ui/database: Adding warning modal pop up when creating a static role that will be rotated immediately [<a href="https://github.com/hashicorp/vault/pull/30119">GH-30119</a>]</li>
+<li>ui/database: Glimmerizing and adding validations to role create [<a href="https://github.com/hashicorp/vault/pull/29754">GH-29754</a>]</li>
+<li>ui/database: Updating toggle buttons for skip_rotation_import to reverse polarity of values that get displayed versus whats sent to api [<a href="https://github.com/hashicorp/vault/pull/30055">GH-30055</a>]</li>
+<li>ui: Add 'Refresh list' button to the namespace list page. [<a href="https://github.com/hashicorp/vault/pull/30692">GH-30692</a>]</li>
+<li>ui: Enable search for a namespace on the namespace list page. [<a href="https://github.com/hashicorp/vault/pull/30680">GH-30680</a>]</li>
+<li>ui: Hide &quot;Other&quot; tab when mounts are configured with <code>listing_visibility=&quot;unauth&quot;</code>; all methods can be accessed via the &quot;Sign in with other methods&quot; link [<a href="https://github.com/hashicorp/vault/pull/30500">GH-30500</a>]</li>
+<li>ui: Improve accessibility of login form to meet a11y standards [<a href="https://github.com/hashicorp/vault/pull/30500">GH-30500</a>]</li>
+<li>ui: Replaces all instances of the deprecated event.keyCode with event.key [<a href="https://github.com/hashicorp/vault/pull/30493">GH-30493</a>]</li>
+<li>ui: Update date selector in client count usage page to disable current month selection for Vault clusters without a license. [<a href="https://github.com/hashicorp/vault/pull/30488">GH-30488</a>]</li>
+<li>ui: Use Hds::CodeBlock component to replace readonly JsonEditor instances [<a href="https://github.com/hashicorp/vault/pull/29720">GH-29720</a>]</li>
+<li>ui: adds key value pair string inputs as optional form for wrap tool [<a href="https://github.com/hashicorp/vault/pull/29677">GH-29677</a>]</li>
+<li>ui: remove ember-svg-jar dependency [<a href="https://github.com/hashicorp/vault/pull/30181">GH-30181</a>]</li>
+</ul>
+<p>DEPRECATIONS:</p>
+<ul>
+<li>api: Deprecated the <code>/sys/internal/counters/tokens</code> endpoint. Attempting to call this endpoint will return a 403 &quot;unsupported path&quot; exception. [<a href="https://github.com/hashicorp/vault/pull/30561">GH-30561</a>]</li>
+<li>core: deprecate duplicate attributes in HCL configuration files and policy definitions [<a href="https://github.com/hashicorp/vault/pull/30386">GH-30386</a>]</li>
+</ul>
+<p>BUG FIXES:</p>
+<ul>
+<li>api/tokenhelper: Exec token_helper without a shell [<a href="https://github.com/hashicorp/vault/pull/29653">GH-29653</a>]</li>
+<li>auth/aws: fix a panic when a performance standby node attempts to write/update config. [<a href="https://github.com/hashicorp/vault/pull/30039">GH-30039</a>]</li>
+<li>auth/ldap: Fix a bug that does not properly delete users and groups by first converting their names to lowercase when case senstivity option is off. [<a href="https://github.com/hashicorp/vault/pull/29922">GH-29922</a>]</li>
+<li>auth/ldap: fix a panic when a performance standby node attempts to write/update config. [<a href="https://github.com/hashicorp/vault/pull/30039">GH-30039</a>]</li>
+<li>aws/secrets: Prevent vault from rejecting secret role configurations where no regions or endpoints are set [<a href="https://github.com/hashicorp/vault/pull/29996">GH-29996</a>]</li>
+<li>core (enterprise): add nil check before attempting to use Rotation Manager operations.</li>
+<li>core (enterprise): fix a bug where plugin automated root rotations would stop after seal/unseal operations</li>
+<li>core (enterprise): fix issue with errors being swallowed on failed HSM logins.
+core/managed-keys (enterprise): fix RSA encryption/decryption with OAEP on managed keys.</li>
+<li>core: Fix a bug that prevents certain loggers from writing to a log file. [<a href="https://github.com/hashicorp/vault/pull/29917">GH-29917</a>]</li>
+<li>core: Fix string contains check in Identity APIs to be case-insensitive. [<a href="https://github.com/hashicorp/vault/pull/31045">GH-31045</a>]</li>
+<li>core: Omit automatic version control information of the main module from compiled Vault binaries [<a href="https://github.com/hashicorp/vault/pull/30926">GH-30926</a>]</li>
+<li>database: Prevent static roles created in versions prior to 1.15.0 from rotating on backend restart. [<a href="https://github.com/hashicorp/vault/pull/30320">GH-30320</a>]</li>
+<li>database: no longer incorrectly add an &quot;unrecognized parameters&quot; warning for certain SQL database secrets config operations when another warning is returned [<a href="https://github.com/hashicorp/vault/pull/30327">GH-30327</a>]</li>
+<li>identity: Fix non-deterministic merge behavior when two entities have
+conflicting local aliases. [<a href="https://github.com/hashicorp/vault/pull/30390">GH-30390</a>]</li>
+<li>identity: reintroduce RPC functionality for group creates, allowing performance standbys to handle external group changes during login and token renewal [<a href="https://github.com/hashicorp/vault/pull/30069">GH-30069</a>]</li>
+<li>plugins (enterprise): Fix an issue where Enterprise plugins can't run on a standby node
+when it becomes active because standby nodes don't extract the artifact when the plugin
+is registered. Remove extracting from Vault and require the operator to place
+the extracted artifact in the plugin directory before registration.</li>
+<li>plugins (enterprise): Fix plugin registration with artifact when a binary for the same plugin is already present in the plugin directory.</li>
+<li>plugins: plugin registration should honor the <code>plugin_tmpdir</code> config [<a href="https://github.com/hashicorp/vault/pull/29978">GH-29978</a>]</li>
+<li>plugins: plugin registration should honor the <code>plugin_tmpdir</code> config</li>
+<li>raft/retry_join: Fix decoding <code>auto_join</code> configurations that include escape characters [<a href="https://github.com/hashicorp/vault/pull/29874">GH-29874</a>]</li>
+<li>secrets/aws: fix a bug where environment and shared credential providers were overriding the WIF configuration [<a href="https://github.com/hashicorp/vault/pull/29982">GH-29982</a>]</li>
+<li>secrets/aws: fix a case where GovCloud wasn't taken into account; fix a case where the region setting wasn't respected [<a href="https://github.com/hashicorp/vault/pull/30312">GH-30312</a>]</li>
+<li>secrets/aws: fix a panic when a performance standby node attempts to write/update config. [<a href="https://github.com/hashicorp/vault/pull/30039">GH-30039</a>]</li>
+<li>secrets/database: Fix a bug where a global database plugin reload exits if any of the database connections are not available [<a href="https://github.com/hashicorp/vault/pull/29519">GH-29519</a>]</li>
+<li>secrets/database: Treat all rotation_schedule values as UTC to ensure consistent behavior. [<a href="https://github.com/hashicorp/vault/pull/30606">GH-30606</a>]</li>
+<li>secrets/db: fix a panic when a performance standby node attempts to write/update config. [<a href="https://github.com/hashicorp/vault/pull/30039">GH-30039</a>]</li>
+<li>secrets/openldap: Prevent static role rotation on upgrade when <code>NextVaultRotation</code> is nil.
+Fixes an issue where static roles were unexpectedly rotated after upgrade due to a missing <code>NextVaultRotation</code> value.
+Now sets it to either <code>LastVaultRotation + RotationPeriod</code> or <code>now + RotationPeriod</code>. [<a href="https://github.com/hashicorp/vault/pull/30265">GH-30265</a>]</li>
+<li>secrets/pki (enterprise): Address a parsing bug that rejected CMPv2 requests containing a validity field.</li>
+<li>secrets/pki: Fix a bug that prevents enabling automatic tidying of the CMPv2 nonce store. [<a href="https://github.com/hashicorp/vault/pull/29852">GH-29852</a>]</li>
+<li>secrets/pki: fix a bug where key_usage was ignored when generating root certificates, and signing certain
+intermediate certificates. [<a href="https://github.com/hashicorp/vault/pull/30034">GH-30034</a>]</li>
+<li>secrets/transit (enterprise): ensure verify endpoint always returns valid field in batch_results with CMAC</li>
+<li>secrets/transit (enterprise): fixed encryption/decryption with RSA against PKCS#11 managed keys</li>
+<li>secrets/transit: ensure verify endpoint always returns valid field in batch_results with HMAC [<a href="https://github.com/hashicorp/vault/pull/30852">GH-30852</a>]</li>
+<li>secrets/transit: fix a panic when rotating on a managed key returns an error [<a href="https://github.com/hashicorp/vault/pull/30214">GH-30214</a>]</li>
+<li>ui/database: Added input field for setting 'skip_import_rotation' when creating a static role [<a href="https://github.com/hashicorp/vault/pull/29633">GH-29633</a>]</li>
+<li>ui/kmip: Fixes KMIP credentials view and displays <code>private_key</code> after generating [<a href="https://github.com/hashicorp/vault/pull/30778">GH-30778</a>]</li>
+<li>ui: Automatically refresh namespace list inside the namespace picker after creating or deleting a namespace in the UI. [<a href="https://github.com/hashicorp/vault/pull/30737">GH-30737</a>]</li>
+<li>ui: Fix broken link to Hashicorp Vault developer site in the Web REPL help. [<a href="https://github.com/hashicorp/vault/pull/30670">GH-30670</a>]</li>
+<li>ui: Fix initial setting of form toggle inputs for parameters nested within the <code>config</code> block [<a href="https://github.com/hashicorp/vault/pull/30960">GH-30960</a>]</li>
+<li>ui: Fix refresh namespace list after deleting a namespace. [<a href="https://github.com/hashicorp/vault/pull/30680">GH-30680</a>]</li>
+<li>ui: MFA methods now display the namespace path instead of the namespace id. [<a href="https://github.com/hashicorp/vault/pull/29588">GH-29588</a>]</li>
+<li>ui: Redirect users authenticating with Vault as an OIDC provider to log in again when token expires. [<a href="https://github.com/hashicorp/vault/pull/30838">GH-30838</a>]</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>Source</strong> <a href="https://github.com/hashicorp/vault">hashicorp/vault</a> · <code>v1.20.0</code> · 2025-06-25 · <a href="https://github.com/hashicorp/vault/releases/tag/v1.20.0">upstream release</a></p>
+</blockquote>
+<p><em>Mirrored verbatim for indexing. All rights belong to the upstream project.</em></p></div> </details> </div> <p class="muted" style="margin-top:var(--s8);font-size:12.5px;border-top:1px solid var(--line);padding-top:var(--s4)"> リリースノートは上流プロジェクトが公開したものです。私たちはそれらを整理し、関連付けて、バージョンを一眼で比較できるようにしています。コンテンツの権利はすべて原作者に属します。 </p> <nav class="pager" aria-label="Release navigation"> <a href="/releases/vault/1.20.2"> <span class="k">← 次へ</span> <span class="t">v1.20.2</span> </a> <a href="/releases/vault/1.19.5"> <span class="k">前へ →</span> <span class="t">v1.19.5</span> </a> </nav> <aside class="ad-slot" aria-label="Advertisement" data-astro-cid-fgwukgf6><div class="ad-slot-label" data-astro-cid-fgwukgf6>Advertisement</div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4184355057086168" data-ad-slot="9133765584" data-ad-format="auto" data-full-width-responsive="true" data-astro-cid-fgwukgf6></ins><script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script></aside> </article> <aside class="rail"> <div class="rail-card"> <div class="rail-title">Source</div> <ul class="rail-list"> <li> <a href="https://github.com/hashicorp/vault/releases/tag/v1.20.0" target="_blank" rel="noopener"> <span>GitHub で見る</span> <span class="d">↗</span> </a> </li> <li> <a href="https://github.com/hashicorp/vault" target="_blank" rel="noopener"> <span>hashicorp/vault</span> <span class="d">↗</span> </a> </li> </ul> </div>  <div class="rail-card"> <div class="rail-title">バージョン履歴</div> <ul class="rail-list"> <li> <a href="/releases/vault/2.2.2"> <span class="v">v2.2.2</span> <span class="d">26-11-12</span> </a> </li><li> <a href="/releases/vault/2.2.1"> <span class="v">v2.2.1</span> <span class="d">26-10-22</span> </a> </li><li> <a href="/releases/vault/2.2.0"> <span class="v">v2.2.0</span> <span class="d">26-10-15</span> </a> </li><li> <a href="/releases/vault/2.1.2"> <span class="v">v2.1.2</span> <span class="d">26-10-07</span> </a> </li><li> <a href="/releases/vault/2.1.1"> <span class="v">v2.1.1</span> <span class="d">26-09-16</span> </a> </li><li> <a href="/releases/vault/2.1.0"> <span class="v">v2.1.0</span> <span class="d">26-09-01</span> </a> </li><li> <a href="/releases/vault/2.0.4"> <span class="v">v2.0.4</span> <span class="d">26-08-04</span> </a> </li><li> <a href="/releases/vault/2.0.3"> <span class="v">v2.0.3</span> <span class="d">26-06-17</span> </a> </li> </ul> <a href="/ja/releases/vault" class="mono" style="display:inline-block;margin-top:var(--s3);font-size:11.5px;color:var(--ink-3)"> すべての 20 件を見る →
+</a> </div> </aside> </div> </div>  </main> <footer class="site-footer"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/ja/" class="brand" aria-label="STAGS NextStack"><span class="brand-mark" aria-hidden="true">S</span><span class="brand-main">STAGS</span><span class="brand-sub" aria-hidden="true">NextStack</span></a> <p>オープンソースのリリース インテリジェンスが毎日公開されます。</p> </div> <div class="footer-col"> <h3>追跡</h3> <ul> <li><a href="/ja/releases">リリース</a></li> <li><a href="/ja/projects">プロジェクト</a></li> <li><a href="/ja/releases.xml">RSS フィード</a></li> </ul> </div> <div class="footer-col"> <h3>アーカイブ</h3> <ul> <li><a href="/zh/release_note" hreflang="zh-Hans">中文アーカイブ</a></li> <li><a href="/zh/chapters/" hreflang="zh-Hans">技術ノート</a></li> <li><a href="/zh/downloads/">Stags Tracker</a></li> </ul> </div> <div class="footer-col"> <h3>情報</h3> <ul> <li><a href="/privacy">プライバシーポリシー</a></li> <li><a href="/releases.xml">RSS</a></li> <li><a href="/sitemap-index.xml">Sitemap</a></li> </ul> </div> </div> <div class="footer-btm"> <span>© 2026 STAGS</span> <span>Release note は上流プロジェクトに属します。</span> </div> </div> </footer> <!-- 搜索面板 --> <div class="palette-bg" data-palette-bg data-open="false"> <div class="palette" role="dialog" aria-modal="true" aria-label="リリースを検索"> <div class="palette-in"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ink-4);flex:none"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <input type="search" data-palette-input placeholder="リリース、プロジェクト、バージョンを検索…" autocomplete="off" spellcheck="false"> <span class="kbd">esc</span> </div> <ul class="palette-res" data-palette-res></ul> <div class="palette-ft"> <span>↑↓ navigate</span> <span>↵ open</span> <span style="margin-left:auto" data-palette-count></span> </div> </div> </div> <script type="module" src="/assets/Shell.astro_astro_type_script_index_0_lang.0ZkKXV47.js"></script> </body> </html>

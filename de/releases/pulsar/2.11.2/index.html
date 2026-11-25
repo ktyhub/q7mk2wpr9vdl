@@ -1,0 +1,268 @@
+<!DOCTYPE html><html lang="de" dir="ltr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>pulsar v2.11.2 — STAGS NextStack</title><meta name="description" content="Fix broker restart logic #20113 · Fast fix infinite HTTP call getSubscriptions caused by wrong topicName #20131 · Fix getPartitionedStats miss subscription's messageAckRate #19870"><meta name="keywords" content="Open-Source-release notes, Release-Tracker, changelog-Aggregator, Breaking Changes, Deprecation-Tracker, Kafka-Releases, Spring Boot-Releases, Kubernetes-Releases"><meta name="generator" content="Astro v5.18.2"><link rel="canonical" href="https://www.stags.cn/de/releases/pulsar/2.11.2/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="STAGS NextStack — releases" href="/de/releases.xml"><link rel="alternate" hreflang="en" href="https://www.stags.cn/releases/pulsar/2.11.2/"><link rel="alternate" hreflang="zh-Hans" href="https://www.stags.cn/releases/pulsar/2.11.2/"><link rel="alternate" hreflang="x-default" href="https://www.stags.cn/releases/pulsar/2.11.2/"><meta property="og:site_name" content="STAGS"><meta property="og:type" content="article"><meta property="og:title" content="pulsar v2.11.2 — STAGS NextStack"><meta property="og:description" content="Fix broker restart logic #20113 · Fast fix infinite HTTP call getSubscriptions caused by wrong topicName #20131 · Fix getPartitionedStats miss subscription's messageAckRate #19870"><meta property="og:url" content="https://www.stags.cn/de/releases/pulsar/2.11.2/"><meta property="og:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><meta property="og:locale" content="de_DE"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="ja_JP"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:locale:alternate" content="es_ES"><meta property="og:locale:alternate" content="pt_BR"><meta property="og:locale:alternate" content="ko_KR"><meta property="og:locale:alternate" content="it_IT"><meta property="og:locale:alternate" content="ru_RU"><meta property="og:locale:alternate" content="tr_TR"><meta property="og:locale:alternate" content="id_ID"><meta property="og:locale:alternate" content="vi_VN"><meta property="og:locale:alternate" content="ar_SA"><meta property="og:locale:alternate" content="sv_SE"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.stags.cn/#website","name":"STAGS","url":"https://www.stags.cn/","inLanguage":"de","description":"NextStack indexiert Release Notes aus Infrastruktur- und KI-Projekten – Breaking Changes, Deprecations und Migrationen – in einem englischsprachigen Feed.","publisher":{"@id":"https://www.stags.cn/#org"}},{"@type":"Organization","@id":"https://www.stags.cn/#org","name":"STAGS","alternateName":"NextStack","url":"https://www.stags.cn/"},{"@type":"TechArticle","@id":"https://www.stags.cn/de/releases/pulsar/2.11.2/#article","headline":"pulsar v2.11.2 release notes","datePublished":"2023-07-19","inLanguage":"en","isPartOf":{"@id":"https://www.stags.cn/#website"},"about":{"@type":"SoftwareSourceCode","codeRepository":"https://github.com/apache/pulsar"}}]}</script><!-- 第三方脚本的连接预热：这两个域名几乎每页都要连，
+         提前建连能省掉 DNS + TCP + TLS 一个往返（移动网络 100~300ms）。
+         AdSense 只在开关打开时预热——关掉广告后连这个域名都没必要。 --><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://pagead2.googlesyndication.com"><!-- Google AdSense：站点所有权校验与广告投放共用同一段脚本，全站只加载一次。
+         未创建广告单元时页面上不渲染任何广告容器，站点保持干净。
+         fetchpriority=low：它不参与首屏渲染，不该跟正文抢带宽。 --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184355057086168" crossorigin="anonymous" fetchpriority="low"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-RFRF1TVRMP" fetchpriority="low"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RFRF1TVRMP");
+    </script><!-- 百度统计（国内流量统计）。官方标准片段，is:inline 原样输出，
+         hm.js 动态插到首个 script 前，异步不阻塞首屏渲染。 --><script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?299e5b4e65b86ed16879bdcbe70531d6";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script><link rel="stylesheet" href="/assets/index.DQGt3qLZ.css">
+<style>.ad-slot[data-astro-cid-fgwukgf6]{margin:var(--s10) 0 0;padding-top:var(--s5);border-top:1px solid var(--line)}.ad-slot-label[data-astro-cid-fgwukgf6]{margin-bottom:var(--s3);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{display:block;min-height:100px}@media(min-width:640px){.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{min-height:250px}}
+</style></head> <body> <a class="skip" href="#main">Zum Inhalt springen</a> <header class="hdr" data-header> <div class="wrap hdr-inner"> <a href="/de/" class="brand" aria-label="STAGS NextStack — Release-Informationen für Open Source"> <span class="brand-mark" aria-hidden="true">S</span> <span class="brand-main">STAGS</span> <span class="brand-sub" aria-hidden="true">NextStack</span> </a> <nav class="nav" aria-label="Primary"> <a href="/de/releases">Releases</a><a href="/de/projects">Projekte</a> </nav>  <details class="navmenu" data-navmenu> <summary class="navmenu-btn" aria-label="Open menu"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> </summary> <div class="navmenu-panel" role="group" aria-label="Primary"> <a href="/de/releases" class="navmenu-item">Releases</a><a href="/de/projects" class="navmenu-item">Projekte</a> </div> </details> <div class="hdr-tools"> <button class="searchbtn" type="button" data-search-open aria-label="Releases durchsuchen"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <span class="lbl">Suche</span> <span class="kbd">⌘K</span> </button> <details class="langmenu" data-langmenu> <summary class="langmenu-btn" aria-label="Sprache"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"> <circle cx="12" cy="12" r="9"></circle> <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path> </svg> <span class="langmenu-cur">DE</span> <svg class="langmenu-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m2 4 4 4 4-4"></path></svg> </summary> <div class="langmenu-panel" role="group" aria-label="Sprache"> <p class="langmenu-head">Sprache</p> <a class="langmenu-item" href="/releases/pulsar/2.11.2/" hreflang="en" lang="en" data-on="false"> <span class="langmenu-label">English</span> <span class="langmenu-code">EN</span> </a><a class="langmenu-item" href="/zh/release_note/pulsar/pulsar_v2.11.2" hreflang="zh-Hans" lang="zh-CN" data-on="false"> <span class="langmenu-label">中文</span> <span class="langmenu-code">中</span> </a><a class="langmenu-item" href="/ja/releases/pulsar/2.11.2/" hreflang="ja" lang="ja" data-on="false"> <span class="langmenu-label">日本語</span> <span class="langmenu-code">日</span> </a><a class="langmenu-item" href="/de/releases/pulsar/2.11.2/" hreflang="de" lang="de" aria-current="true" data-on="true"> <span class="langmenu-label">Deutsch</span> <span class="langmenu-code">DE</span> </a><a class="langmenu-item" href="/fr/releases/pulsar/2.11.2/" hreflang="fr" lang="fr" data-on="false"> <span class="langmenu-label">Français</span> <span class="langmenu-code">FR</span> </a><a class="langmenu-item" href="/es/releases/pulsar/2.11.2/" hreflang="es" lang="es" data-on="false"> <span class="langmenu-label">Español</span> <span class="langmenu-code">ES</span> </a><a class="langmenu-item" href="/pt/releases/pulsar/2.11.2/" hreflang="pt-BR" lang="pt-BR" data-on="false"> <span class="langmenu-label">Português</span> <span class="langmenu-code">PT</span> </a><a class="langmenu-item" href="/ko/releases" hreflang="ko" lang="ko" data-on="false"> <span class="langmenu-label">한국어</span> <span class="langmenu-code">한</span> </a><a class="langmenu-item" href="/it/releases" hreflang="it" lang="it" data-on="false"> <span class="langmenu-label">Italiano</span> <span class="langmenu-code">IT</span> </a><a class="langmenu-item" href="/ru/releases" hreflang="ru" lang="ru" data-on="false"> <span class="langmenu-label">Русский</span> <span class="langmenu-code">RU</span> </a><a class="langmenu-item" href="/tr/releases" hreflang="tr" lang="tr" data-on="false"> <span class="langmenu-label">Türkçe</span> <span class="langmenu-code">TR</span> </a><a class="langmenu-item" href="/id/releases" hreflang="id" lang="id" data-on="false"> <span class="langmenu-label">Bahasa Indonesia</span> <span class="langmenu-code">ID</span> </a><a class="langmenu-item" href="/vi/releases" hreflang="vi" lang="vi" data-on="false"> <span class="langmenu-label">Tiếng Việt</span> <span class="langmenu-code">VI</span> </a><a class="langmenu-item" href="/ar/releases" hreflang="ar" lang="ar" data-on="false"> <span class="langmenu-label">العربية</span> <span class="langmenu-code">ع</span> </a><a class="langmenu-item" href="/sv/releases" hreflang="sv" lang="sv" data-on="false"> <span class="langmenu-label">Svenska</span> <span class="langmenu-code">SV</span> </a> </div> </details> <a class="iconlink" href="/releases.xml" aria-label="RSS"> <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"> <path d="M2 12.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM2 7.5a6.5 6.5 0 0 1 6.5 6.5h-2A4.5 4.5 0 0 0 2 9.5v-2ZM2 2.5A11.5 11.5 0 0 1 13.5 14h-2A9.5 9.5 0 0 0 2 4.5v-2Z"></path> </svg> </a> </div> </div> </header> <main id="main">  <div class="wrap"> <div class="detail"> <article> <header class="detail-hd"> <nav class="crumbs" aria-label="Breadcrumb"> <a href="/de/">Startseite</a> <span class="sep">/</span> <a href="/de/releases">Releases</a> <span class="sep">/</span> <a href="/de/releases/pulsar">pulsar</a> </nav> <h1 class="detail-title"> <span class="p">pulsar</span> v2.11.2 </h1> <div class="detail-meta"> <span class="chip chip--patch">Patch</span> <span><span class="k">Veröffentlicht</span>19. Juli 2023</span>  <span class="sep" aria-hidden="true"></span> <a href="https://github.com/apache/pulsar" target="_blank" rel="noopener"> <span class="k">Quelle</span>apache/pulsar </a>   <span class="sep" aria-hidden="true"></span> <a href="/releases/pulsar/2.11.2/"> Englisches Original </a>  <span class="sep" aria-hidden="true"></span> <button class="btn btn--ghost btn--sm" type="button" data-copy="https://www.stags.cn/de/releases/pulsar/2.11.2/">Link kopieren</button> </div> </header> <div class="prose" style="margin-top:var(--s8)"> <p class="mt-notice" role="note">Diese Seite ist maschinell übersetzt. Maßgeblich ist der englische Originaltext.</p>  <div><h1>Pulsar v2.11.2</h1>
+<h3>Makler</h3>
+<ul>
+<li>Broker-Neustartlogik behoben <a href="https://github.com/apache/pulsar/pull/20113">#20113</a>
+– Schnelle Behebung des unendlichen HTTP-Aufrufs getSubscriptions, der durch einen falschen Topic-Namen verursacht wurde <a href="https://github.com/apache/pulsar/pull/20131">#20131</a>
+– Behebung, dass getPartitionedStats die messageAckRate des Abonnements verpasst <a href="https://github.com/apache/pulsar/pull/19870">#19870</a>
+– Deadlock von zkSessionWatcher bei zkConnection-Verlust behoben <a href="https://github.com/apache/pulsar/pull/20122">#20122</a>
+– Fix: Der Rückgabewert von getPartitionedStats enthält keinen Abonnementtyp <a href="https://github.com/apache/pulsar/pull/20210">#20210</a>
+– Vom Replikator erstellter Produzent wird in den Themenstatistiken nicht angezeigt <a href="https://github.com/apache/pulsar/pull/20229">#20229</a>
+– Behebung einer unendlichen Bestätigung des Replikators, nachdem das Thema geschlossen wurde <a href="https://github.com/apache/pulsar/pull/20232">#20232</a></li>
+<li>Split-Bundle überspringen, wenn nur ein Broker <a href="https://github.com/apache/pulsar/pull/20190">#20190</a></li>
+<li>Fix RoaringBitmap.contains kann den Wert 65535 nicht überprüfen <a href="https://github.com/apache/pulsar/pull/20176">#20176</a>
+– Holen Sie sich den niedrigsten PositionImpl von NavigableSet <a href="https://github.com/apache/pulsar/pull/18278">#18278</a>
+– Korrigieren Sie das Verhalten verzögerter Nachrichten im Key_Shared-Modus <a href="https://github.com/apache/pulsar/pull/20233">#20233</a>
+– Fehler bei der Verwendung von TimeUnit zum Aufzeichnen der Veröffentlichungslatenz behoben <a href="https://github.com/apache/pulsar/pull/20074">#20074</a>
+– Beheben Sie das Thread-Sicherheitsproblem des BrokerData#getTimeAverageData-Zugriffs <a href="https://github.com/apache/pulsar/pull/19889">#19889</a>
+– Fix kann ErrorCommand nicht senden, wenn der Wert einer Nachricht null ist <a href="https://github.com/apache/pulsar/pull/19899">#19899</a>
+– Sorgen Sie dafür, dass LedgerOffloaderFactory das alte Nar laden kann <a href="https://github.com/apache/pulsar/pull/19913">#19913</a>
+– Ignorieren und entfernen Sie den Replikator-Cursor, wenn der Remote-Cluster nicht vorhanden ist <a href="https://github.com/apache/pulsar/pull/19972">#19972</a>
+– Korrigieren Sie die Begründungsbezeichnung der Authentifizierungsmetriken <a href="https://github.com/apache/pulsar/pull/20030">#20030</a>
+– Optimieren Sie die Bestätigungs-/Sendezukunft in TransactionImpl <a href="https://github.com/apache/pulsar/pull/20271">#20271</a>
+– NPE behoben, das durch die Begrenzung der Veröffentlichungsrate des Themas verursacht wurde <a href="https://github.com/apache/pulsar/pull/20302">#20302</a>
+– Korrigieren Sie die Standard-Bundle-Größe, die beim Festlegen der Buchmacher-Affinität verwendet wird <a href="https://github.com/apache/pulsar/pull/20250">#20250</a>
+– Korrigieren Sie, dass das Ledger im OFFEN-Status verbleibt, wenn inactiveLedgerRollOverTimeMs aktiviert ist <a href="https://github.com/apache/pulsar/pull/20276">#20276</a>
+– Deadlock des Metadatenspeichers behoben <a href="https://github.com/apache/pulsar/pull/20189">#20189</a></li>
+<li>Tippfehler beim Klassennamen PrecisPublishLimiter auf „Precise“ behoben <a href="https://github.com/apache/pulsar/pull/20310">#20310</a>
+– Behebung eines hängengebliebenen Verbrauchs beim Shared Streaming Dispatcher <a href="https://github.com/apache/pulsar/pull/18315">#18315</a>
+– Eintragsfilterfunktion für das nicht persistente Thema korrigiert <a href="https://github.com/apache/pulsar/pull/20141">#20141</a>
+– Korrigieren Sie, dass das partitionierte __change_events-Thema ein Richtlinienthema ist <a href="https://github.com/apache/pulsar/pull/20392">#20392</a></li>
+<li>Wenn ein Hauptbuch verloren geht, kann die Cursormarkierungs-Löschposition nicht weitergeleitet werden <a href="https://github.com/apache/pulsar/pull/18620">#18620</a>
+– Untergeordneter Metadaten-Cache nach dem Löschen des Schlüssels ungültig machen <a href="https://github.com/apache/pulsar/pull/20363">#20363</a>
+– Vermeiden Sie den doppelten Rückstand der PersistentSubscription.expireMessages-Logikprüfung <a href="https://github.com/apache/pulsar/pull/20416">#20416</a>
+– Nach dem ZK-Vorgang zum Metadatenspeicher-Thread wechseln <a href="https://github.com/apache/pulsar/pull/20303">#20303</a>
+– Korrektur der Überspringmeldung API, wenn Lückenmeldungen vorhanden sind <a href="https://github.com/apache/pulsar/pull/20326">#20326</a></li>
+<li>Systemthema beim Löschen nicht filtern <a href="https://github.com/apache/pulsar/pull/18949">#18949</a>
+– Wiederherstellung der Lösung für bestimmte Race-Bedingungen beim Entladen des Themas <a href="https://github.com/apache/pulsar/pull/20527">#20527</a>
+– Es gibt zwei gleichnamige verwaltete Ledger in einem Broker <a href="https://github.com/apache/pulsar/pull/18688">#18688</a>
+– REST Client Producer schlägt nur mit TLS fehl <a href="https://github.com/apache/pulsar/pull/20535">#20535</a>
+– Speichern Sie createIfMissing in TopicLoadingContext <a href="https://github.com/apache/pulsar/pull/19993">#19993</a>
+– Entpacken Sie die Abschlussausnahme <a href="https://github.com/apache/pulsar/pull/20396">#20396</a>
+– Geben Sie den Orphan-Replikator frei, nachdem das Thema geschlossen wurde <a href="https://github.com/apache/pulsar/pull/20582">#20582</a>
+– Behebung des Spitzenproblems bei der Veröffentlichungslatenz bei einer großen Anzahl von Produzenten <a href="https://github.com/apache/pulsar/pull/20607">#20607</a>
+– Unterstützen Sie cgroup v2 durch die Verwendung von jdk.internal.platform.Metrics in Pulsar Loadbalancer <a href="https://github.com/apache/pulsar/pull/16832">#16832</a>
+– Authentifizierung früher in der Logik zum Löschen von Abonnements validieren <a href="https://github.com/apache/pulsar/pull/20549">#20549</a>
+– Beheben Sie den Anstieg der Veröffentlichungslatenz aufgrund der MessageDeduplication-Konkurrenz <a href="https://github.com/apache/pulsar/pull/20647">#20647</a></li>
+<li>Hinzufügen der fehlenden Buchmacher-ID im Registrierungsmanager <a href="https://github.com/apache/pulsar/pull/20641">#20641</a>
+– NPE beim Zurücksetzen des Replikator-Cursors nach Position behoben <a href="https://github.com/apache/pulsar/pull/20597">#20597</a>
+– Die Themenrichtlinie kann nicht richtig funktionieren, wenn bei der Wiedergabe der Richtliniennachricht eine Ausnahme auftritt <a href="https://github.com/apache/pulsar/pull/20613">#20613</a></li>
+<li>Buchmacher-Informationen gingen aufgrund der Benachrichtigung über die Rennbedingung verloren <a href="https://github.com/apache/pulsar/pull/20642">#20642</a>
+– Neuen Bundle-Bereich nach Bundle-Split auf Richtlinien aktualisieren <a href="https://github.com/apache/pulsar/pull/17797">#17797</a>
+– Behebung eines Problems, bei dem der Verbraucher eine abgebrochene TXN-Nachricht empfangen kann, wenn readType auf „Replay“ gesetzt ist <a href="https://github.com/apache/pulsar/pull/19815">#19815</a>
+– Korrektur der Rückgabe der frühesten Position bei der Abfrage der Position nach Zeitstempel <a href="https://github.com/apache/pulsar/pull/20457">#20457</a></li>
+</ul>
+<h3>Clients</h3>
+<ul>
+<li>[Java] Geplanten Executor in BinaryProtoLookupService verwenden <a href="https://github.com/apache/pulsar/pull/20043">#20043</a></li>
+<li>[Java] Geben Sie die Waisenproduzenten frei, nachdem der Primärkonsument geschlossen wurde <a href="https://github.com/apache/pulsar/pull/19858">#19858</a></li>
+<li>[Java] NPE beim Bestätigen mehrerer Nachrichten behoben <a href="https://github.com/apache/pulsar/pull/19874">#19874</a></li>
+<li>[Java] Leere Schemaversion im ProducerImpl-SchemaCache zwischenspeichern <a href="https://github.com/apache/pulsar/pull/19929">#19929</a></li>
+<li>[Java] Korrektur, bei der die Funktion getMsgNumInReceiverQueue bei Verwendung des Nachrichten-Listeners immer 0 zurückgibt <a href="https://github.com/apache/pulsar/pull/20245">#20245</a></li>
+<li>[Java] Deadlock-Problem des Verbrauchers bei Verwendung mehrerer E/A-Threads behoben <a href="https://github.com/apache/pulsar/pull/20669">#20669</a></li>
+<li>[Java] Machen Sie den gesamten grabCnx()-Fortschritt atomar <a href="https://github.com/apache/pulsar/pull/20595">#20595</a></li>
+<li>[Java] Nachrichten gehen verloren, wenn der Verbraucher die Verbindung wiederherstellt <a href="https://github.com/apache/pulsar/pull/20695">#20695</a></li>
+</ul>
+<h3>Pulsar IO und Pulsar-Funktionen</h3>
+<p>– [Funktionen] Verwenden Sie den Funktionsklassenlader in TopicSchema.newSchemaInstance(), um ClassNotFoundException zu beheben, wenn benutzerdefinierte SerDe-Klassen verwendet werden <a href="https://github.com/apache/pulsar/pull/20115">#20115</a></p>
+<ul>
+<li>[Funktionen] Pulsar-Admin unterstützt Update py/go mit Paket-URL <a href="https://github.com/apache/pulsar/pull/19897">#19897</a>
+– [Funktionen] Fehler beim Ableiten des Typklassennamens durch JavaInstanceStarter behoben <a href="https://github.com/apache/pulsar/pull/20426">#20426</a>
+– [Funktionen] Go-Funktionen müssen Verbraucher anhand der nicht partitionierten Themen-ID abrufen <a href="https://github.com/apache/pulsar/pull/20413">#20413</a></li>
+<li>[Funktionen] Funktionsaktualisierungsfehler behoben <a href="https://github.com/apache/pulsar/pull/19895">#19895</a></li>
+<li>[Funktionen] Idle-Timer korrekt zurücksetzen #20450 <a href="https://github.com/apache/pulsar/pull/20450">#20450</a>
+– [Funktionen] Go-Funktionen müssen den statischen grpcPort in der k8s-Laufzeit verwenden <a href="https://github.com/apache/pulsar/pull/20404">#20404</a></li>
+<li>[Funktionen] Pulsar Admin für TLS konfigurieren <a href="https://github.com/apache/pulsar/pull/20533">#20533</a>
+– [Funktionen] Lassen Sie KubernetesRuntime beim Entfernen der Funktion Zeichen im Funktionsmandanten, Namespace und Namen übersetzen, um Beschriftungsfehler zu vermeiden <a href="https://github.com/apache/pulsar/pull/19584">#19584</a></li>
+<li>[Funktionen] Beenden Sie JVM, wenn der Hauptthread eine Ausnahme auslöst <a href="https://github.com/apache/pulsar/pull/20689">#20689</a>
+– [IO-Connector] Schließen Sie den Kafka-Quell-Connector, wenn eine nicht abgefangene Ausnahme vorliegt <a href="https://github.com/apache/pulsar/pull/20480">#20480</a></li>
+<li>[IO-Connector] Schließen Sie den Kafka-Quell-Connector, der hängen bleibt <a href="https://github.com/apache/pulsar/pull/20698">#20698</a></li>
+</ul>
+<h3>Beobachtbarkeit</h3>
+<p>– [Broker] Behebung des Fehlers bei der Aggregation von Statistiken zu partitionierten Publisher-Themen <a href="https://github.com/apache/pulsar/pull/18807">#18807</a></p>
+<ul>
+<li>[Broker] Problem mit doppelten Anführungszeichen behoben, das das Prometheus-Format unterbricht <a href="https://github.com/apache/pulsar/pull/20230">#20230</a></li>
+<li>[Broker] Startzeitmetrik JVM hinzufügen <a href="https://github.com/apache/pulsar/pull/20381">#20381</a></li>
+<li>[Offload] Offload-Metrikfehler behoben <a href="https://github.com/apache/pulsar/pull/20366">#20366</a></li>
+</ul>
+<h3>CLI</h3>
+<p>– [CLI] Pulser-client-Konsumenten erlauben, ein repliziertes Abonnement zu erstellen <a href="https://github.com/apache/pulsar/pull/20316">#20316</a>
+– [CLI] Nar-Maven-Plugin-Version aktualisieren, um übermäßige Downloads zu beheben <a href="https://github.com/apache/pulsar/pull/20410">#20410</a>
+– [CLI] OWASP-Abhängigkeitsprüfung im Pulsar CI-Workflow beschleunigen <a href="https://github.com/apache/pulsar/pull/20412">#20412</a></p>
+<ul>
+<li>[CLI] Add-Opens für Function-Localrunner auch erfüllen <a href="https://github.com/apache/pulsar/pull/20417">#20417</a>
+– [Admin] Rückgabe BAD_REQUEST für Clusterdaten ist null für createCluster <a href="https://github.com/apache/pulsar/pull/20346">#20346</a>
+– [Admin] Früheste Nachricht im partitionierten Backlog melden <a href="https://github.com/apache/pulsar/pull/19465">#19465</a></li>
+</ul>
+<h3>Andere</h3>
+<ul>
+<li>[Build] Doppelter Eintrag beim Zusammenführen von Diensten <a href="https://github.com/apache/pulsar/pull/17659">#17659</a></li>
+<li>[Offload] Dateisystem-Offloader verwenden, Fehler „Klasse nicht gefunden“ <a href="https://github.com/apache/pulsar/pull/20365">#20365</a>
+– [Perf] PerformanceProducer erzeugt nicht die erwartete Anzahl an Nachrichten <a href="https://github.com/apache/pulsar/pull/19775">#19775</a></li>
+<li>[SQL] Unnötige Konfiguration für Pulsar SQL entfernen <a href="https://github.com/apache/pulsar/pull/20605">#20605</a></li>
+<li>[WS] Unnötige Ping/Pong-Implementierung entfernen <a href="https://github.com/apache/pulsar/pull/20733">#20605</a></li>
+<li>[Schema] Ausnahme nur behandeln, wenn <a href="https://github.com/apache/pulsar/pull/20730">#20730</a> vorliegt</li>
+</ul>
+<h3>Bibliotheksaktualisierungen</h3>
+<ul>
+<li>Upgrade der SnakeYAML-Version auf 2.0 <a href="https://github.com/apache/pulsar/pull/20120">#20120</a>
+– Kotlin-Version von 1.4.32 auf 1.8.20 aktualisieren <a href="https://github.com/apache/pulsar/pull/20089">#20089</a>
+– Aktualisieren Sie die Jetty-Server-Version auf 9.4.51.v20230217 <a href="https://github.com/apache/pulsar/pull/20226">#20226</a></li>
+<li>Upgrade der Sprint-Version auf 5.3.27 <a href="https://github.com/apache/pulsar/pull/20226">#20226</a></li>
+<li>Aktualisieren Sie die Swagger-Version auf 1.6.10 <a href="https://github.com/apache/pulsar/pull/20226">#20226</a>
+– Aktualisieren Sie SQLite JDBC, um CVE-2023-32697 <a href="https://github.com/apache/pulsar/pull/20411">#20411</a> zu beheben.</li>
+<li>Upgrade von Netty auf 4.1.93.Final <a href="https://github.com/apache/pulsar/pull/20423">#20423</a>
+– Aktualisieren Sie Guava auf 32.0.0, um CVE-2023-2976 <a href="https://github.com/apache/pulsar/pull/20459">#20459</a> zu beheben.
+– Verwenden Sie Ubuntu 22.04 für Pulsar-Images <a href="https://github.com/apache/pulsar/pull/20475">#20475</a>
+– Aktualisieren Sie Snappy-Java, um mehrere CVEs zu adressieren <a href="https://github.com/apache/pulsar/pull/20604">#20604</a>
+– Aktualisieren Sie Guava auf 32.1.1, um CVE-2023-2976 <a href="https://github.com/apache/pulsar/pull/20699">#20699</a> zu beheben.</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>Quelle</strong> <a href="https://github.com/apache/pulsar">Apache/Pulsar</a> · <code>v2.11.2</code> · 19.07.2023 · <a href="https://github.com/apache/pulsar/releases/tag/v2.11.2">Upstream-Version</a>
+<em>Zum Indexieren wörtlich gespiegelt. Alle Rechte liegen beim Upstream-Projekt.</em></p>
+</blockquote></div>  <details class="mt-original"> <summary>Englisches Original / English original</summary> <div class="prose mt-original-body"><h1>pulsar v2.11.2</h1>
+<h3>Broker</h3>
+<ul>
+<li>Fix broker restart logic <a href="https://github.com/apache/pulsar/pull/20113">#20113</a></li>
+<li>Fast fix infinite HTTP call getSubscriptions caused by wrong topicName <a href="https://github.com/apache/pulsar/pull/20131">#20131</a></li>
+<li>Fix getPartitionedStats miss subscription's messageAckRate <a href="https://github.com/apache/pulsar/pull/19870">#19870</a></li>
+<li>Fix deadlock of zkSessionWatcher when zkConnection loss <a href="https://github.com/apache/pulsar/pull/20122">#20122</a></li>
+<li>Fix Return value of getPartitionedStats doesn't contain subscription type <a href="https://github.com/apache/pulsar/pull/20210">#20210</a></li>
+<li>Producer created by replicator is not displayed in topic stats <a href="https://github.com/apache/pulsar/pull/20229">#20229</a></li>
+<li>Fix infinite ack of Replicator after topic is closed <a href="https://github.com/apache/pulsar/pull/20232">#20232</a></li>
+<li>Skip split bundle if only one broker <a href="https://github.com/apache/pulsar/pull/20190">#20190</a></li>
+<li>Fix RoaringBitmap.contains can't check value 65535 <a href="https://github.com/apache/pulsar/pull/20176">#20176</a></li>
+<li>Get the lowest PositionImpl from NavigableSet <a href="https://github.com/apache/pulsar/pull/18278">#18278</a></li>
+<li>Fix the behavior of delayed message in Key_Shared mode <a href="https://github.com/apache/pulsar/pull/20233">#20233</a></li>
+<li>Fix use error TimeUnit to record publish latency <a href="https://github.com/apache/pulsar/pull/20074">#20074</a></li>
+<li>Fix the thread safety issue of BrokerData#getTimeAverageData access <a href="https://github.com/apache/pulsar/pull/19889">#19889</a></li>
+<li>Fix can't send ErrorCommand when a message's value is null <a href="https://github.com/apache/pulsar/pull/19899">#19899</a></li>
+<li>Make LedgerOffloaderFactory can load the old nar <a href="https://github.com/apache/pulsar/pull/19913">#19913</a></li>
+<li>Ignore and remove the replicator cursor when the remote cluster is absent <a href="https://github.com/apache/pulsar/pull/19972">#19972</a></li>
+<li>Fix the reason label of authentication metrics <a href="https://github.com/apache/pulsar/pull/20030">#20030</a></li>
+<li>Optimize the ack/send future in TransactionImpl <a href="https://github.com/apache/pulsar/pull/20271">#20271</a></li>
+<li>Fix NPE caused by topic publish rate limiter <a href="https://github.com/apache/pulsar/pull/20302">#20302</a></li>
+<li>Fix default bundle size used while setting bookie affinity <a href="https://github.com/apache/pulsar/pull/20250">#20250</a></li>
+<li>Fix ledger left in OPEN state when inactiveLedgerRollOverTimeMs is enabled <a href="https://github.com/apache/pulsar/pull/20276">#20276</a></li>
+<li>Fix deadlock of metadata store <a href="https://github.com/apache/pulsar/pull/20189">#20189</a></li>
+<li>Fix class name typo PrecisPublishLimiter to &quot;Precise&quot; <a href="https://github.com/apache/pulsar/pull/20310">#20310</a></li>
+<li>Fix consume stuck of shared streaming dispatcher <a href="https://github.com/apache/pulsar/pull/18315">#18315</a></li>
+<li>Fix entry filter feature for the non-persistent topic <a href="https://github.com/apache/pulsar/pull/20141">#20141</a></li>
+<li>Fix partitioned __change_events topic is policy topic <a href="https://github.com/apache/pulsar/pull/20392">#20392</a></li>
+<li>If a ledger is lost, the cursor mark delete position cannot forward <a href="https://github.com/apache/pulsar/pull/18620">#18620</a></li>
+<li>Invalidate metadata children cache after key deleted <a href="https://github.com/apache/pulsar/pull/20363">#20363</a></li>
+<li>Avoid PersistentSubscription.expireMessages logic check backlog twice <a href="https://github.com/apache/pulsar/pull/20416">#20416</a></li>
+<li>Switch to the metadata store thread after zk operation <a href="https://github.com/apache/pulsar/pull/20303">#20303</a></li>
+<li>Fix skip message API when hole messages exist <a href="https://github.com/apache/pulsar/pull/20326">#20326</a></li>
+<li>Do not filter system topic while shedding <a href="https://github.com/apache/pulsar/pull/18949">#18949</a></li>
+<li>Restore solution for certain topic unloading race conditions <a href="https://github.com/apache/pulsar/pull/20527">#20527</a></li>
+<li>There are two same-named managed ledgers in the one broker <a href="https://github.com/apache/pulsar/pull/18688">#18688</a></li>
+<li>REST Client Producer fails with TLS only <a href="https://github.com/apache/pulsar/pull/20535">#20535</a></li>
+<li>Save createIfMissing in TopicLoadingContext <a href="https://github.com/apache/pulsar/pull/19993">#19993</a></li>
+<li>Unwrap the completion exception <a href="https://github.com/apache/pulsar/pull/20396">#20396</a></li>
+<li>Release orphan replicator after topic closed <a href="https://github.com/apache/pulsar/pull/20582">#20582</a></li>
+<li>Fix the publish latency spike issue with a large number of producers <a href="https://github.com/apache/pulsar/pull/20607">#20607</a></li>
+<li>Support cgroup v2 by using jdk.internal.platform.Metrics in Pulsar Loadbalancer <a href="https://github.com/apache/pulsar/pull/16832">#16832</a></li>
+<li>Validate authz earlier in delete subscription logic <a href="https://github.com/apache/pulsar/pull/20549">#20549</a></li>
+<li>Fix the publish latency spike from the contention of MessageDeduplication <a href="https://github.com/apache/pulsar/pull/20647">#20647</a></li>
+<li>Adding the missed bookie id in the registration manager <a href="https://github.com/apache/pulsar/pull/20641">#20641</a></li>
+<li>Fix NPE when resetting Replicator's cursor by position <a href="https://github.com/apache/pulsar/pull/20597">#20597</a></li>
+<li>Topic policy can not be work well if replay policy message has any exception <a href="https://github.com/apache/pulsar/pull/20613">#20613</a></li>
+<li>Bookie Info lost by notification race condition <a href="https://github.com/apache/pulsar/pull/20642">#20642</a></li>
+<li>Update new bundle-range to policies after bundle split <a href="https://github.com/apache/pulsar/pull/17797">#17797</a></li>
+<li>Fix consumer can receive aborted txn message when readType is replay <a href="https://github.com/apache/pulsar/pull/19815">#19815</a></li>
+<li>Fix return the earliest position when query position by timestamp <a href="https://github.com/apache/pulsar/pull/20457">#20457</a></li>
+</ul>
+<h3>Clients</h3>
+<ul>
+<li>[Java] Use scheduled executor in BinaryProtoLookupService <a href="https://github.com/apache/pulsar/pull/20043">#20043</a></li>
+<li>[Java] Release the orphan producers after the primary consumer is closed <a href="https://github.com/apache/pulsar/pull/19858">#19858</a></li>
+<li>[Java] Fix NPE when acknowledging multiple messages <a href="https://github.com/apache/pulsar/pull/19874">#19874</a></li>
+<li>[Java] Cache empty schema version in ProducerImpl schemaCache <a href="https://github.com/apache/pulsar/pull/19929">#19929</a></li>
+<li>[Java] Fix where the function getMsgNumInReceiverQueue always returns 0 when using message listener <a href="https://github.com/apache/pulsar/pull/20245">#20245</a></li>
+<li>[Java] Fix deadlock issue of consumer while using multiple IO threads <a href="https://github.com/apache/pulsar/pull/20669">#20669</a></li>
+<li>[Java] Make the whole grabCnx() progress atomic <a href="https://github.com/apache/pulsar/pull/20595">#20595</a></li>
+<li>[Java] Messages lost when consumer reconnect <a href="https://github.com/apache/pulsar/pull/20695">#20695</a></li>
+</ul>
+<h3>Pulsar IO and Pulsar Functions</h3>
+<ul>
+<li>[Functions] Use functions classloader in TopicSchema.newSchemaInstance() to fix ClassNotFoundException when using custom SerDe classes <a href="https://github.com/apache/pulsar/pull/20115">#20115</a></li>
+<li>[Functions] Make pulsar-admin support update py/go with package url <a href="https://github.com/apache/pulsar/pull/19897">#19897</a></li>
+<li>[Functions] Fix JavaInstanceStarter inferring type class name error <a href="https://github.com/apache/pulsar/pull/20426">#20426</a></li>
+<li>[Functions] Go functions must retrieve consumers by non-partitioned topic ID <a href="https://github.com/apache/pulsar/pull/20413">#20413</a></li>
+<li>[Functions] Fix function update error <a href="https://github.com/apache/pulsar/pull/19895">#19895</a></li>
+<li>[Functions] Reset idle timer correctly #20450 <a href="https://github.com/apache/pulsar/pull/20450">#20450</a></li>
+<li>[Functions] Go functions need to use static grpcPort in k8s runtime <a href="https://github.com/apache/pulsar/pull/20404">#20404</a></li>
+<li>[Functions] Configure pulsar admin for TLS <a href="https://github.com/apache/pulsar/pull/20533">#20533</a></li>
+<li>[Functions] Make KubernetesRuntime translate characters in function tenant, namespace, and name during function removal to avoid label errors <a href="https://github.com/apache/pulsar/pull/19584">#19584</a></li>
+<li>[Functions] Exit JVM when the main thread throws an exception <a href="https://github.com/apache/pulsar/pull/20689">#20689</a></li>
+<li>[IO Connector] Close the Kafka source connector if there is uncaught exception <a href="https://github.com/apache/pulsar/pull/20480">#20480</a></li>
+<li>[IO Connector] Close the Kafka source connector got stuck <a href="https://github.com/apache/pulsar/pull/20698">#20698</a></li>
+</ul>
+<h3>Observability</h3>
+<ul>
+<li>[Broker] Fix the partitioned publisher topic stat aggregation bug <a href="https://github.com/apache/pulsar/pull/18807">#18807</a></li>
+<li>[Broker] Fix topic with double quote breaks the Prometheus format <a href="https://github.com/apache/pulsar/pull/20230">#20230</a></li>
+<li>[Broker] Add JVM start time metric <a href="https://github.com/apache/pulsar/pull/20381">#20381</a></li>
+<li>[Offload] Fix offload metrics error <a href="https://github.com/apache/pulsar/pull/20366">#20366</a></li>
+</ul>
+<h3>CLI</h3>
+<ul>
+<li>[CLI] Allow pulser-client consumer to create a replicated subscription <a href="https://github.com/apache/pulsar/pull/20316">#20316</a></li>
+<li>[CLI] Update nar maven plugin version to fix excessive downloads <a href="https://github.com/apache/pulsar/pull/20410">#20410</a></li>
+<li>[CLI] Speed up OWASP dependency check in Pulsar CI workflow <a href="https://github.com/apache/pulsar/pull/20412">#20412</a></li>
+<li>[CLI] Fulfill add-opens to function-localrunner also <a href="https://github.com/apache/pulsar/pull/20417">#20417</a></li>
+<li>[Admin] Return BAD_REQUEST on cluster data is null for createCluster <a href="https://github.com/apache/pulsar/pull/20346">#20346</a></li>
+<li>[Admin] Report earliest msg in partitioned backlog <a href="https://github.com/apache/pulsar/pull/19465">#19465</a></li>
+</ul>
+<h3>Others</h3>
+<ul>
+<li>[Build] Duplicate entry when merging services <a href="https://github.com/apache/pulsar/pull/17659">#17659</a></li>
+<li>[Offload] Use filesystem offloader with class not found error <a href="https://github.com/apache/pulsar/pull/20365">#20365</a></li>
+<li>[Perf] PerformanceProducer does not produce expected number of messages <a href="https://github.com/apache/pulsar/pull/19775">#19775</a></li>
+<li>[SQL] Remove useless configuration for Pulsar SQL <a href="https://github.com/apache/pulsar/pull/20605">#20605</a></li>
+<li>[WS] Remove unnecessary ping/pong implementation <a href="https://github.com/apache/pulsar/pull/20733">#20605</a></li>
+<li>[Schema] Only handle exception when there has <a href="https://github.com/apache/pulsar/pull/20730">#20730</a></li>
+</ul>
+<h3>Library updates</h3>
+<ul>
+<li>Upgrade SnakeYAML version to 2.0 <a href="https://github.com/apache/pulsar/pull/20120">#20120</a></li>
+<li>Upgrade Kotlin version from 1.4.32 to 1.8.20 <a href="https://github.com/apache/pulsar/pull/20089">#20089</a></li>
+<li>Upgrade the jetty server version to 9.4.51.v20230217 <a href="https://github.com/apache/pulsar/pull/20226">#20226</a></li>
+<li>Upgrade sprint version to 5.3.27 <a href="https://github.com/apache/pulsar/pull/20226">#20226</a></li>
+<li>Upgrade swagger version to 1.6.10 <a href="https://github.com/apache/pulsar/pull/20226">#20226</a></li>
+<li>Upgrade SQLite JDBC to resolve CVE-2023-32697 <a href="https://github.com/apache/pulsar/pull/20411">#20411</a></li>
+<li>Upgrade Netty to 4.1.93.Final <a href="https://github.com/apache/pulsar/pull/20423">#20423</a></li>
+<li>Upgrade Guava to 32.0.0 to address CVE-2023-2976 <a href="https://github.com/apache/pulsar/pull/20459">#20459</a></li>
+<li>Use Ubuntu 22.04 for Pulsar images <a href="https://github.com/apache/pulsar/pull/20475">#20475</a></li>
+<li>Upgrade snappy-java to address multiple CVEs <a href="https://github.com/apache/pulsar/pull/20604">#20604</a></li>
+<li>Upgrade Guava to 32.1.1 to address CVE-2023-2976 <a href="https://github.com/apache/pulsar/pull/20699">#20699</a></li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>Source</strong> <a href="https://github.com/apache/pulsar">apache/pulsar</a> · <code>v2.11.2</code> · 2023-07-19 · <a href="https://github.com/apache/pulsar/releases/tag/v2.11.2">upstream release</a></p>
+</blockquote>
+<p><em>Mirrored verbatim for indexing. All rights belong to the upstream project.</em></p></div> </details> </div> <p class="muted" style="margin-top:var(--s8);font-size:12.5px;border-top:1px solid var(--line);padding-top:var(--s4)"> Versionshinweise stammen aus dem Upstream-Projekt. Wir ordnen und verknüpfen sie, damit du Versionen auf einen Blick vergleichen kannst. Alle Rechte liegen bei den ursprünglichen Autoren. </p> <nav class="pager" aria-label="Release navigation"> <a href="/releases/pulsar/3.0.1"> <span class="k">← Weiter</span> <span class="t">v3.0.1</span> </a> <a href="/releases/pulsar/3.0.0"> <span class="k">Zurück →</span> <span class="t">v3.0.0</span> </a> </nav> <aside class="ad-slot" aria-label="Advertisement" data-astro-cid-fgwukgf6><div class="ad-slot-label" data-astro-cid-fgwukgf6>Advertisement</div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4184355057086168" data-ad-slot="9133765584" data-ad-format="auto" data-full-width-responsive="true" data-astro-cid-fgwukgf6></ins><script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script></aside> </article> <aside class="rail"> <div class="rail-card"> <div class="rail-title">Source</div> <ul class="rail-list"> <li> <a href="https://github.com/apache/pulsar/releases/tag/v2.11.2" target="_blank" rel="noopener"> <span>Original auf GitHub</span> <span class="d">↗</span> </a> </li> <li> <a href="https://github.com/apache/pulsar" target="_blank" rel="noopener"> <span>apache/pulsar</span> <span class="d">↗</span> </a> </li> </ul> </div> <div class="rail-card rail-toc"> <div class="rail-title">Auf dieser Seite</div> <nav> <a href="#" class="lv3">Makler</a><a href="#" class="lv3">Clients</a><a href="#" class="lv3">Pulsar IO und Pulsar-Funktionen</a><a href="#" class="lv3">Beobachtbarkeit</a><a href="#" class="lv3">CLI</a><a href="#" class="lv3">Andere</a><a href="#" class="lv3">Bibliotheksaktualisierungen</a> </nav> </div> <div class="rail-card"> <div class="rail-title">Versionsverlauf</div> <ul class="rail-list"> <li> <a href="/releases/pulsar/5.0.1"> <span class="v">v5.0.1</span> <span class="d">26-10-26</span> </a> </li><li> <a href="/releases/pulsar/5.0.0"> <span class="v">v5.0.0</span> <span class="d">26-10-05</span> </a> </li><li> <a href="/releases/pulsar/4.2.5"> <span class="v">v4.2.5</span> <span class="d">26-10-05</span> </a> </li><li> <a href="/releases/pulsar/4.0.14"> <span class="v">v4.0.14</span> <span class="d">26-10-05</span> </a> </li><li> <a href="/releases/pulsar/5.0.0-m2"> <span class="v">v5.0.0-M2</span> <span class="d">26-09-16</span> </a> </li><li> <a href="/releases/pulsar/4.2.4"> <span class="v">v4.2.4</span> <span class="d">26-08-03</span> </a> </li><li> <a href="/releases/pulsar/4.0.13"> <span class="v">v4.0.13</span> <span class="d">26-08-03</span> </a> </li><li> <a href="/releases/pulsar/4.2.3"> <span class="v">v4.2.3</span> <span class="d">26-07-06</span> </a> </li> </ul> <a href="/de/releases/pulsar" class="mono" style="display:inline-block;margin-top:var(--s3);font-size:11.5px;color:var(--ink-3)"> Alle anzeigen 100 →
+</a> </div> </aside> </div> </div>  </main> <footer class="site-footer"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/de/" class="brand" aria-label="STAGS NextStack"><span class="brand-mark" aria-hidden="true">S</span><span class="brand-main">STAGS</span><span class="brand-sub" aria-hidden="true">NextStack</span></a> <p>Open-Source-Release-Informationen, täglich veröffentlicht.</p> </div> <div class="footer-col"> <h3>Verfolgen</h3> <ul> <li><a href="/de/releases">Releases</a></li> <li><a href="/de/projects">Projekte</a></li> <li><a href="/de/releases.xml">RSS-Feed</a></li> </ul> </div> <div class="footer-col"> <h3>Archiv</h3> <ul> <li><a href="/zh/release_note" hreflang="zh-Hans">Chinesisches Archiv</a></li> <li><a href="/zh/chapters/" hreflang="zh-Hans">Technische Notizen</a></li> <li><a href="/zh/downloads/">Stags Tracker</a></li> </ul> </div> <div class="footer-col"> <h3>Info</h3> <ul> <li><a href="/privacy">Datenschutzrichtlinie</a></li> <li><a href="/releases.xml">RSS</a></li> <li><a href="/sitemap-index.xml">Sitemap</a></li> </ul> </div> </div> <div class="footer-btm"> <span>© 2026 STAGS</span> <span>Release notes gehören zu ihren Upstream-Projekten.</span> </div> </div> </footer> <!-- 搜索面板 --> <div class="palette-bg" data-palette-bg data-open="false"> <div class="palette" role="dialog" aria-modal="true" aria-label="Releases durchsuchen"> <div class="palette-in"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ink-4);flex:none"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <input type="search" data-palette-input placeholder="Suchen Sie nach Releases, Projekten, Versionen ..." autocomplete="off" spellcheck="false"> <span class="kbd">esc</span> </div> <ul class="palette-res" data-palette-res></ul> <div class="palette-ft"> <span>↑↓ navigate</span> <span>↵ open</span> <span style="margin-left:auto" data-palette-count></span> </div> </div> </div> <script type="module" src="/assets/Shell.astro_astro_type_script_index_0_lang.0ZkKXV47.js"></script> </body> </html>

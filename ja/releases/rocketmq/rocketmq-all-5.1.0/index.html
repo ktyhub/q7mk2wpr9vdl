@@ -1,0 +1,798 @@
+<!DOCTYPE html><html lang="ja" dir="ltr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>rocketmq rocketmq-all-5.1.0 — STAGS NextStack</title><meta name="description" content="[ISSUE #5069] polish the startup of proxy; can specify parameters on the command line of proxy · [ISSUE #5097] Fix illegal reflective access · Sync DLedger version in Bazel scripts · Sync commons-lang3 version for Bazel"><meta name="keywords" content="オープンソース release note、リリース トラッカー、changelog アグリゲーター、重大な変更、非推奨トラッカー、Kafka リリース、Spring Boot リリース、Kubernetes リリース"><meta name="generator" content="Astro v5.18.2"><link rel="canonical" href="https://www.stags.cn/ja/releases/rocketmq/rocketmq-all-5.1.0/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="STAGS NextStack — releases" href="/ja/releases.xml"><link rel="alternate" hreflang="en" href="https://www.stags.cn/releases/rocketmq/rocketmq-all-5.1.0/"><link rel="alternate" hreflang="zh-Hans" href="https://www.stags.cn/releases/rocketmq/rocketmq-all-5.1.0/"><link rel="alternate" hreflang="x-default" href="https://www.stags.cn/releases/rocketmq/rocketmq-all-5.1.0/"><meta property="og:site_name" content="STAGS"><meta property="og:type" content="article"><meta property="og:title" content="rocketmq rocketmq-all-5.1.0 — STAGS NextStack"><meta property="og:description" content="[ISSUE #5069] polish the startup of proxy; can specify parameters on the command line of proxy · [ISSUE #5097] Fix illegal reflective access · Sync DLedger version in Bazel scripts · Sync commons-lang3 version for Bazel"><meta property="og:url" content="https://www.stags.cn/ja/releases/rocketmq/rocketmq-all-5.1.0/"><meta property="og:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><meta property="og:locale" content="ja_JP"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="de_DE"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:locale:alternate" content="es_ES"><meta property="og:locale:alternate" content="pt_BR"><meta property="og:locale:alternate" content="ko_KR"><meta property="og:locale:alternate" content="it_IT"><meta property="og:locale:alternate" content="ru_RU"><meta property="og:locale:alternate" content="tr_TR"><meta property="og:locale:alternate" content="id_ID"><meta property="og:locale:alternate" content="vi_VN"><meta property="og:locale:alternate" content="ar_SA"><meta property="og:locale:alternate" content="sv_SE"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.stags.cn/#website","name":"STAGS","url":"https://www.stags.cn/","inLanguage":"ja","description":"NextStack はインフラストラクチャおよび AI プロジェクトのリリースノートを索引化し、破壊的変更・非推奨・移行情報を英語優先の単一フィードで提供します。","publisher":{"@id":"https://www.stags.cn/#org"}},{"@type":"Organization","@id":"https://www.stags.cn/#org","name":"STAGS","alternateName":"NextStack","url":"https://www.stags.cn/"},{"@type":"TechArticle","@id":"https://www.stags.cn/ja/releases/rocketmq/rocketmq-all-5.1.0/#article","headline":"rocketmq rocketmq-all-5.1.0 release notes","datePublished":"2023-02-20","inLanguage":"en","isPartOf":{"@id":"https://www.stags.cn/#website"},"about":{"@type":"SoftwareSourceCode","codeRepository":"https://github.com/apache/rocketmq"}}]}</script><!-- 第三方脚本的连接预热：这两个域名几乎每页都要连，
+         提前建连能省掉 DNS + TCP + TLS 一个往返（移动网络 100~300ms）。
+         AdSense 只在开关打开时预热——关掉广告后连这个域名都没必要。 --><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://pagead2.googlesyndication.com"><!-- Google AdSense：站点所有权校验与广告投放共用同一段脚本，全站只加载一次。
+         未创建广告单元时页面上不渲染任何广告容器，站点保持干净。
+         fetchpriority=low：它不参与首屏渲染，不该跟正文抢带宽。 --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184355057086168" crossorigin="anonymous" fetchpriority="low"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-RFRF1TVRMP" fetchpriority="low"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RFRF1TVRMP");
+    </script><!-- 百度统计（国内流量统计）。官方标准片段，is:inline 原样输出，
+         hm.js 动态插到首个 script 前，异步不阻塞首屏渲染。 --><script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?299e5b4e65b86ed16879bdcbe70531d6";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script><link rel="stylesheet" href="/assets/index.DQGt3qLZ.css">
+<style>.ad-slot[data-astro-cid-fgwukgf6]{margin:var(--s10) 0 0;padding-top:var(--s5);border-top:1px solid var(--line)}.ad-slot-label[data-astro-cid-fgwukgf6]{margin-bottom:var(--s3);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{display:block;min-height:100px}@media(min-width:640px){.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{min-height:250px}}
+</style></head> <body> <a class="skip" href="#main">本文へスキップ</a> <header class="hdr" data-header> <div class="wrap hdr-inner"> <a href="/ja/" class="brand" aria-label="STAGS NextStack — オープンソースのリリース情報"> <span class="brand-mark" aria-hidden="true">S</span> <span class="brand-main">STAGS</span> <span class="brand-sub" aria-hidden="true">NextStack</span> </a> <nav class="nav" aria-label="Primary"> <a href="/ja/releases">リリース</a><a href="/ja/projects">プロジェクト</a> </nav>  <details class="navmenu" data-navmenu> <summary class="navmenu-btn" aria-label="Open menu"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> </summary> <div class="navmenu-panel" role="group" aria-label="Primary"> <a href="/ja/releases" class="navmenu-item">リリース</a><a href="/ja/projects" class="navmenu-item">プロジェクト</a> </div> </details> <div class="hdr-tools"> <button class="searchbtn" type="button" data-search-open aria-label="リリースを検索"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <span class="lbl">検索</span> <span class="kbd">⌘K</span> </button> <details class="langmenu" data-langmenu> <summary class="langmenu-btn" aria-label="言語"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"> <circle cx="12" cy="12" r="9"></circle> <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path> </svg> <span class="langmenu-cur">日</span> <svg class="langmenu-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m2 4 4 4 4-4"></path></svg> </summary> <div class="langmenu-panel" role="group" aria-label="言語"> <p class="langmenu-head">言語</p> <a class="langmenu-item" href="/releases/rocketmq/rocketmq-all-5.1.0/" hreflang="en" lang="en" data-on="false"> <span class="langmenu-label">English</span> <span class="langmenu-code">EN</span> </a><a class="langmenu-item" href="/zh/release_note/rocketmq/rocketmq_rocketmq-all-5.1.0" hreflang="zh-Hans" lang="zh-CN" data-on="false"> <span class="langmenu-label">中文</span> <span class="langmenu-code">中</span> </a><a class="langmenu-item" href="/ja/releases/rocketmq/rocketmq-all-5.1.0/" hreflang="ja" lang="ja" aria-current="true" data-on="true"> <span class="langmenu-label">日本語</span> <span class="langmenu-code">日</span> </a><a class="langmenu-item" href="/de/releases/rocketmq/rocketmq-all-5.1.0/" hreflang="de" lang="de" data-on="false"> <span class="langmenu-label">Deutsch</span> <span class="langmenu-code">DE</span> </a><a class="langmenu-item" href="/fr/releases/rocketmq/rocketmq-all-5.1.0/" hreflang="fr" lang="fr" data-on="false"> <span class="langmenu-label">Français</span> <span class="langmenu-code">FR</span> </a><a class="langmenu-item" href="/es/releases/rocketmq/rocketmq-all-5.1.0/" hreflang="es" lang="es" data-on="false"> <span class="langmenu-label">Español</span> <span class="langmenu-code">ES</span> </a><a class="langmenu-item" href="/pt/releases/rocketmq/rocketmq-all-5.1.0/" hreflang="pt-BR" lang="pt-BR" data-on="false"> <span class="langmenu-label">Português</span> <span class="langmenu-code">PT</span> </a><a class="langmenu-item" href="/ko/releases" hreflang="ko" lang="ko" data-on="false"> <span class="langmenu-label">한국어</span> <span class="langmenu-code">한</span> </a><a class="langmenu-item" href="/it/releases" hreflang="it" lang="it" data-on="false"> <span class="langmenu-label">Italiano</span> <span class="langmenu-code">IT</span> </a><a class="langmenu-item" href="/ru/releases" hreflang="ru" lang="ru" data-on="false"> <span class="langmenu-label">Русский</span> <span class="langmenu-code">RU</span> </a><a class="langmenu-item" href="/tr/releases" hreflang="tr" lang="tr" data-on="false"> <span class="langmenu-label">Türkçe</span> <span class="langmenu-code">TR</span> </a><a class="langmenu-item" href="/id/releases" hreflang="id" lang="id" data-on="false"> <span class="langmenu-label">Bahasa Indonesia</span> <span class="langmenu-code">ID</span> </a><a class="langmenu-item" href="/vi/releases" hreflang="vi" lang="vi" data-on="false"> <span class="langmenu-label">Tiếng Việt</span> <span class="langmenu-code">VI</span> </a><a class="langmenu-item" href="/ar/releases" hreflang="ar" lang="ar" data-on="false"> <span class="langmenu-label">العربية</span> <span class="langmenu-code">ع</span> </a><a class="langmenu-item" href="/sv/releases" hreflang="sv" lang="sv" data-on="false"> <span class="langmenu-label">Svenska</span> <span class="langmenu-code">SV</span> </a> </div> </details> <a class="iconlink" href="/releases.xml" aria-label="RSS"> <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"> <path d="M2 12.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM2 7.5a6.5 6.5 0 0 1 6.5 6.5h-2A4.5 4.5 0 0 0 2 9.5v-2ZM2 2.5A11.5 11.5 0 0 1 13.5 14h-2A9.5 9.5 0 0 0 2 4.5v-2Z"></path> </svg> </a> </div> </div> </header> <main id="main">  <div class="wrap"> <div class="detail"> <article> <header class="detail-hd"> <nav class="crumbs" aria-label="Breadcrumb"> <a href="/ja/">ホーム</a> <span class="sep">/</span> <a href="/ja/releases">リリース</a> <span class="sep">/</span> <a href="/ja/releases/rocketmq">rocketmq</a> </nav> <h1 class="detail-title"> <span class="p">rocketmq</span> rocketmq-all-5.1.0 </h1> <div class="detail-meta"> <span class="chip chip--release">リリース</span> <span><span class="k">公開日</span>2023年2月20日</span>  <span class="sep" aria-hidden="true"></span> <a href="https://github.com/apache/rocketmq" target="_blank" rel="noopener"> <span class="k">出典</span>apache/rocketmq </a>   <span class="sep" aria-hidden="true"></span> <a href="/releases/rocketmq/rocketmq-all-5.1.0/"> English original </a>  <span class="sep" aria-hidden="true"></span> <button class="btn btn--ghost btn--sm" type="button" data-copy="https://www.stags.cn/ja/releases/rocketmq/rocketmq-all-5.1.0/">リンクをコピー</button> </div> </header> <div class="prose" style="margin-top:var(--s8)"> <p class="mt-notice" role="note">このページは機械翻訳です。内容は必ず英文原文をご確認ください。</p>  <div><h1>rocketmq rocketmq-all-5.1.0</h1>
+<h2>何が変わったのか</h2>
+<ul>
+<li>[問題 #5069] プロキシの起動を磨きます。 https://github.com/apache/rocketmq/pull/5083 の @xdkxlk により、プロキシのコマンドラインでパラメータを指定できます</li>
+<li>[問題 #5097] https://github.com/apache/rocketmq/pull/5098 の @ShadowySpirits による不正な反射アクセスを修正</li>
+<li>https://github.com/apache/rocketmq/pull/5102 の @lizhanhui による Bazel スクリプトでの DLedger バージョンの同期</li>
+<li>https://github.com/apache/rocketmq/pull/5103 の @lizhanhui による Bazel の commons-lang3 バージョンの同期</li>
+<li>[問題 #5108] https://github.com/apache/rocketmq/pull/5109 の @aaron-ai による 3.2.0 へのバンプ チェックスタイル</li>
+<li>https://github.com/apache/rocketmq/pull/5086 の @zhaowenshuai011 による英語文書内の句読点の混在を修正</li>
+<li>[問題 #5104] https://github.com/apache/rocketmq/pull/5105 の @Oliverwqcwrw によるタイマー メッセージではない場合、プロパティ PROPERTY_TIMER_DELAY_MS をクリーンアップする</li>
+<li>https://github.com/apache/rocketmq/pull/5111 の @lfz757077613 によって FileRegionEncoder.java を更新します</li>
+<li>[問題 #5106] ProxyStartupTest をポータブルにする @lizhanhui (https://github.com/apache/rocketmq/pull/5107)</li>
+<li>https://github.com/apache/rocketmq/pull/5115 の @lfz757077613 によって pom.xml を更新します</li>
+<li>https://github.com/apache/rocketmq/pull/5099 の @lizhanhui によるdeploy_guide.mdの更新</li>
+<li>https://github.com/apache/rocketmq/pull/5084 の @dependabot により、ヘビyaml を 1.30 から 1.31 にバンプします</li>
+<li>[問題 #5047] https://github.com/apache/rocketmq/pull/5048 の @mxsm によって MessageStoreConfig 属性の maxTopicLength のデフォルト値を変更する</li>
+<li>[問題 #5100] https://github.com/apache/rocketmq/pull/5101 の @RongtongJin によるプル リクエスト #2885 の最適化を回復します</li>
+<li>[問題 #5095] [リモーティング-A] https://github.com/apache/rocketmq/pull/5114 の @lizhimins によるリモーティング プロトコルでの RPC 配布のログ記録をサポートします。</li>
+<li>[問題 #5116] PlainAccessControlFlowTest をポータブルにする @lizhanhui (https://github.com/apache/rocketmq/pull/5117)</li>
+<li>[問題 #5091] [ストア A] https://github.com/apache/rocketmq/pull/5093 で @lizhimins による ConsumeQueue を同時にロードすることで、ブローカーの初期化を高速化します。</li>
+<li>[問題 #5119] インフラ強化プロジェクト: https://github.com/apache/rocketmq/pull/5120 の @lizhanhui による ACL モジュールの残りのテスト ケースを修正</li>
+<li>[ISSUE#5039] https://github.com/apache/rocketmq/pull/5110 の @TheR1sing3un によって BrokerIdentity オブジェクトを構築するときに localHostName() がスタックする</li>
+<li>[問題 #5124] https://github.com/apache/rocketmq/pull/5125 の @caigy による「org.apache.rocketmq.namesrv.NamesrvStartup」のパブリック メソッドの署名を元に戻す</li>
+<li>[問題 #5089] ブローカーによるプラグイン ストア設定の委任 (https://github.com/apache/rocketmq/pull/5090 の @ShadowySpirits による)</li>
+<li>[問題 #5132] StandardCharsets.UTF_8 をバイト取得時のデフォルトの文字セットとして使用します… by @renyansongno1 (https://github.com/apache/rocketmq/pull/5140)</li>
+<li>[問題 #5134] https://github.com/apache/rocketmq/pull/5139 の @azhsmesos による役に立たないプル コンシューマー サンプルを削除</li>
+<li>[問題 #5131] https://github.com/apache/rocketmq/pull/5142 の @totalo によってメッセージが送信された後、プロデューサーを閉じる</li>
+<li>[問題 #5133] https://github.com/apache/rocketmq/pull/5145 の @selectbook による一方向プロデューサーのデモで、StandardCharsets.UTF_8 をデフォルトの文字セットとして使用する</li>
+<li>[問題 #5135] https://github.com/apache/rocketmq/pull/5144 の @islongfei による ERROR_MESSAGE 文字列のフォーマット</li>
+<li>[問題 #5136] https://github.com/apache/rocketmq/pull/5143 の @RapperCL によって不要なパラメーターを削除します</li>
+<li>[問題 #5130] https://github.com/apache/rocketmq/pull/5146 の @security00 による Readme ファイルの例として最新の rocketmq バージョンを使用する</li>
+<li>[問題 #5095] [Remoting-C] https://github.com/apache/rocketmq/pull/5129 の @lizhimins によるエラー ログへのスレッド例外情報の出力をサポート</li>
+<li>[問題 #5149]remove:org/apache/rocketmq/example/simple/TestProducer.java by @liyijuan (https://github.com/apache/rocketmq/pull/5155)</li>
+<li>[問題 #4634] https://github.com/apache/rocketmq/pull/5159 の @PansonPanson による namesrv モジュールのコード スタイルを修正</li>
+<li>[問題 #5163] https://github.com/apache/rocketmq/pull/5164 の @aaron-ai によるリモート コマンド ベースの SDK に関する Readme の説明を更新</li>
+<li>Github での操作量の増加 https://github.com/apache/rocketmq/pull/5167 での @aaron-ai による古いアクション</li>
+<li>5.0.0 は、https://github.com/apache/rocketmq/pull/5175 の @odbozhou によるリリース commitId を維持するために、一時的にオープン マージをリリースします</li>
+<li>[問題 #5168] リリース 5.0.0 マージ リリース - https://github.com/apache/rocketmq/pull/5169 の @odbozhou によって開発される 5.0.0</li>
+<li>[問題 #5095] [リモート処理-D] https://github.com/apache/rocketmq/pull/5176 で @lizhimins によってチャネル書き込み機能が書き込み不可に変更された場合、追加のリクエストが処理されない</li>
+<li>[問題 #5151] https://github.com/apache/rocketmq/pull/5154 の @RapperCL による冗長な for ループを削減</li>
+<li>[問題 #5177] AclUtils#combineBytes の NPE を修正 (https://github.com/apache/rocketmq/pull/5178 の @zhiliatom による)</li>
+<li>[問題 #5179] Math.abs() メソッドの呼び出しが冗長で、https://github.com/apache/rocketmq/pull/5181 の @RapperCL による判断と繰り返しの割り当て</li>
+<li>[問題 #5051] GroupCommitService を削除#https://github.com/apache/rocketmq/pull/5052 の @mxsm による同期コード チャンクを実行</li>
+<li>[問題 #5138] https://github.com/apache/rocketmq/pull/5185 の @alexcao2018 によるオーダー プロデューサー デモで例外をスローしない</li>
+<li>[ISSUE 4902]fix-warmMappedFile：ループの前にセーフポイントを配置します。https://github.com/apache/rocketmq/pull/4903 の @isysc1 により、処理効果がスリープよりも優先されます。</li>
+<li>[問題 #5126] ACL モジュールのすべてのテストを Windows でパスさせる (https://github.com/apache/rocketmq/pull/5127 の @lizhanhui 著)</li>
+<li>[問題 #5180] https://github.com/apache/rocketmq/pull/5189 の @lizhimins によるネームサーバー アドレスを取得するためのドメイン解決のサポート</li>
+<li>[問題 #5191] https://github.com/apache/rocketmq/pull/5192 の @aaron-ai によるバッジを更新します</li>
+<li>https://github.com/apache/rocketmq/pull/5190 で @aaron-ai によるマージ ボタンを無効にする</li>
+<li>[問題 #5095] [リモーティング-B] リモーティング client でソックス プロキシをサポート (https://github.com/apache/rocketmq/pull/5123 の @lizhimins 作成)</li>
+<li>[問題 #5198] https://github.com/apache/rocketmq/pull/5199 の @lizhimins による ClusterList サブコマンドの NPE を修正</li>
+<li>[問題 #5122] https://github.com/apache/rocketmq/pull/5193 の @nowinkeyy によるテスト コード (rocketmq-broker モジュール) の checkstyle を有効にする</li>
+<li>[問題 #5195] https://github.com/apache/rocketmq/pull/5196 の @xdkxlk による公開のトピックリストがない場合にデータを直接書き込む</li>
+<li>[問題 #5201] プル リクエストを使用して、https://github.com/apache/rocketmq/pull/5202 の @lizhanhui によるプル リクエスト ターゲットを置き換えます</li>
+<li>[問題 #5121] GitHub アクション パイプラインを追加して、https://github.com/apache/rocketmq/pull/5118 の @tsunghanjacktsai による RocketMQ スナップショットのリリースを自動化します</li>
+<li>[問題 #5152] https://github.com/apache/rocketmq/pull/5153 の @Oliverwqcwrw によりエラー ログ レベルをエラーに変更します</li>
+<li>[問題 #5206] https://github.com/apache/rocketmq/pull/5211 の @nowinkeyy によるテスト コード (rocketmq-client) のチェックスタイルを有効にする</li>
+<li>[問題 #5212] https://github.com/apache/rocketmq/pull/5215 の @nowinkeyy によるテスト コード (rocketmq-common) のチェックスタイルを有効にする</li>
+<li>[問題 #5210] コントローラーのクイック スタート ドキュメントの一部のコマンド エラー (https://github.com/apache/rocketmq/pull/5217 の @mxsm による) を修正</li>
+<li>[問題 #5216] テスト コード (rocketmq-controller、rocketmq-remoting、rocketmq-proxy) の checkstyle を有効にする (https://github.com/apache/rocketmq/pull/5218 の @nowinkeyy による)</li>
+<li>[問題 #5219] https://github.com/apache/rocketmq/pull/5220 の @nowinkeyy によるテスト コード (rocketmq-acl および rocketmq-tools) の checkstyle を有効にする</li>
+<li>[問題 #5214] 互換性のある rocketmq-mqtt は、https://github.com/apache/rocketmq/pull/5208 の @DongyuanPan によるオフセットを保存します</li>
+<li>[問題 #5221] https://github.com/apache/rocketmq/pull/5222 の @nowinkeyy によるテスト コード (rocketmq-store) のチェックスタイルを有効にする</li>
+<li>[問題 #5223] https://github.com/apache/rocketmq/pull/5224 の @nowinkeyy によるテスト コード (rocketmq-test) のチェックスタイルを有効にする</li>
+<li>[問題 #5162] https://github.com/apache/rocketmq/pull/5171 の @Knowden による DefaultMessageStore maxFilterMessageCount の計算に関するバグを修正</li>
+<li>[問題 #5231] 返信メッセージ コードを最適化します。 @echooymxq 著、https://github.com/apache/rocketmq/pull/5229</li>
+<li>[問題 #5236] https://github.com/apache/rocketmq/pull/5237 の @RapperCL による ServiceProvider ロード クラスを修正</li>
+<li>[問題 #5238] https://github.com/apache/rocketmq/pull/5239 の @RongtongJin による、BCQ 下のスレーブ ノードの誤った tps 統計の問題を修正</li>
+<li>[問題 #4658] https://github.com/apache/rocketmq/pull/5245 の @zhiliatom による冗長ロジックを削除</li>
+<li>[問題 #5254] https://github.com/apache/rocketmq/pull/5255 の @RapperCL によるストリーム クローズの最適化</li>
+<li>[問題 #5095] @lizhimins によるリモート テストを https://github.com/apache/rocketmq/pull/5251 に追加</li>
+<li>[問題 #5020] https://github.com/apache/rocketmq/pull/5024 の @Slideee によるツール スクリプトに find_java_home 関数を追加</li>
+<li>[問題 #5205] https://github.com/apache/rocketmq/pull/5258 の @byj520-lang によるテスト コード (rocketmq-logging) のチェックスタイルを有効にする</li>
+<li>[問題 #5265] ネストされたロジックを調整して、https://github.com/apache/rocketmq/pull/5266 の @zhiliatom によるチェック queryMsg の数を削減します。</li>
+<li>[問題 #5267] https://github.com/apache/rocketmq/pull/5269 の @xdkxlk による mqbroker のコマンド ライン引数解析エラーを修正</li>
+<li>修正(秒): https://github.com/apache/rocketmq/pull/5264 の @vvsd により org.yaml:snakeyaml を 1.32 にアップグレード</li>
+<li>[問題 #5272] https://github.com/apache/rocketmq/pull/5273 の @lizhanhui による CI の NPE を修正</li>
+<li>[問題 #5274] AutoSwitchRoleIntegrationTest が不安定になる問題を修正 (https://github.com/apache/rocketmq/pull/5277 の @RongtongJin により)</li>
+<li>[問題 #5270] https://github.com/apache/rocketmq/pull/5271 で @xdkxlk によってシャットダウンするプロセスがない場合、1 で終了します</li>
+<li>https://github.com/apache/rocketmq/pull/5249 に @ShannonDing によるハックトーバーフェストのラベルを追加</li>
+<li>[問題 #5276] https://github.com/apache/rocketmq/pull/5280 の @lizhanhui による OS ピックアップ ポートを使用する</li>
+<li>[問題 #5285] useTLS 値を設定するための vm 引数をサポートします。 @echooymxq 著、https://github.com/apache/rocketmq/pull/5286</li>
+<li>[問題 #5278] https://github.com/apache/rocketmq/pull/5284 の @mxsm による MessageStoreConfig#isTransientStorePoolEnable メソッドのコメント ドキュメントを変更する</li>
+<li>[問題 #5281] https://github.com/apache/rocketmq/pull/5283 の @zhangjidi2016 により、すべての圧力テスト プログラムのコマンド ライン入力パラメーターを統一</li>
+<li>[問題 #5204] https://github.com/apache/rocketmq/pull/5297 の @nowinkeyy によるテスト コード (すべてのモジュール) の checkstyle を有効にする</li>
+<li>[問題 #5305] https://github.com/apache/rocketmq/pull/5306 の @fuyou001 によるプロキシ TopicRouteService キャッシュのバグを修正</li>
+<li>[問題 #5298] https://github.com/apache/rocketmq/pull/5308 の @mxsm による jdk8+ のポーランド語コード スタイル</li>
+<li>[問題 #5291] NettyRemotingServer を最適化します。 @echooymxq 著、https://github.com/apache/rocketmq/pull/5299</li>
+<li>[問題 #5292] [RIP-48] https://github.com/apache/rocketmq/pull/5293 の @lizhimins による成功率を向上させるために、サーバー側でリセット オフセットをサポートします</li>
+<li>[問題 #5288] https://github.com/apache/rocketmq/pull/5289 の @caigy による AccessValidator のデフォルトの読み込みメカニズムを修正</li>
+<li>[問題 #5311] https://github.com/apache/rocketmq/pull/5194 の @drpmma によるグレース シャットダウン用の preShutdown を追加</li>
+<li>[問題 3799] https://github.com/apache/rocketmq/pull/5260 の @ltamber による圧縮削除ポリシーを追加</li>
+<li>[問題 #5313] https://github.com/apache/rocketmq/pull/5275 の @drpmma による ReceiptHandleProcessor と GrpcChannelManager の最適化</li>
+<li>[5315] https://github.com/apache/rocketmq/pull/5316 で @lizhiboo による自動コミットを有効にしない場合はコミット オフセットを無効にします</li>
+<li>[問題 #5322] SDK トピックのルート可用性の改善 (https://github.com/apache/rocketmq/pull/5323 の @fuyou001 による)</li>
+<li>[問題 #3905] https://github.com/apache/rocketmq/pull/5334 の @drpmma による 5.0 client のプロトコルで bname をサポート</li>
+<li>[問題 #5227] github 通知を https://github.com/apache/rocketmq/pull/5341 の @zhouxinyu によるコミット メーリング リストに送信する</li>
+<li>[問題 #5339] https://github.com/apache/rocketmq/pull/5340 の @RongtongJin による BrokerContainer ドキュメント エラーを修正</li>
+<li>プロト バージョンを 2.0.1 にアップグレードし、dlq 情報の解析に適応します。 @lollipopjin 著、https://github.com/apache/rocketmq/pull/5343</li>
+<li>[問題 #5332] https://github.com/apache/rocketmq/pull/5336 の @mxsm によって決して使用されない DefaultMessageStore のプライベート フィールド printTimes を削除します</li>
+<li>https://github.com/apache/rocketmq/pull/5352 に @drpmma による ConsumerProcessor の単体テストを追加</li>
+<li>[問題 #5324] https://github.com/apache/rocketmq/pull/5325 の @mxsm により、CLI の非推奨クラス PosixParser を DefaultParser に置き換えます</li>
+<li>[問題 ##5354] @ShadowySpirits によるブローカー メトリクス フレームワークを https://github.com/apache/rocketmq/pull/5355 に実装</li>
+<li>[問題 #5348] [RIP-48] https://github.com/apache/rocketmq/pull/5349 の @lizhimins によるブロードキャスト消費モードでのサーバー側オフセット管理のサポート</li>
+<li>[問題 #5370] https://github.com/apache/rocketmq/pull/5371 の @mxsm により commons-cli:commons-cli を 1.5.0 にアップグレードします</li>
+<li>[問題 #5376] https://github.com/apache/rocketmq/pull/5377 の @SSS-K によるブローカー構成 timerMaxDelaySec の使用を修正</li>
+<li>[問題 #5374] 新しいマスターが削除される原因となる登録解除を修正しました。 @echooymxq 著、https://github.com/apache/rocketmq/pull/5375</li>
+<li>[問題 #5372] https://github.com/apache/rocketmq/pull/5379 の @thezp による fileWatchService の shutdown メソッドの 2 番目の呼び出しを削除</li>
+<li>[問題 #5364] [RIP 51] https://github.com/apache/rocketmq/pull/5367 の @xdkxlk による Pop Orderly の changeInvisibleTime をサポート</li>
+<li>[問題 #5012] https://github.com/apache/rocketmq/pull/5062 で @caigy による escaping トランザクション メッセージをサポート</li>
+<li>[問題 #3799] https://github.com/apache/rocketmq/pull/5351 の @ltamber によるメイン圧縮プロセス</li>
+<li>[問題 #5381] https://github.com/apache/rocketmq/pull/5389 の @pipi18 による開発ブランチの merge_rocketmq_pr.py コメントを最適化</li>
+<li>[問題 #5373] https://github.com/apache/rocketmq/pull/5369 で @xiaoyifang によって起動すると、namesrv バインドアドレスが出力される</li>
+<li>[問題 #5393] TransactionMessageIT が https://github.com/apache/rocketmq/pull/5394 の @RongtongJin による CI を渡せない問題を修正</li>
+<li>[問題 #5390] https://github.com/apache/rocketmq/pull/5391 の @xdkxlk による PopReviveService で役に立たないログを出力しないようにする</li>
+<li>[問題 #5356] [RIP 48] https://github.com/apache/rocketmq/pull/5357 の @lizhimins による準備完了メッセージと飛行中メッセージの概念の導入</li>
+<li>[問題 #5402] https://github.com/apache/rocketmq/pull/5403 の @xdkxlk による PopReviveService での再試行メッセージを取得するときに、messageBody が解凍されない問題</li>
+<li>[問題 #5331] NPE の原因となる ConsumeQueueTest の安定したスリープを修正します。 @echooymxq 著、https://github.com/apache/rocketmq/pull/5397</li>
+<li>[問題 #5386][RIP-50] https://github.com/apache/rocketmq/pull/5386 の @Focus-rth によるバッチ OP メッセージの RocketMQ トランザクション メッセージの改善</li>
+<li>[問題 #5307] https://github.com/apache/rocketmq/pull/5314 の @nowinkeyy による冗長な if ステートメントを削除</li>
+<li>[問題 #5408] https://github.com/apache/rocketmq/pull/5409 の @xdkxlk により、一致する CK が長時間見つからない場合に ACK をスキップできる</li>
+<li>[問題 #5354] [RIP-46] @ShadowySpirits によるプロキシ メトリクス フレームワークを https://github.com/apache/rocketmq/pull/5407 に実装</li>
+<li>[問題 #5310] https://github.com/apache/rocketmq/pull/5319 の @zhangjidi2016 による管理ツールのクエリメッセージ署名チェックが失敗しました</li>
+<li>[問題 #5424] https://github.com/apache/rocketmq/pull/5425 の @RapperCL による getHalfMsg メソッドに存在する null 例外と配列オーバーフローのバグを修正</li>
+<li>[問題 #5426] https://github.com/apache/rocketmq/pull/5427 の @mxsm による mqadmin updateTopic CLI 結果の印刷形式の問題を修正</li>
+<li>[問題 #5415] https://github.com/apache/rocketmq/pull/5416 の @RapperCL による重複レコードを修正</li>
+<li>[問題 #5413] https://github.com/apache/rocketmq/pull/5414 の @mxsm によって AutoSwitchHAClient currentReceivedEpoch 属性の long 型を int に変更します</li>
+<li>[問題 #5365] [RIP 51] https://github.com/apache/rocketmq/pull/5387 の @xdkxlk によるポップ順序の通知メカニズムを追加</li>
+<li>[問題 #5452] ラベル「@maven//:com_google_guava_guava」が、https://github.com/apache/rocketmq/pull/5451 の @RongtongJin による CI を渡すためにルール「tests」の「deps」属性で重複している問題を修正</li>
+<li>[問題 #5443] https://github.com/apache/rocketmq/pull/5450 で @RongtongJin によってリソース ファイルが見つからない場合にユーザーを誤解させるサービス プロバイダー レポート NPE を修正しました。</li>
+<li>https://github.com/apache/rocketmq/pull/5449 の @ShadowySpirits によるブローカー統計メトリクスとリクエスト メトリクスを実装</li>
+<li>[問題 #5453] https://github.com/apache/rocketmq/pull/5454 の @mxsm による parseDelayLevel エラー ログ情報を結合する</li>
+<li>[問題 #5344] Windows および Mac CI パイプラインを修正 (https://github.com/apache/rocketmq/pull/5345 の @lizhanhui による)</li>
+<li>[問題#5331] mmap されたときに Windows がファイルを移動できない問題を修正しました。 @echooymxq 著、https://github.com/apache/rocketmq/pull/5434</li>
+<li>[問題 #5458] Windows と MacOS でのチェックを有効にする (https://github.com/apache/rocketmq/pull/5459 の @lizhanhui による)</li>
+<li>[問題 #5430] https://github.com/apache/rocketmq/pull/5467 の @fndejan による冗長な null チェックを削除</li>
+<li>[問題 #5437] https://github.com/apache/rocketmq/pull/5468 で @humkum によってフックの実行が失敗した場合のプッシュ コンシューマのログ情報を追加</li>
+<li>[RIP-48] https://github.com/apache/rocketmq/pull/5457 の @lizhimins によるポップ メッセージのサーバー側でのリセット オフセットをサポート</li>
+<li>[問題 #5446] https://github.com/apache/rocketmq/pull/5447 の @mxsm により、ScheduleMessageService のログ名 RocketmqStore を RocketmqBroker に変更します</li>
+<li>[ISSUE#5404] https://github.com/apache/rocketmq/pull/5436 の @jasonjavaYY による曖昧さを解決するために、変数名 whatItemWorst をrandomItem に変更しました</li>
+<li>https://github.com/apache/rocketmq/pull/5489 の @aaron-ai によって Maven プロパティで依存関係のバージョンを宣言します</li>
+<li>[問題 #5493] 修正: https://github.com/apache/rocketmq/pull/5494 の @humkum によってターゲットのlogicQueueMappingItemが古くなった場合、ロジック オフセットによるアイテムの取得によって発生するnpeの問題</li>
+<li>[問題 #5490] メトリクス ビューを追加し、https://github.com/apache/rocketmq/pull/5491 の @ShadowySpirits による単体テストを修正</li>
+<li>[問題 #5358] https://github.com/apache/rocketmq/pull/5253 の @GOODBOY008 によるエラー コアコンセプト URL を修正</li>
+<li>[問題 #5281] https://github.com/apache/rocketmq/pull/5282 の @zhangjidi2016 による圧力結果の出力を最適化します。</li>
+<li>[問題 #5482] https://github.com/apache/rocketmq/pull/5488 の @mxsm による ClientRequestProcessor#getRouteInfoByTopic メソッドの無効なロジック判定を削除</li>
+<li>[問題 #5449] [RIP-46] https://github.com/apache/rocketmq/pull/5487 の @ShadowySpirits によるリモート統計メトリクスを実装</li>
+<li>[問題 #5481] https://github.com/apache/rocketmq/pull/5483 の @aaron-ai による期限切れメッセージの繰り返し消費確率を下げる</li>
+<li>https://github.com/apache/rocketmq/pull/5501 の @aaron-ai による sendMessageBack での不要な再試行を削除</li>
+<li>[問題 #5449] [RIP-46] client 接続を追加し、https://github.com/apache/rocketmq/pull/5505 の @ShadowySpirits によるラグ メトリックを消費します</li>
+<li>https://github.com/apache/rocketmq/pull/5503 の @ShadowySpirits によりリモート処理と共通モジュール間の依存関係を逆転します</li>
+<li>[問題 #5509] Mockito を使用して、https://github.com/apache/rocketmq/pull/5510 の @lizhanhui によるセットアップを通じて TimeoutException を直接スローします</li>
+<li>[問題 #5512] 不要なネットワーク インターフェイスをスキップします。 @echooymxq 著、https://github.com/apache/rocketmq/pull/5513</li>
+<li>[問題 #5499] https://github.com/apache/rocketmq/pull/5500 の @mxsm による BrokerHousekeeperService の未使用の静的属性ログを削除</li>
+<li>[問題 #5294] https://github.com/apache/rocketmq/pull/5295 の @RapperCL による ClassLoad パスの最適化を修正</li>
+<li>[問題 #5506] https://github.com/apache/rocketmq/pull/5522 の @drpmma によるドキュメントの作成トピックを追加</li>
+<li>[問題 #5511] https://github.com/apache/rocketmq/pull/5514 の @mxsm によるプロキシ起動時のスロー NullPointerException を修正</li>
+<li>[問題 #5448] [RIP-46] https://github.com/apache/rocketmq/pull/5528 の @ShadowySpirits によるデフォルトのメッセージ ストアのメトリクスを実装する</li>
+<li>[問題 #5526] 修正: https://github.com/apache/rocketmq/pull/5527 では、トピック属性が @humkum によって null に置き換えられます。</li>
+<li>[問題 #5484] ロギング モジュールを、https://github.com/apache/rocketmq/pull/5524 の @aaron-ai によるシェーディングされたログバックに置き換えます</li>
+<li>[問題 #5532] 修正: DefaultMQAdminExt 設定の sockProxy は、https://github.com/apache/rocketmq/pull/5533 の @supercym による影響を受けません。</li>
+<li>InterruptedException は、https://github.com/apache/rocketmq/pull/5515 の @asia-zengtao によって無視されるべきではありません</li>
+<li>「[問題 #5484] ログ モジュールをシェーディング ログバックに置き換える (#55… by @zhouxinyu in https://github.com/apache/rocketmq/pull/5537)」を元に戻します。</li>
+<li>[問題 #5157] https://github.com/apache/rocketmq/pull/5182 の @mxsm による AutoSwitchHAConnection HandShake のデータ プロトコルの最適化</li>
+<li>[問題 #5534] https://github.com/apache/rocketmq/pull/5535 の @lizhanhui による BatchConsumeQueueTest のタイムアウトを緩和する</li>
+<li>[問題 #4330] https://github.com/apache/rocketmq/pull/5546 の @hzh0425 による DefaultElectPolicy のいくつかのコメントを修正</li>
+<li>[問題 #5536] 修正: 新しいバージョンのネームサーバーは古いバージョンのブローカーと互換性がある必要があります (https://github.com/apache/rocketmq/pull/5539 の @humkum により)</li>
+<li>[問題 #5544] https://github.com/apache/rocketmq/pull/5545 の DLedgerServer#getdLedgerLeaderElector の非推奨メソッドを @mxsm に置き換えます</li>
+<li>[問題 #5549] https://github.com/apache/rocketmq/pull/5550 の @RongtongJin によりコントローラーのヘッダーを上位層に移動</li>
+<li>[問題 #5542] ConsumerProcessor lockBatchMQ の将来の allOf データ競合の問題を修正 (https://github.com/apache/rocketmq/pull/5543 の @drpmma による)</li>
+<li>[問題 #5484] ロギング モジュールを、https://github.com/apache/rocketmq/pull/5540 の @aaron-ai によるシェーディングされたログバックに置き換えます。</li>
+<li>修正(秒): https://github.com/apache/rocketmq/pull/5547 の @pen4 により com.alibaba:fastjson を 1.2.83 にアップグレード</li>
+<li>[問題 #5471] AutoSwitchRoleIntegrationTest で依然としてランダムなエラーが発生する問題を修正 (https://github.com/apache/rocketmq/pull/5475 の @RongtongJin による)</li>
+<li>https://github.com/apache/rocketmq/pull/5564 の @aaron-ai による rocketmq ロギングのグループ ID を更新します</li>
+<li>[問題 #5558] https://github.com/apache/rocketmq/pull/5559 の @hzh0425 による DLedgerController のタイプミスを修正</li>
+<li>[問題 #5566] https://github.com/apache/rocketmq/pull/5567 の @RongtongJin による AutoSwitchHATest の不安定なテストを修正</li>
+<li>[問題 #5560] https://github.com/apache/rocketmq/pull/5561 で @zhangjidi2016 によってメソッド パラメーターが間違った順序で渡される</li>
+<li>[問題 #5572] https://github.com/apache/rocketmq/pull/5573 の @hzh0425 による BrokerInfo 内の無駄な紹介を削除</li>
+<li>[問題 #5448] https://github.com/apache/rocketmq/pull/5580 の @ShadowySpirits によるポップ プロセッサのメトリックの最適化</li>
+<li>[問題 #5576] https://github.com/apache/rocketmq/pull/5582 の @mxsm による UtilAll#getPid メソッドの最適化</li>
+<li>[問題 #5577] sendMessageContext のビルドを最適化し、https://github.com/apache/rocketmq/pull/5578 の @RongtongJin による不必要に繰り返されるリクエストの解析を回避します。</li>
+<li>[問題 #5562]catch ブロック内の ConsumerOffset 実行ロジックをリセットし、https://github.com/apache/rocketmq/pull/5563 の @zhangjidi2016 によって通常の状況では実行されません</li>
+<li>[問題 #5569] https://github.com/apache/rocketmq/pull/5548 の @hzh0425 によるコントローラー モードのサポート ブローカー優先順位の選択</li>
+<li>[問題 #5531] https://github.com/apache/rocketmq/pull/5587 の @aaron-ai によるブローカー コンテナ モードで MDC を適用する</li>
+<li>[問題 #5309] https://github.com/apache/rocketmq/pull/5591 の @ShadowySpirits による不安定なテスト NormalMsgDelayIT を修正</li>
+<li>[問題 #5593] https://github.com/apache/rocketmq/pull/5594 の @RongtongJin による RPCHook を中断するための AbortProcessException を有効にする</li>
+<li>[問題 #5602] https://github.com/apache/rocketmq/pull/5603 の @mxsm により BrokerConfig から不要なログ属性を削除</li>
+<li>https://github.com/apache/rocketmq/pull/5607 の @aaron-ai による dleger ログの問題を修正</li>
+<li>[問題 #4487] 消費者がブロードキャスト サブスクリプションに参加している場合、trackType が間違っています。 @zhangjidi2016 著、https://github.com/apache/rocketmq/pull/5609</li>
+<li>https://github.com/apache/rocketmq/pull/5610 の @drpmma による TimerMessageStoreTest testTimerFlowControl テストを修正</li>
+<li>[問題 #5605] https://github.com/apache/rocketmq/pull/5606 の @ShadowySpirits によるラグ計算のためのタグ推定を導入</li>
+<li>[問題 #5303] https://github.com/apache/rocketmq/pull/5608 で @zhangjidi2016 によるバッチ メッセージ送信の無効な認証の問題を解決しました</li>
+<li>[問題 #5595] @drpmma による validateSystemTopicWhenUpdateTopic を https://github.com/apache/rocketmq/pull/5596 に追加</li>
+<li>[問題 #5616] https://github.com/apache/rocketmq/pull/5597 の @francisoliverlee による POP チェックポイント レコード アクセサーのタイプミスを修正</li>
+<li>[問題 #5623] https://github.com/apache/rocketmq/pull/5624 で @mxsm によって開始された mqnamesrv を使用すると org.sfl4j.LoggerFactory をロードできない問題を修正</li>
+<li>[問題 #5621] Bazel: https://github.com/apache/rocketmq/pull/5622 の @lizhanhui によるストア モジュールのすべてのテストを有効にする</li>
+<li>[問題 #5617] https://github.com/apache/rocketmq/pull/5618 の @lizhanhui による Bazel の警告と依存関係を修正</li>
+<li>https://github.com/apache/rocketmq/pull/5628 の @drpmma によるプロキシ インターフェイスとメソッドの最適化</li>
+<li>https://github.com/apache/rocketmq/pull/5629 に @drpmma による通知用の else ハンドルを追加</li>
+<li>[問題 #5634] https://github.com/apache/rocketmq/pull/5635 の @RongtongJin によって自動コミットがオフになっている場合、永続コンシューマー オフセットを無効にしてはなりません</li>
+<li>[問題 #5626] DefaultMessageStore#getEarliestMessageTime と DefaultMessag を最適化… by @ShadowySpirits (https://github.com/apache/rocketmq/pull/5627)</li>
+<li>[問題 #5637] AutoSwitchRoleIntegrationTest をより安定させようとする (https://github.com/apache/rocketmq/pull/5638 の @RongtongJin による)</li>
+<li>[問題 #5639] https://github.com/apache/rocketmq/pull/5640 の @RongtongJin により、ライト プル コンシューマのあいまいなメソッドが非推奨になりました</li>
+<li>https://github.com/apache/rocketmq/pull/5643 の @lizhimins によるポップ メッセージのハンドル json を最適化</li>
+<li>[問題 #5647] PullMessageService の一部のメソッドのパラメーター名 (https://github.com/apache/rocketmq/pull/5650 の @mxsm による)</li>
+<li>[問題 #5568] https://github.com/apache/rocketmq/pull/5611 の @lizhimins によるポップ モード消費のための長いグループとトピックのサポート</li>
+<li>[問題 #5644] 静的トピック IT が https://github.com/apache/rocketmq/pull/5645 で @RongtongJin を通過できなくなるバグを修正</li>
+<li>[問題 #5583] https://github.com/apache/rocketmq/pull/5652 の @xdkxlk によるテスト ReceiptHandleProcessorTest#testRenewReceiptHandleWhenTimeout を修正</li>
+<li>[問題 #5654] https://github.com/apache/rocketmq/pull/5655 の @xdkxlk によるポップの機内メッセージを計算する</li>
+<li>[ISSUSE #5589] https://github.com/apache/rocketmq/pull/5590 の @ShadowySpirits によるリクエストからのレコード サブスクリプション</li>
+<li>[問題 #5659] https://github.com/apache/rocketmq/pull/5662 で @Oliverwqcwrw によって出力された冗長なエラー ログを削除</li>
+<li>[問題 #5644] https://github.com/apache/rocketmq/pull/5666 で @RongtongJin によって渡される静的トピック IT を作成する</li>
+<li>[問題 #5651] https://github.com/apache/rocketmq/pull/5667 で @mxsm による HA 切断が原因でメッセージを正常に送信できない問題を修正</li>
+<li>[問題 #5670] https://github.com/apache/rocketmq/pull/5671 の @mxsm による TimerMessage の例に注記を追加</li>
+<li>[問題 #5668] AutoSwitchHAClient および AutoSwitchHAConnection のコメント (https://github.com/apache/rocketmq/pull/5669 の @mxsm によるポーランド語)</li>
+<li>[問題 #5660] https://github.com/apache/rocketmq/pull/5661 の @ShadowySpirits による LagCalculationIT の最適化</li>
+<li>[問題 #5392] [RIP-55] https://github.com/apache/rocketmq/pull/5575 の @drpmma による rocketmq プロキシ モジュールでのリモート プロトコルのサポート</li>
+<li>[問題 #5631] https://github.com/apache/rocketmq/pull/5633 の @mxsm による ReplicasInfoManager#registerBroker ロジックの最適化</li>
+<li>[問題 #5676] https://github.com/apache/rocketmq/pull/5677 の @mxsm によるプロキシおよびコントローラー モジュールでの動的ログインのサポート</li>
+<li>[問題 #5673] Windows プラットフォーム スクリプトをコントローラー クイック スタートとして追加 (https://github.com/apache/rocketmq/pull/5674 の @mxsm)</li>
+<li>[問題 #5686] https://github.com/apache/rocketmq/pull/5687 の @mxsm によるポーランド語の ReplicasInfoManager コメントと静的ログ属性</li>
+<li>[問題 #5692] https://github.com/apache/rocketmq/pull/5693 の @mxsm によるコントローラー ヘッダーの toString を修正</li>
+<li>[問題 #5695] ブローカーの起動を最適化 (https://github.com/apache/rocketmq/pull/5696 の @lizhimins による)</li>
+<li>[問題 #5688] https://github.com/apache/rocketmq/pull/5689 の @mxsm によってログ XML 構成ファイルを配布構成ディレクトリに追加します</li>
+<li>[問題 #5701] [RIP-46] ラグ計算のための再試行トピックとラグ推定を導入します。 @ShadowySpirits 著、https://github.com/apache/rocketmq/pull/5702</li>
+<li>[問題 #5726] https://github.com/apache/rocketmq/pull/5727 の @xiaoyifang による遅延メッセージと一致した場合、verifyDelay はループを中断する必要があります</li>
+<li>[問題 #5730] https://github.com/apache/rocketmq/pull/5731 の @mxsm による API_Reference_DefaultMQProducer.md ドキュメントの中国語から英語への翻訳</li>
+<li>[問題 #5732] https://github.com/apache/rocketmq/pull/5733 の @mxsm による cn README.md に StaticTopic リンクが見つからない問題を修正</li>
+<li>[問題 #5724] https://github.com/apache/rocketmq/pull/5725 の @mxsm によってプロキシ モジュール ログ XML を配布ディレクトリに追加します</li>
+<li>https://github.com/apache/rocketmq/pull/5735の@aaron-aiによる起動スクリプトでログバック設定ファイルを指定</li>
+<li>[問題 #5712] https://github.com/apache/rocketmq/pull/5711 の @RongtongJin によるコントローラー切り替え後のハートビート検出の無効を修正</li>
+<li>[問題 #5754] [RIP-57] https://github.com/apache/rocketmq/pull/5755 の @ShadowySpirits により非同期インターフェイスを MessageStore に追加</li>
+<li>[問題 #5778] https://github.com/apache/rocketmq/pull/5777 の @yuz10 によるcompensiveSubscribeData のバグを修正</li>
+<li>[問題 #5763] https://github.com/apache/rocketmq/pull/5764 の @lybuestc によるデフォルトの購読タグ メソッドを追加 *</li>
+<li>[問題 #5699] https://github.com/apache/rocketmq/pull/5700 の @xiaoyifang による UtilAll.isBlank の重複コード定義を削除</li>
+<li>[問題 #5783] https://github.com/apache/rocketmq/pull/5784 の @lizhanhui によるコンパイル警告を修正</li>
+<li>[問題 #5780] DLedgerServer の非推奨の getdLedgerLeaderElector メソッドを、https://github.com/apache/rocketmq/pull/5781 の @mxsm による getDLedgerLeaderElector に置き換えます。</li>
+<li>[問題 #5785] https://github.com/apache/rocketmq/pull/5786 の @mxsm による翻訳コントローラーのdeploy.md 中国語文書から英語文書へ</li>
+<li>[問題 #5776] https://github.com/apache/rocketmq/pull/5775 で @yx9o による重複した空の文字列チェックを削除</li>
+<li>https://github.com/apache/rocketmq/pull/5788 の @drpmma によるプロトコルで rocketmq プロキシでのロングポーリングをサポート</li>
+<li>[問題 #5770] https://github.com/apache/rocketmq/pull/5771 の @mxsm による翻訳コントローラー Quick_start.md 中国語文書から英語文書へ</li>
+<li>[問題 #5793] https://github.com/apache/rocketmq/pull/5794 の @mxsm による、QuorumACK.md の中国語ドキュメントを英語ドキュメントとポーランド語の cn ドキュメントに翻訳します</li>
+<li>[問題 #5791] https://github.com/apache/rocketmq/pull/5792 の @mxsm により、コントローラーのdeploy.md とquick_start.md リンクが正しくない問題を修正しました。</li>
+<li>[問題 #5789] https://github.com/apache/rocketmq/pull/5790 の @mxsm による翻訳コントローラー design.md 中国語文書から英語文書へ</li>
+<li>[問題 #5741] https://github.com/apache/rocketmq/pull/5744 の @mxsm により、Windows プラットフォームの cmd コマンド ラインでログバック構成ファイルを指定します</li>
+<li>[問題 #5714] コントローラー モードで transientStorePool=true の場合にブローカーが正常に動作できない問題を修正 (https://github.com/apache/rocketmq/pull/5722 の @RongtongJin により)</li>
+<li>[問題 #5802] HashMap と HashSet を最適化すると、https://github.com/apache/rocketmq/pull/5803 の @mxsm によるサイズ変更メソッドが呼び出されます</li>
+<li>[問題 #5809] AutoSwitchHAService の ReentrantReadWriteLock との同期を https://github.com/apache/rocketmq/pull/5810 の @mxsm に置き換えます</li>
+<li>[問題 #5813] https://github.com/apache/rocketmq/pull/5815 の @ShadowySpirits によるポップ消費モードでトピック キュー ロックのロックが解除されない問題を修正</li>
+<li>[問題 #5812] https://github.com/apache/rocketmq/pull/5811 の @RongtongJin によって静的トピックが正常に消費できない問題を修正</li>
+<li>[問題 #5766] client で発生する可能性のある NPE を修正します。https://github.com/apache/rocketmq/pull/5769 の @xiaoyifang による期限切れメッセージをクリーンアップします。</li>
+<li>[問題 #5821] QuorumACK.md ドキュメント内の不要な中国語を削除します。 @yx9o 著、https://github.com/apache/rocketmq/pull/5822</li>
+<li>[問題 #5819] https://github.com/apache/rocketmq/pull/5820 の @ShadowySpirits による不安定なテスト PullRequestHoldServiceTest を修正</li>
+<li>[問題 #5823] https://github.com/apache/rocketmq/pull/5824 の @lizhimins によるメッセージ ストア インターフェイスに削除トピックを追加</li>
+<li>[問題 #5823] https://github.com/apache/rocketmq/pull/5828 の @lizhimins によるメッセージ ストア インターフェイスの削除トピックを修正</li>
+<li>[問題 #5830] https://github.com/apache/rocketmq/pull/5831 の @ShadowySpirits による GetMessageResult#getMessageCount のバグを修正</li>
+<li>https://github.com/apache/rocketmq/pull/5765 の @RongtongJin により、必要なステータス チェックから bazel-compile を一時的に削除しました</li>
+<li>[問題 #5829] https://github.com/apache/rocketmq/pull/5833 の @mahaitao617 による README の codecov URL を修正</li>
+<li>[問題 #5704] https://github.com/apache/rocketmq/pull/5707 の @mxsm によって NamesrvConfig のenableControllerInNamesrv が false になっている場合にネームサーバーの起動を最適化します。</li>
+<li>[問題 #5837] https://github.com/apache/rocketmq/pull/5840 の @ShadowySpirits による MessageStore#checkInDiskByConsumeOffset を非推奨にする</li>
+<li>https://github.com/apache/rocketmq/pull/5843の@ShadowySpiritsによるポップ消費モードでのrestNum計算を修正</li>
+<li>[問題 #5839] Code.ILLEGAL_POLLING_TIME は、gRPC Client &lt;=5.0.2 (https://github.com/apache/rocketmq/pull/5841 の @aaron-ai 作成) と互換性がありません</li>
+<li>[問題 #5816] https://github.com/apache/rocketmq/pull/5818 の @frinda によって BrokerStatus コマンドにパラメータが設定されていない場合に応答が返されない問題を修正</li>
+<li>[問題 #5832] https://github.com/apache/rocketmq/pull/5834 で @Oliverwqcwrw によるメッセージを送信せずに、consumerCount が rapidly 増加する問題を修正しました。</li>
+<li>[問題 #5847] https://github.com/apache/rocketmq/pull/5848 の @drpmma により、NotificationProcessor でのウェイクアップを修正しました</li>
+<li>[問題 #5869] https://github.com/apache/rocketmq/pull/5868 の @RongtongJin による ConsumerSendMsgBack メソッドの不要な検証ロジックを削除</li>
+<li>[問題 #5862] https://github.com/apache/rocketmq/pull/5865 の @xdkxlk によるプロキシのオフライン プロデューサー グループを削除します</li>
+<li>[問題 #5507] https://github.com/apache/rocketmq/pull/5508 の @mxsm による AttributeParser#parseToMap 解析の速度を向上させます</li>
+<li>[問題 #5804] BrokerStatsManager の最適化 #incTopicPutLatency で https://github.com/apache/rocketmq/pull/5805 の @mxsm による statsKey の作成</li>
+<li>[問題 #5708] https://github.com/apache/rocketmq/pull/5709 で @mxsm による -p コマンドを使用すると、NamesrvStartup が設定を印刷できない問題を修正しました。</li>
+<li>[問題 #5863] https://github.com/apache/rocketmq/pull/5864 の @ShadowySpirits による階層型ストア メタデータを実装する</li>
+<li>[問題 #5872] AutoSwitchHATest ユーティリティの testChangeRoleManyTimes を無視します。https://github.com/apache/rocketmq/pull/5871 の @RongtongJin によって安定しています。</li>
+<li>[問題 #5852] プロキシを有効にし、aclEnable が https://github.com/apache/rocketmq/pull/5854 の @Oliverwqcwrw によって false になっている場合、PlainAccessValidator を作成しない</li>
+<li>[RIP-48] https://github.com/apache/rocketmq/pull/5878 の @lizhimins による ACK メッセージにサーバー側オフセットがある場合、ブローカーがオフセットをコミットしない</li>
+<li>[問題 #5740] util.getIP が LAN IP 経由でローカルホストを選択する場合がある問題を修正しました。 @RagingSpud 著、https://github.com/apache/rocketmq/pull/5856</li>
+<li>[問題 #5880] https://github.com/apache/rocketmq/pull/5881 の @mxsm により、MessageClientIDSetter クラスの不要な属性 TOPIC_KEY_SPLITTER を削除</li>
+<li>[問題 #5874] https://github.com/apache/rocketmq/pull/5875 の @ShadowySpirits による階層型ストレージのファイル キューを実装</li>
+<li>[問題 #5847] https://github.com/apache/rocketmq/pull/5888 の @drpmma による NoticeProcessor のリフレクター ロジック</li>
+<li>[問題 #5885] https://github.com/apache/rocketmq/pull/5886 の @mxsm による FAQurl のクラス FAQ URL の誤りを修正</li>
+<li>[問題 #5897] https://github.com/apache/rocketmq/pull/5898 の @Oliverwqcwrw によってブローカーが既にブローカー コンテナーに追加されている場合の例外情報をポーランド語にします。</li>
+<li>[問題 #5891] https://github.com/apache/rocketmq/pull/5892 の @ShadowySpirits による階層型ストアの MessageStore インターフェイスの実装</li>
+<li>[問題 #5859] https://github.com/apache/rocketmq/pull/5870 の @mxsm による DefaultMQProducerImpl の String#format の最適化</li>
+<li>[問題 #5900] https://github.com/apache/rocketmq/pull/5901 の @Oliverwqcwrw によるシャットダウン失敗時にブローカーを正常に削除できない問題を修正</li>
+<li>[問題 #5902] https://github.com/apache/rocketmq/pull/5903 の @aaron-ai によるログバック警告を修正</li>
+<li>[問題 #5905] VM クラッシュ後に構成ファイルが消える問題を修正 (https://github.com/apache/rocketmq/pull/5906 の @yuz10 による)</li>
+<li>[問題 #5876] https://github.com/apache/rocketmq/pull/5877 の @ShadowySpirits による DefaultLitePullConsumerTest のリソース リークを修正</li>
+<li>[問題 #5921] https://github.com/apache/rocketmq/pull/5922 の @RongtongJin によるコントローラー アドレスを取得するためのドメイン解決のサポート</li>
+<li>[問題 #5916] https://github.com/apache/rocketmq/pull/5917 の @RongtongJin により、availableNamesrvAddrMap が古いネームサーバー アドレスを削除できない問題を修正しました。</li>
+<li>[問題 #5913] GetSyncStateSetSubCommand は、https://github.com/apache/rocketmq/pull/5935 の @RongtongJin によってブローカーが SyncStateSet にないことを出力することもできます</li>
+<li>https://github.com/apache/rocketmq/pull/5946 の @aaron-ai により、rocketmq-logging を 1.0.1 に更新</li>
+<li>[問題 #5949] https://github.com/apache/rocketmq/pull/5950 の @mxsm による TopicQueueMappingInfo クラスの重複ライセンスを削除</li>
+<li>https://github.com/apache/rocketmq/pull/5951 の @lizhimins により Maven アセンブリ プラグインのバージョンを 3.4.2 にアップグレード</li>
+<li>[問題 #5929] https://github.com/apache/rocketmq/pull/5930 の @RongtongJin によるネットワーク分割時にブローカーが頻繁にハートビートをコントローラーに送信してスレッド ブロックを引き起こす問題を修正</li>
+<li>[問題 #5953] https://github.com/apache/rocketmq/pull/5954 の @ShadowySpirits によるポップ消費モードでの再試行メッセージ スループットの計算</li>
+<li>[問題 #5961] リファクタリング: https://github.com/apache/rocketmq/pull/5962 の @xdshent による getPID の簡略化</li>
+<li>[問題 #5923] @ShadowySpirits による階層型ストレージ バックエンド サービス プロバイダーの例を https://github.com/apache/rocketmq/pull/5926 に追加</li>
+<li>[問題 #5963] 役に立たない例外クラスを削除: MQRedirectException by @socutes (https://github.com/apache/rocketmq/pull/5964)</li>
+<li>https://github.com/apache/rocketmq/pull/5968 の @pingww による lmqTopicQueueTable の初期化を修正</li>
+<li>https://github.com/apache/rocketmq/pull/5959 の @aaron-ai による dledger ログを修正</li>
+<li>[問題 #5860] https://github.com/apache/rocketmq/pull/5861 で @Slideee によってトピックを作成または更新するときに順序の値を設定します</li>
+<li>[問題 #5939] MQClientInstance#sendHeartbeatToAllBroker キャッチ コード ブロック ログの出力レベルを、https://github.com/apache/rocketmq/pull/5940 の @mxsm による情報から警告に調整します。</li>
+<li>[問題 #5924] https://github.com/apache/rocketmq/pull/5925 の @mxsm による UtilAll#sleep メソッドの最適化</li>
+<li>[問題 #5986] https://github.com/apache/rocketmq/pull/5988 の @hardyfish による BrokerOuterAPITest クラス コードを最適化します。</li>
+<li>[問題 #5971] コントローラーの元帳に関連する内部ログを、https://github.com/apache/rocketmq/pull/5972 の @RongtongJin によって個別にファイルに出力するようにする</li>
+<li>[問題 #5969] https://github.com/apache/rocketmq/pull/5973 の @zhiliatom による管理プロセッサーでの重複する deleteUnusedStats の Remvoe の重複</li>
+<li>[問題 #5847] @drpmma による hasMsgFromQueue の checkBlock を https://github.com/apache/rocketmq/pull/5981 に追加</li>
+<li>[問題 #5983] 消費者サポートのフロー制御コードを改善 (https://github.com/apache/rocketmq/pull/5984 の @RongtongJin 氏)</li>
+<li>[問題 #5896] 特技: @mahaitao617 によるポップ コンシューマーの例 (https://github.com/apache/rocketmq/pull/5991) を追加</li>
+<li>[問題 #5942] https://github.com/apache/rocketmq/pull/5943 の @Oliverwqcwrw によるシステム トピックの数量を含む生産数を修正しました</li>
+<li>[問題 #5999] https://github.com/apache/rocketmq/pull/6000 の @mxsm による TopicQueueMappingUtils コメントのタイプミスを修正</li>
+<li>[問題 #5996] https://github.com/apache/rocketmq/pull/5998 の @hardyfish による RemotingSerializable クラス コードの最適化</li>
+<li>[問題 #5994] [RIP-46] @ShadowySpirits によるポップとタイマーのメトリクスを https://github.com/apache/rocketmq/pull/5995 に追加</li>
+<li>[問題 #6012] https://github.com/apache/rocketmq/pull/6013 の @xdkxlk により queueId のタイプを PopCheckPoint の int に変更します</li>
+<li>[問題 #5941] https://github.com/apache/rocketmq/pull/5944 の @zzjcool によってプロキシが開始されるときに ACL が読み込まれない問題を修正</li>
+<li>[問題 #5975] getUserTopicConfig 実装に https://github.com/apache/rocketmq/pull/5976 の @dingshuangxi888 によるシステム トピックが含まれている問題を修正しました</li>
+<li>[問題 #6021] https://github.com/apache/rocketmq/pull/6022 の @aaron-ai によるネームサーバー ログバック構成の警告を修正</li>
+<li>https://github.com/apache/rocketmq/pull/6018 の @ShadowySpirits による階層型ストレージの Readme を修正</li>
+<li>[問題 #6010]リファクタリング: https://github.com/apache/rocketmq/pull/6011 の @xdshent によるループでの冗長な条件判定を回避する</li>
+<li>[問題 #6007] https://github.com/apache/rocketmq/pull/6008 の @coderbruis による役に立たない if 判定を削除</li>
+<li>[問題 #6019] https://github.com/apache/rocketmq/pull/6020 の @hardyfish による PlainAccessResource 解析メソッドを簡素化しました</li>
+<li>[問題 #5907] https://github.com/apache/rocketmq/pull/5908 で @mxsm によって ConcurrentHashMapUtils の初期化が失敗するのを防ぐために try catch を最適化します。</li>
+<li>[問題 #6033] https://github.com/apache/rocketmq/pull/6034 の @hardyfish による TraceContext toString メソッドの変更</li>
+<li>[問題 #5979] https://github.com/apache/rocketmq/pull/6035 の @mxsm による FAQUrl クラスの間違った FAQ URL を修正</li>
+<li>[問題 #6043] https://github.com/apache/rocketmq/pull/6044 の @hardyfish による DefaultLitePullConsumerImpl isSetEqual メソッド コードを最適化します。</li>
+<li>[問題 #6055] リファクタリング: ループを <code>putAll</code> に置き換え、https://github.com/apache/rocketmq/pull/6056 の @xdshent によるタイプミスを修正</li>
+<li>[問題 #6051] https://github.com/apache/rocketmq/pull/6052 の @hardyfish による冗長な変数定義を削除</li>
+<li>[問題 #6045] getBrokerEpoch によって取得されたエントリのエンドオフセットが https://github.com/apache/rocketmq/pull/6049 の @RongtongJin によって正しくない問題を修正</li>
+<li>[問題 #5927] @mxsm によるプロキシ展開ガイド cn ドキュメントを https://github.com/apache/rocketmq/pull/5928 に追加</li>
+<li>[問題 #6036] https://github.com/apache/rocketmq/pull/6037 の @mxsm による PULL_REQUEST_TEMPLATE.md の最適化</li>
+<li>[問題 #5884] https://github.com/apache/rocketmq/pull/5887 の @nowinkeyy による CommitLog メッセージの同時チェック</li>
+<li>[問題 #6063] ポーランド語コントローラー モードの展開ドキュメント (https://github.com/apache/rocketmq/pull/6064 の @RongtongJin による)</li>
+<li>[問題 #6030] Apache RocketMQ 5.0.1 のリリース準備 (https://github.com/apache/rocketmq/pull/6065 の @drpmma による)</li>
+<li>[RIP-41] https://github.com/apache/rocketmq/pull/6004 の @deepsola による E2E テストを CI に追加</li>
+<li>[問題 #6047] https://github.com/apache/rocketmq/pull/6048 の @xdkxlk による 5.x client の TLS 許容モードのサポート</li>
+<li>[問題 #6069] https://github.com/apache/rocketmq/pull/6070 の @mxsm による README.md DLedger コントローラーのリンク URL を修正</li>
+<li>[問題 #6030] Apache RocketMQ 5.1.0 のリリースを準備する (@drpmma (https://github.com/apache/rocketmq/pull/6072))</li>
+<li>https://github.com/apache/rocketmq/pull/6066 の @ShadowySpirits によるログとメトリクスの軽微な改善</li>
+<li>[問題 #6073] https://github.com/apache/rocketmq/pull/6074 の @hardyfish による静的参照を削除</li>
+<li>[問題 #6077] https://github.com/apache/rocketmq/pull/6078 の @hardyfish によって messageStore が null になる可能性がある問題を修正</li>
+<li>[問題 #6080] https://github.com/apache/rocketmq/pull/6081 の @hardyfish による MQAdminImpl の無意味な null チェックを削除</li>
+<li>[問題 #6082] https://github.com/apache/rocketmq/pull/6083 の @hardyfish による MQClientAPIImpl processSendResponse コードを簡略化します</li>
+<li>[問題 #6084] https://github.com/apache/rocketmq/pull/6075 の @WSYwsy22 によるタイプミスを修正しました</li>
+<li>[問題 #6085] https://github.com/apache/rocketmq/pull/6067 の @agoodjuice によるタイプミスを修正</li>
+<li>[問題 #5941] https://github.com/apache/rocketmq/pull/6079 の @drpmma による proxyConfig enableAclRpcHookForClusterMode を追加</li>
+<li>[問題 #5947] RouteInfoManager#pickupTopicRouteData を最適化して、https://github.com/apache/rocketmq/pull/5948 の @mxsm によって BrokerData コードを作成します</li>
+</ul>
+<h2>新しい貢献者</h2>
+<ul>
+<li>@renyansongno1 が https://github.com/apache/rocketmq/pull/5140 に初めて投稿しました</li>
+<li>@azhsmesos が https://github.com/apache/rocketmq/pull/5139 に初めて投稿しました</li>
+<li>@selectbook は https://github.com/apache/rocketmq/pull/5145 で最初の寄稿を行いました</li>
+<li>@islongfei が https://github.com/apache/rocketmq/pull/5144 で最初の投稿を行いました</li>
+<li>@RapperCL が https://github.com/apache/rocketmq/pull/5143 で最初の貢献を行いました</li>
+<li>@security00 が https://github.com/apache/rocketmq/pull/5146 で最初の貢献を行いました</li>
+<li>@liyijuan が https://github.com/apache/rocketmq/pull/5155 に初めて投稿しました</li>
+<li>@alexcao2018 が https://github.com/apache/rocketmq/pull/5185 に初めて投稿しました</li>
+<li>@isysc1 が https://github.com/apache/rocketmq/pull/4903 で最初の投稿を行いました</li>
+<li>@nowinkeyy が https://github.com/apache/rocketmq/pull/5193 で最初の投稿を行いました</li>
+<li>@DongyuanPan が https://github.com/apache/rocketmq/pull/5208 に初めて投稿しました</li>
+<li>@Knowden は https://github.com/apache/rocketmq/pull/5171 で最初の貢献をしました</li>
+<li>@Slideee が https://github.com/apache/rocketmq/pull/5024 で最初の投稿を行いました</li>
+<li>@byj520-lang が https://github.com/apache/rocketmq/pull/5258 で最初の投稿を行いました</li>
+<li>@vvsd が https://github.com/apache/rocketmq/pull/5264 で最初の投稿を行いました</li>
+<li>@SSS-K は https://github.com/apache/rocketmq/pull/5377 で最初の貢献をしました</li>
+<li>@xiaoyifang が https://github.com/apache/rocketmq/pull/5369 に初めて投稿しました</li>
+<li>@Focus-rth が https://github.com/apache/rocketmq/pull/5386 で最初の貢献を行いました</li>
+<li>@fndejan が https://github.com/apache/rocketmq/pull/5467 で最初の投稿を行いました</li>
+<li>@jasonjavaYY が https://github.com/apache/rocketmq/pull/5436 で最初の投稿を行いました</li>
+<li>@GOODBOY008 が https://github.com/apache/rocketmq/pull/5253 に初めて投稿しました</li>
+<li>@asia-zengtao が https://github.com/apache/rocketmq/pull/5515 に初めて投稿しました</li>
+<li>@pen4 が https://github.com/apache/rocketmq/pull/5547 に初めて投稿しました</li>
+<li>@lybuestc が https://github.com/apache/rocketmq/pull/5764 で最初の投稿を行いました</li>
+<li>@yx9o が https://github.com/apache/rocketmq/pull/5775 に初めて投稿しました</li>
+<li>@mahaitao617 が https://github.com/apache/rocketmq/pull/5833 に初めて投稿しました</li>
+<li>@frinda が https://github.com/apache/rocketmq/pull/5818 に初めて投稿しました</li>
+<li>@RagingSpud が https://github.com/apache/rocketmq/pull/5856 で最初の投稿を行いました</li>
+<li>@socutes は https://github.com/apache/rocketmq/pull/5964 で最初の貢献をしました</li>
+<li>@zzjcool が https://github.com/apache/rocketmq/pull/5944 で最初の投稿を行いました</li>
+<li>@deepsola が https://github.com/apache/rocketmq/pull/6004 で最初の投稿を行いました</li>
+<li>@WSYwsy22 が https://github.com/apache/rocketmq/pull/6075 に初めて投稿しました</li>
+<li>@agoodjuice が https://github.com/apache/rocketmq/pull/6067 に初めて投稿しました
+<strong>フル Changelog</strong>: https://github.com/apache/rocketmq/compare/rocketmq-all-5.0.0...rocketmq-all-5.1.0</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>ソース</strong> <a href="https://github.com/apache/rocketmq">apache/rocketmq</a> · <code>rocketmq-all-5.1.0</code> · 2023-02-20 · <a href="https://github.com/apache/rocketmq/releases/tag/rocketmq-all-5.1.0">アップストリーム リリース</a>
+<em>インデックス作成のためにそのままミラーリングされます。すべての権利は上流プロジェクトに帰属します。</em></p>
+</blockquote></div>  <details class="mt-original"> <summary>English original / English original</summary> <div class="prose mt-original-body"><h1>rocketmq rocketmq-all-5.1.0</h1>
+<h2>What's Changed</h2>
+<ul>
+<li>[ISSUE #5069] polish the startup of proxy; can specify parameters on the command line of proxy by @xdkxlk in https://github.com/apache/rocketmq/pull/5083</li>
+<li>[ISSUE #5097] Fix illegal reflective access by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5098</li>
+<li>Sync DLedger version in Bazel scripts by @lizhanhui in https://github.com/apache/rocketmq/pull/5102</li>
+<li>Sync commons-lang3 version for Bazel by @lizhanhui in https://github.com/apache/rocketmq/pull/5103</li>
+<li>[ISSUE #5108] Bump checkstyle to 3.2.0 by @aaron-ai in https://github.com/apache/rocketmq/pull/5109</li>
+<li>Fixed intermixing of punctuation marks in English documents by @zhaowenshuai011 in https://github.com/apache/rocketmq/pull/5086</li>
+<li>[ISSUE #5104] Clean property PROPERTY_TIMER_DELAY_MS if not timer message by @Oliverwqcwrw in https://github.com/apache/rocketmq/pull/5105</li>
+<li>Update FileRegionEncoder.java by @lfz757077613 in https://github.com/apache/rocketmq/pull/5111</li>
+<li>[ISSUE #5106]Make ProxyStartupTest portable by @lizhanhui in https://github.com/apache/rocketmq/pull/5107</li>
+<li>Update pom.xml by @lfz757077613 in https://github.com/apache/rocketmq/pull/5115</li>
+<li>Update deploy_guide.md by @lizhanhui in https://github.com/apache/rocketmq/pull/5099</li>
+<li>Bump snakeyaml from 1.30 to 1.31 by @dependabot in https://github.com/apache/rocketmq/pull/5084</li>
+<li>[ISSUE #5047]Modify MessageStoreConfig attribute maxTopicLength default value by @mxsm in https://github.com/apache/rocketmq/pull/5048</li>
+<li>[ISSUE #5100] Recover the optimization of pull request #2885 by @RongtongJin in https://github.com/apache/rocketmq/pull/5101</li>
+<li>[ISSUE #5095] [Remoting-A] Support logging rpc distribution in remoting protocol by @lizhimins in https://github.com/apache/rocketmq/pull/5114</li>
+<li>[ISSUE #5116]Make PlainAccessControlFlowTest portable by @lizhanhui in https://github.com/apache/rocketmq/pull/5117</li>
+<li>[ISSUE #5091] [Store-A] Speed up Broker initialization by concurrently loading ConsumeQueue by @lizhimins in https://github.com/apache/rocketmq/pull/5093</li>
+<li>[ISSUE #5119]Infra enhancement project: Fix remaining test cases in ACL module by @lizhanhui in https://github.com/apache/rocketmq/pull/5120</li>
+<li>[ISSUE#5039] localHostName() get stuck when constructing the BrokerIdentity object by @TheR1sing3un in https://github.com/apache/rocketmq/pull/5110</li>
+<li>[ISSUE #5124] Revert signatures of public methods in 'org.apache.rocketmq.namesrv.NamesrvStartup' by @caigy in https://github.com/apache/rocketmq/pull/5125</li>
+<li>[ISSUE #5089] Delegate plugin store configuration by broker by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5090</li>
+<li>[ISSUE #5132] Use StandardCharsets.UTF_8 as default charset of getting bytes when s… by @renyansongno1 in https://github.com/apache/rocketmq/pull/5140</li>
+<li>[ISSUE #5134] Remove useless pull consumer example  by @azhsmesos in https://github.com/apache/rocketmq/pull/5139</li>
+<li>[ISSUE #5131] Close the producer after the message is sent by @totalo in https://github.com/apache/rocketmq/pull/5142</li>
+<li>[ISSUE #5133] Use StandardCharsets.UTF_8 as default charset in oneway producer demo by @selectbook in https://github.com/apache/rocketmq/pull/5145</li>
+<li>[ISSUE #5135] Format ERROR_MESSAGE string by @islongfei in https://github.com/apache/rocketmq/pull/5144</li>
+<li>[ISSUE #5136]  remove unnecessary parameters by @RapperCL in https://github.com/apache/rocketmq/pull/5143</li>
+<li>[ISSUE #5130] Use the latest rocketmq version as example in readme file by @security00 in https://github.com/apache/rocketmq/pull/5146</li>
+<li>[ISSUE #5095] [Remoting-C] Support output thread exception information to the error log by @lizhimins in https://github.com/apache/rocketmq/pull/5129</li>
+<li>[ISSUE #5149] remove:org/apache/rocketmq/example/simple/TestProducer.java by @liyijuan in https://github.com/apache/rocketmq/pull/5155</li>
+<li>[ISSUE #4634] fix code style in namesrv module by @PansonPanson in https://github.com/apache/rocketmq/pull/5159</li>
+<li>[ISSUE #5163] Update the description of readme about remoting-command based SDK by @aaron-ai in https://github.com/apache/rocketmq/pull/5164</li>
+<li>Increase quantity of operation in Github Action of stale by @aaron-ai in https://github.com/apache/rocketmq/pull/5167</li>
+<li>5.0.0 release temporarily open merge to keep release commitId by @odbozhou in https://github.com/apache/rocketmq/pull/5175</li>
+<li>[ISSUE #5168] Release 5.0.0 merge release-5.0.0 to develop by @odbozhou in https://github.com/apache/rocketmq/pull/5169</li>
+<li>[ISSUE #5095] [Remoting-D] Not handle more request when channel write ability changed to unwritable by @lizhimins in https://github.com/apache/rocketmq/pull/5176</li>
+<li>[ISSUE #5151]Reduce redundant for loops by @RapperCL in https://github.com/apache/rocketmq/pull/5154</li>
+<li>[ISSUE #5177] Fix NPE in AclUtils#combineBytes by @zhiliatom in https://github.com/apache/rocketmq/pull/5178</li>
+<li>[ISSUE #5179] Math.abs() method call redundant, judgment and repeated assignment   by @RapperCL in https://github.com/apache/rocketmq/pull/5181</li>
+<li>[ISSUE #5051]Remove GroupCommitService#run synchronized code chunk by @mxsm in https://github.com/apache/rocketmq/pull/5052</li>
+<li>[ISSUE #5138] Do not throw exception in order producer demo by @alexcao2018 in https://github.com/apache/rocketmq/pull/5185</li>
+<li>[ISSUE 4902]fix-warmMappedFile：Place a safepoint before the loop, the processing effect takes precedence over sleep by @isysc1 in https://github.com/apache/rocketmq/pull/4903</li>
+<li>[ISSUE #5126]Make all tests in ACL module pass on Windows by @lizhanhui in https://github.com/apache/rocketmq/pull/5127</li>
+<li>[ISSUE #5180] Support domain resolution to obtain the nameserver address by @lizhimins in https://github.com/apache/rocketmq/pull/5189</li>
+<li>[ISSUE #5191] Update badge by @aaron-ai in https://github.com/apache/rocketmq/pull/5192</li>
+<li>Disable merge button by @aaron-ai in https://github.com/apache/rocketmq/pull/5190</li>
+<li>[ISSUE #5095] [Remoting-B] Support socks proxy in remoting client by @lizhimins in https://github.com/apache/rocketmq/pull/5123</li>
+<li>[ISSUE #5198] Fix NPE in ClusterList SubCommand by @lizhimins in https://github.com/apache/rocketmq/pull/5199</li>
+<li>[ISSUE #5122] Enable checkstyle for test code (rocketmq-broker module) by @nowinkeyy in https://github.com/apache/rocketmq/pull/5193</li>
+<li>[ISSUE #5195] write data directly when there is no topicsList of publishing by @xdkxlk in https://github.com/apache/rocketmq/pull/5196</li>
+<li>[ISSUE #5201]Use pull request to replace pull request target by @lizhanhui in https://github.com/apache/rocketmq/pull/5202</li>
+<li>[ISSUE #5121]Add GitHub Action Pipeline to automate release of RocketMQ Snapshots by @tsunghanjacktsai in https://github.com/apache/rocketmq/pull/5118</li>
+<li>[ISSUE #5152] Change the error log level to error by @Oliverwqcwrw in https://github.com/apache/rocketmq/pull/5153</li>
+<li>[ISSUE #5206] Enable checkstyle for test code （rocketmq-client） by @nowinkeyy in https://github.com/apache/rocketmq/pull/5211</li>
+<li>[ISSUE #5212] Enable checkstyle for test code （rocketmq-common） by @nowinkeyy in https://github.com/apache/rocketmq/pull/5215</li>
+<li>[ISSUE #5210]Fix controller quick start document some command error by @mxsm in https://github.com/apache/rocketmq/pull/5217</li>
+<li>[ISSUE #5216] Enable checkstyle for test code （rocketmq-controller, rocketmq-remoting and rocketmq-proxy） by @nowinkeyy in https://github.com/apache/rocketmq/pull/5218</li>
+<li>[ISSUE #5219] Enable checkstyle for test code (rocketmq-acl and rocketmq-tools) by @nowinkeyy in https://github.com/apache/rocketmq/pull/5220</li>
+<li>[ISSUE #5214] compatible rocketmq-mqtt save offset by @DongyuanPan in https://github.com/apache/rocketmq/pull/5208</li>
+<li>[ISSUE #5221] Enable checkstyle for test code (rocketmq-store) by @nowinkeyy in https://github.com/apache/rocketmq/pull/5222</li>
+<li>[ISSUE #5223] Enable checkstyle for test code (rocketmq-test) by @nowinkeyy in https://github.com/apache/rocketmq/pull/5224</li>
+<li>[ISSUE #5162] Fix bug about DefaultMessageStore maxFilterMessageCount calculating by @Knowden in https://github.com/apache/rocketmq/pull/5171</li>
+<li>[ISSUE #5231] Optimize reput message code. by @echooymxq in https://github.com/apache/rocketmq/pull/5229</li>
+<li>[ISSUE #5236] fix  ServiceProvider loading class  by @RapperCL in https://github.com/apache/rocketmq/pull/5237</li>
+<li>[ISSUE #5238] Fix the issue of incorrect tps statistics of the slave node under BCQ by @RongtongJin in https://github.com/apache/rocketmq/pull/5239</li>
+<li>[ISSUE #4658] remove redundant logic by @zhiliatom in https://github.com/apache/rocketmq/pull/5245</li>
+<li>[ISSUE #5254] Stream close optimization by @RapperCL in https://github.com/apache/rocketmq/pull/5255</li>
+<li>[ISSUE #5095] Add some remoting test by @lizhimins in https://github.com/apache/rocketmq/pull/5251</li>
+<li>[ISSUE #5020] Add find_java_home function to tool script by @Slideee in https://github.com/apache/rocketmq/pull/5024</li>
+<li>[ISSUE #5205] Enable checkstyle for test code (rocketmq-logging) by @byj520-lang in https://github.com/apache/rocketmq/pull/5258</li>
+<li>[ISSUE #5265] Adjust nested logic to reduce nums of check queryMsg by @zhiliatom in https://github.com/apache/rocketmq/pull/5266</li>
+<li>[ISSUE #5267] fix command line arguments parse error in mqbroker by @xdkxlk in https://github.com/apache/rocketmq/pull/5269</li>
+<li>fix(sec): upgrade org.yaml:snakeyaml to 1.32 by @vvsd in https://github.com/apache/rocketmq/pull/5264</li>
+<li>[ISSUE #5272]Fix NPE in CI by @lizhanhui in https://github.com/apache/rocketmq/pull/5273</li>
+<li>[ISSUE #5274] Fix the issue that AutoSwitchRoleIntegrationTest is flaky by @RongtongJin in https://github.com/apache/rocketmq/pull/5277</li>
+<li>[ISSUE #5270] exit with 1 when there is no process to shutdown by @xdkxlk in https://github.com/apache/rocketmq/pull/5271</li>
+<li>add a label for hacktoberfest by @ShannonDing in https://github.com/apache/rocketmq/pull/5249</li>
+<li>[ISSUE #5276] Use OS pick-up port by @lizhanhui in https://github.com/apache/rocketmq/pull/5280</li>
+<li>[ISSUE #5285] Support vm arguments to set useTLS value. by @echooymxq in https://github.com/apache/rocketmq/pull/5286</li>
+<li>[ISSUE #5278]Modify MessageStoreConfig#isTransientStorePoolEnable method comment document by @mxsm in https://github.com/apache/rocketmq/pull/5284</li>
+<li>[ISSUE #5281]Unify the command line input parameters in all pressure testing programs by @zhangjidi2016 in https://github.com/apache/rocketmq/pull/5283</li>
+<li>[ISSUE #5204] Enable checkstyle for test code (all module) by @nowinkeyy in https://github.com/apache/rocketmq/pull/5297</li>
+<li>[ISSUE #5305] fix proxy TopicRouteService cache bug by @fuyou001 in https://github.com/apache/rocketmq/pull/5306</li>
+<li>[ISSUE #5298]Polish code style for jdk8+ by @mxsm in https://github.com/apache/rocketmq/pull/5308</li>
+<li>[ISSUE #5291] Optimize the NettyRemotingServer. by @echooymxq in https://github.com/apache/rocketmq/pull/5299</li>
+<li>[ISSUE #5292] [RIP-48] Support reset offset in server-side to improve the success rate by @lizhimins in https://github.com/apache/rocketmq/pull/5293</li>
+<li>[ISSUE #5288] Fix default loading mechanism of AccessValidator by @caigy in https://github.com/apache/rocketmq/pull/5289</li>
+<li>[ISSUE #5311] Add preShutdown for grace shutdown by @drpmma in https://github.com/apache/rocketmq/pull/5194</li>
+<li>[ISSUE 3799] add compaction delete policy by @ltamber in https://github.com/apache/rocketmq/pull/5260</li>
+<li>[ISSUE #5313] Optimize ReceiptHandleProcessor and GrpcChannelManager by @drpmma in https://github.com/apache/rocketmq/pull/5275</li>
+<li>[5315]disable commit offset if not enable autocommit by @lizhiboo in https://github.com/apache/rocketmq/pull/5316</li>
+<li>[ISSUE #5322] improving SDK topic route availability by @fuyou001 in https://github.com/apache/rocketmq/pull/5323</li>
+<li>[ISSUE #3905] Support bname in protocol for 5.0 client by @drpmma in https://github.com/apache/rocketmq/pull/5334</li>
+<li>[ISSUE #5227] Direct github notifications to commits mailing list by @zhouxinyu in https://github.com/apache/rocketmq/pull/5341</li>
+<li>[ISSUE #5339] Fix BrokerContainer document error by @RongtongJin in https://github.com/apache/rocketmq/pull/5340</li>
+<li>Upgrade proto version to 2.0.1, and adapt to parse dlq information. by @lollipopjin in https://github.com/apache/rocketmq/pull/5343</li>
+<li>[ISSUE #5332]Remove DefaultMessageStore's private field printTimes that is never used by @mxsm in https://github.com/apache/rocketmq/pull/5336</li>
+<li>Add unit test for ConsumerProcessor by @drpmma in https://github.com/apache/rocketmq/pull/5352</li>
+<li>[ISSUE #5324]Replace deprecated class PosixParser with DefaultParser for CLI by @mxsm in https://github.com/apache/rocketmq/pull/5325</li>
+<li>[ISSUE ##5354] Implement broker metrics framework by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5355</li>
+<li>[ISSUE #5348] [RIP-48] Support server-side offset management in broadcast consumption mode by @lizhimins in https://github.com/apache/rocketmq/pull/5349</li>
+<li>[ISSUE #5370]Upgrade commons-cli:commons-cli to 1.5.0 by @mxsm in https://github.com/apache/rocketmq/pull/5371</li>
+<li>[ISSUE #5376] Fix use of broker config timerMaxDelaySec by @SSS-K in https://github.com/apache/rocketmq/pull/5377</li>
+<li>[ISSUE #5374]Fix unregister cause the new master removed. by @echooymxq in https://github.com/apache/rocketmq/pull/5375</li>
+<li>[ISSUE #5372] remove second call on fileWatchService's shutdown method by @thezp in https://github.com/apache/rocketmq/pull/5379</li>
+<li>[ISSUE #5364] [RIP 51] Support changeInvisibleTime for pop orderly by @xdkxlk in https://github.com/apache/rocketmq/pull/5367</li>
+<li>[ISSUE #5012] support escaping transactional messages by @caigy in https://github.com/apache/rocketmq/pull/5062</li>
+<li>[ISSUE #3799]main compaction process by @ltamber in https://github.com/apache/rocketmq/pull/5351</li>
+<li>[ISSUE #5381]Optimize merge_rocketmq_pr.py comments in develop branch by @pipi18 in https://github.com/apache/rocketmq/pull/5389</li>
+<li>[ISSUE #5373]output namesrv bindaddress when starting by @xiaoyifang in https://github.com/apache/rocketmq/pull/5369</li>
+<li>[ISSUE #5393] Fix the issue that TransactionMessageIT can not pass CI by @RongtongJin in https://github.com/apache/rocketmq/pull/5394</li>
+<li>[ISSUE #5390] not to print some useless log in PopReviveService by @xdkxlk in https://github.com/apache/rocketmq/pull/5391</li>
+<li>[ISSUE #5356] [RIP 48] Introduces the concept of ready and inflight messages by @lizhimins in https://github.com/apache/rocketmq/pull/5357</li>
+<li>[ISSUE #5402] not to decompress the messageBody when get retry messages in PopReviveService by @xdkxlk in https://github.com/apache/rocketmq/pull/5403</li>
+<li>[ISSUE #5331]Fix ConsumeQueueTest stable sleep cause NPE. by @echooymxq in https://github.com/apache/rocketmq/pull/5397</li>
+<li>[ISSUE #5386][RIP-50]RocketMQ Transaction Message Improvement Of Batch OP Message by @Focus-rth in https://github.com/apache/rocketmq/pull/5386</li>
+<li>[ISSUE #5307] Remove redundant if statements by @nowinkeyy in https://github.com/apache/rocketmq/pull/5314</li>
+<li>[ISSUE #5408] can skip ack when cannot find matching ck for a long time by @xdkxlk in https://github.com/apache/rocketmq/pull/5409</li>
+<li>[ISSUE #5354] [RIP-46] Implement proxy metrics framework by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5407</li>
+<li>[ISSUE #5310]Admin tool queryMessage signature check failed by @zhangjidi2016 in https://github.com/apache/rocketmq/pull/5319</li>
+<li>[ISSUE #5424]fix null exception and array overflow bug exist in getHalfMsg method by @RapperCL in https://github.com/apache/rocketmq/pull/5425</li>
+<li>[ISSUE #5426] Fix mqadmin updateTopic CLI result print format problem by @mxsm in https://github.com/apache/rocketmq/pull/5427</li>
+<li>[ISSUE #5415]fix duplicate records by @RapperCL in https://github.com/apache/rocketmq/pull/5416</li>
+<li>[ISSUE #5413] Modify AutoSwitchHAClient currentReceivedEpoch attribute long type to int by @mxsm in https://github.com/apache/rocketmq/pull/5414</li>
+<li>[ISSUE #5365] [RIP 51] Add notification mechanism for pop orderly by @xdkxlk in https://github.com/apache/rocketmq/pull/5387</li>
+<li>[ISSUE #5452] Fix Label '@maven//:com_google_guava_guava' is duplicated in the 'deps' attribute of rule 'tests' to pass CI by @RongtongJin in https://github.com/apache/rocketmq/pull/5451</li>
+<li>[ISSUE #5443] Fix ServiceProvider report NPE misleading users when no resource file is found by @RongtongJin in https://github.com/apache/rocketmq/pull/5450</li>
+<li>implement broker stats metrics and request metrics by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5449</li>
+<li>[ISSUE #5453]Combine parseDelayLevel error log information by @mxsm in https://github.com/apache/rocketmq/pull/5454</li>
+<li>[ISSUE #5344] Fix Windows and Mac CI pipelines by @lizhanhui in https://github.com/apache/rocketmq/pull/5345</li>
+<li>[ISSUE#5331] Fix windows can't move file when mmapped. by @echooymxq in https://github.com/apache/rocketmq/pull/5434</li>
+<li>[ISSUE #5458] Enable checks on Windows and MacOS by @lizhanhui in https://github.com/apache/rocketmq/pull/5459</li>
+<li>[ISSUE #5430] Remove redundant null check by @fndejan in https://github.com/apache/rocketmq/pull/5467</li>
+<li>[ISSUE #5437] Add log info for push consumer when execute hook failed by @humkum in https://github.com/apache/rocketmq/pull/5468</li>
+<li>[RIP-48] Support reset offset in server-side for pop message by @lizhimins in https://github.com/apache/rocketmq/pull/5457</li>
+<li>[ISSUE #5446]Modify ScheduleMessageService's log name RocketmqStore to RocketmqBroker by @mxsm in https://github.com/apache/rocketmq/pull/5447</li>
+<li>[ISSUE#5404] modify variable name whichItemWorst to randomItem to resolve ambiguity by @jasonjavaYY in https://github.com/apache/rocketmq/pull/5436</li>
+<li>Declare dependency version in maven properties by @aaron-ai in https://github.com/apache/rocketmq/pull/5489</li>
+<li>[ISSUE #5493] fix : npe caused by get item by logic offset if the target logicQueueMappingItem was out of date by @humkum in https://github.com/apache/rocketmq/pull/5494</li>
+<li>[ISSUE #5490] add metrics view &amp; fix unit test by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5491</li>
+<li>[ISSUE #5358]Fix error core-concept url by @GOODBOY008 in https://github.com/apache/rocketmq/pull/5253</li>
+<li>[ISSUE #5281]Optimize the output of pressure results by @zhangjidi2016 in https://github.com/apache/rocketmq/pull/5282</li>
+<li>[ISSUE #5482] Remove ClientRequestProcessor#getRouteInfoByTopic method invalid logic judgment by @mxsm in https://github.com/apache/rocketmq/pull/5488</li>
+<li>[ISSUE #5449] [RIP-46] implement remoting stats metrics by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5487</li>
+<li>[ISSUE #5481] Decrease the repeated consumption probability of expired message by @aaron-ai in https://github.com/apache/rocketmq/pull/5483</li>
+<li>Remove unnecessary retries in sendMessageBack by @aaron-ai in https://github.com/apache/rocketmq/pull/5501</li>
+<li>[ISSUE #5449] [RIP-46] add client connection and consume lag metrics by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5505</li>
+<li>invert dependency between remoting and common module by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5503</li>
+<li>[ISSUE #5509]Use Mockito to directly throw TimeoutException through set-up by @lizhanhui in https://github.com/apache/rocketmq/pull/5510</li>
+<li>[ISSUE #5512] Skip the unnecessary network interfaces. by @echooymxq in https://github.com/apache/rocketmq/pull/5513</li>
+<li>[ISSUE #5499]Remove BrokerHousekeepingService unused static attribute log by @mxsm in https://github.com/apache/rocketmq/pull/5500</li>
+<li>[ISSUE #5294]fix ClassLoad path optimization  by @RapperCL in https://github.com/apache/rocketmq/pull/5295</li>
+<li>[ISSUE #5506] Add create topic in docs by @drpmma in https://github.com/apache/rocketmq/pull/5522</li>
+<li>[ISSUE #5511]Fix Proxy start up throw NullPointerException by @mxsm in https://github.com/apache/rocketmq/pull/5514</li>
+<li>[Issue #5448] [RIP-46] Implement metrics for default message store by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5528</li>
+<li>[ISSUE #5526] Fix : the topic attribute will be replace by null by @humkum in https://github.com/apache/rocketmq/pull/5527</li>
+<li>[ISSUE #5484] Replace Logging Module with Shaded Logback by @aaron-ai in https://github.com/apache/rocketmq/pull/5524</li>
+<li>[ISSUE #5532] fix: DefaultMQAdminExt setting socksProxy has no effect by @supercym in https://github.com/apache/rocketmq/pull/5533</li>
+<li>InterruptedException should not be ignored by @asia-zengtao in https://github.com/apache/rocketmq/pull/5515</li>
+<li>Revert &quot;[ISSUE #5484] Replace Logging Module with Shaded Logback (#55… by @zhouxinyu in https://github.com/apache/rocketmq/pull/5537</li>
+<li>[ISSUE #5157]Optimize AutoSwitchHAConnection HandShake's data protocol by @mxsm in https://github.com/apache/rocketmq/pull/5182</li>
+<li>[ISSUE #5534]Relax timeout of BatchConsumeQueueTest by @lizhanhui in https://github.com/apache/rocketmq/pull/5535</li>
+<li>[Issue #4330]Fix some comments in DefaultElectPolicy by @hzh0425 in https://github.com/apache/rocketmq/pull/5546</li>
+<li>[ISSUE #5536] fix:new version name server should be compatible with old version broker by @humkum in https://github.com/apache/rocketmq/pull/5539</li>
+<li>[ISSUE #5544]Replace DLedgerServer#getdLedgerLeaderElector deprecated method by @mxsm in https://github.com/apache/rocketmq/pull/5545</li>
+<li>[ISSUE #5549] Move the header of the controller to the upper layer by @RongtongJin in https://github.com/apache/rocketmq/pull/5550</li>
+<li>[ISSUE #5542] Fix ConsumerProcessor lockBatchMQ future allOf data race issue by @drpmma in https://github.com/apache/rocketmq/pull/5543</li>
+<li>[ISSUE #5484] Replace logging module with the shaded logback by @aaron-ai in https://github.com/apache/rocketmq/pull/5540</li>
+<li>fix(sec): upgrade com.alibaba:fastjson to 1.2.83 by @pen4 in https://github.com/apache/rocketmq/pull/5547</li>
+<li>[ISSUE #5471] Fix AutoSwitchRoleIntegrationTest still experience random failures by @RongtongJin in https://github.com/apache/rocketmq/pull/5475</li>
+<li>Update group id of rocketmq logging by @aaron-ai in https://github.com/apache/rocketmq/pull/5564</li>
+<li>[Issue #5558] Fix typos in DLedgerController by @hzh0425 in https://github.com/apache/rocketmq/pull/5559</li>
+<li>[ISSUE #5566] Fix flaky test of AutoSwitchHATest by @RongtongJin in https://github.com/apache/rocketmq/pull/5567</li>
+<li>[ISSUE #5560]Method parameters are passed in the wrong order by @zhangjidi2016 in https://github.com/apache/rocketmq/pull/5561</li>
+<li>[Issue #5572]Remove useless introduction in BrokerInfo by @hzh0425 in https://github.com/apache/rocketmq/pull/5573</li>
+<li>[ISSUE #5448] optimize metrics in pop processor by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5580</li>
+<li>[ISSUE #5576]Optimize UtilAll#getPid method by @mxsm in https://github.com/apache/rocketmq/pull/5582</li>
+<li>[ISSUE #5577] Optimize the build of sendMessageContext and avoid unnecessary repeated request parsing by @RongtongJin in https://github.com/apache/rocketmq/pull/5578</li>
+<li>[ISSUE #5562]Reset consumeOffset execution logic In a catch block，and is not executed under normal circumstances by @zhangjidi2016 in https://github.com/apache/rocketmq/pull/5563</li>
+<li>[Issue #5569]Support broker priority election for controller mode by @hzh0425 in https://github.com/apache/rocketmq/pull/5548</li>
+<li>[ISSUE #5531] Apply MDC in broker container mode by @aaron-ai in https://github.com/apache/rocketmq/pull/5587</li>
+<li>[ISSUE #5309] fix flaky test NormalMsgDelayIT by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5591</li>
+<li>[ISSUE #5593] Enable AbortProcessException to interrupt RPCHook by @RongtongJin in https://github.com/apache/rocketmq/pull/5594</li>
+<li>[ISSUE #5602] Remove useless log attribute from BrokerConfig by @mxsm in https://github.com/apache/rocketmq/pull/5603</li>
+<li>Fix dleger logging issue by @aaron-ai in https://github.com/apache/rocketmq/pull/5607</li>
+<li>[ISSUE #4487]The trackType is wrong when the consumer in broadcasting subscription. by @zhangjidi2016 in https://github.com/apache/rocketmq/pull/5609</li>
+<li>Fix TimerMessageStoreTest testTimerFlowControl test by @drpmma in https://github.com/apache/rocketmq/pull/5610</li>
+<li>[ISSUE #5605]Introduce tag estimation for lag calculation by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5606</li>
+<li>[ISSUE #5303]Resolved the invalid authentication problem of sending batch messages by @zhangjidi2016 in https://github.com/apache/rocketmq/pull/5608</li>
+<li>[ISSUE #5595] Add validateSystemTopicWhenUpdateTopic by @drpmma in https://github.com/apache/rocketmq/pull/5596</li>
+<li>[ISSUE #5616] Fix POP checkpoint record accessor typo by @francisoliverlee in https://github.com/apache/rocketmq/pull/5597</li>
+<li>[ISSUE #5623]Fix can't load org.sfl4j.LoggerFactory when use mqnamesrv start by @mxsm in https://github.com/apache/rocketmq/pull/5624</li>
+<li>[ISSUE #5621] Bazel: Enable all tests in store module by @lizhanhui in https://github.com/apache/rocketmq/pull/5622</li>
+<li>[ISSUE #5617] Fix Bazel warning &amp; dependency by @lizhanhui in https://github.com/apache/rocketmq/pull/5618</li>
+<li>Optimize proxy interface and method by @drpmma in https://github.com/apache/rocketmq/pull/5628</li>
+<li>Add else handle for notification by @drpmma in https://github.com/apache/rocketmq/pull/5629</li>
+<li>[ISSUE #5634] Persist consumer offset should not be disabled when auto commit is turned off by @RongtongJin in https://github.com/apache/rocketmq/pull/5635</li>
+<li>[ISSUE #5626] Optimize DefaultMessageStore#getEarliestMessageTime and DefaultMessag… by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5627</li>
+<li>[ISSUE #5637] Try to make AutoSwitchRoleIntegrationTest more stable by @RongtongJin in https://github.com/apache/rocketmq/pull/5638</li>
+<li>[ISSUE #5639] Deprecated the ambiguous methods of lite pull consumer by @RongtongJin in https://github.com/apache/rocketmq/pull/5640</li>
+<li>Optimize handle json in pop message by @lizhimins in https://github.com/apache/rocketmq/pull/5643</li>
+<li>[ISSUE #5647]Polish PullMessageService some methods parameter name by @mxsm in https://github.com/apache/rocketmq/pull/5650</li>
+<li>[ISSUE #5568] Support long length group and topic for pop mode consumption by @lizhimins in https://github.com/apache/rocketmq/pull/5611</li>
+<li>[ISSUE #5644] Fix bug that make static topic ITs unable to pass by @RongtongJin in https://github.com/apache/rocketmq/pull/5645</li>
+<li>[ISSUE #5583] fix test ReceiptHandleProcessorTest#testRenewReceiptHandleWhenTimeout by @xdkxlk in https://github.com/apache/rocketmq/pull/5652</li>
+<li>[ISSUE #5654] calculate inflight messages for pop by @xdkxlk in https://github.com/apache/rocketmq/pull/5655</li>
+<li>[ISSUSE #5589] record subscription from request by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5590</li>
+<li>[ISSUE #5659] Remove redundant error log output by @Oliverwqcwrw in https://github.com/apache/rocketmq/pull/5662</li>
+<li>[ISSUE #5644] Make static topic ITs to pass by @RongtongJin in https://github.com/apache/rocketmq/pull/5666</li>
+<li>[ISSUE #5651]Fix unable to send messages normally due to HA disconnection by @mxsm in https://github.com/apache/rocketmq/pull/5667</li>
+<li>[ISSUE #5670]Add a note to the example of TimerMessage example by @mxsm in https://github.com/apache/rocketmq/pull/5671</li>
+<li>[ISSUE #5668]Polish AutoSwitchHAClient and AutoSwitchHAConnection Comments by @mxsm in https://github.com/apache/rocketmq/pull/5669</li>
+<li>[ISSUE #5660] optimize LagCalculationIT by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5661</li>
+<li>[ISSUE #5392] [RIP-55] Support remoting protocol in rocketmq proxy module by @drpmma in https://github.com/apache/rocketmq/pull/5575</li>
+<li>[ISSUE #5631]optimize ReplicasInfoManager#registerBroker logic by @mxsm in https://github.com/apache/rocketmq/pull/5633</li>
+<li>[ISSUE #5676]Support for dynamic Logging in proxy and controller modules by @mxsm in https://github.com/apache/rocketmq/pull/5677</li>
+<li>[ISSUE #5673]Add the windows platform script as the controller quick start by @mxsm in https://github.com/apache/rocketmq/pull/5674</li>
+<li>[ISSUE #5686]Polish ReplicasInfoManager comment and static log attribute by @mxsm in https://github.com/apache/rocketmq/pull/5687</li>
+<li>[ISSUE #5692]Polish Controller headers toString by @mxsm in https://github.com/apache/rocketmq/pull/5693</li>
+<li>[ISSUE #5695] Optimize broker startup by @lizhimins in https://github.com/apache/rocketmq/pull/5696</li>
+<li>[ISSUE #5688]Add log xml config file into distribution config directory by @mxsm in https://github.com/apache/rocketmq/pull/5689</li>
+<li>[ISSUE #5701] [RIP-46] Introduce retry topic and lag estimation for lag calculation. by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5702</li>
+<li>[ISSUE #5726] verifyDelay should break the loop when matched the delayed message by @xiaoyifang in https://github.com/apache/rocketmq/pull/5727</li>
+<li>[ISSUE #5730]Translate chinese to english in API_Reference_DefaultMQProducer.md document by @mxsm in https://github.com/apache/rocketmq/pull/5731</li>
+<li>[ISSUE #5732]Fix StaticTopic link not found in cn README.md by @mxsm in https://github.com/apache/rocketmq/pull/5733</li>
+<li>[ISSUE #5724]Add proxy module log xml to distribution directory by @mxsm in https://github.com/apache/rocketmq/pull/5725</li>
+<li>Specifiy logback configuration file in startup script by @aaron-ai in https://github.com/apache/rocketmq/pull/5735</li>
+<li>[ISSUE #5712] Fix the invalid of heartbeat detection after controller switch by @RongtongJin in https://github.com/apache/rocketmq/pull/5711</li>
+<li>[ISSUE #5754] [RIP-57] Add asynchronous interfaces to MessageStore by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5755</li>
+<li>[ISSUE #5778] fix bug in compensateSubscribeData by @yuz10 in https://github.com/apache/rocketmq/pull/5777</li>
+<li>[ISSUE #5763] add the default subscribe * tag method by @lybuestc in https://github.com/apache/rocketmq/pull/5764</li>
+<li>[ISSUE #5699] remove duplicate code definition of UtilAll.isBlank by @xiaoyifang in https://github.com/apache/rocketmq/pull/5700</li>
+<li>[ISSUE #5783] Fix compilation warning by @lizhanhui in https://github.com/apache/rocketmq/pull/5784</li>
+<li>[ISSUE #5780]Replace DLedgerServer's deprecated getdLedgerLeaderElector method with getDLedgerLeaderElector by @mxsm in https://github.com/apache/rocketmq/pull/5781</li>
+<li>[ISSUE #5785]Translation controller deploy.md chinese document to english document by @mxsm in https://github.com/apache/rocketmq/pull/5786</li>
+<li>[ISSUE #5776] Remove duplicate empty string checks by @yx9o in https://github.com/apache/rocketmq/pull/5775</li>
+<li>Support long polling in rocketmq proxy in the protocol by @drpmma in https://github.com/apache/rocketmq/pull/5788</li>
+<li>[ISSUE #5770]Translation controller quick_start.md chinese document to english document by @mxsm in https://github.com/apache/rocketmq/pull/5771</li>
+<li>[ISSUE #5793]Translation QuorumACK.md chinese document to english document and polish cn document by @mxsm in https://github.com/apache/rocketmq/pull/5794</li>
+<li>[ISSUE #5791]Fix controller deploy.md and quick_start.md link not correct by @mxsm in https://github.com/apache/rocketmq/pull/5792</li>
+<li>[ISSUE #5789]Translation controller design.md chinese document to english document by @mxsm in https://github.com/apache/rocketmq/pull/5790</li>
+<li>[ISSUE #5741]Specifiy logback configuration file in cmd command line for windows platform by @mxsm in https://github.com/apache/rocketmq/pull/5744</li>
+<li>[ISSUE #5714] Fix the issue that broker can't work normally when transientStorePool=true in controller mode by @RongtongJin in https://github.com/apache/rocketmq/pull/5722</li>
+<li>[ISSUE #5802]Optimize HashMap and HashSet invoke resize method by @mxsm in https://github.com/apache/rocketmq/pull/5803</li>
+<li>[ISSUE #5809]Replace synchronized with ReentrantReadWriteLock in AutoSwitchHAService by @mxsm in https://github.com/apache/rocketmq/pull/5810</li>
+<li>[ISSUE #5813] Fix topic queue lock not unlock in pop consumption mode by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5815</li>
+<li>[ISSUE #5812] Fix the issue that static topic cannot be consumed normally by @RongtongJin in https://github.com/apache/rocketmq/pull/5811</li>
+<li>[ISSUE #5766] Fix possible NPE in client clean expired message by @xiaoyifang in https://github.com/apache/rocketmq/pull/5769</li>
+<li>[ISSUE #5821] Remove unnecessary Chinese in QuorumACK.md document. by @yx9o in https://github.com/apache/rocketmq/pull/5822</li>
+<li>[ISSUE #5819] fix flaky test PullRequestHoldServiceTest by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5820</li>
+<li>[ISSUE #5823] Add delete topic in message store interface by @lizhimins in https://github.com/apache/rocketmq/pull/5824</li>
+<li>[ISSUE #5823] Fix delete topic in message store interface by @lizhimins in https://github.com/apache/rocketmq/pull/5828</li>
+<li>[ISSUE  #5830] fix bug in GetMessageResult#getMessageCount by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5831</li>
+<li>Remove bazel-compile from required status checks temporarily by @RongtongJin in https://github.com/apache/rocketmq/pull/5765</li>
+<li>[ISSUE #5829] fix codecov url in README by @mahaitao617 in https://github.com/apache/rocketmq/pull/5833</li>
+<li>[ISSUE #5704]Optimize nameserver start when enableControllerInNamesrv of NamesrvConfig is false by @mxsm in https://github.com/apache/rocketmq/pull/5707</li>
+<li>[ISSUE #5837] Deprecate MessageStore#checkInDiskByConsumeOffset by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5840</li>
+<li>fix restNum calculation in pop consumption mode by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5843</li>
+<li>[ISSUE #5839] Code.ILLEGAL_POLLING_TIME is not compatible with gRPC Client &lt;=5.0.2 by @aaron-ai in https://github.com/apache/rocketmq/pull/5841</li>
+<li>[ISSUE #5816] fix the issue that No response is returned when no parameter is configured for the brokerStatus command  by @frinda in https://github.com/apache/rocketmq/pull/5818</li>
+<li>[ISSUE #5832] Fix consumerCount increasing rapidly without sending message by @Oliverwqcwrw in https://github.com/apache/rocketmq/pull/5834</li>
+<li>[ISSUE #5847] Fix wake up in NotificationProcessor by @drpmma in https://github.com/apache/rocketmq/pull/5848</li>
+<li>[ISSUE #5869] Remove unnecessary verification logic in consumerSendMsgBack method by @RongtongJin in https://github.com/apache/rocketmq/pull/5868</li>
+<li>[ISSUE #5862] remove offline producer group in Proxy by @xdkxlk in https://github.com/apache/rocketmq/pull/5865</li>
+<li>[ISSUE #5507]Improve the speed of AttributeParser#parseToMap parsing by @mxsm in https://github.com/apache/rocketmq/pull/5508</li>
+<li>[ISSUE #5804]Optimize BrokerStatsManager#incTopicPutLatency create statsKey by @mxsm in https://github.com/apache/rocketmq/pull/5805</li>
+<li>[ISSUE #5708]Fix NamesrvStartup can't print config when use -p command by @mxsm in https://github.com/apache/rocketmq/pull/5709</li>
+<li>[ISSUE #5863] implement tiered store metadata by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5864</li>
+<li>[ISSUE #5872] Ignore testChangeRoleManyTimes in AutoSwitchHATest util it is stable by @RongtongJin in https://github.com/apache/rocketmq/pull/5871</li>
+<li>[ISSUE #5852] Don't create PlainAccessValidator when enable proxy and aclEnable is false by @Oliverwqcwrw in https://github.com/apache/rocketmq/pull/5854</li>
+<li>[RIP-48] Not commit offset when broker has server-side offset in ack message by @lizhimins in https://github.com/apache/rocketmq/pull/5878</li>
+<li>[ISSUE #5740] Fix util.getIP sometimes choose localhost over LAN ip. by @RagingSpud in https://github.com/apache/rocketmq/pull/5856</li>
+<li>[ISSUE #5880]Remove useless attribute TOPIC_KEY_SPLITTER in MessageClientIDSetter class by @mxsm in https://github.com/apache/rocketmq/pull/5881</li>
+<li>[ISSUE #5874] implement file queue for tiered storage by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5875</li>
+<li>[ISSUE #5847] Refector logic in NotificationProcessor by @drpmma in https://github.com/apache/rocketmq/pull/5888</li>
+<li>[ISSUE #5885]Fix FAQurl's class FAQ url incorrect by @mxsm in https://github.com/apache/rocketmq/pull/5886</li>
+<li>[ISSUE #5897] Polish exception info when broker has already been added to broker container by @Oliverwqcwrw in https://github.com/apache/rocketmq/pull/5898</li>
+<li>[Issue #5891] Implement MessageStore interface for tiered store by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5892</li>
+<li>[ISSUE #5859]Optimize String#format in DefaultMQProducerImpl by @mxsm in https://github.com/apache/rocketmq/pull/5870</li>
+<li>[ISSUE #5900] Fix the problem of can not remove the broker successfully when a shutdown failure by @Oliverwqcwrw in https://github.com/apache/rocketmq/pull/5901</li>
+<li>[ISSUE #5902] Fix logback warning by @aaron-ai in https://github.com/apache/rocketmq/pull/5903</li>
+<li>[ISSUE #5905] fix config file disappear after vm crash by @yuz10 in https://github.com/apache/rocketmq/pull/5906</li>
+<li>[ISSUE #5876] fix resource leak in DefaultLitePullConsumerTest by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5877</li>
+<li>[ISSUE #5921] Support domain resolution to obtain the controller address by @RongtongJin in https://github.com/apache/rocketmq/pull/5922</li>
+<li>[ISSUE #5916] Fix availableNamesrvAddrMap can not remove old nameserver address by @RongtongJin in https://github.com/apache/rocketmq/pull/5917</li>
+<li>[ISSUE #5913] GetSyncStateSetSubCommand can also print that the broker is not in SyncStateSet by @RongtongJin in https://github.com/apache/rocketmq/pull/5935</li>
+<li>Update rocketmq-logging to 1.0.1 by @aaron-ai in https://github.com/apache/rocketmq/pull/5946</li>
+<li>[ISSUE #5949]Remove TopicQueueMappingInfo class duplicate licenses by @mxsm in https://github.com/apache/rocketmq/pull/5950</li>
+<li>Upgrade maven assembly plugin version to 3.4.2 by @lizhimins in https://github.com/apache/rocketmq/pull/5951</li>
+<li>[ISSUE #5929] Fix the issue that broker send heartbeat to controller frequently causing thread blocking when the network partition by @RongtongJin in https://github.com/apache/rocketmq/pull/5930</li>
+<li>[ISSUE #5953] calculate retry message throughput in pop consumption mode by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5954</li>
+<li>[ISSUE #5961]refactor: simplify getPID by @xdshent in https://github.com/apache/rocketmq/pull/5962</li>
+<li>[ISSUE #5923] Add example tiered storage backend service provider by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5926</li>
+<li>[ISSUE #5963]  Remove the useless exception class: MQRedirectException by @socutes in https://github.com/apache/rocketmq/pull/5964</li>
+<li>Fix lmqTopicQueueTable initialization by @pingww in https://github.com/apache/rocketmq/pull/5968</li>
+<li>Fix dledger logging by @aaron-ai in https://github.com/apache/rocketmq/pull/5959</li>
+<li>[ISSUE #5860] set the value of order when create or update topic by @Slideee in https://github.com/apache/rocketmq/pull/5861</li>
+<li>[ISSUE #5939]Adjust the MQClientInstance#sendHeartbeatToAllBroker catch code block log print level from info to warn by @mxsm in https://github.com/apache/rocketmq/pull/5940</li>
+<li>[ISSUE #5924]Optimize UtilAll#sleep method by @mxsm in https://github.com/apache/rocketmq/pull/5925</li>
+<li>[ISSUE #5986] optimize the BrokerOuterAPITest class code by @hardyfish in https://github.com/apache/rocketmq/pull/5988</li>
+<li>[ISSUE #5971] Make the internal logs related to the dledger in the controller print to a file separately by @RongtongJin in https://github.com/apache/rocketmq/pull/5972</li>
+<li>[ISSUE #5969] Remvoe duplicate deleteUnusedStats in admin processor by @zhiliatom in https://github.com/apache/rocketmq/pull/5973</li>
+<li>[ISSUE #5847] Add checkBlock for hasMsgFromQueue by @drpmma in https://github.com/apache/rocketmq/pull/5981</li>
+<li>[ISSUE #5983] Make consumer support flow control code better by @RongtongJin in https://github.com/apache/rocketmq/pull/5984</li>
+<li>[ISSUE #5896] feat:add pop consumer example by @mahaitao617 in https://github.com/apache/rocketmq/pull/5991</li>
+<li>[ISSUE #5942]Fix the produce count include the quantity of the system topic by @Oliverwqcwrw in https://github.com/apache/rocketmq/pull/5943</li>
+<li>[ISSUE #5999]Fix the TopicQueueMappingUtils comments typo by @mxsm in https://github.com/apache/rocketmq/pull/6000</li>
+<li>[ISSUE #5996]optimize the RemotingSerializable class code by @hardyfish in https://github.com/apache/rocketmq/pull/5998</li>
+<li>[ISSUE #5994] [RIP-46] add pop and timer metrics by @ShadowySpirits in https://github.com/apache/rocketmq/pull/5995</li>
+<li>[ISSUE #6012] change the type of queueId to int of PopCheckPoint by @xdkxlk in https://github.com/apache/rocketmq/pull/6013</li>
+<li>[ISSUE #5941] Fix the problem that acl is not loaded when the proxy starts by @zzjcool in https://github.com/apache/rocketmq/pull/5944</li>
+<li>[ISSUE #5975] Fix getUserTopicConfig Impl contains system topic by @dingshuangxi888 in https://github.com/apache/rocketmq/pull/5976</li>
+<li>[ISSUE #6021] Fix nameserver logback configuration warning by @aaron-ai in https://github.com/apache/rocketmq/pull/6022</li>
+<li>Fix readme of tiered storage by @ShadowySpirits in https://github.com/apache/rocketmq/pull/6018</li>
+<li>[ISSUE #6010]refactor: avoid redundant condition judgment in loop by @xdshent in https://github.com/apache/rocketmq/pull/6011</li>
+<li>[ISSUE #6007]Remove useless if judgement by @coderbruis in https://github.com/apache/rocketmq/pull/6008</li>
+<li>[ISSUE #6019] simplified the PlainAccessResource parse method by @hardyfish in https://github.com/apache/rocketmq/pull/6020</li>
+<li>[ISSUE #5907]optimize try catch to prevent ConcurrentHashMapUtils init failed by @mxsm in https://github.com/apache/rocketmq/pull/5908</li>
+<li>[ISSUE #6033] modify TraceContext toString method by @hardyfish in https://github.com/apache/rocketmq/pull/6034</li>
+<li>[ISSUE #5979]Fix FAQ url incorrect in FAQUrl class by @mxsm in https://github.com/apache/rocketmq/pull/6035</li>
+<li>[ISSUE #6043] optimize the DefaultLitePullConsumerImpl isSetEqual method code by @hardyfish in https://github.com/apache/rocketmq/pull/6044</li>
+<li>[ISSUE #6055]refactor: replace loop with <code>putAll</code> and typo fix by @xdshent in https://github.com/apache/rocketmq/pull/6056</li>
+<li>[ISSUE  #6051] remove redundant variable definitions by @hardyfish in https://github.com/apache/rocketmq/pull/6052</li>
+<li>[ISSUE #6045] Fix the issue that the endoffset of entry obtained by getBrokerEpoch is incorrect by @RongtongJin in https://github.com/apache/rocketmq/pull/6049</li>
+<li>[ISSUE #5927]Add Proxy deploy guide cn document by @mxsm in https://github.com/apache/rocketmq/pull/5928</li>
+<li>[ISSUE #6036]Optimize the PULL_REQUEST_TEMPLATE.md by @mxsm in https://github.com/apache/rocketmq/pull/6037</li>
+<li>[ISSUE #5884] Concurrent check CommitLog messages by @nowinkeyy in https://github.com/apache/rocketmq/pull/5887</li>
+<li>[ISSUE #6063] Polish controller mode deploy document by @RongtongJin in https://github.com/apache/rocketmq/pull/6064</li>
+<li>[ISSUE #6030] Prepare to release Apache RocketMQ 5.0.1 by @drpmma in https://github.com/apache/rocketmq/pull/6065</li>
+<li>[RIP-41] Add E2E test to CI by @deepsola in https://github.com/apache/rocketmq/pull/6004</li>
+<li>[ISSUE #6047] Support TLS permissive mode for 5.x client by @xdkxlk in https://github.com/apache/rocketmq/pull/6048</li>
+<li>[ISSUE #6069]Fix README.md DLedger Controller link url incorrect by @mxsm in https://github.com/apache/rocketmq/pull/6070</li>
+<li>[ISSUE #6030] Prepare to release Apache RocketMQ 5.1.0 by @drpmma in https://github.com/apache/rocketmq/pull/6072</li>
+<li>Minor improvement for logs and metrics by @ShadowySpirits in https://github.com/apache/rocketmq/pull/6066</li>
+<li>[ISSUE #6073] remove static reference by @hardyfish in https://github.com/apache/rocketmq/pull/6074</li>
+<li>[ISSUE #6077] fix issues that messageStore could be null by @hardyfish in https://github.com/apache/rocketmq/pull/6078</li>
+<li>[ISSUE #6080] delete MQAdminImpl meaningless null check by @hardyfish in https://github.com/apache/rocketmq/pull/6081</li>
+<li>[ISSUE #6082] simplify MQClientAPIImpl processSendResponse code by @hardyfish in https://github.com/apache/rocketmq/pull/6083</li>
+<li>[ISSUE #6084] fixed a typo by @WSYwsy22 in https://github.com/apache/rocketmq/pull/6075</li>
+<li>[ISSUE #6085] Fix a typo by @agoodjuice in https://github.com/apache/rocketmq/pull/6067</li>
+<li>[ISSUE #5941] Add proxyConfig enableAclRpcHookForClusterMode by @drpmma in https://github.com/apache/rocketmq/pull/6079</li>
+<li>[ISSUE #5947]Optimize RouteInfoManager#pickupTopicRouteData create BrokerData code by @mxsm in https://github.com/apache/rocketmq/pull/5948</li>
+</ul>
+<h2>New Contributors</h2>
+<ul>
+<li>@renyansongno1 made their first contribution in https://github.com/apache/rocketmq/pull/5140</li>
+<li>@azhsmesos made their first contribution in https://github.com/apache/rocketmq/pull/5139</li>
+<li>@selectbook made their first contribution in https://github.com/apache/rocketmq/pull/5145</li>
+<li>@islongfei made their first contribution in https://github.com/apache/rocketmq/pull/5144</li>
+<li>@RapperCL made their first contribution in https://github.com/apache/rocketmq/pull/5143</li>
+<li>@security00 made their first contribution in https://github.com/apache/rocketmq/pull/5146</li>
+<li>@liyijuan made their first contribution in https://github.com/apache/rocketmq/pull/5155</li>
+<li>@alexcao2018 made their first contribution in https://github.com/apache/rocketmq/pull/5185</li>
+<li>@isysc1 made their first contribution in https://github.com/apache/rocketmq/pull/4903</li>
+<li>@nowinkeyy made their first contribution in https://github.com/apache/rocketmq/pull/5193</li>
+<li>@DongyuanPan made their first contribution in https://github.com/apache/rocketmq/pull/5208</li>
+<li>@Knowden made their first contribution in https://github.com/apache/rocketmq/pull/5171</li>
+<li>@Slideee made their first contribution in https://github.com/apache/rocketmq/pull/5024</li>
+<li>@byj520-lang made their first contribution in https://github.com/apache/rocketmq/pull/5258</li>
+<li>@vvsd made their first contribution in https://github.com/apache/rocketmq/pull/5264</li>
+<li>@SSS-K made their first contribution in https://github.com/apache/rocketmq/pull/5377</li>
+<li>@xiaoyifang made their first contribution in https://github.com/apache/rocketmq/pull/5369</li>
+<li>@Focus-rth made their first contribution in https://github.com/apache/rocketmq/pull/5386</li>
+<li>@fndejan made their first contribution in https://github.com/apache/rocketmq/pull/5467</li>
+<li>@jasonjavaYY made their first contribution in https://github.com/apache/rocketmq/pull/5436</li>
+<li>@GOODBOY008 made their first contribution in https://github.com/apache/rocketmq/pull/5253</li>
+<li>@asia-zengtao made their first contribution in https://github.com/apache/rocketmq/pull/5515</li>
+<li>@pen4 made their first contribution in https://github.com/apache/rocketmq/pull/5547</li>
+<li>@lybuestc made their first contribution in https://github.com/apache/rocketmq/pull/5764</li>
+<li>@yx9o made their first contribution in https://github.com/apache/rocketmq/pull/5775</li>
+<li>@mahaitao617 made their first contribution in https://github.com/apache/rocketmq/pull/5833</li>
+<li>@frinda made their first contribution in https://github.com/apache/rocketmq/pull/5818</li>
+<li>@RagingSpud made their first contribution in https://github.com/apache/rocketmq/pull/5856</li>
+<li>@socutes made their first contribution in https://github.com/apache/rocketmq/pull/5964</li>
+<li>@zzjcool made their first contribution in https://github.com/apache/rocketmq/pull/5944</li>
+<li>@deepsola made their first contribution in https://github.com/apache/rocketmq/pull/6004</li>
+<li>@WSYwsy22 made their first contribution in https://github.com/apache/rocketmq/pull/6075</li>
+<li>@agoodjuice made their first contribution in https://github.com/apache/rocketmq/pull/6067</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/apache/rocketmq/compare/rocketmq-all-5.0.0...rocketmq-all-5.1.0</p>
+<hr />
+<blockquote>
+<p><strong>Source</strong> <a href="https://github.com/apache/rocketmq">apache/rocketmq</a> · <code>rocketmq-all-5.1.0</code> · 2023-02-20 · <a href="https://github.com/apache/rocketmq/releases/tag/rocketmq-all-5.1.0">upstream release</a></p>
+</blockquote>
+<p><em>Mirrored verbatim for indexing. All rights belong to the upstream project.</em></p></div> </details> </div> <p class="muted" style="margin-top:var(--s8);font-size:12.5px;border-top:1px solid var(--line);padding-top:var(--s4)"> リリースノートは上流プロジェクトが公開したものです。私たちはそれらを整理し、関連付けて、バージョンを一眼で比較できるようにしています。コンテンツの権利はすべて原作者に属します。 </p> <nav class="pager" aria-label="Release navigation"> <a href="/releases/rocketmq/rocketmq-all-4.9.5"> <span class="k">← 次へ</span> <span class="t">rocketmq-all-4.9.5</span> </a> <a href="/releases/rocketmq/rocketmq-all-5.0.0"> <span class="k">前へ →</span> <span class="t">rocketmq-all-5.0.0</span> </a> </nav> <aside class="ad-slot" aria-label="Advertisement" data-astro-cid-fgwukgf6><div class="ad-slot-label" data-astro-cid-fgwukgf6>Advertisement</div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4184355057086168" data-ad-slot="9133765584" data-ad-format="auto" data-full-width-responsive="true" data-astro-cid-fgwukgf6></ins><script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script></aside> </article> <aside class="rail"> <div class="rail-card"> <div class="rail-title">Source</div> <ul class="rail-list"> <li> <a href="https://github.com/apache/rocketmq/releases/tag/rocketmq-all-5.1.0" target="_blank" rel="noopener"> <span>GitHub で見る</span> <span class="d">↗</span> </a> </li> <li> <a href="https://github.com/apache/rocketmq" target="_blank" rel="noopener"> <span>apache/rocketmq</span> <span class="d">↗</span> </a> </li> </ul> </div>  <div class="rail-card"> <div class="rail-title">バージョン履歴</div> <ul class="rail-list"> <li> <a href="/releases/rocketmq/rocketmq-all-5.5.1"> <span class="v">rocketmq-all-5.5.1</span> <span class="d">26-08-20</span> </a> </li><li> <a href="/releases/rocketmq/rocketmq-all-5.5.0"> <span class="v">rocketmq-all-5.5.0</span> <span class="d">26-04-10</span> </a> </li><li> <a href="/releases/rocketmq/rocketmq-all-5.4.0"> <span class="v">rocketmq-all-5.4.0</span> <span class="d">25-12-24</span> </a> </li><li> <a href="/releases/rocketmq/rocketmq-all-5.3.4"> <span class="v">rocketmq-all-5.3.4</span> <span class="d">25-11-27</span> </a> </li><li> <a href="/releases/rocketmq/rocketmq-all-5.3.3"> <span class="v">rocketmq-all-5.3.3</span> <span class="d">25-05-07</span> </a> </li><li> <a href="/releases/rocketmq/rocketmq-all-5.3.2"> <span class="v">rocketmq-all-5.3.2</span> <span class="d">25-03-08</span> </a> </li><li> <a href="/releases/rocketmq/rocketmq-all-5.3.1"> <span class="v">rocketmq-all-5.3.1</span> <span class="d">24-09-25</span> </a> </li><li> <a href="/releases/rocketmq/rocketmq-all-5.3.0"> <span class="v">rocketmq-all-5.3.0</span> <span class="d">24-07-17</span> </a> </li> </ul> <a href="/ja/releases/rocketmq" class="mono" style="display:inline-block;margin-top:var(--s3);font-size:11.5px;color:var(--ink-3)"> すべての 23 件を見る →
+</a> </div> </aside> </div> </div>  </main> <footer class="site-footer"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/ja/" class="brand" aria-label="STAGS NextStack"><span class="brand-mark" aria-hidden="true">S</span><span class="brand-main">STAGS</span><span class="brand-sub" aria-hidden="true">NextStack</span></a> <p>オープンソースのリリース インテリジェンスが毎日公開されます。</p> </div> <div class="footer-col"> <h3>追跡</h3> <ul> <li><a href="/ja/releases">リリース</a></li> <li><a href="/ja/projects">プロジェクト</a></li> <li><a href="/ja/releases.xml">RSS フィード</a></li> </ul> </div> <div class="footer-col"> <h3>アーカイブ</h3> <ul> <li><a href="/zh/release_note" hreflang="zh-Hans">中文アーカイブ</a></li> <li><a href="/zh/chapters/" hreflang="zh-Hans">技術ノート</a></li> <li><a href="/zh/downloads/">Stags Tracker</a></li> </ul> </div> <div class="footer-col"> <h3>情報</h3> <ul> <li><a href="/privacy">プライバシーポリシー</a></li> <li><a href="/releases.xml">RSS</a></li> <li><a href="/sitemap-index.xml">Sitemap</a></li> </ul> </div> </div> <div class="footer-btm"> <span>© 2026 STAGS</span> <span>Release note は上流プロジェクトに属します。</span> </div> </div> </footer> <!-- 搜索面板 --> <div class="palette-bg" data-palette-bg data-open="false"> <div class="palette" role="dialog" aria-modal="true" aria-label="リリースを検索"> <div class="palette-in"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ink-4);flex:none"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <input type="search" data-palette-input placeholder="リリース、プロジェクト、バージョンを検索…" autocomplete="off" spellcheck="false"> <span class="kbd">esc</span> </div> <ul class="palette-res" data-palette-res></ul> <div class="palette-ft"> <span>↑↓ navigate</span> <span>↵ open</span> <span style="margin-left:auto" data-palette-count></span> </div> </div> </div> <script type="module" src="/assets/Shell.astro_astro_type_script_index_0_lang.0ZkKXV47.js"></script> </body> </html>

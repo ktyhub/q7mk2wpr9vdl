@@ -1,0 +1,567 @@
+<!DOCTYPE html><html lang="es" dir="ltr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>airflow 2.10.0 — STAGS NextStack</title><meta name="description" content="Previously, when a DAG is paused or removed, incoming dataset events would still trigger it, and the DAG would run when it is unpaused or added back in a DAG file."><meta name="keywords" content="release note de código abierto, rastreador de lanzamientos, agregador changelog, cambios importantes, rastreador de desuso, lanzamientos de Kafka, lanzamientos de Spring Boot, lanzamientos de Kubernetes"><meta name="generator" content="Astro v5.18.2"><link rel="canonical" href="https://www.stags.cn/es/releases/airflow/2.10.0/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="STAGS NextStack — releases" href="/es/releases.xml"><link rel="alternate" hreflang="en" href="https://www.stags.cn/releases/airflow/2.10.0/"><link rel="alternate" hreflang="zh-Hans" href="https://www.stags.cn/releases/airflow/2.10.0/"><link rel="alternate" hreflang="x-default" href="https://www.stags.cn/releases/airflow/2.10.0/"><meta property="og:site_name" content="STAGS"><meta property="og:type" content="article"><meta property="og:title" content="airflow 2.10.0 — STAGS NextStack"><meta property="og:description" content="Previously, when a DAG is paused or removed, incoming dataset events would still trigger it, and the DAG would run when it is unpaused or added back in a DAG file."><meta property="og:url" content="https://www.stags.cn/es/releases/airflow/2.10.0/"><meta property="og:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><meta property="og:locale" content="es_ES"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="ja_JP"><meta property="og:locale:alternate" content="de_DE"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:locale:alternate" content="pt_BR"><meta property="og:locale:alternate" content="ko_KR"><meta property="og:locale:alternate" content="it_IT"><meta property="og:locale:alternate" content="ru_RU"><meta property="og:locale:alternate" content="tr_TR"><meta property="og:locale:alternate" content="id_ID"><meta property="og:locale:alternate" content="vi_VN"><meta property="og:locale:alternate" content="ar_SA"><meta property="og:locale:alternate" content="sv_SE"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.stags.cn/#website","name":"STAGS","url":"https://www.stags.cn/","inLanguage":"es","description":"NextStack indexa las notas de versión de proyectos de infraestructura e IA – cambios incompatibles, obsolescencias y migraciones – en un único feed en inglés.","publisher":{"@id":"https://www.stags.cn/#org"}},{"@type":"Organization","@id":"https://www.stags.cn/#org","name":"STAGS","alternateName":"NextStack","url":"https://www.stags.cn/"},{"@type":"TechArticle","@id":"https://www.stags.cn/es/releases/airflow/2.10.0/#article","headline":"airflow 2.10.0 release notes","datePublished":"2024-08-16","inLanguage":"en","isPartOf":{"@id":"https://www.stags.cn/#website"},"about":{"@type":"SoftwareSourceCode","codeRepository":"https://github.com/apache/airflow"}}]}</script><!-- 第三方脚本的连接预热：这两个域名几乎每页都要连，
+         提前建连能省掉 DNS + TCP + TLS 一个往返（移动网络 100~300ms）。
+         AdSense 只在开关打开时预热——关掉广告后连这个域名都没必要。 --><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://pagead2.googlesyndication.com"><!-- Google AdSense：站点所有权校验与广告投放共用同一段脚本，全站只加载一次。
+         未创建广告单元时页面上不渲染任何广告容器，站点保持干净。
+         fetchpriority=low：它不参与首屏渲染，不该跟正文抢带宽。 --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184355057086168" crossorigin="anonymous" fetchpriority="low"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-RFRF1TVRMP" fetchpriority="low"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RFRF1TVRMP");
+    </script><!-- 百度统计（国内流量统计）。官方标准片段，is:inline 原样输出，
+         hm.js 动态插到首个 script 前，异步不阻塞首屏渲染。 --><script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?299e5b4e65b86ed16879bdcbe70531d6";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script><link rel="stylesheet" href="/assets/index.DQGt3qLZ.css">
+<style>.ad-slot[data-astro-cid-fgwukgf6]{margin:var(--s10) 0 0;padding-top:var(--s5);border-top:1px solid var(--line)}.ad-slot-label[data-astro-cid-fgwukgf6]{margin-bottom:var(--s3);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{display:block;min-height:100px}@media(min-width:640px){.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{min-height:250px}}
+</style></head> <body> <a class="skip" href="#main">Ir al contenido</a> <header class="hdr" data-header> <div class="wrap hdr-inner"> <a href="/es/" class="brand" aria-label="STAGS NextStack — Información de versiones open source"> <span class="brand-mark" aria-hidden="true">S</span> <span class="brand-main">STAGS</span> <span class="brand-sub" aria-hidden="true">NextStack</span> </a> <nav class="nav" aria-label="Primary"> <a href="/es/releases">Versiones</a><a href="/es/projects">Proyectos</a> </nav>  <details class="navmenu" data-navmenu> <summary class="navmenu-btn" aria-label="Open menu"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> </summary> <div class="navmenu-panel" role="group" aria-label="Primary"> <a href="/es/releases" class="navmenu-item">Versiones</a><a href="/es/projects" class="navmenu-item">Proyectos</a> </div> </details> <div class="hdr-tools"> <button class="searchbtn" type="button" data-search-open aria-label="Buscar versiones"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <span class="lbl">Buscar</span> <span class="kbd">⌘K</span> </button> <details class="langmenu" data-langmenu> <summary class="langmenu-btn" aria-label="Idioma"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"> <circle cx="12" cy="12" r="9"></circle> <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path> </svg> <span class="langmenu-cur">ES</span> <svg class="langmenu-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m2 4 4 4 4-4"></path></svg> </summary> <div class="langmenu-panel" role="group" aria-label="Idioma"> <p class="langmenu-head">Idioma</p> <a class="langmenu-item" href="/releases/airflow/2.10.0/" hreflang="en" lang="en" data-on="false"> <span class="langmenu-label">English</span> <span class="langmenu-code">EN</span> </a><a class="langmenu-item" href="/zh/release_note/airflow/airflow_2.10.0" hreflang="zh-Hans" lang="zh-CN" data-on="false"> <span class="langmenu-label">中文</span> <span class="langmenu-code">中</span> </a><a class="langmenu-item" href="/ja/releases/airflow/2.10.0/" hreflang="ja" lang="ja" data-on="false"> <span class="langmenu-label">日本語</span> <span class="langmenu-code">日</span> </a><a class="langmenu-item" href="/de/releases/airflow/2.10.0/" hreflang="de" lang="de" data-on="false"> <span class="langmenu-label">Deutsch</span> <span class="langmenu-code">DE</span> </a><a class="langmenu-item" href="/fr/releases/airflow/2.10.0/" hreflang="fr" lang="fr" data-on="false"> <span class="langmenu-label">Français</span> <span class="langmenu-code">FR</span> </a><a class="langmenu-item" href="/es/releases/airflow/2.10.0/" hreflang="es" lang="es" aria-current="true" data-on="true"> <span class="langmenu-label">Español</span> <span class="langmenu-code">ES</span> </a><a class="langmenu-item" href="/pt/releases/airflow/2.10.0/" hreflang="pt-BR" lang="pt-BR" data-on="false"> <span class="langmenu-label">Português</span> <span class="langmenu-code">PT</span> </a><a class="langmenu-item" href="/ko/releases" hreflang="ko" lang="ko" data-on="false"> <span class="langmenu-label">한국어</span> <span class="langmenu-code">한</span> </a><a class="langmenu-item" href="/it/releases" hreflang="it" lang="it" data-on="false"> <span class="langmenu-label">Italiano</span> <span class="langmenu-code">IT</span> </a><a class="langmenu-item" href="/ru/releases" hreflang="ru" lang="ru" data-on="false"> <span class="langmenu-label">Русский</span> <span class="langmenu-code">RU</span> </a><a class="langmenu-item" href="/tr/releases" hreflang="tr" lang="tr" data-on="false"> <span class="langmenu-label">Türkçe</span> <span class="langmenu-code">TR</span> </a><a class="langmenu-item" href="/id/releases" hreflang="id" lang="id" data-on="false"> <span class="langmenu-label">Bahasa Indonesia</span> <span class="langmenu-code">ID</span> </a><a class="langmenu-item" href="/vi/releases" hreflang="vi" lang="vi" data-on="false"> <span class="langmenu-label">Tiếng Việt</span> <span class="langmenu-code">VI</span> </a><a class="langmenu-item" href="/ar/releases" hreflang="ar" lang="ar" data-on="false"> <span class="langmenu-label">العربية</span> <span class="langmenu-code">ع</span> </a><a class="langmenu-item" href="/sv/releases" hreflang="sv" lang="sv" data-on="false"> <span class="langmenu-label">Svenska</span> <span class="langmenu-code">SV</span> </a> </div> </details> <a class="iconlink" href="/releases.xml" aria-label="RSS"> <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"> <path d="M2 12.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM2 7.5a6.5 6.5 0 0 1 6.5 6.5h-2A4.5 4.5 0 0 0 2 9.5v-2ZM2 2.5A11.5 11.5 0 0 1 13.5 14h-2A9.5 9.5 0 0 0 2 4.5v-2Z"></path> </svg> </a> </div> </div> </header> <main id="main">  <div class="wrap"> <div class="detail"> <article> <header class="detail-hd"> <nav class="crumbs" aria-label="Breadcrumb"> <a href="/es/">Inicio</a> <span class="sep">/</span> <a href="/es/releases">Versiones</a> <span class="sep">/</span> <a href="/es/releases/airflow">airflow</a> </nav> <h1 class="detail-title"> <span class="p">airflow</span> 2.10.0 </h1> <div class="detail-meta"> <span class="chip chip--minor">Menor</span> <span><span class="k">Publicado</span>16 ago 2024</span>  <span class="sep" aria-hidden="true"></span> <a href="https://github.com/apache/airflow" target="_blank" rel="noopener"> <span class="k">Fuente</span>apache/airflow </a>   <span class="sep" aria-hidden="true"></span> <a href="/releases/airflow/2.10.0/"> original en inglés </a>  <span class="sep" aria-hidden="true"></span> <button class="btn btn--ghost btn--sm" type="button" data-copy="https://www.stags.cn/es/releases/airflow/2.10.0/">Copiar enlace</button> </div> </header> <div class="prose" style="margin-top:var(--s8)"> <p class="mt-notice" role="note">Esta página está traducida automáticamente. El texto original en inglés es la referencia.</p>  <div><h1>flujo de aire 2.10.0</h1>
+<h1>Cambios significativos</h1>
+<h2>Los conjuntos de datos ya no activan DAG inactivos (#38891)</h2>
+<p>Anteriormente, cuando se pausaba o eliminaba un DAG, los eventos entrantes del conjunto de datos aún
+lo activará, y el DAG se ejecutará cuando se reanude o se vuelva a agregar en un DAG
+archivo. Esto ha sido cambiado; el cronograma del conjunto de datos de un DAG ahora solo se puede cumplir
+por eventos que ocurren cuando el DAG está activo. Si bien este es un cambio radical,
+el comportamiento anterior se considera un error.
+El comportamiento de la programación basada en tiempo no cambia, incluida la parte del horario.
+de <code>DatasetOrTimeSchedule</code>.</p>
+<h2><code>try_number</code> ya no se incrementa durante la ejecución de la tarea (#39336)</h2>
+<p>Anteriormente, el número de intento (<code>try_number</code>) se incrementaba al comienzo de la ejecución de la tarea en el trabajador. Esto fue problemático por muchas razones.
+Por un lado, significó que el número de intentos se incrementó cuando no se suponía que debía hacerlo, es decir, al reanudar una reprogramación o un aplazamiento. Y también resultó en
+el número de intento era &quot;incorrecto&quot; cuando la tarea aún no había comenzado. Las soluciones para estos dos problemas causaron mucha confusión.
+Ahora, en cambio, el número de intentos para la ejecución de una tarea se determina en el momento en que se programa la tarea, no cambia durante el proceso y nunca disminuye.
+Entonces, después de que se ejecuta la tarea, el número de intentos observado sigue siendo el mismo que cuando se ejecutaba la tarea; Sólo cuando haya un &quot;nuevo intento&quot;, el número de intento se incrementará nuevamente.
+Una consecuencia de este cambio es que, si los usuarios ejecutaran tareas &quot;manualmente&quot; (por ejemplo, llamando a <code>ti.run()</code> directly, or command line <code>airflow tasks run</code>),
+El número de intentos ya no se incrementará. Airflow supone que las tareas siempre se ejecutan después de haber sido programadas por el programador, por lo que no consideramos esto como un cambio importante.</p>
+<h2>El punto final <code>/logout</code> en FAB Auth Manager ahora está protegido por CSRF (#40145)</h2>
+<p>El <code>/logout</code> endpoint's method in FAB Auth Manager has been changed from <code>GET</code> to <code>POST</code> en todos los existentes
+AuthViews (<code>AuthDBView</code>, <code>AuthLDAPView</code>, <code>AuthOAuthView</code>, <code>AuthOIDView</code>, <code>AuthRemoteUserView</code>), y
+ahora incluye protección CSRF para mejorar la seguridad y evitar cierres de sesión no autorizados.</p>
+<h2>OpenTelemetry Seguimientos para Apache Airflow (#37948).</h2>
+<p>Esta nueva característica agrega capacidad para que Apache Airflow emita 1) rastros del programador del sistema de flujo de aire,
+desencadenador, ejecutor, procesador 2) Seguimientos de ejecución de DAG para ejecuciones de DAG implementadas en formato OpenTelemetry. Anteriormente, solo se admitían métricas que emitieran métricas en OpenTelemetry.
+Esta nueva característica agregará datos más completos para que los usuarios utilicen el estándar OpenTelemetry para emitir y enviar sus datos de seguimiento a puntos finales compatibles con OTLP.</p>
+<h2>Decorador para el flujo de tareas <code>(@skip_if, @run_if)</code> para que sea sencillo aplicar si se debe omitir o no una tarea. (#41116)</h2>
+<p>Esta característica agrega un decorador para que sea sencillo omitir una tarea.</p>
+<h2>Uso de varios ejecutores simultáneamente (#40701)</h2>
+<p>Anteriormente conocida como ejecutores híbridos, esta nueva característica permite a Airflow utilizar varios ejecutores simultáneamente. Se pueden configurar DAG, o incluso tareas individuales
+utilizar un ejecutor específico que mejor se adapte a sus necesidades. Un solo DAG puede contener tareas que utilicen diferentes ejecutores. Consulte la documentación de Airflow para
+más detalles. Nota: Esta característica aún es experimental. Consulte <code>documentation on Executor &lt;https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/executor/index.html#using-multiple-executors-concurrently&gt;</code>_ para obtener una descripción más detallada.</p>
+<h2>Telemetría basada en bufanda: ¿Airflow recopila datos de telemetría? (#39510)</h2>
+<p>Airflow integra Bufanda para recopilar datos de uso básicos durante la operación. Las implementaciones pueden optar por no participar en la recopilación de datos configurando la opción <code>[usage_data_collection]enabled</code> en False o la variable de entorno SCARF_ANALYTICS=false.
+Consulte <code>FAQ on this &lt;https://airflow.apache.org/docs/apache-airflow/stable/faq.html#does-airflow-collect-any-telemetry-data&gt;</code>_ para obtener más información.</p>
+<h2>Nuevas características</h2>
+<ul>
+<li>Ejecución híbrida AIP-61 (<a href="https://github.com/apache/airflow/pulls?q=is%3Apr+label%3Aarea%3Ahybrid-executors+is%3Aclosed+milestone%3A%22Airflow+2.10.0%22">AIP-61</a>)</li>
+<li>AIP-62 Obteniendo linaje de Hook Instrumentation (<a href="https://github.com/apache/airflow/pulls?q=is%3Apr+is%3Amerged+label%3AAIP-62+milestone%3A%22Airflow+2.10.0%22">AIP-62</a>)</li>
+<li>Historial de intentos de instancia de tarea AIP-64 (<a href="https://github.com/apache/airflow/pulls?q=is%3Apr+is%3Amerged+label%3AAIP-64+milestone%3A%22Airflow+2.10.0%22">AIP-64</a>)</li>
+<li>AIP-44 Interno API (<a href="https://github.com/apache/airflow/pulls?q=is%3Apr+label%3AAIP-44+milestone%3A%22Airflow+2.10.0%22+is%3Aclosed">AIP-44</a>)</li>
+<li>Habilite la finalización de la tarea directamente desde el activador sin acceder al trabajador. (#40084)</li>
+<li>Ampliar las dependencias del conjunto de datos (#40868)</li>
+<li>Función/agregar autenticación de token al api interno (#40899)</li>
+<li>Agregue DatasetAlias para admitir la emisión dinámica de eventos de conjuntos de datos y la creación de conjuntos de datos (#40478)</li>
+<li>Agregar DAG de ejemplo para inlet_events (#39893)</li>
+<li>Implementar <code>accessors</code> para leer eventos del conjunto de datos definidos como entrada (#39367)</li>
+<li>Decorador para flujo de tareas, para simplificar la decisión de omitir o no una tarea. (#41116)</li>
+<li>Agregar inicio de ejecución desde el soporte del activador al mapeo dinámico de tareas (#39912)</li>
+<li>Agregue try_number a la tabla de registro (#40739)</li>
+<li>Se agregó el método ds_format_locale en macros que permite localizar el formato de fecha y hora usando Babel (#40746)</li>
+<li>Agregue DatasetAlias para admitir la emisión dinámica de eventos de conjuntos de datos y la creación de conjuntos de datos (#40478, #40723, #40809, #41264, #40830, #40693, #41302)</li>
+<li>Utilice centinela para marcar dag como eliminado al volver a serializarse (#39825)</li>
+<li>Agregar parámetro para el último número de consultas a la base de datos en las estadísticas de procesamiento de archivos DAG (#40323)</li>
+<li>Agregar modo oscuro de versión prototipo para Airflow UI (#39355)</li>
+<li>Se agregó la capacidad de marcar algunas tareas como exitosas en <code>dag test</code> (#40010)</li>
+<li>Permitir el uso de invocables para template_fields (#37028)</li>
+<li>Filtrar días en ejecución/fallidos y activos/pausados en la página de inicio (#39701)</li>
+<li>Agregar métricas sobre el uso de memoria y CPU de la tarea (#39650)</li>
+<li>Cambios en la interfaz de usuario para la función de nuevo análisis de DAG (#39636)</li>
+<li>Agregar telemetría basada en bufanda (#39510, #41318)</li>
+<li>Agregar punto final de solicitud de nuevo análisis de dag (#39138)</li>
+<li>Redirigir a un nuevo DAGRun después de activarlo desde la vista de cuadrícula (#39569)</li>
+<li>Mostrar <code>endDate</code> en la información sobre herramientas de la instancia de tarea. (#39547)</li>
+<li>Implementar <code>accessors</code> para leer eventos del conjunto de datos definidos como entrada (#39367, #39893)</li>
+<li>Agregue color a las líneas de registro en la interfaz de usuario para errores y advertencias basadas en palabras clave (#39006)</li>
+<li>Agregar la pestaña de especificaciones del pod k8s renderizado a la vista de detalles de ti (#39141)</li>
+<li>Hacer que el registro de auditoría antes/después sea filtrable (#39120)</li>
+<li>Consolidar las acciones de colapso de la cuadrícula en un solo cambio de pantalla completa (#39070)</li>
+<li>Implementar metadatos para emitir tiempo de ejecución adicional (#38650)</li>
+<li>Agregar campo ejecutor a la base de datos y parámetro a los operadores (#38474)</li>
+<li>Implementar acceso contextual para DatasetEvent extra (#38481)</li>
+<li>Agregar información del evento del conjunto de datos al gráfico dag (#41012)</li>
+<li>Botón Agregar para activar o desactivar conjuntos de datos en el gráfico dag (#41200)</li>
+<li>Agregar decoradores <code>run_if</code> &amp; <code>skip_if</code> (#41116)</li>
+<li>Agregar punto final dag_stats rest api (#41017)</li>
+<li>Agregar oyentes para errores de importación de Dag (#39739)</li>
+<li>Permitir que DateTimeSensorAsync, FileSensor y TimeSensorAsync inicien la ejecución desde el disparador durante el mapeo dinámico de tareas (#41182)</li>
+</ul>
+<h2>Mejoras</h2>
+<ul>
+<li>Permitir establecer el recurso Dag Run en el permiso de nivel Dag: extiende la función access_control de Dag para permitir permisos de recursos de Dag Run. (#40703)</li>
+<li>Mejorar la seguridad y el manejo de errores para el API interno (#40999)</li>
+<li>Mejoras en la interfaz de usuario de conjuntos de datos (#40871)</li>
+<li>Cambie la pestaña Registro de auditoría de DAG a Registro de eventos (#40967)</li>
+<li>Hacer que el procesador de archivos dag independiente funcione en modo de aislamiento de base de datos (#40916)</li>
+<li>Mostrar solo la fuente en la página DAG del consumidor y solo la ejecución de DAG activada en la página DAG del productor (#41300)</li>
+<li>Actualizar los nombres de las métricas para permitir que varios ejecutores informen métricas (#40778)</li>
+<li>Formatear el recuento de ejecuciones de DAG (#39684)</li>
+<li>Actualizar estilos para el componente <code>renderedjson</code> (#40964)</li>
+<li>Mejorar el centinela ATTRIBUTE_REMOVED para usar clase y más contexto (#40920)</li>
+<li>Hacer que XCom se muestre como reacción json (#40640)</li>
+<li>Reemplazar los usos del registrador de contexto de tareas con la tabla de registro (#40867)</li>
+<li>Reversión para todas las excepciones de reintento (#40882) (#40883)</li>
+<li>Soporte para renderizar el valor de ObjectStoragePath (#40638)</li>
+<li>Agregue try_number y map_index como parámetros para el punto final del evento de registro (#40845)</li>
+<li>Gire la clave Fernet en lotes para limitar el uso de memoria (#40786)</li>
+<li>Agregar métrica de indicador para el parámetro 'last_num_of_db_queries' (#40833)</li>
+<li>Establezca los mensajes de registro de paralelismo en el nivel de advertencia para una mejor visibilidad (#39298)</li>
+<li>Agregar manejo de errores para codificar las ejecuciones de dag (#40222)</li>
+<li>Utilice params en lugar de dag_run.conf en el ejemplo DAG (#40759)</li>
+<li>Cargar complementos de ejemplo con DAG de ejemplo (#39999)</li>
+<li>Dejar de aplazar la tarea TimeDeltaSensorAsync cuando target_dttm esté en el pasado (#40719)</li>
+<li>Enviar registros de ejecutor importantes a registros de tareas (#40468)</li>
+<li>Abrir enlaces externos en pestañas nuevas (#40635)</li>
+<li>Intento de agregar la vista ReactJSON a las plantillas renderizadas (#40639)</li>
+<li>Acelerar el tiempo de coincidencia de expresiones regulares para advertencias personalizadas (#40513)</li>
+<li>Refactorizar DAG.dataset_triggers en la clase de horario (#39321)</li>
+<li>agregue next_kwargs a StartTriggerArgs (#40376)</li>
+<li>Mejorar el manejo de errores de la UI (#40350)</li>
+<li>Eliminar la doble advertencia en CLI cuando el valor de configuración está obsoleto (#40319)</li>
+<li>Implementar XComArg concat() (#40172)</li>
+<li>Se agregó el método <code>get_extra_dejson</code> con parámetro anidado que le permite especificar si desea que el json anidado como cadena también se deserialice (#39811)</li>
+<li>Agregar campo de ejecutor a la instancia de tarea API (#40034)</li>
+<li>Compatibilidad con la comprobación de la absolutidad de la ruta de base de datos en Windows (#40069)</li>
+<li>Introducir StartTriggerArgs y evitar la inicialización del activador de inicio en el programador (#39585)</li>
+<li>Agregar documentación de tareas a la pestaña de detalles en la vista de cuadrícula (#39899)</li>
+<li>Permitir que los ejecutores se especifiquen solo con el nombre de clase del Ejecutor (#40131)</li>
+<li>Eliminar la lógica condicional obsoleta relacionada con try_number (#40104)</li>
+<li>Permitir que los ID de grupo de tareas se pasen como ramas en BranchMixIn (#38883)</li>
+<li>El formulario de conexión Javascript aplicará CodeMirror a todas las áreas de texto dinámicamente (#39812)</li>
+<li>Determinar need_expansion en el momento de la serialización (#39604)</li>
+<li>Agregar índices en la columna dag_id en las tablas de referencia para acelerar la eliminación de registros dag (#39638)</li>
+<li>Agregar dependencias fallidas de tareas a la página de detalles (#38449)</li>
+<li>Eliminar el ajuste try_number del servidor web (#39623)</li>
+<li>Implementar el corte en secuencia diferida (#39483)</li>
+<li>Unificar implementaciones de secuencias de bases de datos diferidas (#39426)</li>
+<li>Agregue <code>__getattr__</code> al código auxiliar del decorador de tareas (#39425)</li>
+<li>Permitir pasar etiquetas a vistas FAB registradas mediante complementos (#39444)</li>
+<li>Mensaje de error más simple al intentar migrar sin conexión con sqlite (#39441)</li>
+<li>Agregar soft_fail a TriggerDagRunOperator (#39173)</li>
+<li>Cambie el nombre de &quot;evento de conjunto de datos&quot; en contexto para usar &quot;outlet&quot; (#39397)</li>
+<li>Resolver el comando <code>RemovedIn20Warning</code> in <code>airflow task</code> (#39244)</li>
+<li>Determinar fail_stop en el lado client cuando la base de datos está aislada (#39258)</li>
+<li>Refactorización del soporte de cloudpickle en operadores/decoradores Python (#39270)</li>
+<li>Actualizar el activador de migración de kwargs para especificar existente_nullable (#39361)</li>
+<li>Permitir que las tareas comiencen a ejecutarse directamente desde el activador sin tener que ir al trabajador (#38674)</li>
+<li>Mejores mensajes de error <code>db migrate</code> (#39268)</li>
+<li>Agregue nivel de pila en la advertencia <code>suppress_and_warn</code> (#39263)</li>
+<li>Soporte de búsqueda por dag_display_name (#39008)</li>
+<li>Permitir ordenar por todos los campos en MappedInstances.tsx (#38090)</li>
+<li>Exponer el recuento de tareas programadas en métricas (#38899)</li>
+<li>Utilice <code>declarative_base</code> from <code>sqlalchemy.orm</code> instead of <code>sqlalchemy.ext.declarative</code> (#39134)</li>
+<li>Agregue un DAG de ejemplo para demostrar los enfoques de emisión (#38821)</li>
+<li>Dar acceso a <code>on_task_instance_failed</code> al error que causó la falla (#38155)</li>
+<li>Simplificar la serialización del conjunto de datos (#38694)</li>
+<li>Agregar mensaje de recuperación de latidos a los trabajos (#34457)</li>
+<li>Eliminar la opción select_column en TaskInstance.get_task_instance (#38571)</li>
+<li>No cree una sesión en get_dag si no lee datos de la base de datos (#38553)</li>
+<li>Agregar un script de migración para kwargs de activación cifrados (#38358)</li>
+<li>Implementar render_templates en TaskInstancePydantic (#38559)</li>
+<li>Manejar sesión opcional en _refresh_from_db (#38572)</li>
+<li>Hacer que la anotación de tipo sea menos confusa en task_command.py (#38561)</li>
+<li>Utilice fetch_dagrun directamente para evitar la creación de sesiones (#38557)</li>
+<li>Añadido <code>output_processor</code> parameter to <code>BashProcessor</code> (#40843)</li>
+<li>Mejorar la serialización para el modo de aislamiento de bases de datos (#41239)</li>
+<li>Sólo conjuntos de datos huérfanos no huérfanos (#40806)</li>
+<li>Ajustar el ancho de Gantt según las fechas del historial de tareas (#41192)</li>
+<li>Habilite el desplazamiento en la leyenda con una gran cantidad de elementos. (#41187)</li>
+</ul>
+<h2>Corrección de errores</h2>
+<ul>
+<li>Corrección de error para get_parsing_context() cuando se ejecuta con LocalExecutor (#40738)</li>
+<li>Validación de las URL de documentación del proveedor antes de mostrarlas en las vistas (#40933)</li>
+<li>Mover la importación para que PythonOperator funcione en Windows (#40424)</li>
+<li>Arreglar dataset_with_extra_from_classic_operator ejemplo DAG (#40747)</li>
+<li>Llamar al oyente on_task_instance_failed() después de cambiar el estado (#41053)</li>
+<li>Agregar <code>never_fail</code> en BaseSensor (#40915)</li>
+<li>Se corrigió el punto final de tareas API cuando DAG no tiene <code>start_date</code> (#40878)</li>
+<li>Corregir y ajustar la generación de URL para la cuadrícula de UI y ejecuciones anteriores (#40764)</li>
+<li>Rotar optimización de clave fernet (#40758)</li>
+<li>Se corrigió la instancia de clase versus el tipo de clase en la llamada validar_database_executor_compatibility() (#40626)</li>
+<li>Limpiar el modo oscuro (#40466)</li>
+<li>Validar los tipos esperados de argumentos para DAG, BaseOperator y TaskGroup (#40269)</li>
+<li>El retroceso exponencial no funciona en el modo de reprogramación de BaseSensorOperator (#39823)</li>
+<li>Trabajo de tarea local: agregue tiempo de espera para no matar al oyente on_task_instance_success prematuramente (#39890)</li>
+<li>Mover la agrupación de registros posteriores a la ejecución detrás de la impresión de excepción (#40146)</li>
+<li>Se corrigió la condición de carrera del disparador en la configuración HA (#38666)</li>
+<li>Pasar la fecha lógica de ejecución de DAG activada o existente a DagStateTrigger (#39960)</li>
+<li>Pasando <code>external_task_group_id</code> to <code>WorkflowTrigger</code> (#39617)</li>
+<li>ECS Executor: establece las tareas en estado EN EJECUCIÓN una vez activas (#39212)</li>
+<li>Sólo latido si es necesario en el bucle de relleno (#39399)</li>
+<li>Se corrigió la migración del cifrado kwarg (#39246)</li>
+<li>Se corrigió el descifrado de kwargs desencadenantes al degradar. (#38743)</li>
+<li>Se corrigió el enlace incorrecto en TriggeredDagRuns (#41166)</li>
+<li>Pase MapIndex al componente LogLink para sistemas de registro externos (#41125)</li>
+<li>Agregar NonCachingRotatingFileHandler para la tarea del trabajador (#41064)</li>
+<li>Agregue el argumento include_xcom en el método para resolver un valor opcional (#41062)</li>
+<li>Desinfección de nombres de archivos en example_bash_decorator DAG (#40949)</li>
+<li>Mostrar alias de conjuntos de datos en gráficos de dependencia (#41128)</li>
+<li>Representar condiciones del conjunto de datos en la vista Gráfico DAG (#41137)</li>
+<li>Agregar gráfico de duración de la tarea en dagruns (#40755)</li>
+<li>Agregar inicio de ejecución desde soporte de disparador para sensores centrales existentes (#41021)</li>
+<li>agregar dag de ejemplo para dataset_alias (#41037)</li>
+<li>Agregar restricción única de alias de conjunto de datos y eliminar la lógica de eliminación de alias de conjunto de datos incorrectos (#41097)</li>
+<li>Establezca &quot;has_outlet_datasets&quot; en verdadero si existe un &quot;alias de conjunto de datos&quot; (#41091)</li>
+<li>Crear conjuntos de datos del grupo HookLineageCollector mediante (#41034)</li>
+<li>Mejora de la serialización start_trigger_args (#40993)</li>
+<li>Refactorizar el parámetro <code>BaseSensorOperator</code> introduce <code>skip_policy</code> (#40924)</li>
+<li>Se corrigió la visualización de registros desde el activador cuando la tarea se aplaza (#41272)</li>
+<li>Refactorizar cómo se reemplaza la URL de ejecución de dag activada (#41259)</li>
+<li>Se agregó soporte para argumentos de sesión de sql alchemy adicionales (#41048)</li>
+<li>Permitir lista vacía en TriggerDagRun fail_state (#41249)</li>
+<li>Limpiar el controlador de excepciones cuando run_as_user es el usuario de flujo de aire (#41241)</li>
+<li>Contraer documentos cuando click y plegado (#41214)</li>
+<li>Actualizar update_at al guardar en db como session.merge no activa la actualización (#40782)</li>
+<li>Se corrigieron las estadísticas de recuento de consultas al analizar el archivo DAF (#41149)</li>
+<li>Orden de Resolución de Método en operadores sin <code>__init__</code> (#41086)</li>
+<li>Asegúrese de que try_number se incremente para el operador vacío (#40426)</li>
+</ul>
+<h2>Varios</h2>
+<ul>
+<li>Eliminar la bandera Experimental de <code>OTel</code> Traces (#40874)</li>
+<li>Actualice la versión del paquete a 23.0 para solucionar el problema con el hotel anterior (#40865)</li>
+<li>Simplificar la función _auth_manager_is_authorized_map (#40803)</li>
+<li>Utilice la excepción correcta del ejecutor desconocido en el trabajo del programador (#40700)</li>
+<li>Agregue reglas D1 <code>pydocstyle</code> a pyproject.toml (#40569)</li>
+<li>Habilitar la aplicación de la regla D213 <code>pydocstyle</code> en ruff. (#40448, #40464)</li>
+<li>Actualice <code>Dag.test()</code> para ejecutarlo con un ejecutor si lo desea (#40205)</li>
+<li>Actualización de las versiones menores de Jest y Babel (#40203)</li>
+<li>Refactor BashOperator y decorador Bash para mayor coherencia y simplicidad (#39871)</li>
+<li>Agregar errores <code>AirflowInternalRuntimeError</code> for raise <code>non catchable</code> (#38778)</li>
+<li>versión gorguera 0.4.5 (#39849)</li>
+<li>Cambie <code>pytest</code> a 8.0+ (#39450)</li>
+<li>Eliminar comentario obsoleto sobre el índice TI (#39470)</li>
+<li>Configurar <code>back_populates</code> between <code>DagScheduleDatasetReference.dag</code> and <code>DagModel.schedule_dataset_references</code> (#39392)</li>
+<li>Eliminar advertencias de obsolescencia en endpoints.py (#39389)</li>
+<li>Se corrigieron las desaprobaciones de SQLA en el núcleo de Airflow (#39211)</li>
+<li>Utilice el atributo vinculado a clase directamente en SA (#39198, #39195)</li>
+<li>Se corrigió el nivel de pila para TaskContextLogger (#39142)</li>
+<li>Captura de advertencias durante la recopilación de DAG (#39109)</li>
+<li>Resolver <code>B028</code> (sin nivel de pila explícito) en el núcleo (#39123)</li>
+<li>Cambiar el nombre del modelo <code>ImportError</code> to <code>ParseImportError</code> para evitar el sombreado con excepción incorporada (#39116)</li>
+<li>Agregar opción para admitir cloudpickle en PythonVenv/Operador externo (#38531)</li>
+<li>Suprimir las advertencias de ejemplos <code>SubDagOperator</code> (#39057)</li>
+<li>Agregar registro para ejecutar devolución de llamada (#38892)</li>
+<li>Utilice <code>model_dump</code> instead of <code>dict</code> para serializar el modelo Pydantic V2 (#38933)</li>
+<li>Ampliar la columna de la hoja de referencia para evitar ajustar los comandos (#38888)</li>
+<li>Actualizar la cría a la última versión (1.22.5) (#38780)</li>
+<li>pasar uv a 0.1.29 (#38758)</li>
+<li>Agregar serializaciones faltantes encontradas durante la reparación de las pruebas del proveedor (#41252)</li>
+<li>Cambie <code>ws</code> de 7.5.5 a 7.5.10 en /airflow/www (#40288)</li>
+<li>Mejorar la escritura de estados permitidos/fallidos en TriggerDagRunOperator (#39855)</li>
+</ul>
+<h2>Cambios solo en documentos</h2>
+<ul>
+<li>Agregue <code>filesystems</code> and <code>dataset-uris</code> a la página &quot;cómo crear su propio proveedor&quot; (#40801)</li>
+<li>Se corrigió (TM) a (R) en el repositorio de Airflow (#40783)</li>
+<li>Establezca <code>otel_on</code> en Verdadero en el ejemplo airflow.cfg (#40712)</li>
+<li>Agregar advertencia para _AIRFLOW_PATCH_GEVENT (#40677)</li>
+<li>Actualización de la propuesta de diagrama de varios equipos después de las discusiones sobre Airflow 3 (#40671)</li>
+<li>Agregar una advertencia más fuerte de que MSSQL no es compatible y ya no funciona (#40565)</li>
+<li>Se corrigió la estructura engañosa del menú de Mac en el tutorial (#40440)</li>
+<li>Actualización de la versión compatible con k8s en documentos (#39878)</li>
+<li>Agregar nota de compatibilidad para oyentes (#39544)</li>
+<li>Actualización de la imagen de la etiqueta del borde en el ejemplo de documentación con la nueva vista gráfica (#38802)</li>
+<li>Actualizar capturas de pantalla del documento de la interfaz de usuario (#38680)</li>
+<li>Agregar la sección &quot;Manipulación de eventos de conjuntos de datos en cola a través de REST API&quot; (#41022)</li>
+<li>Agregar información sobre la falta de garantías de seguridad para docker compose (#41072)</li>
+<li>Agregar enlaces a la sección de parámetros de uso de dags de ejemplo (#41031)</li>
+<li>Cambiar <code>task_id</code> from <code>send_email</code> to <code>send_email_notification</code> in <code>taskflow.rst</code> (#41060)</li>
+<li>Eliminar la regla de redireccionamiento nginx innecesaria de la documentación del proxy inverso (#38953)</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>Fuente</strong> <a href="https://github.com/apache/airflow">apache/flujo de aire</a> · <code>2.10.0</code> · 2024-08-16 · <a href="https://github.com/apache/airflow/releases/tag/2.10.0">versión ascendente</a>
+<em>Reflejado textualmente para indexación. Todos los derechos pertenecen al proyecto upstream.</em></p>
+</blockquote></div>  <details class="mt-original"> <summary>original en inglés / English original</summary> <div class="prose mt-original-body"><h1>airflow 2.10.0</h1>
+<h2>Highlights</h2>
+<ul>
+<li><strong>Dataset schedules only advance while a DAG is active</strong> (#38891) — Events received while a DAG is paused or removed no longer satisfy its schedule when it returns. Event-driven integrations must account for this breaking change; time-based scheduling, including <code>DatasetOrTimeSchedule</code>, remains unchanged.</li>
+<li><strong><code>try_number</code> is fixed when a task is scheduled</strong> (#39336) — It no longer increments at worker startup and stays constant through reschedule/deferral cycles; only a new try increments it. Custom runners using <code>ti.run()</code> or <code>airflow tasks run</code> must stop relying on automatic increments.</li>
+<li><strong>FAB logout now requires POST and CSRF protection</strong> (#40145) — All FAB authentication views changed <code>/logout</code> from <code>GET</code> to <code>POST</code>. Update custom templates, automation, bookmarks, and proxy rules to submit a valid CSRF-protected POST.</li>
+<li><strong>Multiple executors can be assigned per DAG or task</strong> (#40701, #38474) — A single DAG can mix executor types through the new executor field and operator parameter. The capability remains experimental, so validate executor/task compatibility before production adoption.</li>
+<li><strong>OpenTelemetry tracing joins metrics support</strong> (#37948) — Airflow emits scheduler, triggerer, executor, processor, and DAG-run traces to OTLP-compatible endpoints. Plan exporter configuration, sampling, and cardinality controls before enabling it broadly.</li>
+<li><strong>Usage telemetry is collected by default</strong> (#39510) — Scarf gathers basic operational usage data. Compliance-sensitive deployments should explicitly set <code>[usage_data_collection]enabled = False</code> or <code>SCARF_ANALYTICS=false</code> and verify the setting across all environments.</li>
+</ul>
+<h1>Significant Changes</h1>
+<h2>Datasets no longer trigger inactive DAGs (#38891)</h2>
+<p>Previously, when a DAG is paused or removed, incoming dataset events would still
+trigger it, and the DAG would run when it is unpaused or added back in a DAG
+file. This has been changed; a DAG's dataset schedule can now only be satisfied
+by events that occur when the DAG is active. While this is a breaking change,
+the previous behavior is considered a bug.</p>
+<p>The behavior of time-based scheduling is unchanged, including the timetable part
+of <code>DatasetOrTimeSchedule</code>.</p>
+<h2><code>try_number</code> is no longer incremented during task execution (#39336)</h2>
+<p>Previously, the try number (<code>try_number</code>) was incremented at the beginning of task execution on the worker. This was problematic for many reasons.
+For one it meant that the try number was incremented when it was not supposed to, namely when resuming from reschedule or deferral. And it also resulted in
+the try number being &quot;wrong&quot; when the task had not yet started. The workarounds for these two issues caused a lot of confusion.</p>
+<p>Now, instead, the try number for a task run is determined at the time the task is scheduled, and does not change in flight, and it is never decremented.
+So after the task runs, the observed try number remains the same as it was when the task was running; only when there is a &quot;new try&quot; will the try number be incremented again.</p>
+<p>One consequence of this change is, if users were &quot;manually&quot; running tasks (e.g. by calling <code>ti.run()</code> directly, or command line <code>airflow tasks run</code>),
+try number will no longer be incremented. Airflow assumes that tasks are always run after being scheduled by the scheduler, so we do not regard this as a breaking change.</p>
+<h2><code>/logout</code> endpoint in FAB Auth Manager is now CSRF protected (#40145)</h2>
+<p>The <code>/logout</code> endpoint's method in FAB Auth Manager has been changed from <code>GET</code> to <code>POST</code> in all existing
+AuthViews (<code>AuthDBView</code>, <code>AuthLDAPView</code>, <code>AuthOAuthView</code>, <code>AuthOIDView</code>, <code>AuthRemoteUserView</code>), and
+now includes CSRF protection to enhance security and prevent unauthorized logouts.</p>
+<h2>OpenTelemetry Traces for Apache Airflow (#37948).</h2>
+<p>This new feature adds capability for Apache Airflow to emit 1) airflow system traces of scheduler,
+triggerer, executor, processor 2) DAG run traces for deployed DAG runs in OpenTelemetry format. Previously, only metrics were supported which emitted metrics in OpenTelemetry.
+This new feature will add richer data for users to use OpenTelemetry standard to emit and send their trace data to OTLP compatible endpoints.</p>
+<h2>Decorator for Task Flow <code>(@skip_if, @run_if)</code> to make it simple to apply whether or not to skip a Task. (#41116)</h2>
+<p>This feature adds a decorator to make it simple to skip a Task.</p>
+<h2>Using Multiple Executors Concurrently (#40701)</h2>
+<p>Previously known as hybrid executors, this new feature allows Airflow to use multiple executors concurrently. DAGs, or even individual tasks, can be configured
+to use a specific executor that suits its needs best. A single DAG can contain tasks all using different executors. Please see the Airflow documentation for
+more details. Note: This feature is still experimental. See <code>documentation on Executor &lt;https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/executor/index.html#using-multiple-executors-concurrently&gt;</code>_ for a more detailed description.</p>
+<h2>Scarf based telemetry: Does Airflow collect any telemetry data? (#39510)</h2>
+<p>Airflow integrates Scarf to collect basic usage data during operation. Deployments can opt-out of data collection by setting the <code>[usage_data_collection]enabled</code> option to False, or the SCARF_ANALYTICS=false environment variable.
+See <code>FAQ on this &lt;https://airflow.apache.org/docs/apache-airflow/stable/faq.html#does-airflow-collect-any-telemetry-data&gt;</code>_ for more information.</p>
+<h2>New Features</h2>
+<ul>
+<li>AIP-61 Hybrid Execution (<a href="https://github.com/apache/airflow/pulls?q=is%3Apr+label%3Aarea%3Ahybrid-executors+is%3Aclosed+milestone%3A%22Airflow+2.10.0%22">AIP-61</a>)</li>
+<li>AIP-62 Getting Lineage from Hook Instrumentation (<a href="https://github.com/apache/airflow/pulls?q=is%3Apr+is%3Amerged+label%3AAIP-62+milestone%3A%22Airflow+2.10.0%22">AIP-62</a>)</li>
+<li>AIP-64 TaskInstance Try History (<a href="https://github.com/apache/airflow/pulls?q=is%3Apr+is%3Amerged+label%3AAIP-64+milestone%3A%22Airflow+2.10.0%22">AIP-64</a>)</li>
+<li>AIP-44 Internal API (<a href="https://github.com/apache/airflow/pulls?q=is%3Apr+label%3AAIP-44+milestone%3A%22Airflow+2.10.0%22+is%3Aclosed">AIP-44</a>)</li>
+<li>Enable ending the task directly from the triggerer without going into the worker. (#40084)</li>
+<li>Extend dataset dependencies (#40868)</li>
+<li>Feature/add token authentication to internal api (#40899)</li>
+<li>Add DatasetAlias to support dynamic Dataset Event Emission and Dataset Creation (#40478)</li>
+<li>Add example DAGs for inlet_events (#39893)</li>
+<li>Implement <code>accessors</code> to read dataset events defined as inlet (#39367)</li>
+<li>Decorator for Task Flow, to make it simple to apply whether or not to skip a Task. (#41116)</li>
+<li>Add start execution from triggerer support to dynamic task mapping (#39912)</li>
+<li>Add try_number to log table (#40739)</li>
+<li>Added ds_format_locale method in macros which allows localizing datetime formatting using Babel (#40746)</li>
+<li>Add DatasetAlias to support dynamic Dataset Event Emission and Dataset Creation (#40478, #40723, #40809, #41264, #40830, #40693, #41302)</li>
+<li>Use sentinel to mark dag as removed on re-serialization (#39825)</li>
+<li>Add parameter for the last number of queries to the DB in DAG file processing stats (#40323)</li>
+<li>Add prototype version dark mode for Airflow UI (#39355)</li>
+<li>Add ability to mark some tasks as successful in <code>dag test</code>  (#40010)</li>
+<li>Allow use of callable for template_fields (#37028)</li>
+<li>Filter running/failed and active/paused dags on the home page(#39701)</li>
+<li>Add metrics about task CPU and memory usage (#39650)</li>
+<li>UI changes for DAG Re-parsing feature (#39636)</li>
+<li>Add Scarf based telemetry (#39510, #41318)</li>
+<li>Add dag re-parsing request endpoint (#39138)</li>
+<li>Redirect to new DAGRun after trigger from Grid view (#39569)</li>
+<li>Display <code>endDate</code> in task instance tooltip. (#39547)</li>
+<li>Implement <code>accessors</code> to read dataset events defined as inlet (#39367, #39893)</li>
+<li>Add color to log lines in UI for error and warnings based on keywords (#39006)</li>
+<li>Add Rendered k8s pod spec tab to ti details view (#39141)</li>
+<li>Make audit log before/after filterable (#39120)</li>
+<li>Consolidate grid collapse actions to a single full screen toggle (#39070)</li>
+<li>Implement Metadata to emit runtime extra (#38650)</li>
+<li>Add executor field to the DB and parameter to the operators (#38474)</li>
+<li>Implement context accessor for DatasetEvent extra (#38481)</li>
+<li>Add dataset event info to dag graph (#41012)</li>
+<li>Add button to toggle datasets on/off in dag graph (#41200)</li>
+<li>Add <code>run_if</code> &amp; <code>skip_if</code> decorators (#41116)</li>
+<li>Add dag_stats rest api endpoint (#41017)</li>
+<li>Add listeners for Dag import errors (#39739)</li>
+<li>Allowing DateTimeSensorAsync, FileSensor and TimeSensorAsync to start execution from trigger during dynamic task mapping (#41182)</li>
+</ul>
+<h2>Improvements</h2>
+<ul>
+<li>Allow set Dag Run resource into Dag Level permission: extends Dag's access_control feature to allow Dag Run resource permissions. (#40703)</li>
+<li>Improve security and error handling for the internal API (#40999)</li>
+<li>Datasets UI Improvements (#40871)</li>
+<li>Change DAG Audit log tab to Event Log (#40967)</li>
+<li>Make standalone dag file processor works in DB isolation mode (#40916)</li>
+<li>Show only the source on the consumer DAG page and only triggered DAG run in the producer DAG page (#41300)</li>
+<li>Update metrics names to allow multiple executors to report metrics (#40778)</li>
+<li>Format DAG run count (#39684)</li>
+<li>Update styles for <code>renderedjson</code> component (#40964)</li>
+<li>Improve ATTRIBUTE_REMOVED sentinel to use class and more context (#40920)</li>
+<li>Make XCom display as react json (#40640)</li>
+<li>Replace usages of task context logger with the log table (#40867)</li>
+<li>Rollback for all retry exceptions (#40882) (#40883)</li>
+<li>Support rendering ObjectStoragePath value (#40638)</li>
+<li>Add try_number and map_index as params for log event endpoint (#40845)</li>
+<li>Rotate fernet key in batches to limit memory usage (#40786)</li>
+<li>Add gauge metric for 'last_num_of_db_queries' parameter (#40833)</li>
+<li>Set parallelism log messages to warning level for better visibility (#39298)</li>
+<li>Add error handling for encoding the dag runs (#40222)</li>
+<li>Use params instead of dag_run.conf in example DAG (#40759)</li>
+<li>Load Example Plugins with Example DAGs (#39999)</li>
+<li>Stop deferring TimeDeltaSensorAsync task when the target_dttm is in the past (#40719)</li>
+<li>Send important executor logs to task logs (#40468)</li>
+<li>Open external links in new tabs (#40635)</li>
+<li>Attempt to add ReactJSON view to rendered templates (#40639)</li>
+<li>Speeding up regex match time for custom warnings (#40513)</li>
+<li>Refactor DAG.dataset_triggers into the timetable class (#39321)</li>
+<li>add next_kwargs to StartTriggerArgs (#40376)</li>
+<li>Improve UI error handling (#40350)</li>
+<li>Remove double warning in CLI  when config value is deprecated (#40319)</li>
+<li>Implement XComArg concat() (#40172)</li>
+<li>Added <code>get_extra_dejson</code> method with nested parameter which allows you to specify if you want the nested json as string to be also deserialized (#39811)</li>
+<li>Add executor field to the task instance API (#40034)</li>
+<li>Support checking for db path absoluteness on Windows (#40069)</li>
+<li>Introduce StartTriggerArgs and prevent start trigger initialization in scheduler (#39585)</li>
+<li>Add task documentation to details tab in grid view (#39899)</li>
+<li>Allow executors to be specified with only the class name of the Executor (#40131)</li>
+<li>Remove obsolete conditional logic related to try_number (#40104)</li>
+<li>Allow Task Group Ids to be passed as branches in BranchMixIn (#38883)</li>
+<li>Javascript connection form will apply CodeMirror to all textarea's dynamically (#39812)</li>
+<li>Determine needs_expansion at time of serialization (#39604)</li>
+<li>Add indexes on dag_id column in referencing tables to speed up deletion of dag records (#39638)</li>
+<li>Add task failed dependencies to details page (#38449)</li>
+<li>Remove webserver try_number adjustment (#39623)</li>
+<li>Implement slicing in lazy sequence (#39483)</li>
+<li>Unify lazy db sequence implementations (#39426)</li>
+<li>Add <code>__getattr__</code> to task decorator stub (#39425)</li>
+<li>Allow passing labels to FAB Views registered via Plugins (#39444)</li>
+<li>Simpler error message when trying to offline migrate with sqlite (#39441)</li>
+<li>Add soft_fail to TriggerDagRunOperator (#39173)</li>
+<li>Rename &quot;dataset event&quot; in context to use &quot;outlet&quot; (#39397)</li>
+<li>Resolve <code>RemovedIn20Warning</code> in <code>airflow task</code> command (#39244)</li>
+<li>Determine fail_stop on client side when db isolated (#39258)</li>
+<li>Refactor cloudpickle support in Python operators/decorators (#39270)</li>
+<li>Update trigger kwargs migration to specify existing_nullable (#39361)</li>
+<li>Allowing tasks to start execution directly from triggerer without going to worker (#38674)</li>
+<li>Better <code>db migrate</code> error messages (#39268)</li>
+<li>Add stacklevel into the <code>suppress_and_warn</code> warning (#39263)</li>
+<li>Support searching by dag_display_name (#39008)</li>
+<li>Allow sort by on all fields in MappedInstances.tsx (#38090)</li>
+<li>Expose count of scheduled tasks in metrics (#38899)</li>
+<li>Use <code>declarative_base</code> from <code>sqlalchemy.orm</code> instead of <code>sqlalchemy.ext.declarative</code> (#39134)</li>
+<li>Add example DAG to demonstrate emitting approaches (#38821)</li>
+<li>Give <code>on_task_instance_failed</code> access to the error that caused the failure (#38155)</li>
+<li>Simplify dataset serialization (#38694)</li>
+<li>Add heartbeat recovery message to jobs (#34457)</li>
+<li>Remove select_column option in TaskInstance.get_task_instance (#38571)</li>
+<li>Don't create session in get_dag if not reading dags from database (#38553)</li>
+<li>Add a migration script for encrypted trigger kwargs (#38358)</li>
+<li>Implement render_templates on TaskInstancePydantic (#38559)</li>
+<li>Handle optional session in _refresh_from_db (#38572)</li>
+<li>Make type annotation less confusing in task_command.py (#38561)</li>
+<li>Use fetch_dagrun directly to avoid session creation (#38557)</li>
+<li>Added <code>output_processor</code> parameter to <code>BashProcessor</code> (#40843)</li>
+<li>Improve serialization for Database Isolation Mode (#41239)</li>
+<li>Only orphan non-orphaned Datasets (#40806)</li>
+<li>Adjust gantt width based on task history dates (#41192)</li>
+<li>Enable scrolling on legend with high number of elements. (#41187)</li>
+</ul>
+<h2>Bug Fixes</h2>
+<ul>
+<li>Bugfix for get_parsing_context() when ran with LocalExecutor (#40738)</li>
+<li>Validating provider documentation urls before displaying in views (#40933)</li>
+<li>Move import to make PythonOperator working on Windows (#40424)</li>
+<li>Fix dataset_with_extra_from_classic_operator example DAG (#40747)</li>
+<li>Call listener on_task_instance_failed() after ti state is changed (#41053)</li>
+<li>Add <code>never_fail</code> in BaseSensor (#40915)</li>
+<li>Fix tasks API endpoint when DAG doesn't have <code>start_date</code> (#40878)</li>
+<li>Fix and adjust URL generation for UI grid and older runs (#40764)</li>
+<li>Rotate fernet key optimization (#40758)</li>
+<li>Fix class instance vs. class type in validate_database_executor_compatibility() call (#40626)</li>
+<li>Clean up dark mode (#40466)</li>
+<li>Validate expected types for args for DAG, BaseOperator and TaskGroup (#40269)</li>
+<li>Exponential Backoff Not Functioning in BaseSensorOperator Reschedule Mode (#39823)</li>
+<li>local task job: add timeout, to not kill on_task_instance_success listener prematurely (#39890)</li>
+<li>Move Post Execution Log Grouping behind Exception Print (#40146)</li>
+<li>Fix triggerer race condition in HA setting (#38666)</li>
+<li>Pass triggered or existing DAG Run logical date to DagStateTrigger (#39960)</li>
+<li>Passing <code>external_task_group_id</code> to <code>WorkflowTrigger</code> (#39617)</li>
+<li>ECS Executor: Set tasks to RUNNING state once active (#39212)</li>
+<li>Only heartbeat if necessary in backfill loop (#39399)</li>
+<li>Fix trigger kwarg encryption migration (#39246)</li>
+<li>Fix decryption of trigger kwargs when downgrading. (#38743)</li>
+<li>Fix wrong link in TriggeredDagRuns (#41166)</li>
+<li>Pass MapIndex to LogLink component for external log systems (#41125)</li>
+<li>Add NonCachingRotatingFileHandler for worker task (#41064)</li>
+<li>Add argument include_xcom in method resolve an optional value (#41062)</li>
+<li>Sanitizing file names in example_bash_decorator DAG (#40949)</li>
+<li>Show dataset aliases in dependency graphs (#41128)</li>
+<li>Render Dataset Conditions in DAG Graph view (#41137)</li>
+<li>Add task duration plot across dagruns (#40755)</li>
+<li>Add start execution from trigger support for existing core sensors (#41021)</li>
+<li>add example dag for dataset_alias (#41037)</li>
+<li>Add dataset alias unique constraint and remove wrong dataset alias removing logic (#41097)</li>
+<li>Set &quot;has_outlet_datasets&quot; to true if &quot;dataset alias&quot; exists (#41091)</li>
+<li>Make HookLineageCollector group datasets by (#41034)</li>
+<li>Enhance start_trigger_args serialization (#40993)</li>
+<li>Refactor <code>BaseSensorOperator</code> introduce <code>skip_policy</code> parameter (#40924)</li>
+<li>Fix viewing logs from triggerer when task is deferred (#41272)</li>
+<li>Refactor how triggered dag run url is replaced (#41259)</li>
+<li>Added support for additional sql alchemy session args (#41048)</li>
+<li>Allow empty list in TriggerDagRun failed_state (#41249)</li>
+<li>Clean up the exception handler when run_as_user is the airflow user  (#41241)</li>
+<li>Collapse docs when click and folded (#41214)</li>
+<li>Update updated_at when saving to db as session.merge does not trigger on-update (#40782)</li>
+<li>Fix query count statistics when parsing DAF file (#41149)</li>
+<li>Method Resolution Order in operators without <code>__init__</code> (#41086)</li>
+<li>Ensure try_number incremented for empty operator (#40426)</li>
+</ul>
+<h2>Miscellaneous</h2>
+<ul>
+<li>Remove the Experimental flag from <code>OTel</code> Traces (#40874)</li>
+<li>Bump packaging version to 23.0 in order to fix issue with older otel (#40865)</li>
+<li>Simplify _auth_manager_is_authorized_map function (#40803)</li>
+<li>Use correct unknown executor exception in scheduler job (#40700)</li>
+<li>Add D1 <code>pydocstyle</code> rules to pyproject.toml (#40569)</li>
+<li>Enable enforcing <code>pydocstyle</code> rule D213 in ruff. (#40448, #40464)</li>
+<li>Update <code>Dag.test()</code> to run with an executor if desired (#40205)</li>
+<li>Update jest and babel minor versions (#40203)</li>
+<li>Refactor BashOperator and Bash decorator for consistency and simplicity (#39871)</li>
+<li>Add <code>AirflowInternalRuntimeError</code> for raise <code>non catchable</code> errors (#38778)</li>
+<li>ruff version bump 0.4.5 (#39849)</li>
+<li>Bump <code>pytest</code> to 8.0+ (#39450)</li>
+<li>Remove stale comment about TI index (#39470)</li>
+<li>Configure <code>back_populates</code> between <code>DagScheduleDatasetReference.dag</code> and <code>DagModel.schedule_dataset_references</code> (#39392)</li>
+<li>Remove deprecation warnings in endpoints.py (#39389)</li>
+<li>Fix SQLA deprecations in Airflow core (#39211)</li>
+<li>Use class-bound attribute directly in SA (#39198, #39195)</li>
+<li>Fix stacklevel for TaskContextLogger (#39142)</li>
+<li>Capture warnings during collect DAGs (#39109)</li>
+<li>Resolve <code>B028</code> (no-explicit-stacklevel) in core (#39123)</li>
+<li>Rename model <code>ImportError</code> to <code>ParseImportError</code> for avoid shadowing with builtin exception (#39116)</li>
+<li>Add option to support cloudpickle in PythonVenv/External Operator (#38531)</li>
+<li>Suppress <code>SubDagOperator</code> examples warnings (#39057)</li>
+<li>Add log for running callback (#38892)</li>
+<li>Use <code>model_dump</code> instead of <code>dict</code> for serialize Pydantic V2 model (#38933)</li>
+<li>Widen cheat sheet column to avoid wrapping commands (#38888)</li>
+<li>Update hatchling to latest version (1.22.5) (#38780)</li>
+<li>bump uv to 0.1.29 (#38758)</li>
+<li>Add missing serializations found during provider tests fixing (#41252)</li>
+<li>Bump <code>ws</code> from 7.5.5 to 7.5.10 in /airflow/www (#40288)</li>
+<li>Improve typing for allowed/failed_states in TriggerDagRunOperator (#39855)</li>
+</ul>
+<h2>Doc Only Changes</h2>
+<ul>
+<li>Add <code>filesystems</code> and <code>dataset-uris</code> to &quot;how to create your own provider&quot; page (#40801)</li>
+<li>Fix (TM) to (R) in Airflow repository (#40783)</li>
+<li>Set <code>otel_on</code> to True in example airflow.cfg (#40712)</li>
+<li>Add warning for _AIRFLOW_PATCH_GEVENT  (#40677)</li>
+<li>Update multi-team diagram proposal after Airflow 3 discussions (#40671)</li>
+<li>Add stronger warning that MSSQL is not supported and no longer functional (#40565)</li>
+<li>Fix misleading mac menu structure in howto (#40440)</li>
+<li>Update k8s supported version in docs (#39878)</li>
+<li>Add compatibility note for Listeners (#39544)</li>
+<li>Update edge label image in documentation example with the new graph view (#38802)</li>
+<li>Update UI doc screenshots (#38680)</li>
+<li>Add section &quot;Manipulating queued dataset events through REST API&quot; (#41022)</li>
+<li>Add information about lack of security guarantees for docker compose (#41072)</li>
+<li>Add links to example dags in use params section (#41031)</li>
+<li>Change <code>task_id</code> from <code>send_email</code> to <code>send_email_notification</code> in <code>taskflow.rst</code> (#41060)</li>
+<li>Remove unnecessary nginx redirect rule from reverse proxy documentation (#38953)</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>Source</strong> <a href="https://github.com/apache/airflow">apache/airflow</a> · <code>2.10.0</code> · 2024-08-16 · <a href="https://github.com/apache/airflow/releases/tag/2.10.0">upstream release</a></p>
+</blockquote>
+<p><em>Mirrored verbatim for indexing. All rights belong to the upstream project.</em></p></div> </details> </div> <p class="muted" style="margin-top:var(--s8);font-size:12.5px;border-top:1px solid var(--line);padding-top:var(--s4)"> Las notas de versión provienen del proyecto original. Las organizamos y conectamos para que puedas comparar versiones de un vistazo. Todos los derechos pertenecen a los autores originales. </p> <nav class="pager" aria-label="Release navigation"> <a href="/releases/airflow/2.10.1"> <span class="k">← Siguiente</span> <span class="t">2.10.1</span> </a> <a href="/releases/airflow/1.15.0"> <span class="k">Anterior →</span> <span class="t">1.15.0</span> </a> </nav> <aside class="ad-slot" aria-label="Advertisement" data-astro-cid-fgwukgf6><div class="ad-slot-label" data-astro-cid-fgwukgf6>Advertisement</div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4184355057086168" data-ad-slot="9133765584" data-ad-format="auto" data-full-width-responsive="true" data-astro-cid-fgwukgf6></ins><script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script></aside> </article> <aside class="rail"> <div class="rail-card"> <div class="rail-title">Source</div> <ul class="rail-list"> <li> <a href="https://github.com/apache/airflow/releases/tag/2.10.0" target="_blank" rel="noopener"> <span>Original en GitHub</span> <span class="d">↗</span> </a> </li> <li> <a href="https://github.com/apache/airflow" target="_blank" rel="noopener"> <span>apache/airflow</span> <span class="d">↗</span> </a> </li> </ul> </div> <div class="rail-card rail-toc"> <div class="rail-title">En esta página</div> <nav> <a href="#" class>Los conjuntos de datos ya no activan DAG inactivos (#38891)</a><a href="#" class>trynumber ya no se incrementa durante la ejecución de la tarea (#39336)</a><a href="#" class>El punto final /logout en FAB Auth Manager ahora está protegido por CSRF (#40145)</a><a href="#" class>OpenTelemetry Seguimientos para Apache Airflow (#37948).</a><a href="#" class>Decorador para el flujo de tareas (@skipif, @runif) para que sea sencillo aplicar si se debe omitir o no una tarea. (#41116)</a><a href="#" class>Uso de varios ejecutores simultáneamente (#40701)</a><a href="#" class>Telemetría basada en bufanda: ¿Airflow recopila datos de telemetría? (#39510)</a><a href="#" class>Nuevas características</a><a href="#" class>Mejoras</a><a href="#" class>Corrección de errores</a><a href="#" class>Varios</a><a href="#" class>Cambios solo en documentos</a> </nav> </div> <div class="rail-card"> <div class="rail-title">Historial de versiones</div> <ul class="rail-list"> <li> <a href="/releases/airflow/1.0.0"> <span class="v">v1.0.0</span> <span class="d">26-11-13</span> </a> </li><li> <a href="/releases/airflow/3.4.0"> <span class="v">3.4.0</span> <span class="d">26-11-06</span> </a> </li><li> <a href="/releases/airflow/3.3.2"> <span class="v">3.3.2</span> <span class="d">26-09-17</span> </a> </li><li> <a href="/releases/airflow/3.3.1"> <span class="v">3.3.1</span> <span class="d">26-08-12</span> </a> </li><li> <a href="/releases/airflow/3.3.0"> <span class="v">3.3.0</span> <span class="d">26-07-06</span> </a> </li><li> <a href="/releases/airflow/1.22.0"> <span class="v">1.22.0</span> <span class="d">26-06-13</span> </a> </li><li> <a href="/releases/airflow/0.1.5"> <span class="v">0.1.5</span> <span class="d">26-06-03</span> </a> </li><li> <a href="/releases/airflow/3.2.2"> <span class="v">3.2.2</span> <span class="d">26-05-29</span> </a> </li> </ul> <a href="/es/releases/airflow" class="mono" style="display:inline-block;margin-top:var(--s3);font-size:11.5px;color:var(--ink-3)"> Ver todo 79 →
+</a> </div> </aside> </div> </div>  </main> <footer class="site-footer"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/es/" class="brand" aria-label="STAGS NextStack"><span class="brand-mark" aria-hidden="true">S</span><span class="brand-main">STAGS</span><span class="brand-sub" aria-hidden="true">NextStack</span></a> <p>Inteligencia de lanzamiento de código abierto, publicada diariamente.</p> </div> <div class="footer-col"> <h3>Seguimiento</h3> <ul> <li><a href="/es/releases">Versiones</a></li> <li><a href="/es/projects">Proyectos</a></li> <li><a href="/es/releases.xml">Feed RSS</a></li> </ul> </div> <div class="footer-col"> <h3>Archivo</h3> <ul> <li><a href="/zh/release_note" hreflang="zh-Hans">Archivo chino</a></li> <li><a href="/zh/chapters/" hreflang="zh-Hans">Notas técnicas</a></li> <li><a href="/zh/downloads/">Stags Tracker</a></li> </ul> </div> <div class="footer-col"> <h3>Información</h3> <ul> <li><a href="/privacy">Política de privacidad</a></li> <li><a href="/releases.xml">RSS</a></li> <li><a href="/sitemap-index.xml">Sitemap</a></li> </ul> </div> </div> <div class="footer-btm"> <span>© 2026 STAGS</span> <span>Los Release note pertenecen a sus proyectos upstream.</span> </div> </div> </footer> <!-- 搜索面板 --> <div class="palette-bg" data-palette-bg data-open="false"> <div class="palette" role="dialog" aria-modal="true" aria-label="Buscar versiones"> <div class="palette-in"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ink-4);flex:none"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <input type="search" data-palette-input placeholder="Busca lanzamientos, proyectos, versiones…" autocomplete="off" spellcheck="false"> <span class="kbd">esc</span> </div> <ul class="palette-res" data-palette-res></ul> <div class="palette-ft"> <span>↑↓ navigate</span> <span>↵ open</span> <span style="margin-left:auto" data-palette-count></span> </div> </div> </div> <script type="module" src="/assets/Shell.astro_astro_type_script_index_0_lang.0ZkKXV47.js"></script> </body> </html>

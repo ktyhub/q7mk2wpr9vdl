@@ -1,0 +1,218 @@
+<!DOCTYPE html><html lang="ja" dir="ltr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>DeepSpeed v0.19.3 — STAGS NextStack</title><meta name="description" content="Update version post release · Validate fp16 dynamic loss scaling parameters are positive · Add merge queue DCO workflow · Stop obsolete CI jobs on workflow cancellation"><meta name="keywords" content="オープンソース release note、リリース トラッカー、changelog アグリゲーター、重大な変更、非推奨トラッカー、Kafka リリース、Spring Boot リリース、Kubernetes リリース"><meta name="generator" content="Astro v5.18.2"><link rel="canonical" href="https://www.stags.cn/ja/releases/deepspeed/0.19.3/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="STAGS NextStack — releases" href="/ja/releases.xml"><link rel="alternate" hreflang="en" href="https://www.stags.cn/releases/deepspeed/0.19.3/"><link rel="alternate" hreflang="zh-Hans" href="https://www.stags.cn/releases/deepspeed/0.19.3/"><link rel="alternate" hreflang="x-default" href="https://www.stags.cn/releases/deepspeed/0.19.3/"><meta property="og:site_name" content="STAGS"><meta property="og:type" content="article"><meta property="og:title" content="DeepSpeed v0.19.3 — STAGS NextStack"><meta property="og:description" content="Update version post release · Validate fp16 dynamic loss scaling parameters are positive · Add merge queue DCO workflow · Stop obsolete CI jobs on workflow cancellation"><meta property="og:url" content="https://www.stags.cn/ja/releases/deepspeed/0.19.3/"><meta property="og:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><meta property="og:locale" content="ja_JP"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="de_DE"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:locale:alternate" content="es_ES"><meta property="og:locale:alternate" content="pt_BR"><meta property="og:locale:alternate" content="ko_KR"><meta property="og:locale:alternate" content="it_IT"><meta property="og:locale:alternate" content="ru_RU"><meta property="og:locale:alternate" content="tr_TR"><meta property="og:locale:alternate" content="id_ID"><meta property="og:locale:alternate" content="vi_VN"><meta property="og:locale:alternate" content="ar_SA"><meta property="og:locale:alternate" content="sv_SE"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.stags.cn/#website","name":"STAGS","url":"https://www.stags.cn/","inLanguage":"ja","description":"NextStack はインフラストラクチャおよび AI プロジェクトのリリースノートを索引化し、破壊的変更・非推奨・移行情報を英語優先の単一フィードで提供します。","publisher":{"@id":"https://www.stags.cn/#org"}},{"@type":"Organization","@id":"https://www.stags.cn/#org","name":"STAGS","alternateName":"NextStack","url":"https://www.stags.cn/"},{"@type":"TechArticle","@id":"https://www.stags.cn/ja/releases/deepspeed/0.19.3/#article","headline":"DeepSpeed v0.19.3 release notes","datePublished":"2026-07-23","inLanguage":"en","isPartOf":{"@id":"https://www.stags.cn/#website"},"about":{"@type":"SoftwareSourceCode","codeRepository":"https://github.com/deepspeedai/DeepSpeed"}}]}</script><!-- 第三方脚本的连接预热：这两个域名几乎每页都要连，
+         提前建连能省掉 DNS + TCP + TLS 一个往返（移动网络 100~300ms）。
+         AdSense 只在开关打开时预热——关掉广告后连这个域名都没必要。 --><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://pagead2.googlesyndication.com"><!-- Google AdSense：站点所有权校验与广告投放共用同一段脚本，全站只加载一次。
+         未创建广告单元时页面上不渲染任何广告容器，站点保持干净。
+         fetchpriority=low：它不参与首屏渲染，不该跟正文抢带宽。 --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184355057086168" crossorigin="anonymous" fetchpriority="low"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-RFRF1TVRMP" fetchpriority="low"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RFRF1TVRMP");
+    </script><!-- 百度统计（国内流量统计）。官方标准片段，is:inline 原样输出，
+         hm.js 动态插到首个 script 前，异步不阻塞首屏渲染。 --><script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?299e5b4e65b86ed16879bdcbe70531d6";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script><link rel="stylesheet" href="/assets/index.DQGt3qLZ.css">
+<style>.ad-slot[data-astro-cid-fgwukgf6]{margin:var(--s10) 0 0;padding-top:var(--s5);border-top:1px solid var(--line)}.ad-slot-label[data-astro-cid-fgwukgf6]{margin-bottom:var(--s3);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{display:block;min-height:100px}@media(min-width:640px){.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{min-height:250px}}
+</style></head> <body> <a class="skip" href="#main">本文へスキップ</a> <header class="hdr" data-header> <div class="wrap hdr-inner"> <a href="/ja/" class="brand" aria-label="STAGS NextStack — オープンソースのリリース情報"> <span class="brand-mark" aria-hidden="true">S</span> <span class="brand-main">STAGS</span> <span class="brand-sub" aria-hidden="true">NextStack</span> </a> <nav class="nav" aria-label="Primary"> <a href="/ja/releases">リリース</a><a href="/ja/projects">プロジェクト</a> </nav>  <details class="navmenu" data-navmenu> <summary class="navmenu-btn" aria-label="Open menu"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> </summary> <div class="navmenu-panel" role="group" aria-label="Primary"> <a href="/ja/releases" class="navmenu-item">リリース</a><a href="/ja/projects" class="navmenu-item">プロジェクト</a> </div> </details> <div class="hdr-tools"> <button class="searchbtn" type="button" data-search-open aria-label="リリースを検索"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <span class="lbl">検索</span> <span class="kbd">⌘K</span> </button> <details class="langmenu" data-langmenu> <summary class="langmenu-btn" aria-label="言語"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"> <circle cx="12" cy="12" r="9"></circle> <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path> </svg> <span class="langmenu-cur">日</span> <svg class="langmenu-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m2 4 4 4 4-4"></path></svg> </summary> <div class="langmenu-panel" role="group" aria-label="言語"> <p class="langmenu-head">言語</p> <a class="langmenu-item" href="/releases/deepspeed/0.19.3/" hreflang="en" lang="en" data-on="false"> <span class="langmenu-label">English</span> <span class="langmenu-code">EN</span> </a><a class="langmenu-item" href="/zh/release_note/DeepSpeed/DeepSpeed_v0.19.3" hreflang="zh-Hans" lang="zh-CN" data-on="false"> <span class="langmenu-label">中文</span> <span class="langmenu-code">中</span> </a><a class="langmenu-item" href="/ja/releases/deepspeed/0.19.3/" hreflang="ja" lang="ja" aria-current="true" data-on="true"> <span class="langmenu-label">日本語</span> <span class="langmenu-code">日</span> </a><a class="langmenu-item" href="/de/releases/deepspeed/0.19.3/" hreflang="de" lang="de" data-on="false"> <span class="langmenu-label">Deutsch</span> <span class="langmenu-code">DE</span> </a><a class="langmenu-item" href="/fr/releases/deepspeed/0.19.3/" hreflang="fr" lang="fr" data-on="false"> <span class="langmenu-label">Français</span> <span class="langmenu-code">FR</span> </a><a class="langmenu-item" href="/es/releases/deepspeed/0.19.3/" hreflang="es" lang="es" data-on="false"> <span class="langmenu-label">Español</span> <span class="langmenu-code">ES</span> </a><a class="langmenu-item" href="/pt/releases/deepspeed/0.19.3/" hreflang="pt-BR" lang="pt-BR" data-on="false"> <span class="langmenu-label">Português</span> <span class="langmenu-code">PT</span> </a><a class="langmenu-item" href="/ko/releases" hreflang="ko" lang="ko" data-on="false"> <span class="langmenu-label">한국어</span> <span class="langmenu-code">한</span> </a><a class="langmenu-item" href="/it/releases" hreflang="it" lang="it" data-on="false"> <span class="langmenu-label">Italiano</span> <span class="langmenu-code">IT</span> </a><a class="langmenu-item" href="/ru/releases" hreflang="ru" lang="ru" data-on="false"> <span class="langmenu-label">Русский</span> <span class="langmenu-code">RU</span> </a><a class="langmenu-item" href="/tr/releases" hreflang="tr" lang="tr" data-on="false"> <span class="langmenu-label">Türkçe</span> <span class="langmenu-code">TR</span> </a><a class="langmenu-item" href="/id/releases" hreflang="id" lang="id" data-on="false"> <span class="langmenu-label">Bahasa Indonesia</span> <span class="langmenu-code">ID</span> </a><a class="langmenu-item" href="/vi/releases" hreflang="vi" lang="vi" data-on="false"> <span class="langmenu-label">Tiếng Việt</span> <span class="langmenu-code">VI</span> </a><a class="langmenu-item" href="/ar/releases" hreflang="ar" lang="ar" data-on="false"> <span class="langmenu-label">العربية</span> <span class="langmenu-code">ع</span> </a><a class="langmenu-item" href="/sv/releases" hreflang="sv" lang="sv" data-on="false"> <span class="langmenu-label">Svenska</span> <span class="langmenu-code">SV</span> </a> </div> </details> <a class="iconlink" href="/releases.xml" aria-label="RSS"> <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"> <path d="M2 12.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM2 7.5a6.5 6.5 0 0 1 6.5 6.5h-2A4.5 4.5 0 0 0 2 9.5v-2ZM2 2.5A11.5 11.5 0 0 1 13.5 14h-2A9.5 9.5 0 0 0 2 4.5v-2Z"></path> </svg> </a> </div> </div> </header> <main id="main">  <div class="wrap"> <div class="detail"> <article> <header class="detail-hd"> <nav class="crumbs" aria-label="Breadcrumb"> <a href="/ja/">ホーム</a> <span class="sep">/</span> <a href="/ja/releases">リリース</a> <span class="sep">/</span> <a href="/ja/releases/deepspeed">DeepSpeed</a> </nav> <h1 class="detail-title"> <span class="p">DeepSpeed</span> v0.19.3 </h1> <div class="detail-meta"> <span class="chip chip--patch">パッチ</span> <span><span class="k">公開日</span>2026年7月23日</span>  <span class="sep" aria-hidden="true"></span> <a href="https://github.com/deepspeedai/DeepSpeed" target="_blank" rel="noopener"> <span class="k">出典</span>deepspeedai/DeepSpeed </a>   <span class="sep" aria-hidden="true"></span> <a href="/releases/deepspeed/0.19.3/"> English original </a>  <span class="sep" aria-hidden="true"></span> <button class="btn btn--ghost btn--sm" type="button" data-copy="https://www.stags.cn/ja/releases/deepspeed/0.19.3/">リンクをコピー</button> </div> </header> <div class="prose" style="margin-top:var(--s8)"> <p class="mt-notice" role="note">このページは機械翻訳です。内容は必ず英文原文をご確認ください。</p>  <div><p>#ディープスピードv0.19.3</p>
+<h2>何が変わったのか</h2>
+<ul>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8070 の @loadams によるリリース後にバージョンを更新</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8050 の @aryanputta によって、fp16 動的損失スケーリング パラメーターが正であることを検証します。</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8086 に @tohtana によるマージ キュー DCO ワークフローを追加</li>
+<li>ワークフローのキャンセル時に古い CI ジョブを停止 (https://github.com/deepspeedai/DeepSpeed/pull/8034 の @tohtana による)</li>
+<li>ZeRO-3 の修正: https://github.com/deepspeedai/DeepSpeed/pull/8073 の @albertvillanova による _allgather_params_coalesced の出力バッファーにパラメーターごとの dtype を使用する</li>
+<li>修正: https://github.com/deepspeedai/DeepSpeed/pull/8075 の @MarkCLChang による fd リークを防ぐために deepspeed_io_handle_t::wait() のファイル記述子を閉じる</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8079 の @arunshar により、トップレベルのパブリック API 関数に型ヒントを追加</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8068 の @sfc-gh-truwase によるデフォルトの gradient_cli から 1.0 へのマッピング</li>
+<li>activity_checkpointing: デフォルトの num_layers は None なので、https://github.com/deepspeedai/DeepSpeed/pull/8041 の @Kymi808 によって configure() アサートが起動されます</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8067 に @sfc-gh-truwase による設定可能なエンジン ログ レベルを追加</li>
+<li>[CI] https://github.com/deepspeedai/DeepSpeed/pull/8077 の @stas00 による差分駆動テストの選択</li>
+<li>デフォルトで bf16 check_grad_overflow を有効にする (fp16 と一致する) (https://github.com/deepspeedai/DeepSpeed/pull/8035 の @yongzhe-wang による)</li>
+<li>ZeRO-3 zero.Init ソース モジュールで AutoEP をサポート (https://github.com/deepspeedai/DeepSpeed/pull/8060 の @tohtana による)</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8095 の @PKUWZP による README.md の出版物リストを更新</li>
+<li>修正: AutoTP Partition_config は、https://github.com/deepspeedai/DeepSpeed/pull/8088 の @delock による完全な階層モジュール パスを使用します。</li>
+<li>ZeRO-1/2のreduce_scatterによるMuonオプティマイザの拒否（https://github.com/deepspeedai/DeepSpeed/pull/8090の@whycomingによる）</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8094 の @tohtana による DeepCompile プロファイル メタデータ バックフィルを修正</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8091 の @whycoming による ZeRO-1/2 でのミュオンの数値的正確性テストを追加</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8096 の @ajinkyajawale14499 による NPUOpBuilder の KeyboardInterrupt/SystemExit を飲み込まないでください</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8078 の @Achuuthan-S によるインポート時の op 互換性チェック中の CUDA コンテキストの初期化を回避します。</li>
+<li>[DeepCompile] https://github.com/deepspeedai/DeepSpeed/pull/8059 の @XAheli による ZeRO3 のダイナモ スキップ フレームの収集パラメータを修正</li>
+<li>機能: zero3 は、https://github.com/deepspeedai/DeepSpeed/pull/8099 の @nathon-lee によるエラスティック チェックポイントを非推奨にします</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8057 の @sowndappan5 による圧縮のみの量子化構成の固有値解析を修正</li>
+<li>修正: https://github.com/deepspeedai/DeepSpeed/pull/8049 の @he-yufeng による固有値モニター値のログ</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8106 の @tohtana による DeepCompile プロファイリングのメモリ クリーンアップを修正</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8052 の @py-ai-dev により、オプションの torchembed RoPE バックエンドを apply_rotary_pos_emb に追加します</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8046 の @nathon-lee によるランタイムおよび推論モジュールの軽微なコメント/docstring のタイプミスを修正</li>
+<li>feat(zenflow): https://github.com/deepspeedai/DeepSpeed/pull/8058 の @Antlera により、ネイティブ プロセスでオーバーラップした CPU オプティマイザーを実行します。</li>
+<li>修正: https://github.com/deepspeedai/DeepSpeed/pull/8082 の @orbisai0security による shm.cpp のバッファ長チェックを追加</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8122 の @vineethsaivs によるシーケンス並列処理で dp_world_size が None の場合に FlopsProfiler がクラッシュする問題を修正</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8119 の @vineethsaivs による AutoEP ep_router の Python 3.9 import-time TypeError を修正</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8126 の @jahnavi-yelamanchi による save_checkpoint およびウォームアップ LR スケジューラの入力検証を追加</li>
+<li>ZeRO-3 の修正: https://github.com/deepspeedai/DeepSpeed/pull/8128 の @roycho96 による _allgather_params_coalesced の量子化スケール バッファーにパラメーターごとの dtype を使用する</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8113 の @tohtana による混合パラメータ dtypes を使用した ZeRO-3 自動キャスト収集を修正</li>
+<li>ドキュメント: https://github.com/deepspeedai/DeepSpeed/pull/7899 の @Flamefire による拡張機能を並行して構築するという提案を削除</li>
+<li>feat(types): https://github.com/deepspeedai/DeepSpeed/pull/8118 の @NovusEdge による公開通信 API 関数に型ヒントを追加</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8027 の @PKUWZP による On-Policy Distillation (OPSD) Trainer をサポートするために DeepSpeed にハイブリッド エンジン ロールアウトを追加</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8064 に @tohtana による AutoEP + AutoTP 並列折りたたみを追加</li>
+<li>DCO ワークフロー Probot と互換性を持たせる (@tohtana (https://github.com/deepspeedai/DeepSpeed/pull/8110))</li>
+<li>ZeRO 1/2: https://github.com/deepspeedai/DeepSpeed/pull/8080 の @arunshar による、average_tensor (#8061) のすべての IPG バケット プロデューサー ストリームを待機します。</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8137 の @vineethsaivs によるグローバル プロファイリングを無効にしない CommsLogger.stop_profiling_comms を修正</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8142 の @vineethsaivs による total_num_steps == Warmup_num_steps (ZeroDivisionError) に対して WarmupCosineLR をガードします</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8121 の @Bias92 により、Inference V2 に対する EXAONE 4.5 モデルのサポートを追加</li>
+<li>fix(autotp): autotp を使用する場合、tp_group 内の特定のデータの一貫性を無視します。 @1787648106 により、https://github.com/deepspeedai/DeepSpeed/pull/8125</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8115 の @flutist による SM 占有率を改善するために、fake_quantize_kernel の blockDim を削減</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8145 の @winklemad による bool moe 下位互換値での DeepSpeedInferenceConfig クラッシュを修正</li>
+<li>修正(例外): https://github.com/deepspeedai/DeepSpeed/pull/8136 の @sowndappan5 による広範な例外句を特定のタイプに絞り込む</li>
+<li>修正(ミューオン): https://github.com/deepspeedai/DeepSpeed/pull/8141 の @Micuks による ZeRO-1/2 の散乱軽減をサポート</li>
+<li>[DeepCompile] https://github.com/deepspeedai/DeepSpeed/pull/8139 の @jahnavi-yelamanchi による最適化パスの軽量パス コントラクトを追加</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8149 の @tohtana によるスカラー出力の DeepCompile フォールバック処理を修正</li>
+<li>AlexNet テストで合成 CIFAR データを使用 (https://github.com/deepspeedai/DeepSpeed/pull/8143 の @tohtana による)</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8150 の @tohtana による CI バッジを更新</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8153 の @PKUWZP により、COMMITTERS.md で Zhipeng Wang の Google への所属を更新</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8144 の @Functionhx による属性委任モジュールの ZeRO-3 フックを修正</li>
+<li>https://github.com/deepspeedai/DeepSpeed/pull/8154 の @Functionhx によるパイプライン ステージ全体で繰り返される勾配スケーリングを修正</li>
+<li>Z3: https://github.com/deepspeedai/DeepSpeed/pull/8148 の @sfc-gh-truwase による凍結パラメータによるアクティベーション ckpt のサポート</li>
+<li>@sfc-gh-truwase による PTF 行動規範を https://github.com/deepspeedai/DeepSpeed/pull/8165 に採用</li>
+</ul>
+<h2>新しい貢献者</h2>
+<ul>
+<li>@aryanputta が https://github.com/deepspeedai/DeepSpeed/pull/8050 に初めて投稿しました</li>
+<li>@albertvillanova が https://github.com/deepspeedai/DeepSpeed/pull/8073 に初めて投稿しました</li>
+<li>@MarkCLChang が https://github.com/deepspeedai/DeepSpeed/pull/8075 で最初の貢献をしました</li>
+<li>@arunshar が https://github.com/deepspeedai/DeepSpeed/pull/8079 で最初の投稿を行いました</li>
+<li>@Kymi808 が https://github.com/deepspeedai/DeepSpeed/pull/8041 に初めて投稿しました</li>
+<li>@yongzhe-wang が https://github.com/deepspeedai/DeepSpeed/pull/8035 に初めて投稿しました</li>
+<li>@whycoming が https://github.com/deepspeedai/DeepSpeed/pull/8090 で最初の投稿を行いました</li>
+<li>@ajinkyajawale14499 が https://github.com/deepspeedai/DeepSpeed/pull/8096 に初めて投稿しました</li>
+<li>@Achuuthan-S が https://github.com/deepspeedai/DeepSpeed/pull/8078 に初めて貢献しました</li>
+<li>@XAheli が https://github.com/deepspeedai/DeepSpeed/pull/8059 に初めて貢献しました</li>
+<li>@he-yufeng が https://github.com/deepspeedai/DeepSpeed/pull/8049 に初めて投稿しました</li>
+<li>@py-ai-dev が https://github.com/deepspeedai/DeepSpeed/pull/8052 で最初の貢献を行いました</li>
+<li>@vineethsaivs が https://github.com/deepspeedai/DeepSpeed/pull/8122 で最初の投稿を行いました</li>
+<li>@jahnavi-yelamanchi が https://github.com/deepspeedai/DeepSpeed/pull/8126 に初めて投稿しました</li>
+<li>@NovusEdge が https://github.com/deepspeedai/DeepSpeed/pull/8118 で最初の貢献を行いました</li>
+<li>@1787648106 が https://github.com/deepspeedai/DeepSpeed/pull/8125 に初めて投稿しました</li>
+<li>@winklemad が https://github.com/deepspeedai/DeepSpeed/pull/8145 に初めて投稿しました</li>
+<li>@Micuks が https://github.com/deepspeedai/DeepSpeed/pull/8141 で最初の貢献をしました</li>
+<li>@Functionhx は https://github.com/deepspeedai/DeepSpeed/pull/8144 で最初の貢献を行いました
+<strong>フル Changelog</strong>: https://github.com/deepspeedai/DeepSpeed/compare/v0.19.2...v0.19.3</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>ソース</strong> <a href="https://github.com/deepspeedai/DeepSpeed">ディープスピードダイ/ディープスピード</a> · <code>v0.19.3</code> · 2026-07-23 · <a href="https://github.com/deepspeedai/DeepSpeed/releases/tag/v0.19.3">アップストリーム リリース</a>
+<em>インデックス作成のためにそのままミラーリングされます。すべての権利は上流プロジェクトに帰属します。</em></p>
+</blockquote></div>  <details class="mt-original"> <summary>English original / English original</summary> <div class="prose mt-original-body"><h1>DeepSpeed v0.19.3</h1>
+<h2>Highlights</h2>
+<ul>
+<li>
+<p><strong>ZeRO-3 mixed-precision correctness</strong> — Several fixes correct how ZeRO-3 gathers parameters with mixed dtypes: <code>_allgather_params_coalesced</code> now uses per-param dtype for output buffers (PR #8073) and quantize-scale buffers (PR #8128), autocast gathers of mixed-dtype params are fixed (PR #8113), and ZeRO-3 hooks now work with attribute-delegating modules (PR #8144). If you train with ZeRO-3 under bf16/fp16 or quantization, these are real correctness fixes, not cosmetic ones.</p>
+</li>
+<li>
+<p><strong>Changed defaults that alter training behavior</strong> — Defaults shifted silently: <code>gradient_clipping</code> now defaults to 1.0 (PR #8068), bf16 <code>check_grad_overflow</code> is enabled by default to match fp16 (PR #8035), <code>activation_checkpointing</code> defaults <code>num_layers</code> to <code>None</code> so the <code>configure()</code> assertion fires (PR #8041), and fp16 dynamic loss-scaling params are validated as positive (PR #8050). Review your configs before upgrading — runs that relied on the old implicit defaults may behave differently.</p>
+</li>
+<li>
+<p><strong>Deprecations and config migration</strong> — ZeRO-3 elastic checkpoint is deprecated (PR #8099); users relying on it need a migration path. Muon + <code>reduce_scatter</code> under ZeRO-1/2 was first rejected (PR #8090) then given proper support in the same release (PR #8141), backed by numerical-correctness tests (PR #8091). New validation lands in <code>save_checkpoint</code> and warmup LR schedulers (PR #8126), plus a <code>ZeroDivisionError</code> guard when <code>total_num_steps == warmup_num_steps</code> (PR #8142).</p>
+</li>
+<li>
+<p><strong>New capabilities</strong> — Hybrid Engine rollout for the On-Policy Distillation (OPSD) Trainer (PR #8027), AutoEP + AutoTP parallel folding (PR #8064) and AutoEP support for ZeRO-3 <code>zero.Init</code> source modules (PR #8060), an optional <code>torchembed</code> backend for <code>apply_rotary_pos_emb</code> (PR #8052), EXAONE 4.5 support in Inference V2 (PR #8121), a configurable engine log level (PR #8067), and type hints across public APIs (PR #8079, PR #8118).</p>
+</li>
+<li>
+<p><strong>DeepCompile/stability fixes and upgrade verdict</strong> — DeepCompile gets multiple fixes (profile metadata backfill PR #8094, profiling memory cleanup PR #8106, gather in dynamo-skipped frames for ZeRO-3 PR #8059, scalar-output fallback PR #8149), alongside a security-relevant buffer-length check in <code>shm.cpp</code> (PR #8082), an fd-leak fix in <code>deepspeed_io_handle_t::wait()</code> (PR #8075), and a Python 3.9 <code>AutoEP</code> import fix (PR #8119). Upgrade if you use ZeRO-3, DeepCompile, AutoEP/AutoTP, or Python 3.9; the rest is CI/DCO/docs churn (incl. version bump PR #8070) with no runtime impact, so stable non-ZeRO-3 setups can skip.</p>
+</li>
+</ul>
+<h2>What's Changed</h2>
+<ul>
+<li>Update version post release by @loadams in https://github.com/deepspeedai/DeepSpeed/pull/8070</li>
+<li>Validate fp16 dynamic loss scaling parameters are positive by @aryanputta in https://github.com/deepspeedai/DeepSpeed/pull/8050</li>
+<li>Add merge queue DCO workflow by @tohtana in https://github.com/deepspeedai/DeepSpeed/pull/8086</li>
+<li>Stop obsolete CI jobs on workflow cancellation by @tohtana in https://github.com/deepspeedai/DeepSpeed/pull/8034</li>
+<li>Fix ZeRO-3: Use per-param dtype for output buffers in _allgather_params_coalesced by @albertvillanova in https://github.com/deepspeedai/DeepSpeed/pull/8073</li>
+<li>fix: close file descriptor in deepspeed_io_handle_t::wait() to prevent fd leak by @MarkCLChang in https://github.com/deepspeedai/DeepSpeed/pull/8075</li>
+<li>Add type hints to top-level public API functions by @arunshar in https://github.com/deepspeedai/DeepSpeed/pull/8079</li>
+<li>Default gradient_clipping to 1.0 by @sfc-gh-truwase in https://github.com/deepspeedai/DeepSpeed/pull/8068</li>
+<li>activation_checkpointing: default num_layers to None so configure() assert fires by @Kymi808 in https://github.com/deepspeedai/DeepSpeed/pull/8041</li>
+<li>Add configurable engine log level by @sfc-gh-truwase in https://github.com/deepspeedai/DeepSpeed/pull/8067</li>
+<li>[CI] diff driven test selection by @stas00 in https://github.com/deepspeedai/DeepSpeed/pull/8077</li>
+<li>Enable bf16 check_grad_overflow by default (matching fp16) by @yongzhe-wang in https://github.com/deepspeedai/DeepSpeed/pull/8035</li>
+<li>Support AutoEP with ZeRO-3 zero.Init source modules by @tohtana in https://github.com/deepspeedai/DeepSpeed/pull/8060</li>
+<li>Update publication list in README.md by @PKUWZP in https://github.com/deepspeedai/DeepSpeed/pull/8095</li>
+<li>fix: AutoTP partition_config uses full hierarchical module path by @delock in https://github.com/deepspeedai/DeepSpeed/pull/8088</li>
+<li>Reject Muon optimizer with reduce_scatter in ZeRO-1/2 by @whycoming in https://github.com/deepspeedai/DeepSpeed/pull/8090</li>
+<li>Fix DeepCompile profile metadata backfill by @tohtana in https://github.com/deepspeedai/DeepSpeed/pull/8094</li>
+<li>Add numerical-correctness test for Muon under ZeRO-1/2 by @whycoming in https://github.com/deepspeedai/DeepSpeed/pull/8091</li>
+<li>Don't swallow KeyboardInterrupt/SystemExit in NPUOpBuilder by @ajinkyajawale14499 in https://github.com/deepspeedai/DeepSpeed/pull/8096</li>
+<li>Avoid CUDA context initialization during op compatibility checks at import by @Achyuthan-S in https://github.com/deepspeedai/DeepSpeed/pull/8078</li>
+<li>[DeepCompile] fix gather params in dynamo skipped frames for ZeRO3 by @XAheli in https://github.com/deepspeedai/DeepSpeed/pull/8059</li>
+<li>Feat: zero3 deprecate elastic checkpoint by @nathon-lee in https://github.com/deepspeedai/DeepSpeed/pull/8099</li>
+<li>Fix eigenvalue parsing for compression-only quantize configs by @sowndappan5 in https://github.com/deepspeedai/DeepSpeed/pull/8057</li>
+<li>fix: log eigenvalue monitor values by @he-yufeng in https://github.com/deepspeedai/DeepSpeed/pull/8049</li>
+<li>Fix DeepCompile profiling memory cleanup by @tohtana in https://github.com/deepspeedai/DeepSpeed/pull/8106</li>
+<li>Add optional torchembed RoPE backend to apply_rotary_pos_emb by @py-ai-dev in https://github.com/deepspeedai/DeepSpeed/pull/8052</li>
+<li>Fix minor comment/docstring typos in runtime and inference modules by @nathon-lee in https://github.com/deepspeedai/DeepSpeed/pull/8046</li>
+<li>feat(zenflow): run the overlapped CPU optimizer in a native process by @Antlera in https://github.com/deepspeedai/DeepSpeed/pull/8058</li>
+<li>fix: add buffer-length check in shm.cpp by @orbisai0security in https://github.com/deepspeedai/DeepSpeed/pull/8082</li>
+<li>Fix FlopsProfiler crash when dp_world_size is None under sequence parallelism by @vineethsaivs in https://github.com/deepspeedai/DeepSpeed/pull/8122</li>
+<li>Fix Python 3.9 import-time TypeError in AutoEP ep_router by @vineethsaivs in https://github.com/deepspeedai/DeepSpeed/pull/8119</li>
+<li>Add input validation for save_checkpoint and warmup LR schedulers by @jahnavi-yelamanchi in https://github.com/deepspeedai/DeepSpeed/pull/8126</li>
+<li>Fix ZeRO-3: use per-param dtype for quantize-scale buffer in _allgather_params_coalesced by @roycho96 in https://github.com/deepspeedai/DeepSpeed/pull/8128</li>
+<li>Fix ZeRO-3 autocast gather with mixed parameter dtypes by @tohtana in https://github.com/deepspeedai/DeepSpeed/pull/8113</li>
+<li>doc: Remove suggestion to build extensions in parallel by @Flamefire in https://github.com/deepspeedai/DeepSpeed/pull/7899</li>
+<li>feat(types): add type hints to public comm API functions by @NovusEdge in https://github.com/deepspeedai/DeepSpeed/pull/8118</li>
+<li>Add Hybrid Engine rollout in DeepSpeed to support On-Policy Distillation (OPSD) Trainer by @PKUWZP in https://github.com/deepspeedai/DeepSpeed/pull/8027</li>
+<li>Add AutoEP + AutoTP parallel folding by @tohtana in https://github.com/deepspeedai/DeepSpeed/pull/8064</li>
+<li>Make DCO workflow Probot compatible by @tohtana in https://github.com/deepspeedai/DeepSpeed/pull/8110</li>
+<li>ZeRO 1/2: wait on all IPG-bucket producer streams in average_tensor (#8061) by @arunshar in https://github.com/deepspeedai/DeepSpeed/pull/8080</li>
+<li>Fix CommsLogger.stop_profiling_comms not disabling global profiling by @vineethsaivs in https://github.com/deepspeedai/DeepSpeed/pull/8137</li>
+<li>Guard WarmupCosineLR against total_num_steps == warmup_num_steps (ZeroDivisionError) by @vineethsaivs in https://github.com/deepspeedai/DeepSpeed/pull/8142</li>
+<li>Add EXAONE 4.5 model support for Inference V2 by @Bias92 in https://github.com/deepspeedai/DeepSpeed/pull/8121</li>
+<li>fix(autotp): when using autotp, ignore the consistency of certain data within the tp_group. by @1787648106 in https://github.com/deepspeedai/DeepSpeed/pull/8125</li>
+<li>Reduce blockDim in fake_quantize_kernel for improved SM occupancy by @flutist in https://github.com/deepspeedai/DeepSpeed/pull/8115</li>
+<li>Fix DeepSpeedInferenceConfig crash on bool moe backward-compat value by @winklemad in https://github.com/deepspeedai/DeepSpeed/pull/8145</li>
+<li>fix(exceptions): narrow broad Exception clauses to specific types by @sowndappan5 in https://github.com/deepspeedai/DeepSpeed/pull/8136</li>
+<li>fix(muon): support ZeRO-1/2 reduce scatter by @Micuks in https://github.com/deepspeedai/DeepSpeed/pull/8141</li>
+<li>[DeepCompile] Add lightweight pass contracts for optimization passes by @jahnavi-yelamanchi in https://github.com/deepspeedai/DeepSpeed/pull/8139</li>
+<li>Fix DeepCompile fallback handling for scalar outputs by @tohtana in https://github.com/deepspeedai/DeepSpeed/pull/8149</li>
+<li>Use synthetic CIFAR data in AlexNet tests by @tohtana in https://github.com/deepspeedai/DeepSpeed/pull/8143</li>
+<li>Update CI badge by @tohtana in https://github.com/deepspeedai/DeepSpeed/pull/8150</li>
+<li>Update Zhipeng Wang affiliation to Google in COMMITTERS.md by @PKUWZP in https://github.com/deepspeedai/DeepSpeed/pull/8153</li>
+<li>Fix ZeRO-3 hooks for attribute-delegating modules by @Functionhx in https://github.com/deepspeedai/DeepSpeed/pull/8144</li>
+<li>Fix repeated gradient scaling across pipeline stages by @Functionhx in https://github.com/deepspeedai/DeepSpeed/pull/8154</li>
+<li>Z3: Support for activation ckpt with frozen params by @sfc-gh-truwase in https://github.com/deepspeedai/DeepSpeed/pull/8148</li>
+<li>Adopt PTF Code of Conduct by @sfc-gh-truwase in https://github.com/deepspeedai/DeepSpeed/pull/8165</li>
+</ul>
+<h2>New Contributors</h2>
+<ul>
+<li>@aryanputta made their first contribution in https://github.com/deepspeedai/DeepSpeed/pull/8050</li>
+<li>@albertvillanova made their first contribution in https://github.com/deepspeedai/DeepSpeed/pull/8073</li>
+<li>@MarkCLChang made their first contribution in https://github.com/deepspeedai/DeepSpeed/pull/8075</li>
+<li>@arunshar made their first contribution in https://github.com/deepspeedai/DeepSpeed/pull/8079</li>
+<li>@Kymi808 made their first contribution in https://github.com/deepspeedai/DeepSpeed/pull/8041</li>
+<li>@yongzhe-wang made their first contribution in https://github.com/deepspeedai/DeepSpeed/pull/8035</li>
+<li>@whycoming made their first contribution in https://github.com/deepspeedai/DeepSpeed/pull/8090</li>
+<li>@ajinkyajawale14499 made their first contribution in https://github.com/deepspeedai/DeepSpeed/pull/8096</li>
+<li>@Achyuthan-S made their first contribution in https://github.com/deepspeedai/DeepSpeed/pull/8078</li>
+<li>@XAheli made their first contribution in https://github.com/deepspeedai/DeepSpeed/pull/8059</li>
+<li>@he-yufeng made their first contribution in https://github.com/deepspeedai/DeepSpeed/pull/8049</li>
+<li>@py-ai-dev made their first contribution in https://github.com/deepspeedai/DeepSpeed/pull/8052</li>
+<li>@vineethsaivs made their first contribution in https://github.com/deepspeedai/DeepSpeed/pull/8122</li>
+<li>@jahnavi-yelamanchi made their first contribution in https://github.com/deepspeedai/DeepSpeed/pull/8126</li>
+<li>@NovusEdge made their first contribution in https://github.com/deepspeedai/DeepSpeed/pull/8118</li>
+<li>@1787648106 made their first contribution in https://github.com/deepspeedai/DeepSpeed/pull/8125</li>
+<li>@winklemad made their first contribution in https://github.com/deepspeedai/DeepSpeed/pull/8145</li>
+<li>@Micuks made their first contribution in https://github.com/deepspeedai/DeepSpeed/pull/8141</li>
+<li>@Functionhx made their first contribution in https://github.com/deepspeedai/DeepSpeed/pull/8144</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/deepspeedai/DeepSpeed/compare/v0.19.2...v0.19.3</p>
+<hr />
+<blockquote>
+<p><strong>Source</strong> <a href="https://github.com/deepspeedai/DeepSpeed">deepspeedai/DeepSpeed</a> · <code>v0.19.3</code> · 2026-07-23 · <a href="https://github.com/deepspeedai/DeepSpeed/releases/tag/v0.19.3">upstream release</a></p>
+</blockquote>
+<p><em>Mirrored verbatim for indexing. All rights belong to the upstream project.</em></p></div> </details> </div> <p class="muted" style="margin-top:var(--s8);font-size:12.5px;border-top:1px solid var(--line);padding-top:var(--s4)"> リリースノートは上流プロジェクトが公開したものです。私たちはそれらを整理し、関連付けて、バージョンを一眼で比較できるようにしています。コンテンツの権利はすべて原作者に属します。 </p> <nav class="pager" aria-label="Release navigation"> <a href="/releases/deepspeed/0.19.4"> <span class="k">← 次へ</span> <span class="t">v0.19.4</span> </a> <a href="/releases/deepspeed/0.19.2"> <span class="k">前へ →</span> <span class="t">v0.19.2</span> </a> </nav> <aside class="ad-slot" aria-label="Advertisement" data-astro-cid-fgwukgf6><div class="ad-slot-label" data-astro-cid-fgwukgf6>Advertisement</div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4184355057086168" data-ad-slot="9133765584" data-ad-format="auto" data-full-width-responsive="true" data-astro-cid-fgwukgf6></ins><script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script></aside> </article> <aside class="rail"> <div class="rail-card"> <div class="rail-title">Source</div> <ul class="rail-list"> <li> <a href="https://github.com/deepspeedai/DeepSpeed/releases/tag/v0.19.3" target="_blank" rel="noopener"> <span>GitHub で見る</span> <span class="d">↗</span> </a> </li> <li> <a href="https://github.com/deepspeedai/DeepSpeed" target="_blank" rel="noopener"> <span>deepspeedai/DeepSpeed</span> <span class="d">↗</span> </a> </li> </ul> </div>  <div class="rail-card"> <div class="rail-title">バージョン履歴</div> <ul class="rail-list"> <li> <a href="/releases/deepspeed/0.20.0"> <span class="v">v0.20.0</span> <span class="d">26-11-12</span> </a> </li><li> <a href="/releases/deepspeed/0.19.9"> <span class="v">v0.19.9</span> <span class="d">26-10-29</span> </a> </li><li> <a href="/releases/deepspeed/0.19.8"> <span class="v">v0.19.8</span> <span class="d">26-10-20</span> </a> </li><li> <a href="/releases/deepspeed/0.19.7"> <span class="v">v0.19.7</span> <span class="d">26-09-16</span> </a> </li><li> <a href="/releases/deepspeed/0.19.6"> <span class="v">v0.19.6</span> <span class="d">26-08-27</span> </a> </li><li> <a href="/releases/deepspeed/0.19.5"> <span class="v">v0.19.5</span> <span class="d">26-08-10</span> </a> </li><li> <a href="/releases/deepspeed/0.19.4"> <span class="v">v0.19.4</span> <span class="d">26-08-06</span> </a> </li><li> <a href="/releases/deepspeed/0.19.3" aria-current="true"> <span class="v">v0.19.3</span> <span class="d">26-07-23</span> </a> </li> </ul> <a href="/ja/releases/deepspeed" class="mono" style="display:inline-block;margin-top:var(--s3);font-size:11.5px;color:var(--ink-3)"> すべての 20 件を見る →
+</a> </div> </aside> </div> </div>  </main> <footer class="site-footer"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/ja/" class="brand" aria-label="STAGS NextStack"><span class="brand-mark" aria-hidden="true">S</span><span class="brand-main">STAGS</span><span class="brand-sub" aria-hidden="true">NextStack</span></a> <p>オープンソースのリリース インテリジェンスが毎日公開されます。</p> </div> <div class="footer-col"> <h3>追跡</h3> <ul> <li><a href="/ja/releases">リリース</a></li> <li><a href="/ja/projects">プロジェクト</a></li> <li><a href="/ja/releases.xml">RSS フィード</a></li> </ul> </div> <div class="footer-col"> <h3>アーカイブ</h3> <ul> <li><a href="/zh/release_note" hreflang="zh-Hans">中文アーカイブ</a></li> <li><a href="/zh/chapters/" hreflang="zh-Hans">技術ノート</a></li> <li><a href="/zh/downloads/">Stags Tracker</a></li> </ul> </div> <div class="footer-col"> <h3>情報</h3> <ul> <li><a href="/privacy">プライバシーポリシー</a></li> <li><a href="/releases.xml">RSS</a></li> <li><a href="/sitemap-index.xml">Sitemap</a></li> </ul> </div> </div> <div class="footer-btm"> <span>© 2026 STAGS</span> <span>Release note は上流プロジェクトに属します。</span> </div> </div> </footer> <!-- 搜索面板 --> <div class="palette-bg" data-palette-bg data-open="false"> <div class="palette" role="dialog" aria-modal="true" aria-label="リリースを検索"> <div class="palette-in"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ink-4);flex:none"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <input type="search" data-palette-input placeholder="リリース、プロジェクト、バージョンを検索…" autocomplete="off" spellcheck="false"> <span class="kbd">esc</span> </div> <ul class="palette-res" data-palette-res></ul> <div class="palette-ft"> <span>↑↓ navigate</span> <span>↵ open</span> <span style="margin-left:auto" data-palette-count></span> </div> </div> </div> <script type="module" src="/assets/Shell.astro_astro_type_script_index_0_lang.0ZkKXV47.js"></script> </body> </html>

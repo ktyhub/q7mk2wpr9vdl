@@ -1,0 +1,490 @@
+<!DOCTYPE html><html lang="ja" dir="ltr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>oh-my-pi v19.0.0 — STAGS NextStack</title><meta name="description" content="Added support for excluding custom messages from model context and compaction or branch summaries, while allowing queued steering and follow-up messages to continue correctly after excluded messages."><meta name="keywords" content="オープンソース release note、リリース トラッカー、changelog アグリゲーター、重大な変更、非推奨トラッカー、Kafka リリース、Spring Boot リリース、Kubernetes リリース"><meta name="generator" content="Astro v5.18.2"><link rel="canonical" href="https://www.stags.cn/ja/releases/oh-my-pi/19.0.0/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="STAGS NextStack — releases" href="/ja/releases.xml"><link rel="alternate" hreflang="en" href="https://www.stags.cn/releases/oh-my-pi/19.0.0/"><link rel="alternate" hreflang="zh-Hans" href="https://www.stags.cn/releases/oh-my-pi/19.0.0/"><link rel="alternate" hreflang="x-default" href="https://www.stags.cn/releases/oh-my-pi/19.0.0/"><meta property="og:site_name" content="STAGS"><meta property="og:type" content="article"><meta property="og:title" content="oh-my-pi v19.0.0 — STAGS NextStack"><meta property="og:description" content="Added support for excluding custom messages from model context and compaction or branch summaries, while allowing queued steering and follow-up messages to continue correctly after excluded messages."><meta property="og:url" content="https://www.stags.cn/ja/releases/oh-my-pi/19.0.0/"><meta property="og:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><meta property="og:locale" content="ja_JP"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="de_DE"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:locale:alternate" content="es_ES"><meta property="og:locale:alternate" content="pt_BR"><meta property="og:locale:alternate" content="ko_KR"><meta property="og:locale:alternate" content="it_IT"><meta property="og:locale:alternate" content="ru_RU"><meta property="og:locale:alternate" content="tr_TR"><meta property="og:locale:alternate" content="id_ID"><meta property="og:locale:alternate" content="vi_VN"><meta property="og:locale:alternate" content="ar_SA"><meta property="og:locale:alternate" content="sv_SE"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.stags.cn/#website","name":"STAGS","url":"https://www.stags.cn/","inLanguage":"ja","description":"NextStack はインフラストラクチャおよび AI プロジェクトのリリースノートを索引化し、破壊的変更・非推奨・移行情報を英語優先の単一フィードで提供します。","publisher":{"@id":"https://www.stags.cn/#org"}},{"@type":"Organization","@id":"https://www.stags.cn/#org","name":"STAGS","alternateName":"NextStack","url":"https://www.stags.cn/"},{"@type":"TechArticle","@id":"https://www.stags.cn/ja/releases/oh-my-pi/19.0.0/#article","headline":"oh-my-pi v19.0.0 release notes","datePublished":"2026-11-19","inLanguage":"en","isPartOf":{"@id":"https://www.stags.cn/#website"},"about":{"@type":"SoftwareSourceCode","codeRepository":"https://github.com/can1357/oh-my-pi"}}]}</script><!-- 第三方脚本的连接预热：这两个域名几乎每页都要连，
+         提前建连能省掉 DNS + TCP + TLS 一个往返（移动网络 100~300ms）。
+         AdSense 只在开关打开时预热——关掉广告后连这个域名都没必要。 --><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://pagead2.googlesyndication.com"><!-- Google AdSense：站点所有权校验与广告投放共用同一段脚本，全站只加载一次。
+         未创建广告单元时页面上不渲染任何广告容器，站点保持干净。
+         fetchpriority=low：它不参与首屏渲染，不该跟正文抢带宽。 --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184355057086168" crossorigin="anonymous" fetchpriority="low"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-RFRF1TVRMP" fetchpriority="low"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RFRF1TVRMP");
+    </script><!-- 百度统计（国内流量统计）。官方标准片段，is:inline 原样输出，
+         hm.js 动态插到首个 script 前，异步不阻塞首屏渲染。 --><script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?299e5b4e65b86ed16879bdcbe70531d6";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script><link rel="stylesheet" href="/assets/index.DQGt3qLZ.css">
+<style>.ad-slot[data-astro-cid-fgwukgf6]{margin:var(--s10) 0 0;padding-top:var(--s5);border-top:1px solid var(--line)}.ad-slot-label[data-astro-cid-fgwukgf6]{margin-bottom:var(--s3);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{display:block;min-height:100px}@media(min-width:640px){.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{min-height:250px}}
+</style></head> <body> <a class="skip" href="#main">本文へスキップ</a> <header class="hdr" data-header> <div class="wrap hdr-inner"> <a href="/ja/" class="brand" aria-label="STAGS NextStack — オープンソースのリリース情報"> <span class="brand-mark" aria-hidden="true">S</span> <span class="brand-main">STAGS</span> <span class="brand-sub" aria-hidden="true">NextStack</span> </a> <nav class="nav" aria-label="Primary"> <a href="/ja/releases">リリース</a><a href="/ja/projects">プロジェクト</a> </nav>  <details class="navmenu" data-navmenu> <summary class="navmenu-btn" aria-label="Open menu"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> </summary> <div class="navmenu-panel" role="group" aria-label="Primary"> <a href="/ja/releases" class="navmenu-item">リリース</a><a href="/ja/projects" class="navmenu-item">プロジェクト</a> </div> </details> <div class="hdr-tools"> <button class="searchbtn" type="button" data-search-open aria-label="リリースを検索"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <span class="lbl">検索</span> <span class="kbd">⌘K</span> </button> <details class="langmenu" data-langmenu> <summary class="langmenu-btn" aria-label="言語"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"> <circle cx="12" cy="12" r="9"></circle> <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path> </svg> <span class="langmenu-cur">日</span> <svg class="langmenu-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m2 4 4 4 4-4"></path></svg> </summary> <div class="langmenu-panel" role="group" aria-label="言語"> <p class="langmenu-head">言語</p> <a class="langmenu-item" href="/releases/oh-my-pi/19.0.0/" hreflang="en" lang="en" data-on="false"> <span class="langmenu-label">English</span> <span class="langmenu-code">EN</span> </a><a class="langmenu-item" href="/zh/release_note/oh-my-pi/oh-my-pi_v19.0.0" hreflang="zh-Hans" lang="zh-CN" data-on="false"> <span class="langmenu-label">中文</span> <span class="langmenu-code">中</span> </a><a class="langmenu-item" href="/ja/releases/oh-my-pi/19.0.0/" hreflang="ja" lang="ja" aria-current="true" data-on="true"> <span class="langmenu-label">日本語</span> <span class="langmenu-code">日</span> </a><a class="langmenu-item" href="/de/releases/oh-my-pi/19.0.0/" hreflang="de" lang="de" data-on="false"> <span class="langmenu-label">Deutsch</span> <span class="langmenu-code">DE</span> </a><a class="langmenu-item" href="/fr/releases/oh-my-pi/19.0.0/" hreflang="fr" lang="fr" data-on="false"> <span class="langmenu-label">Français</span> <span class="langmenu-code">FR</span> </a><a class="langmenu-item" href="/es/releases/oh-my-pi/19.0.0/" hreflang="es" lang="es" data-on="false"> <span class="langmenu-label">Español</span> <span class="langmenu-code">ES</span> </a><a class="langmenu-item" href="/pt/releases/oh-my-pi/19.0.0/" hreflang="pt-BR" lang="pt-BR" data-on="false"> <span class="langmenu-label">Português</span> <span class="langmenu-code">PT</span> </a><a class="langmenu-item" href="/ko/releases" hreflang="ko" lang="ko" data-on="false"> <span class="langmenu-label">한국어</span> <span class="langmenu-code">한</span> </a><a class="langmenu-item" href="/it/releases" hreflang="it" lang="it" data-on="false"> <span class="langmenu-label">Italiano</span> <span class="langmenu-code">IT</span> </a><a class="langmenu-item" href="/ru/releases" hreflang="ru" lang="ru" data-on="false"> <span class="langmenu-label">Русский</span> <span class="langmenu-code">RU</span> </a><a class="langmenu-item" href="/tr/releases" hreflang="tr" lang="tr" data-on="false"> <span class="langmenu-label">Türkçe</span> <span class="langmenu-code">TR</span> </a><a class="langmenu-item" href="/id/releases" hreflang="id" lang="id" data-on="false"> <span class="langmenu-label">Bahasa Indonesia</span> <span class="langmenu-code">ID</span> </a><a class="langmenu-item" href="/vi/releases" hreflang="vi" lang="vi" data-on="false"> <span class="langmenu-label">Tiếng Việt</span> <span class="langmenu-code">VI</span> </a><a class="langmenu-item" href="/ar/releases" hreflang="ar" lang="ar" data-on="false"> <span class="langmenu-label">العربية</span> <span class="langmenu-code">ع</span> </a><a class="langmenu-item" href="/sv/releases" hreflang="sv" lang="sv" data-on="false"> <span class="langmenu-label">Svenska</span> <span class="langmenu-code">SV</span> </a> </div> </details> <a class="iconlink" href="/releases.xml" aria-label="RSS"> <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"> <path d="M2 12.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM2 7.5a6.5 6.5 0 0 1 6.5 6.5h-2A4.5 4.5 0 0 0 2 9.5v-2ZM2 2.5A11.5 11.5 0 0 1 13.5 14h-2A9.5 9.5 0 0 0 2 4.5v-2Z"></path> </svg> </a> </div> </div> </header> <main id="main">  <div class="wrap"> <div class="detail"> <article> <header class="detail-hd"> <nav class="crumbs" aria-label="Breadcrumb"> <a href="/ja/">ホーム</a> <span class="sep">/</span> <a href="/ja/releases">リリース</a> <span class="sep">/</span> <a href="/ja/releases/oh-my-pi">oh-my-pi</a> </nav> <h1 class="detail-title"> <span class="p">oh-my-pi</span> v19.0.0 </h1> <div class="detail-meta"> <span class="chip chip--major">メジャー</span> <span><span class="k">公開日</span>2026年11月19日</span>  <span class="sep" aria-hidden="true"></span> <a href="https://github.com/can1357/oh-my-pi" target="_blank" rel="noopener"> <span class="k">出典</span>can1357/oh-my-pi </a>   <span class="sep" aria-hidden="true"></span> <a href="/releases/oh-my-pi/19.0.0/"> English original </a>  <span class="sep" aria-hidden="true"></span> <button class="btn btn--ghost btn--sm" type="button" data-copy="https://www.stags.cn/ja/releases/oh-my-pi/19.0.0/">リンクをコピー</button> </div> </header> <div class="prose" style="margin-top:var(--s8)"> <p class="mt-notice" role="note">このページは機械翻訳です。内容は必ず英文原文をご確認ください。</p>  <div><p>#オーマイパイv19.0.0</p>
+<h2>@oh-my-pi/pi-agent-core</h2>
+<h3>追加</h3>
+<ul>
+<li>モデル コンテキストおよび圧縮またはブランチ サマリーからカスタム メッセージを除外するためのサポートが追加されました。同時に、キューに入れられたステアリング メッセージとフォローアップ メッセージが除外されたメッセージの後に正しく続行できるようになりました。</li>
+</ul>
+<h2>@oh-my-pi/pi-ai</h2>
+<h3>追加</h3>
+<ul>
+<li>課金対象の出力を生成せずにプロンプト キャッシュを更新するための、Anthropic Messages リクエストの <code>prewarm</code> ストリーム オプションを追加しました。予算の考え方、強制的なツールの選択、構造化された出力のために拒否されます。</li>
+<li>クロード使用状況レポートには、<code>metadata.subscriptionPlan</code> のアカウント サブスクリプション プランが含まれるようになり、最大 5 倍、最大 20 倍、プロ、チーム、およびエンタープライズ プランをサポートします。</li>
+<li><code>retryUnreachableBroker</code> および <code>onBrokerRetry</code> オプションを <code>discoverAuthStorage</code> に追加しました。これにより、ホストは、一時的に利用できない認証ブローカーの起動再試行を制御し、再試行ステータスを表示できるようになります。</li>
+</ul>
+<h3>修正済み</h3>
+<ul>
+<li>週ごとの共有使用制限が回復した後のクロード アカウントのフェイルオーバーを修正し、使用状況レポートにそのウィンドウが表示されなくなったときにアカウントが再び利用可能になるようにしました。</li>
+<li>認証ブローカーの起動では、最大 30 秒間の再試行によって一時的なブローカーの再起動と接続の中断が許容されるようになりましたが、拒否されたトークンや不正な形式のスナップショットに対してはすぐに失敗します。</li>
+<li>不明な認証情報、使用法、観察された使用法のフィールドと値を許容することにより、client とブローカーのバージョン間の認証ブローカーの互換性が向上しました。</li>
+<li>Codex Spark 使用量メーターを修正し、<code>metered_feature</code> によってのみメーターを識別するレポートが Spark モデルに正しくスコープされたままになるようにしました。</li>
+<li><code>gemini-4-hydrogen-high</code> のみが提供されている場合に <code>gemini-4-hydrogen</code> を解決するなど、利用可能な ID にエフォート サフィックスが含まれるモデルに対する反重力 CLI リクエストを修正しました。</li>
+</ul>
+<h2>@oh-my-pi/pi-catalog</h2>
+<h3>追加</h3>
+<ul>
+<li><code>isPromptCachePrewarmSupported</code> 互換機能を介して、ファーストパーティの Anthropic エンドポイントでのプロンプト キャッシュの事前ウォーミングのサポートが追加されました。</li>
+</ul>
+<h3>修正済み</h3>
+<ul>
+<li>32 を超える質問を評価する際の、TypeSafe、OpenRouter、コマンド コード、および OpenCode Zen のホストされた判定リクエストを修正しました。</li>
+<li>プロバイダーの制限内でより多くの会話イメージをサポートするために Devin イメージの処理が改善され、請求されたトークンの使用量を反映するために Devin Gemini モデルのイメージ圧縮が更新されました。</li>
+<li>プロモーション終了時にモデルがプロモーション価格からリスト価格に切り替わるように、Devin Gemini モデルの価格を修正しました。</li>
+<li>Kiro API キー認証 (<code>KIRO_API_KEY</code> および <code>ksk_…</code>) を修正し、モデルのリスト、チャット、および <code>/usage</code> リクエストが正しく動作するようにしました。</li>
+</ul>
+<h2>@oh-my-pi/pi-coding-agent</h2>
+<h3>重大な変更</h3>
+<ul>
+<li>SDK キャッシュ ウォーミング制御の変更: createAgentSession.cacheWarming はモード キャップ「オフ」、「ストリーミング」、または「アイドル」を受け入れるようになりました。この値と、providers.cacheWarming のうち低い方が適用されます。 false の代わりに「off」を使用してください。</li>
+<li>アーティファクト://N リンクを、セッションの local:// ルートにある読み取り可能、一覧表示可能、および完全可能な local://N.log ファイルに置き換えました。既存のセッション内の artifact:// リンクは移行されません。</li>
+<li>session.handoff(focus) を session.compact(focus, { mode: &quot;handoff&quot; }); に置き換えました。キャンセルするにはabortCompaction()を使用してください。</li>
+<li>プロジェクト固有のブローカーではなく、ユーザーごとの 1 つのデーモンの下に共有バックグラウンド プロセスを統合しました。古いバージョンのデーモンとサービスは採用されません。 omp ps は、グローバル、プロジェクト、セッション単位をまとめてレポートし、--global を削除し、--json 出力を {daemon, reports} に変更し、dsm:// ハンドルに ?project= を追加しなくなりました。</li>
+<li>SDK deferSkillDescriptionCompression の名前を deferHintCompression に変更し、startSkillDescriptionCompression() の名前を startHintCompression() に変更しました。これらの設定とメソッドは、MCP 名前空間のヒントもカバーするようになりました。</li>
+</ul>
+<h3>追加</h3>
+<ul>
+<li>Codex Desktop の node_repl の置き換えを含む、組み込みの MCP 変換を追加しました。組み込みは mcp.builtinTransforms で無効にできます。 /mcp list は置き換えられたサーバーを識別し、/mcp enable node_repl は明示的にサーバーに接続できます。</li>
+<li>mcp.evalNamespaces を通じてオプションの MCP eval 名前空間を追加し、サーバーを JavaScript および Python 名前空間として公開し、ドキュメントは xd://eval/&lt;server&gt; にあります。結果はテキストと構造化データを保持し、バイナリ リソースは local:// ファイルとして保存されます。</li>
+<li>/tan エージェントとそのトレイ カードにモデル生成の名前が追加され、名前付けが失敗またはタイムアウトした場合の読み取り可能なランダム フォールバックが追加されました。</li>
+<li>長いツール呼び出しキープアライブや有効期限前のプロンプト圧縮など、構成可能なキャッシュウォーミング戦略 (自動、キープアライブ、コンパクト) を追加しました。キャッシュウォーミングイベントは、選択されたメソッドとコストを報告するようになりました。</li>
+<li>オプションのタスク間タスク検出と task.crossInstance によるメッセージングを追加し、agent://peers を通じて同じフォルダーのインスタンスを公開しました。</li>
+<li>追加モード: ? で始まるドラフト/btw の質問として送信すると、明確な UI 指示が表示されます。</li>
+<li>サブエージェントとバックグラウンド ジョブを実行するための Tern ライブ カード (進行状況、ツール数、ステータス、コントロール、トランスクリプト、完了したエージェントへの復元されたアクセスなど) を追加しました。</li>
+<li>デーモン更新の存続と、OMP_DAEMON_TCP を介したオプションの TCP ホスティングを追加し、デーモンのアップグレード全体で実行中のサービス、PTY、および言語サーバーを保持します。</li>
+<li>Speech-to-Text および Text-to-Speech モデルをマシンごとに 1 回ロードし、15 分間非アクティブになった後にアンロードします。</li>
+<li>ovnfs ワークツリーのサポートを /wt、プロジェクト再開ピッカー、および omp ワークツリー list/clear に追加しましたが、チェックアウト削除後にソース リポジトリからのセッション再開は保持されました。</li>
+<li>omp 使用量と /usage 出力に Claude サブスクリプション プランを追加しました。</li>
+<li>バックグラウンドスキル説明と MCP 名前空間ヒント生成の進行状況レポートを追加しました。</li>
+<li>excludeFromContext を pi.sendMessage ペイロードに追加したため、拡張機能はモデルに送信せずにターンごとのメッセージを表示および保存できます。</li>
+<li>認証ブローカーが再起動するか、一時的に使用できない場合に、CLI および印刷モード コマンドに対する 30 秒の再試行ウィンドウを追加しました。</li>
+<li>バックグラウンド コマンドおよび名前付きサービスからの一致する出力をレポートしたり、アイドル セッションを解除したり、ブロックされた待機を終了したりするための通知オプションを bash ツールに追加しました。</li>
+</ul>
+<h3>変更されました</h3>
+<ul>
+<li>Anthropic 互換プロバイダーのキャッシュ ウォーミングが改善され、サポートされている場合は出力なしの事前ウォーミングが行われ、実際の再生コストに基づいて課金されます。タスク サブエージェントは、ストリーミング ウォーミングが有効な場合、長いツール呼び出し中にプロンプ​​ト キャッシュをウォーム状態に保つようになりました。</li>
+<li>スキルの説明と MCP 名前空間のヒントをマシンごとに 1 回生成し、omp ウィンドウ全体で結果と進行状況を共有します。</li>
+<li>モデルを切り替えるときに思考レベルを保持し、選択したモデルが現在のレベルをサポートできない場合にのみ調整します。モデルのデフォルトは、レベルが設定されていない場合にのみ適用されます。</li>
+<li>セッションのプロンプト キャッシュの有効期間を使用するために繰り返し応答とサブエージェントの待機を延長し、必要に応じて、サブエージェントの待機がライブ親の次のメッセージに続くようにしました。</li>
+<li>現在の応答と新しく到着するメッセージを保持しながら、/handoff をバックグラウンド圧縮として実行するようにしました。</li>
+<li>質問プロンプトをコンポーザーの上の単一のスクロール フォームとして再設計し、部分的な回答を保持し、ユーザーがメッセージを送信することで保留中の質問をスキップできるようにしました。</li>
+<li>デフォルトで作曲家の予測を有効にし、ターンが完了した後にアクティブなモデルが提案する次のメッセージを表示します。 「設定」→「インタラクション」で無効にします。</li>
+<li>印刷、RPC、ACP、および SDK セッションでのツール呼び出しインテント トレースがデフォルトで無効になりました。 tools.intentTracing または PI_INTENT_TRACING で有効にします。</li>
+<li>ovnfs チェックアウト ガイダンスと git Guard メッセージを更新し、変更を着陸、プル、または破棄する方法を説明しました。</li>
+<li>サブエージェントの完了プローブとサイドリクエストが改善され、成果物に焦点を当て、単純な履歴として静止ストリーミング推論が含まれないようになりました。</li>
+<li>5 秒間の最初のアイドル待機とそれに続く 4 分間の連続待機に待機動作を標準化しました。</li>
+<li>サブエージェントには常に共有 LSP ツールを提供します。 task.enableLsp は、LSP フォーマットと編集の診断のみを制御するようになりました。</li>
+<li>セッション環境の継承、セッション ファイルの URL サポート、より明確な準備状況の検証、およびより透明性の高い最小化された出力により、bash サービス、PTY、および組み込みシェルが改善されました。</li>
+<li>ウィンドウ内で実行するときのマネージド Chromium に明確な名前を付け、ブラウザ、スクリーンショット、アップロード、フレーム、セレクター、ネットワーク、およびタブとブラウザ バックエンドにわたる CDP の動作を改善しました。</li>
+<li>逐語的に置き換えられるボディ、より安全な範囲とパスの検証、より明確な解析と構文診断、より大きなファイルと SSH ファイルのサポート、およびより予測可能な RAW 読み取りと行セレクターによるハッシュライン編集の改善。</li>
+<li>10 分のツール呼び出し期限、進捗報告時の期限の延長、タイムアウトと接続エラーの明確化、HTTP セッションの期限切れ後の 1 回の再試行により、MCP の信頼性が向上しました。</li>
+<li>ファイル検査、アーカイブ、プロセス制御、環境ロード、ファイル監視、ロック、音声認識、ファイルを開く、パッチ適用などの一般的なワークフローに対するポータブルな組み込みと内部 URL サポートを備えた組み込みシェルを拡張しました。</li>
+<li>LSP とデバッグ診断、言語範囲、ワークスペース検出、参照、名前変更、コード アクション、およびサーバー ライフサイクル レポートが改善されました。</li>
+<li>Python 3.9+ 検証、UTF-8 実行、パッケージ インストールの更新、完全なツール結果、プロトコル ファイル アクセス、スレッド化された Python ヘルパー、およびより明確なカーネル損失とタイムアウト メッセージによる評価ツールの改善。</li>
+<li>フックの処理、操作の修正、ワークツリー、フィルター、行末、追跡されていない大きなツリー、レビュー ファイル、および JavaScript/Python API パリティをより正確に処理するために、コミット ドラフトとサマリーが改善されました。</li>
+<li>URL、アーカイブ、GitHub、Terraform レジストリ、パッケージ ドキュメント、Web 検索、およびリモート ファイル処理 (フィルタリング、ページネーション、バイナリ変換、アーカイブ メンバー アクセス、より明確なプロバイダー エラーなど) が改善されました。</li>
+<li>使用状況とアカウント ポリシーのレポートが改善され、サブスクリプションの制限と範囲指定された枯渇により、影響を受けるプランやメーターが正確に特定されるようになりました。</li>
+<li>ワークツリー、プロセス、待機、エージェント メッセージング、セッションの復元、メモリ保持、スポットライト、Windows シェル、および macOS のパフォーマンス動作が改善されました。</li>
+</ul>
+<h3>修正済み</h3>
+<ul>
+<li>MCP リソース リンクとバイナリ リソースを修正し、ドロップされたりプレースホルダーとしてのみ表示されるのではなく、読み取り可能なファイルまたはインライン コンテンツとしてアクセス可能なままになるようにしました。</li>
+<li>コミット前フックと部分的な以前のコミット後のコミット ドラフトを修正し、インデックス、差分、選択されたブロック、修正された親、レビュー ファイル、および生成された概要が正確なままとなるようにしました。</li>
+<li>非同期作業、サブエージェント、またはピア メッセージを使用した実行中の Hindsight および Mnemopi の自動保持が修正され、重複または重複した保持が防止されます。</li>
+<li>ウェイターと依存関係チェーンを報告し、キューに入れられたエージェントにメッセージを配信し、強制終了、削除、再開、または空の出力ジョブを正しく処理することにより、ブロックされたエージェントと待機を修正しました。</li>
+<li>統合デーモンのアップグレードにわたるセッションの再開とプロセス結果の処理を修正しました。</li>
+<li>サブエージェント、自動思考セッション、および手動で調整されたレベルの思考レベルの表示とモデルスイッチャーの動作を修正しました。</li>
+<li>ワークツリーのクローン作成、ovnfs/Git 移行、サービス準備状況チェック、シェル環境の継承、Windows ジャンクションの削除、プロセス置換、チェックサム、およびバックグラウンド コマンドのキャンセルを修正しました。</li>
+<li>スクリーンショット、click、塗りつぶし、タブ、フレーム、ダイアログ、アップロード、CDP エンドポイント、古い接続、同時評価、ブラウザ起動、ビューポート エミュレーション、clipboard、およびプラットフォーム固有の入力にわたるブラウザ自動化の信頼性を修正しました。</li>
+<li>ハッシュライン、AST 編集、生成されたファイルの検出、番号付きコンテンツ、リモート ファイル編集、構文診断、パス処理、および行末動作を修正しました。</li>
+<li>評価カーネル、Python および JavaScript ヘルパー、パッケージ インポート、ネストされたツール呼び出し、内部 URL、および移動された作業ディレクトリを修正しました。</li>
+<li>LSP、言語サーバーの起動、診断、参照、名前変更、コード アクション、プロジェクトの読み込み、ファイル タイプ、およびデバッガー アダプターの選択を修正しました。</li>
+<li>コマンド出力の要約を修正し、関連するコンテキスト、メタデータ、Git 出力、テスト タイミング、AWS 出力、lint 診断、およびバイナリ検出が誤って分類されるのではなく保持されるようにしました。</li>
+<li>読み取り、grep、glob、URL、アーカイブ、SQLite、ビデオ、RSS、GitHub、パッケージ ドキュメント、SSH、セレクター、フィルター、ページネーション、アーカイブ、バイナリ コンテンツ、プロバイダーの障害にわたる Web 検索の処理を修正しました。</li>
+<li>Todo 操作、ask 互換性とタイムアウト動作、イメージ生成検証、GitHub PR プッシュ、プラン提案、サイドチャネル モデル呼び出しのセッション アカウンティングを修正しました。</li>
+<li>登録エンドポイント、ステータスの詳細、および救済策を公開するために MCP OAuth 再認証エラーを修正し、更新されたトークンが安全に保存されるように認証ブローカーのシャットダウンを修正しました。</li>
+<li>待機リストに登録されたアカウント、レート制限、停止、リクエストの識別を含む、Spotlight の再試行とアカウント処理を修正しました。</li>
+<li>macOS の起動と再描画のパフォーマンス、Windows ファイル操作とアプリケーションの検索、音声出力、デスクトップの開き方など、クロスプラットフォームのシェルとデスクトップの動作を修正しました。</li>
+</ul>
+<h2>@オーマイパイ/コラボウェブ</h2>
+<h3>修正済み</h3>
+<ul>
+<li>生の番号付き結果リストを表示する合成回答のない Web 検索カードを修正しました。代わりに、各ソースの簡潔な抜粋が表示されるようになりました。</li>
+</ul>
+<h2>@oh-my-pi/pi-natives</h2>
+<h3>追加</h3>
+<ul>
+<li>ワークツリーのコンテンツを <code>git add</code> によって生成された BLOB 表現に変換するための <code>VcsGitRepo.worktreeToGit()</code> を追加しました。</li>
+<li>プロセスのシェルとして <code>Shell</code> を使用するためのサポートが追加され、プロセス セッションと外部コマンド用のターミナルを維持しながら、プロセスの標準ストリームを通じてコマンドをルーティングします。</li>
+<li>ホスト音声ハンドラーをシェルの <code>say</code> コマンドに接続するための <code>ShellRunOptions.speech</code> を追加しました。</li>
+<li>広範なファイル タイプの検出、MIME およびエンコード出力、アーカイブ/画像/ドキュメントのサポート、一般的に使用される <code>file</code> コマンド オプションとの互換性を備えたインプロセス <code>file</code> シェル組み込みを追加しました。</li>
+</ul>
+<h3>変更されました</h3>
+<ul>
+<li>iPhone ミラーリングでの入力とキー押下の応答性が向上し、文字あたりの遅延が約半分に短縮されました。</li>
+</ul>
+<h3>修正済み</h3>
+<ul>
+<li>Wayland および X11 で部分的にオフスクリーンの Linux ウィンドウのスクリーンショットを修正し、可視領域がキャプチャされ、座標ベースのズーム ターゲットが正しく表示されるようにしました。</li>
+<li>利用可能な入力ルートがないデスクトップでの Wayland 入力操作が、不必要な画面キャプチャを最初に試行するのではなく、明らかな <code>PermissionDenied</code> エラーで即座に失敗する問題を修正しました。</li>
+<li>macOS <code>computer</code> インタラクションを修正し、バックグラウンドの click、キーの押下、ポップアップ メニューのアクション、およびテイクオーバー コールによって、コール内で以前にアクティブだったウィンドウが復元されるようにしました。</li>
+<li>入力した文字によって選択されたオプションが反映されるように、入力直後に macOS ポップアップ メニューが読み込まれる問題を修正しました。</li>
+</ul>
+<h2>@oh-my-pi/omp-stats</h2>
+<h3>重大な変更</h3>
+<ul>
+<li>ローカル スピル ファイルからのリカバリ カウントをリカバリ カウントにスポットライトします。古いセッションのアーティファクト参照からの読み取りは、以前と同様にカウントされ続けます。</li>
+</ul>
+<h3>追加</h3>
+<ul>
+<li>概要のトークン ミックスを拡張し、タイトル生成、ジョブ キャプション、ジャッジ クエリ、キャッシュ ウォーミングなどのオフトランスクリプト モデル呼び出しを、ソースごとのリクエスト数、トークン合計、使用シェアとともに含めるように拡張しました。</li>
+<li>ネイティブ判定モデルの判定ユースケースごとのリクエスト、トークン、および使用シェアを示す意思決定モデル カードを概要に追加しました。</li>
+<li>タイトル生成および審査員呼び出しのリクエストの詳細には、生成された応答または記録された審査員の回答が表示されるようになりました。</li>
+</ul>
+<h3>変更されました</h3>
+<ul>
+<li>メイン エージェント、サブエージェント、アドバイザーのトークン ミックス シェアは、サイドチャネル モデル コールを除き、会話ターンのみを反映するようになりました。</li>
+</ul>
+<h3>修正済み</h3>
+<ul>
+<li>未構成のパブリック ホスト名を介して行われたリクエストを拒否することで、DNS 再バインドに対してダッシュボードを強化しました。 IP アドレス、ローカルホスト、LAN 短縮名、ローカル ネットワーク ドメイン、および Tailscale 名は引き続きサポートされます。 *.example.com などのワイルドカード サブドメインを含む、OMP_STATS_ALLOWED_HOSTS を使用してリバース プロキシまたはその他のカスタム ドメインを構成します。</li>
+</ul>
+<h2>@oh-my-pi/pi-tui</h2>
+<h3>重大な変更</h3>
+<ul>
+<li>フル出力参照と <code>[raw output: …]</code> フッターは、<code>artifact://N</code> の代わりに <code>local://N.log</code> を使用するようになりました。</li>
+</ul>
+<h3>追加</h3>
+<ul>
+<li>すべてのバンドルテーマに <code>btwMode</code> テーマカラーを含む、<code>btw</code> コンポーザーモードを追加しました。</li>
+<li>ランタイムの子に機能ゲート型ネイティブ ドッキングを追加し、必要な機能をアドバタイズする端末上にのみコンポーネントを表示できるようにします。</li>
+<li>インライン マークダウンを削除するときにワード内のアンダースコアを保持し、選択したジョブで <code>JobsSheet</code> を開くオプションを追加しました。</li>
+<li>カスタム メッセージ ペイロードをモデル コンテキストから除外できるようになりましたが、正規化および復元された保存済みエントリでは利用可能なままになります。</li>
+<li>バックグラウンド ジョブおよびサービスの実行によって報告される出力のトランスクリプト ブロックを追加しました。</li>
+</ul>
+<h3>変更されました</h3>
+<ul>
+<li>質問ダイアログを単一の積み重ねられたフローに作り直しました。アクティブな質問は開いたままですが、回答された質問は選択されたオプションが表示されたコンパクトな概要に折りたたまれます。これはターミナルとネイティブ インターフェイス全体に適用され、キーボード ナビゲーション、サイズ変更、ホスト コンポーザーの統合が向上します。</li>
+<li>質問ダイアログが保留中のコンポーザーの動作が改善されました。コンポーザーは、そこに入力すると質問がスキップされることを示し、必要に応じてコンパクトな状態に折り畳まれ、質問をバイパスするドラフトに対して明示的なスキップして送信アクションを提供します。</li>
+<li>フォールドおよびかすかなコンポーザー状態のサポートと、インターフェイスが応答を待っているときのより明確な視覚的表示が追加されました。</li>
+<li>モデル検索は、<code>provider/model</code> クエリをサポートするようになり、プロバイダーの正確な一致を優先し、そのプロバイダーのモデル ID を最初に検索します。</li>
+</ul>
+<h3>修正済み</h3>
+<ul>
+<li>すべての出力を 1 つのヘッダーの下にグループ化し、完全な行を表示することにより、Tern のバックグラウンド ジョブ通知が改善されました。</li>
+<li>Tern コンポーザーによる <code>-&gt;</code> および <code>=&gt;</code> の処理を​​修正し、これらを入力しても予期せず改行が挿入されなくなりました。</li>
+<li>合成された回答のない Web 検索結果を修正し、各ソースを簡潔に整理された抜粋とともに 1 回表示するようにしました。</li>
+<li>長い Tern ツール承認プロンプトを修正し、その詳細が利用可能なウィンドウ内でスクロールし、選択肢と承認/拒否コントロールが表示されたままになるようにしました。</li>
+<li>表グラフの単位表示と、スケールされた単位を使用した測定の変更係数の計算が修正されました。</li>
+<li>チェックボックス グループを修正し、何も選択せずに Enter キーを押すと、フォーカスされているボックスが最初にチェックされるようになりました。</li>
+<li>質問フォームで各質問が事前に選択された回答とともに開かれるようになり、Enter キーで推奨事項を置き換えずに受け入れることができるようになりました。</li>
+</ul>
+<h2>@oh-my-pi/pi-utils</h2>
+<h3>追加</h3>
+<ul>
+<li><code>local://N.log</code> 形式を使用してセッション スピル URL をフォーマットおよび解析するためのユーティリティを追加しました。</li>
+<li>SIGINT または SIGTERM のクリーンアップ完了後に長時間実行サービスが正常に終了するように、<code>postmortem.exitCleanlyOnStopSignals()</code> を追加しました。</li>
+</ul>
+<h3>修正済み</h3>
+<ul>
+<li>Windows シェル検出で WSL <code>bash.exe</code> ランチャーが誤って選択され、WSL でサービスが実行される可能性がある問題を修正しました。</li>
+<li>アーカイブ全体へのアクセスを妨げるのではなく、サイズ超過のメンバーが読み取られたときに抽出サイズの制限が適用されるようにアーカイブのオープンを修正しました。</li>
+<li><code>OMP_LOG_LEVEL</code> を修正し、ログ ファイル出力だけでなく、<code>omp auth-broker serve</code> などのサービスからのコンソール出力も制御できるようにしました。</li>
+<li>コード スパン、自動リンク、インライン HTML タグ、またはリンク先内のマーカー文字によって強調ラベルとリンク ラベルが途中で終了しないように、Markdown 解析を修正しました。</li>
+</ul>
+<h2>@oh-my-pi/pi-wire</h2>
+<h3>追加</h3>
+<ul>
+<li>トレイの状態とインタラクション プロパティ (フォーカス、ピーク、クワイエット、メイン ステータス、アイテム参照、カードのステータスとアクション、イベントの状態など) を追加しました。</li>
+<li>レイアウトアニメーションを調整するためのレイアウト遷移プロパティをノードに追加しました。</li>
+<li>ドックコンポーザーをコンパクトな行に折りたたむためのサポートを追加しました。</li>
+</ul>
+<h2>何が変わったのか</h2>
+<ul>
+<li>修正 (tui): ネイティブ承認の詳細をスクロールして、選択肢が表示されたままになるようにします (https://github.com/can1357/oh-my-pi/pull/19617 の @c-w-z による)</li>
+<li>perf(natives): iPhone ミラーリングでの入力速度が 2 倍になります (https://github.com/can1357/oh-my-pi/pull/17897 の @will-bogusz による)</li>
+<li>特技 (拡張機能): カスタム メッセージをモデル コンテキストから外さないようにする (https://github.com/can1357/oh-my-pi/pull/19550 の @materemias による)</li>
+<li>修正（ネイティブ）: https://github.com/can1357/oh-my-pi/pull/19516 の @will-bogusz によって入力された文字が選択したオプションの後に macOS ポップアップを読み取る</li>
+<li>修正(ネイティブ): https://github.com/can1357/oh-my-pi/pull/19532 の @will-bogusz によるバックグラウンド入力と引き継ぎの後、ユーザーのキー ウィンドウを macOS ターゲットの前に戻します。</li>
+<li>fix(pi-builtins): rm -r は、https://github.com/can1357/oh-my-pi/pull/19572 の @zhivko-kocev によりツリー内のジャンクションを削除します</li>
+<li>修正 (pi-builtins): Windows 上の組み込みの読み取りプロセス置換 (/dev/fd/N) (https://github.com/can1357/oh-my-pi/pull/19574 の @zhivko-kocev による)</li>
+<li>docs(auth-gateway): https://github.com/can1357/oh-my-pi/pull/19586 で @will-bogusz によって移動中のウォーム ピンを再利用する方法について説明します。</li>
+<li>修正(ネイティブ): https://github.com/can1357/oh-my-pi/pull/19596 の @will-bogusz により、Linux ウィンドウの表示部分をモニターから部分的にキャプチャします。</li>
+<li>fix(ai): https://github.com/can1357/oh-my-pi/pull/19598 の @will-bogusz によるブローカーの再起動を通じて最初の認証ブローカー スナップショットを再試行します</li>
+<li>fix(coding-agent): https://github.com/can1357/oh-my-pi/pull/19599 で @will-bogusz によって終了する前に、auth-broker サーブが実行中のリフレッシュを保存できるようにします。</li>
+<li>修正 (ai): https://github.com/can1357/oh-my-pi/pull/19600 の @will-bogusz による単一ウィンドウの使用状況レポートによって引き起こされる、クロード層の共有週間壁ブロックを修復します。</li>
+<li>修正 (カタログ): https://github.com/can1357/oh-my-pi/pull/19601 の @will-bogusz により、各プロモーションが終了するときに Devin's Gemini のプロモーション価格をリストに切り替える</li>
+<li>fix(ai): 新しいブローカーが https://github.com/can1357/oh-my-pi/pull/19602 の @will-bogusz によって追加したフィールドを持つ認証ブローカー応答を読み取る</li>
+<li>修正(utils): https://github.com/can1357/oh-my-pi/pull/19605 の @will-bogusz により、OMP_LOG_LEVEL をコンソール トランスポートに適用します</li>
+<li>fix(coding-agent): https://github.com/can1357/oh-my-pi/pull/19606 の @will-bogusz によるアカウント全体のウィンドウによって OMP 使用ポリシーの状態を判断する</li>
+<li>修正(カタログ): https://github.com/can1357/oh-my-pi/pull/19619 の @will-bogusz による Devin の測定された画像制限を保持</li>
+<li>修正（ネイティブ）: https://github.com/can1357/oh-my-pi/pull/19629 の @will-bogusz による入力ルートが存在しない場合、すべての Wayland 入力呼び出しを一度に拒否</li>
+<li>fix(antigravity-cli): https://github.com/can1357/oh-my-pi/pull/19640 の @roboomp によって選択された agy の努力サフィックス付きモデル ID</li>
+<li>fix(mcp): https://github.com/can1357/oh-my-pi/pull/19643 の @roboomp による mcp 再認証を通じて拒否された DCR 診断が表面化</li>
+<li>fix(coding-agent): https://github.com/can1357/oh-my-pi/pull/19696 の @will-bogusz によって古いエクスポート ビューアのメタデータを再生成しました</li>
+<li>修正: https://github.com/can1357/oh-my-pi/pull/19699 の @will-bogusz によるメインの lint および型チェック ジョブを復元しました。</li>
+<li>修正 (utils): https://github.com/can1357/oh-my-pi/pull/19671 の @roboomp によるコード スパン、HTML、リンク内のマークダウン区切り文字のスキップ</li>
+<li>修正(コミット): https://github.com/can1357/oh-my-pi/pull/19685 で @roboomp による未録音ファイルの行ごとの帰属を維持するドラフトを停止しました</li>
+<li>修正(カタログ): https://github.com/can1357/oh-my-pi/pull/19691 の @roboomp によって kiro api キーを含むトークンタイプ ヘッダーが送信されました</li>
+<li>fix(coding-agent): https://github.com/can1357/oh-my-pi/pull/19692 の @roboomp による生成された一時停止とシリアル化された保持時のメモリの保持
+<strong>フル Changelog</strong>: https://github.com/can1357/oh-my-pi/compare/v18.22.2...v19.0.0</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>ソース</strong> <a href="https://github.com/can1357/oh-my-pi">can1357/oh-my-pi</a> · <code>v19.0.0</code> · 2026-11-19 · <a href="https://github.com/can1357/oh-my-pi/releases/tag/v19.0.0">アップストリーム リリース</a>
+<em>インデックス作成のためにそのままミラーリングされます。すべての権利は上流プロジェクトに帰属します。</em></p>
+</blockquote></div>  <details class="mt-original"> <summary>English original / English original</summary> <div class="prose mt-original-body"><h1>oh-my-pi v19.0.0</h1>
+<h2>@oh-my-pi/pi-agent-core</h2>
+<h3>Added</h3>
+<ul>
+<li>Added support for excluding custom messages from model context and compaction or branch summaries, while allowing queued steering and follow-up messages to continue correctly after excluded messages.</li>
+</ul>
+<h2>@oh-my-pi/pi-ai</h2>
+<h3>Added</h3>
+<ul>
+<li>Added a <code>prewarm</code> stream option for Anthropic Messages requests to refresh prompt caches without generating billable output; it is rejected for budget thinking, forced tool choice, and structured output.</li>
+<li>Claude usage reports now include the account subscription plan in <code>metadata.subscriptionPlan</code>, supporting Max 5x, Max 20x, Pro, Team, and Enterprise plans.</li>
+<li>Added <code>retryUnreachableBroker</code> and <code>onBrokerRetry</code> options to <code>discoverAuthStorage</code>, allowing hosts to control startup retries for temporarily unavailable authentication brokers and display retry status.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li>Fixed Claude account failover after a shared weekly usage limit recovers, ensuring accounts become available again when usage reporting no longer shows that window.</li>
+<li>Authentication broker startup now tolerates temporary broker restarts and connection interruptions by retrying for up to 30 seconds, while still failing immediately for rejected tokens or malformed snapshots.</li>
+<li>Improved authentication broker compatibility across client and broker versions by tolerating unknown credential, usage, and observed-usage fields and values.</li>
+<li>Fixed Codex Spark usage meters so reports that identify the meter only by <code>metered_feature</code> remain correctly scoped to the Spark model.</li>
+<li>Fixed Antigravity CLI requests for models whose available IDs include effort suffixes, such as resolving <code>gemini-4-hydrogen</code> when only <code>gemini-4-hydrogen-high</code> is offered.</li>
+</ul>
+<h2>@oh-my-pi/pi-catalog</h2>
+<h3>Added</h3>
+<ul>
+<li>Added support for prompt-cache prewarming on the first-party Anthropic endpoint via the <code>isPromptCachePrewarmSupported</code> compatibility capability.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li>Fixed hosted judgment requests for TypeSafe, OpenRouter, Command Code, and OpenCode Zen when evaluating more than 32 questions.</li>
+<li>Improved Devin image handling to support more conversation images within provider limits, and updated image compaction for Devin Gemini models to reflect their billed token usage.</li>
+<li>Fixed Devin Gemini model pricing so models switch from promotional to list pricing when promotions end.</li>
+<li>Fixed Kiro API key authentication (<code>KIRO_API_KEY</code> and <code>ksk_…</code>) so model listing, chat, and <code>/usage</code> requests work correctly.</li>
+</ul>
+<h2>@oh-my-pi/pi-coding-agent</h2>
+<h3>Breaking Changes</h3>
+<ul>
+<li>Changed SDK cache warming controls: createAgentSession.cacheWarming now accepts the mode cap &quot;off&quot;, &quot;streaming&quot;, or &quot;idle&quot;; the lower of this value and providers.cacheWarming applies. Use &quot;off&quot; instead of false.</li>
+<li>Replaced artifact://N links with readable, listable, and completable local://N.log files at the session's local:// root. artifact:// links in existing sessions are not migrated.</li>
+<li>Replaced session.handoff(focus) with session.compact(focus, { mode: &quot;handoff&quot; }); use abortCompaction() to cancel it.</li>
+<li>Consolidated shared background processes under one per-user daemon rather than project-specific brokers. Daemons and services from older versions are not adopted; omp ps now reports global, project, and session units together, removes --global, changes --json output to {daemon, reports}, and no longer adds ?project= to dsm:// handles.</li>
+<li>Renamed SDK deferSkillDescriptionCompression to deferHintCompression and startSkillDescriptionCompression() to startHintCompression(); these settings and methods now also cover MCP namespace hints.</li>
+</ul>
+<h3>Added</h3>
+<ul>
+<li>Added built-in MCP transforms, including the Codex Desktop node_repl replacement. Built-ins can be disabled with mcp.builtinTransforms; /mcp list identifies replaced servers and /mcp enable node_repl can explicitly connect one.</li>
+<li>Added optional MCP eval namespaces through mcp.evalNamespaces, exposing servers as JavaScript and Python namespaces with documentation at xd://eval/&lt;server&gt;. Results preserve text and structured data, and binary resources are saved as local:// files.</li>
+<li>Added model-generated names for /tan agents and their tray cards, with a readable random fallback when naming fails or times out.</li>
+<li>Added configurable cache-warming strategies (auto, keepalive, and compact), including long-tool-call keepalive and pre-expiry prompt compaction. Cache-warming events now report the selected method and costs.</li>
+<li>Added optional cross-instance task discovery and messaging with task.crossInstance, exposing same-folder instances through agent://peers.</li>
+<li>Added btw mode: drafts beginning with ? submit as /btw questions and receive distinct UI indication.</li>
+<li>Added Tern live cards for running subagents and background jobs, including progress, tool counts, status, controls, transcripts, and restored access to finished agents.</li>
+<li>Added daemon update survival and optional TCP hosting through OMP_DAEMON_TCP, preserving running services, PTYs, and language servers across daemon upgrades.</li>
+<li>Loaded speech-to-text and text-to-speech models once per machine, unloading them after 15 minutes of inactivity.</li>
+<li>Added ovnfs worktree support to /wt, the project resume picker, and omp worktree list/clear, while preserving session resume from the source repository after checkout removal.</li>
+<li>Added Claude subscription plans to omp usage and /usage output.</li>
+<li>Added progress reporting for background skill-description and MCP namespace hint generation.</li>
+<li>Added excludeFromContext to pi.sendMessage payloads so extensions can display and save per-turn messages without sending them to the model.</li>
+<li>Added a 30-second retry window for CLI and print-mode commands while the authentication broker restarts or is briefly unavailable.</li>
+<li>Added a notify option to the bash tool for reporting matching output from background commands and named services, waking idle sessions or ending blocked waits.</li>
+</ul>
+<h3>Changed</h3>
+<ul>
+<li>Improved cache warming for Anthropic-compatible providers with no-output prewarming where supported and billing based on actual replay costs; task subagents now keep prompt caches warm during long tool calls when streaming warming is enabled.</li>
+<li>Generated skill descriptions and MCP namespace hints once per machine, sharing results and progress across omp windows.</li>
+<li>Preserved thinking levels when switching models, adjusting only when the selected model cannot support the current level; model defaults apply only when no level is set.</li>
+<li>Extended repeated reply and subagent waits to use the session's prompt-cache lifetime, and made subagent waits follow the live parent's next message when appropriate.</li>
+<li>Made /handoff run as background compaction while preserving the current response and newly arriving messages.</li>
+<li>Redesigned ask prompts as a single scrolling form above the composer, preserving partial answers and allowing users to skip pending questions by sending a message.</li>
+<li>Enabled composer predictions by default, showing the active model's suggested next message after completed turns; disable them in Settings → Interaction.</li>
+<li>Disabled tool-call intent tracing by default in print, RPC, ACP, and SDK sessions; enable it with tools.intentTracing or PI_INTENT_TRACING.</li>
+<li>Updated ovnfs checkout guidance and git guard messages to explain how to land, pull, or discard changes.</li>
+<li>Improved subagent completion probes and side requests so they focus on deliverables and do not include still-streaming reasoning as plain history.</li>
+<li>Standardized wait behavior to a 5-second initial idle wait followed by four-minute back-to-back waits.</li>
+<li>Always provide subagents with the shared LSP tool; task.enableLsp now controls only LSP formatting and diagnostics for edits.</li>
+<li>Improved bash services, PTYs, and embedded shells with session environment inheritance, session-file URL support, clearer readiness validation, and more transparent minimized output.</li>
+<li>Named managed Chromium clearly when running in a window and improved browser, screenshot, upload, frame, selector, network, and CDP behavior across tabs and browser backends.</li>
+<li>Improved hashline editing with verbatim replacement bodies, safer range and path validation, clearer parse and syntax diagnostics, support for larger files and SSH files, and more predictable raw reads and line selectors.</li>
+<li>Improved MCP reliability with ten-minute tool-call deadlines, longer deadlines when progress is reported, clearer timeout and connection errors, and one retry after expired HTTP sessions.</li>
+<li>Expanded the embedded shell with portable built-ins and internal-URL support for common workflows, including file inspection, archiving, process control, environment loading, file watching, locking, speech, opening files, and patch application.</li>
+<li>Improved LSP and debugging diagnostics, language coverage, workspace detection, references, rename, code actions, and server lifecycle reporting.</li>
+<li>Improved eval tooling with Python 3.9+ validation, UTF-8 execution, package installation refreshes, full tool results, protocol-file access, threaded Python helpers, and clearer kernel-loss and timeout messages.</li>
+<li>Improved commit drafts and summaries to handle hooks, amend operations, worktrees, filters, line endings, large untracked trees, review files, and JavaScript/Python API parity more accurately.</li>
+<li>Improved URL, archive, GitHub, Terraform Registry, package documentation, web search, and remote-file handling, including filtering, pagination, binary conversion, archive member access, and clearer provider errors.</li>
+<li>Improved usage and account policy reporting so subscription limits and scoped exhaustion identify the affected plan or meter accurately.</li>
+<li>Improved worktree, process, wait, agent messaging, session restore, memory retention, Spotlight, Windows shell, and macOS performance behavior.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li>Fixed MCP resource links and binary resources so they remain accessible as readable files or inline content rather than being dropped or shown only as placeholders.</li>
+<li>Fixed commit drafts after pre-commit hooks and partial prior commits so the index, diff, selected blocks, amended parent, review files, and generated summaries remain accurate.</li>
+<li>Fixed automatic Hindsight and Mnemopi retention during runs with async work, subagents, or peer messages, preventing duplicate or overlapping retention.</li>
+<li>Fixed blocked agents and waits by reporting waiters and dependency chains, delivering messages to queued agents, and correctly handling killed, evicted, resumed, or empty-output jobs.</li>
+<li>Fixed session resume and process-result handling across unified-daemon upgrades.</li>
+<li>Fixed thinking-level display and model-switcher behavior for subagents, auto-thinking sessions, and manually adjusted levels.</li>
+<li>Fixed worktree cloning, ovnfs/Git transitions, service readiness checks, shell environment inheritance, Windows junction removal, process substitution, checksums, and background command cancellation.</li>
+<li>Fixed browser automation reliability across screenshots, clicks, fills, tabs, frames, dialogs, uploads, CDP endpoints, stale connections, concurrent evaluations, browser startup, viewport emulation, clipboard, and platform-specific input.</li>
+<li>Fixed hashline, AST editing, generated-file detection, numbered content, remote-file editing, syntax diagnostics, path handling, and line-ending behavior.</li>
+<li>Fixed eval kernels, Python and JavaScript helpers, package imports, nested tool calls, internal URLs, and moved working directories.</li>
+<li>Fixed LSP, language-server startup, diagnostics, references, rename, code actions, project loading, file types, and debugger adapter selection.</li>
+<li>Fixed command-output summarization so relevant context, metadata, Git output, test timing, AWS output, lint diagnostics, and binary detection are preserved instead of being misclassified.</li>
+<li>Fixed read, grep, glob, URL, archive, SQLite, video, RSS, GitHub, package-documentation, SSH, and web-search handling across selectors, filters, pagination, archives, binary content, and provider failures.</li>
+<li>Fixed todo operations, ask compatibility and timeout behavior, image generation validation, GitHub PR pushes, plan proposals, and session accounting for side-channel model calls.</li>
+<li>Fixed MCP OAuth reauthentication errors to expose registration endpoints, status details, and remedies, and fixed auth-broker shutdown so refreshed tokens are saved safely.</li>
+<li>Fixed Spotlight retry and account handling, including waitlisted accounts, rate limits, outages, and request identification.</li>
+<li>Fixed cross-platform shell and desktop behavior, including macOS startup and redraw performance, Windows file operations and application lookup, speech output, and desktop opening.</li>
+</ul>
+<h2>@oh-my-pi/collab-web</h2>
+<h3>Fixed</h3>
+<ul>
+<li>Fixed web search cards without a synthesized answer displaying raw numbered result lists; they now show a concise excerpt for each source instead.</li>
+</ul>
+<h2>@oh-my-pi/pi-natives</h2>
+<h3>Added</h3>
+<ul>
+<li>Added <code>VcsGitRepo.worktreeToGit()</code> to convert worktree content into the blob representation produced by <code>git add</code>.</li>
+<li>Added support for using a <code>Shell</code> as a process's shell, routing commands through the process's standard streams while preserving the process session and terminal for external commands.</li>
+<li>Added <code>ShellRunOptions.speech</code> to connect the host speech handler to the shell's <code>say</code> command.</li>
+<li>Added an in-process <code>file</code> shell builtin with broad file-type detection, MIME and encoding output, archive/image/document support, and compatibility with the commonly used <code>file</code> command options.</li>
+</ul>
+<h3>Changed</h3>
+<ul>
+<li>Improved typing and key-press responsiveness in iPhone Mirroring, reducing per-character latency by approximately half.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li>Fixed screenshots of partially off-screen Linux windows on Wayland and X11 so the visible region is captured and coordinate-based zoom targets correctly.</li>
+<li>Fixed Wayland input operations on desktops without an available input route to fail immediately with a clear <code>PermissionDenied</code> error instead of attempting unnecessary screen capture first.</li>
+<li>Fixed macOS <code>computer</code> interactions so background clicks, key presses, pop-up menu actions, and takeover calls restore the previously active window within the call.</li>
+<li>Fixed macOS pop-up menu reads immediately after typing so they reflect the option selected by the entered letters.</li>
+</ul>
+<h2>@oh-my-pi/omp-stats</h2>
+<h3>Breaking Changes</h3>
+<ul>
+<li>Spotlight recovery counts reads from local spill files toward recovery counts; reads from artifact references in older sessions continue to count as before.</li>
+</ul>
+<h3>Added</h3>
+<ul>
+<li>Expanded the Overview's Token mix to include off-transcript model calls—such as title generation, job captions, judge queries, and cache warming—with per-source request counts, token totals, and usage shares.</li>
+<li>Added a Decision models card to the Overview showing requests, tokens, and usage share by judgment use case for native judgment models.</li>
+<li>Request details for title-generation and judge calls now display the generated reply or recorded judge answers.</li>
+</ul>
+<h3>Changed</h3>
+<ul>
+<li>Token mix shares for the main agent, subagents, and advisor now reflect conversation turns only, excluding side-channel model calls.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li>Hardened the dashboard against DNS rebinding by rejecting requests made through unconfigured public host names. IP addresses, localhost, LAN short names, local network domains, and Tailscale names remain supported; configure reverse-proxy or other custom domains with OMP_STATS_ALLOWED_HOSTS, including wildcard subdomains such as *.example.com.</li>
+</ul>
+<h2>@oh-my-pi/pi-tui</h2>
+<h3>Breaking Changes</h3>
+<ul>
+<li>Full-output references and the <code>[raw output: …]</code> footer now use <code>local://N.log</code> instead of <code>artifact://N</code>.</li>
+</ul>
+<h3>Added</h3>
+<ul>
+<li>Added the <code>btw</code> composer mode, including the <code>btwMode</code> theme color in all bundled themes.</li>
+<li>Added feature-gated native docking for runtime children, allowing components to appear only on terminals that advertise the required capability.</li>
+<li>Added options to preserve intraword underscores when stripping inline Markdown and to open <code>JobsSheet</code> on a selected job.</li>
+<li>Custom message payloads can now be excluded from model context while remaining available in normalized and restored saved entries.</li>
+<li>Added transcript blocks for output reported by running background jobs and services.</li>
+</ul>
+<h3>Changed</h3>
+<ul>
+<li>Reworked ask dialogs into a single stacked flow: the active question stays open while answered questions fold into compact summaries with their selected options visible. This applies across terminal and native interfaces and improves keyboard navigation, sizing, and host composer integration.</li>
+<li>Improved composer behavior while an ask dialog is pending: the composer indicates that typing there will skip the question, folds to a compact state when appropriate, and offers an explicit Skip &amp; send action for drafts that bypass the ask.</li>
+<li>Added support for folded and faint composer states and clearer visual indication when the interface is awaiting an answer.</li>
+<li>Model search now supports <code>provider/model</code> queries, prioritizing exact provider matches and searching that provider's model IDs first.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li>Improved background-job notices in Tern by grouping all output under one header and showing the complete lines.</li>
+<li>Fixed Tern composer handling of <code>-&gt;</code> and <code>=&gt;</code> so typing them no longer unexpectedly inserts a line break.</li>
+<li>Fixed web search results without a synthesized answer to show each source once with a concise cleaned excerpt.</li>
+<li>Fixed long Tern tool-approval prompts so their details scroll within the available window and the choices and Approve/Deny controls remain visible.</li>
+<li>Fixed table chart unit display and change-factor calculations for measurements with scaled units.</li>
+<li>Fixed checkbox groups so pressing Enter with nothing selected first checks the focused box.</li>
+<li>Ask forms now open each question with its preselected answer, allowing Enter to accept the recommendation without replacing it.</li>
+</ul>
+<h2>@oh-my-pi/pi-utils</h2>
+<h3>Added</h3>
+<ul>
+<li>Added utilities for formatting and parsing session spill URLs using the <code>local://N.log</code> format.</li>
+<li>Added <code>postmortem.exitCleanlyOnStopSignals()</code> so long-running services exit successfully after completing cleanup on SIGINT or SIGTERM.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li>Fixed Windows shell discovery incorrectly selecting the WSL <code>bash.exe</code> launcher, which could cause services to run under WSL.</li>
+<li>Fixed archive opening so the extraction-size limit is enforced when an oversized member is read rather than preventing access to the entire archive.</li>
+<li>Fixed <code>OMP_LOG_LEVEL</code> so it also controls console output from services such as <code>omp auth-broker serve</code>, not just log-file output.</li>
+<li>Fixed Markdown parsing so emphasis and link labels are not prematurely terminated by marker characters inside code spans, autolinks, inline HTML tags, or link destinations.</li>
+</ul>
+<h2>@oh-my-pi/pi-wire</h2>
+<h3>Added</h3>
+<ul>
+<li>Added tray state and interaction properties, including focus, peek, quiet, main status, item references, card status and actions, and event state.</li>
+<li>Added layout transition properties to nodes for coordinating layout animations.</li>
+<li>Added support for folding a dock composer into its compact row.</li>
+</ul>
+<h2>What's Changed</h2>
+<ul>
+<li>fix(tui): scroll native approval details so choices stay in view by @c-w-z in https://github.com/can1357/oh-my-pi/pull/19617</li>
+<li>perf(natives): type on iPhone Mirroring twice as fast by @will-bogusz in https://github.com/can1357/oh-my-pi/pull/17897</li>
+<li>feat(extensions): let custom messages stay out of model context by @materemias in https://github.com/can1357/oh-my-pi/pull/19550</li>
+<li>fix(natives): read a macOS popup after the option its typed letters choose by @will-bogusz in https://github.com/can1357/oh-my-pi/pull/19516</li>
+<li>fix(natives): put the user's key window back in front of a macOS target after background input and takeover by @will-bogusz in https://github.com/can1357/oh-my-pi/pull/19532</li>
+<li>fix(pi-builtins): rm -r removes junctions inside a tree by @zhivko-kocev in https://github.com/can1357/oh-my-pi/pull/19572</li>
+<li>fix(pi-builtins): read process substitution (/dev/fd/N) in builtins on Windows by @zhivko-kocev in https://github.com/can1357/oh-my-pi/pull/19574</li>
+<li>docs(auth-gateway): describe reclaim moving warm pins back by @will-bogusz in https://github.com/can1357/oh-my-pi/pull/19586</li>
+<li>fix(natives): capture the visible part of a Linux window partly off its monitor by @will-bogusz in https://github.com/can1357/oh-my-pi/pull/19596</li>
+<li>fix(ai): retry the initial auth-broker snapshot through a broker restart by @will-bogusz in https://github.com/can1357/oh-my-pi/pull/19598</li>
+<li>fix(coding-agent): let auth-broker serve save an in-flight refresh before exit by @will-bogusz in https://github.com/can1357/oh-my-pi/pull/19599</li>
+<li>fix(ai): heal Claude tier blocks a shared weekly wall caused from single-window usage reports by @will-bogusz in https://github.com/can1357/oh-my-pi/pull/19600</li>
+<li>fix(catalog): switch Devin's Gemini promo prices to list when each promo ends by @will-bogusz in https://github.com/can1357/oh-my-pi/pull/19601</li>
+<li>fix(ai): read auth-broker responses that carry fields a newer broker adds by @will-bogusz in https://github.com/can1357/oh-my-pi/pull/19602</li>
+<li>fix(utils): apply OMP_LOG_LEVEL to the console transport by @will-bogusz in https://github.com/can1357/oh-my-pi/pull/19605</li>
+<li>fix(coding-agent): judge omp usage policy state by account-wide windows by @will-bogusz in https://github.com/can1357/oh-my-pi/pull/19606</li>
+<li>fix(catalog): carry Devin's measured image limits by @will-bogusz in https://github.com/can1357/oh-my-pi/pull/19619</li>
+<li>fix(natives): refuse every Wayland input call at once when no input route exists by @will-bogusz in https://github.com/can1357/oh-my-pi/pull/19629</li>
+<li>fix(antigravity-cli): selected agy's effort-suffixed model ids by @roboomp in https://github.com/can1357/oh-my-pi/pull/19640</li>
+<li>fix(mcp): surfaced rejected DCR diagnostics through mcp reauth by @roboomp in https://github.com/can1357/oh-my-pi/pull/19643</li>
+<li>fix(coding-agent): regenerated the stale export viewer metadata by @will-bogusz in https://github.com/can1357/oh-my-pi/pull/19696</li>
+<li>fix: restored main's lint and type-check job by @will-bogusz in https://github.com/can1357/oh-my-pi/pull/19699</li>
+<li>fix(utils): skipped markdown delimiters inside code spans, html and links by @roboomp in https://github.com/can1357/oh-my-pi/pull/19671</li>
+<li>fix(commit): stopped drafts keeping per-line attribution of unrecorded files by @roboomp in https://github.com/can1357/oh-my-pi/pull/19685</li>
+<li>fix(catalog): sent tokentype header with kiro api keys by @roboomp in https://github.com/can1357/oh-my-pi/pull/19691</li>
+<li>fix(coding-agent): retained memory on yielded pauses and serialized retains by @roboomp in https://github.com/can1357/oh-my-pi/pull/19692</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/can1357/oh-my-pi/compare/v18.22.2...v19.0.0</p>
+<hr />
+<blockquote>
+<p><strong>Source</strong> <a href="https://github.com/can1357/oh-my-pi">can1357/oh-my-pi</a> · <code>v19.0.0</code> · 2026-11-19 · <a href="https://github.com/can1357/oh-my-pi/releases/tag/v19.0.0">upstream release</a></p>
+</blockquote>
+<p><em>Mirrored verbatim for indexing. All rights belong to the upstream project.</em></p></div> </details> </div> <p class="muted" style="margin-top:var(--s8);font-size:12.5px;border-top:1px solid var(--line);padding-top:var(--s4)"> リリースノートは上流プロジェクトが公開したものです。私たちはそれらを整理し、関連付けて、バージョンを一眼で比較できるようにしています。コンテンツの権利はすべて原作者に属します。 </p> <nav class="pager" aria-label="Release navigation"> <a href="/releases/oh-my-pi/19.0.1"> <span class="k">← 次へ</span> <span class="t">v19.0.1</span> </a> <a href="/releases/oh-my-pi/18.22.2"> <span class="k">前へ →</span> <span class="t">v18.22.2</span> </a> </nav> <aside class="ad-slot" aria-label="Advertisement" data-astro-cid-fgwukgf6><div class="ad-slot-label" data-astro-cid-fgwukgf6>Advertisement</div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4184355057086168" data-ad-slot="9133765584" data-ad-format="auto" data-full-width-responsive="true" data-astro-cid-fgwukgf6></ins><script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script></aside> </article> <aside class="rail"> <div class="rail-card"> <div class="rail-title">Source</div> <ul class="rail-list"> <li> <a href="https://github.com/can1357/oh-my-pi/releases/tag/v19.0.0" target="_blank" rel="noopener"> <span>GitHub で見る</span> <span class="d">↗</span> </a> </li> <li> <a href="https://github.com/can1357/oh-my-pi" target="_blank" rel="noopener"> <span>can1357/oh-my-pi</span> <span class="d">↗</span> </a> </li> </ul> </div> <div class="rail-card rail-toc"> <div class="rail-title">このページの目次</div> <nav> <a href="#" class>@oh-my-pi/pi-agent-core</a><a href="#" class="lv3">追加</a><a href="#" class>@oh-my-pi/pi-ai</a><a href="#" class="lv3">追加</a><a href="#" class="lv3">修正済み</a><a href="#" class>@oh-my-pi/pi-catalog</a><a href="#" class="lv3">追加</a><a href="#" class="lv3">修正済み</a><a href="#" class>@oh-my-pi/pi-coding-agent</a><a href="#" class="lv3">重大な変更</a><a href="#" class="lv3">追加</a><a href="#" class="lv3">変更されました</a><a href="#" class="lv3">修正済み</a><a href="#" class>@オーマイパイ/コラボウェブ</a><a href="#" class="lv3">修正済み</a><a href="#" class>@oh-my-pi/pi-natives</a><a href="#" class="lv3">追加</a><a href="#" class="lv3">変更されました</a><a href="#" class="lv3">修正済み</a><a href="#" class>@oh-my-pi/omp-stats</a><a href="#" class="lv3">重大な変更</a><a href="#" class="lv3">追加</a><a href="#" class="lv3">変更されました</a><a href="#" class="lv3">修正済み</a> </nav> </div> <div class="rail-card"> <div class="rail-title">バージョン履歴</div> <ul class="rail-list"> <li> <a href="/releases/oh-my-pi/19.1.1"> <span class="v">v19.1.1</span> <span class="d">26-11-23</span> </a> </li><li> <a href="/releases/oh-my-pi/19.1.0"> <span class="v">v19.1.0</span> <span class="d">26-11-21</span> </a> </li><li> <a href="/releases/oh-my-pi/19.0.1"> <span class="v">v19.0.1</span> <span class="d">26-11-19</span> </a> </li><li> <a href="/releases/oh-my-pi/19.0.0" aria-current="true"> <span class="v">v19.0.0</span> <span class="d">26-11-19</span> </a> </li><li> <a href="/releases/oh-my-pi/18.22.2"> <span class="v">v18.22.2</span> <span class="d">26-11-18</span> </a> </li><li> <a href="/releases/oh-my-pi/18.22.1"> <span class="v">v18.22.1</span> <span class="d">26-11-17</span> </a> </li><li> <a href="/releases/oh-my-pi/18.22.0"> <span class="v">v18.22.0</span> <span class="d">26-11-16</span> </a> </li><li> <a href="/releases/oh-my-pi/18.21.0"> <span class="v">v18.21.0</span> <span class="d">26-11-16</span> </a> </li> </ul> <a href="/ja/releases/oh-my-pi" class="mono" style="display:inline-block;margin-top:var(--s3);font-size:11.5px;color:var(--ink-3)"> すべての 40 件を見る →
+</a> </div> </aside> </div> </div>  </main> <footer class="site-footer"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/ja/" class="brand" aria-label="STAGS NextStack"><span class="brand-mark" aria-hidden="true">S</span><span class="brand-main">STAGS</span><span class="brand-sub" aria-hidden="true">NextStack</span></a> <p>オープンソースのリリース インテリジェンスが毎日公開されます。</p> </div> <div class="footer-col"> <h3>追跡</h3> <ul> <li><a href="/ja/releases">リリース</a></li> <li><a href="/ja/projects">プロジェクト</a></li> <li><a href="/ja/releases.xml">RSS フィード</a></li> </ul> </div> <div class="footer-col"> <h3>アーカイブ</h3> <ul> <li><a href="/zh/release_note" hreflang="zh-Hans">中文アーカイブ</a></li> <li><a href="/zh/chapters/" hreflang="zh-Hans">技術ノート</a></li> <li><a href="/zh/downloads/">Stags Tracker</a></li> </ul> </div> <div class="footer-col"> <h3>情報</h3> <ul> <li><a href="/privacy">プライバシーポリシー</a></li> <li><a href="/releases.xml">RSS</a></li> <li><a href="/sitemap-index.xml">Sitemap</a></li> </ul> </div> </div> <div class="footer-btm"> <span>© 2026 STAGS</span> <span>Release note は上流プロジェクトに属します。</span> </div> </div> </footer> <!-- 搜索面板 --> <div class="palette-bg" data-palette-bg data-open="false"> <div class="palette" role="dialog" aria-modal="true" aria-label="リリースを検索"> <div class="palette-in"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ink-4);flex:none"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <input type="search" data-palette-input placeholder="リリース、プロジェクト、バージョンを検索…" autocomplete="off" spellcheck="false"> <span class="kbd">esc</span> </div> <ul class="palette-res" data-palette-res></ul> <div class="palette-ft"> <span>↑↓ navigate</span> <span>↵ open</span> <span style="margin-left:auto" data-palette-count></span> </div> </div> </div> <script type="module" src="/assets/Shell.astro_astro_type_script_index_0_lang.0ZkKXV47.js"></script> </body> </html>

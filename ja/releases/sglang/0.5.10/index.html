@@ -1,0 +1,609 @@
+<!DOCTYPE html><html lang="ja" dir="ltr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>sglang v0.5.10 — STAGS NextStack</title><meta name="description" content="Piecewise CUDA Graph Enabled by Default: Piecewise CUDA graph capture is now the default execution mode, reducing memory overhead and improving throughput for models with complex control flow patterns: #16331"><meta name="keywords" content="オープンソース release note、リリース トラッカー、changelog アグリゲーター、重大な変更、非推奨トラッカー、Kafka リリース、Spring Boot リリース、Kubernetes リリース"><meta name="generator" content="Astro v5.18.2"><link rel="canonical" href="https://www.stags.cn/ja/releases/sglang/0.5.10/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="STAGS NextStack — releases" href="/ja/releases.xml"><link rel="alternate" hreflang="en" href="https://www.stags.cn/releases/sglang/0.5.10/"><link rel="alternate" hreflang="zh-Hans" href="https://www.stags.cn/releases/sglang/0.5.10/"><link rel="alternate" hreflang="x-default" href="https://www.stags.cn/releases/sglang/0.5.10/"><meta property="og:site_name" content="STAGS"><meta property="og:type" content="article"><meta property="og:title" content="sglang v0.5.10 — STAGS NextStack"><meta property="og:description" content="Piecewise CUDA Graph Enabled by Default: Piecewise CUDA graph capture is now the default execution mode, reducing memory overhead and improving throughput for models with complex control flow patterns: #16331"><meta property="og:url" content="https://www.stags.cn/ja/releases/sglang/0.5.10/"><meta property="og:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><meta property="og:locale" content="ja_JP"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="de_DE"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:locale:alternate" content="es_ES"><meta property="og:locale:alternate" content="pt_BR"><meta property="og:locale:alternate" content="ko_KR"><meta property="og:locale:alternate" content="it_IT"><meta property="og:locale:alternate" content="ru_RU"><meta property="og:locale:alternate" content="tr_TR"><meta property="og:locale:alternate" content="id_ID"><meta property="og:locale:alternate" content="vi_VN"><meta property="og:locale:alternate" content="ar_SA"><meta property="og:locale:alternate" content="sv_SE"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.stags.cn/#website","name":"STAGS","url":"https://www.stags.cn/","inLanguage":"ja","description":"NextStack はインフラストラクチャおよび AI プロジェクトのリリースノートを索引化し、破壊的変更・非推奨・移行情報を英語優先の単一フィードで提供します。","publisher":{"@id":"https://www.stags.cn/#org"}},{"@type":"Organization","@id":"https://www.stags.cn/#org","name":"STAGS","alternateName":"NextStack","url":"https://www.stags.cn/"},{"@type":"TechArticle","@id":"https://www.stags.cn/ja/releases/sglang/0.5.10/#article","headline":"sglang v0.5.10 release notes","datePublished":"2026-04-06","inLanguage":"en","isPartOf":{"@id":"https://www.stags.cn/#website"},"about":{"@type":"SoftwareSourceCode","codeRepository":"https://github.com/sgl-project/sglang"}}]}</script><!-- 第三方脚本的连接预热：这两个域名几乎每页都要连，
+         提前建连能省掉 DNS + TCP + TLS 一个往返（移动网络 100~300ms）。
+         AdSense 只在开关打开时预热——关掉广告后连这个域名都没必要。 --><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://pagead2.googlesyndication.com"><!-- Google AdSense：站点所有权校验与广告投放共用同一段脚本，全站只加载一次。
+         未创建广告单元时页面上不渲染任何广告容器，站点保持干净。
+         fetchpriority=low：它不参与首屏渲染，不该跟正文抢带宽。 --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184355057086168" crossorigin="anonymous" fetchpriority="low"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-RFRF1TVRMP" fetchpriority="low"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RFRF1TVRMP");
+    </script><!-- 百度统计（国内流量统计）。官方标准片段，is:inline 原样输出，
+         hm.js 动态插到首个 script 前，异步不阻塞首屏渲染。 --><script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?299e5b4e65b86ed16879bdcbe70531d6";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script><link rel="stylesheet" href="/assets/index.DQGt3qLZ.css">
+<style>.ad-slot[data-astro-cid-fgwukgf6]{margin:var(--s10) 0 0;padding-top:var(--s5);border-top:1px solid var(--line)}.ad-slot-label[data-astro-cid-fgwukgf6]{margin-bottom:var(--s3);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{display:block;min-height:100px}@media(min-width:640px){.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{min-height:250px}}
+</style></head> <body> <a class="skip" href="#main">本文へスキップ</a> <header class="hdr" data-header> <div class="wrap hdr-inner"> <a href="/ja/" class="brand" aria-label="STAGS NextStack — オープンソースのリリース情報"> <span class="brand-mark" aria-hidden="true">S</span> <span class="brand-main">STAGS</span> <span class="brand-sub" aria-hidden="true">NextStack</span> </a> <nav class="nav" aria-label="Primary"> <a href="/ja/releases">リリース</a><a href="/ja/projects">プロジェクト</a> </nav>  <details class="navmenu" data-navmenu> <summary class="navmenu-btn" aria-label="Open menu"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> </summary> <div class="navmenu-panel" role="group" aria-label="Primary"> <a href="/ja/releases" class="navmenu-item">リリース</a><a href="/ja/projects" class="navmenu-item">プロジェクト</a> </div> </details> <div class="hdr-tools"> <button class="searchbtn" type="button" data-search-open aria-label="リリースを検索"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <span class="lbl">検索</span> <span class="kbd">⌘K</span> </button> <details class="langmenu" data-langmenu> <summary class="langmenu-btn" aria-label="言語"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"> <circle cx="12" cy="12" r="9"></circle> <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path> </svg> <span class="langmenu-cur">日</span> <svg class="langmenu-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m2 4 4 4 4-4"></path></svg> </summary> <div class="langmenu-panel" role="group" aria-label="言語"> <p class="langmenu-head">言語</p> <a class="langmenu-item" href="/releases/sglang/0.5.10/" hreflang="en" lang="en" data-on="false"> <span class="langmenu-label">English</span> <span class="langmenu-code">EN</span> </a><a class="langmenu-item" href="/zh/release_note/sglang/sglang_v0.5.10" hreflang="zh-Hans" lang="zh-CN" data-on="false"> <span class="langmenu-label">中文</span> <span class="langmenu-code">中</span> </a><a class="langmenu-item" href="/ja/releases/sglang/0.5.10/" hreflang="ja" lang="ja" aria-current="true" data-on="true"> <span class="langmenu-label">日本語</span> <span class="langmenu-code">日</span> </a><a class="langmenu-item" href="/de/releases/sglang/0.5.10/" hreflang="de" lang="de" data-on="false"> <span class="langmenu-label">Deutsch</span> <span class="langmenu-code">DE</span> </a><a class="langmenu-item" href="/fr/releases/sglang/0.5.10/" hreflang="fr" lang="fr" data-on="false"> <span class="langmenu-label">Français</span> <span class="langmenu-code">FR</span> </a><a class="langmenu-item" href="/es/releases/sglang/0.5.10/" hreflang="es" lang="es" data-on="false"> <span class="langmenu-label">Español</span> <span class="langmenu-code">ES</span> </a><a class="langmenu-item" href="/pt/releases/sglang/0.5.10/" hreflang="pt-BR" lang="pt-BR" data-on="false"> <span class="langmenu-label">Português</span> <span class="langmenu-code">PT</span> </a><a class="langmenu-item" href="/ko/releases" hreflang="ko" lang="ko" data-on="false"> <span class="langmenu-label">한국어</span> <span class="langmenu-code">한</span> </a><a class="langmenu-item" href="/it/releases" hreflang="it" lang="it" data-on="false"> <span class="langmenu-label">Italiano</span> <span class="langmenu-code">IT</span> </a><a class="langmenu-item" href="/ru/releases" hreflang="ru" lang="ru" data-on="false"> <span class="langmenu-label">Русский</span> <span class="langmenu-code">RU</span> </a><a class="langmenu-item" href="/tr/releases" hreflang="tr" lang="tr" data-on="false"> <span class="langmenu-label">Türkçe</span> <span class="langmenu-code">TR</span> </a><a class="langmenu-item" href="/id/releases" hreflang="id" lang="id" data-on="false"> <span class="langmenu-label">Bahasa Indonesia</span> <span class="langmenu-code">ID</span> </a><a class="langmenu-item" href="/vi/releases" hreflang="vi" lang="vi" data-on="false"> <span class="langmenu-label">Tiếng Việt</span> <span class="langmenu-code">VI</span> </a><a class="langmenu-item" href="/ar/releases" hreflang="ar" lang="ar" data-on="false"> <span class="langmenu-label">العربية</span> <span class="langmenu-code">ع</span> </a><a class="langmenu-item" href="/sv/releases" hreflang="sv" lang="sv" data-on="false"> <span class="langmenu-label">Svenska</span> <span class="langmenu-code">SV</span> </a> </div> </details> <a class="iconlink" href="/releases.xml" aria-label="RSS"> <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"> <path d="M2 12.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM2 7.5a6.5 6.5 0 0 1 6.5 6.5h-2A4.5 4.5 0 0 0 2 9.5v-2ZM2 2.5A11.5 11.5 0 0 1 13.5 14h-2A9.5 9.5 0 0 0 2 4.5v-2Z"></path> </svg> </a> </div> </div> </header> <main id="main">  <div class="wrap"> <div class="detail"> <article> <header class="detail-hd"> <nav class="crumbs" aria-label="Breadcrumb"> <a href="/ja/">ホーム</a> <span class="sep">/</span> <a href="/ja/releases">リリース</a> <span class="sep">/</span> <a href="/ja/releases/sglang">sglang</a> </nav> <h1 class="detail-title"> <span class="p">sglang</span> v0.5.10 </h1> <div class="detail-meta"> <span class="chip chip--patch">パッチ</span> <span><span class="k">公開日</span>2026年4月6日</span>  <span class="sep" aria-hidden="true"></span> <a href="https://github.com/sgl-project/sglang" target="_blank" rel="noopener"> <span class="k">出典</span>sgl-project/sglang </a>   <span class="sep" aria-hidden="true"></span> <a href="/releases/sglang/0.5.10/"> English original </a>  <span class="sep" aria-hidden="true"></span> <button class="btn btn--ghost btn--sm" type="button" data-copy="https://www.stags.cn/ja/releases/sglang/0.5.10/">リンクをコピー</button> </div> </header> <div class="prose" style="margin-top:var(--s8)"> <p class="mt-notice" role="note">このページは機械翻訳です。内容は必ず英文原文をご確認ください。</p>  <div><h1>スラング v0.5.10</h1>
+<h1>ハイライト</h1>
+<ul>
+<li><strong>ピース単位の CUDA グラフがデフォルトで有効化</strong>: ピース単位の CUDA グラフ キャプチャがデフォルトの実行モードになり、メモリ オーバーヘッドが削減され、複雑な制御フロー パターンを持つモデルのスループットが向上します: #16331</li>
+<li><strong>部分的な障害耐性のための Elastic EP</strong>: Elastic NIXL-EP を SGLang に統合し、DeepSeek MoE 展開の部分的な障害耐性を有効にします。GPU に障害が発生した場合、システム redis はエキスパートの重み付けをトリビュートし、完全な再起動を行わずにサービスを継続します: #19248、#17374、#12068 <a href="https://lmsys.org/blog/2026-03-25-eep-partial-failure-tolerance/">ブログ</a></li>
+<li><strong>PD 分離用の GPU ステージング バッファ</strong>: バルク RDMA 転送のためにスキャッター ヘッド スライスを連続メモリに収集し、GQA モデルでの RDMA リクエスト数を最大 1000 分の 1 に削減します。 Qwen3.5 の Prefill TP4+Decode DEP4 により、大規模な同時実行における TPS/GPU が最大 5 倍増加しました: #19890</li>
+<li><strong>HiSparse for Sparse tention</strong>: HiSparse sparse tention バックエンドを統合して、スパース性を意識したアテンションによるコンピューティングの削減による効率的な長いコンテキスト推論を実現します: #20343</li>
+<li><strong>SGLang 拡散アップデート</strong>:
+<ul>
+<li>サポートモデル: LTX-2、Hunyuan3D-2、Helios</li>
+<li>Qwen イメージ、Z イメージのパフォーマンスが 1.5 倍向上</li>
+<li>新しいプラットフォーム: macOS</li>
+<li>新機能: Cache-DiT からのすべての最適化を統合することにより、ディフューザー バックエンドのパフォーマンスを強化します。</li>
+<li>スキル: スラング拡散を開発および最適化するための厳選されたスキルを自由に探索してください。</li>
+</ul>
+</li>
+<li><strong>FlashInfer MXFP8 カーネルのサポート</strong>: GEMM および MoE 操作用に FlashInfer mxfp8 カーネルを統合し、RL および一般的なワークロードのマイクロスケーリングを通じてより高い精度の混合精度 FP8 推論を可能にします: #19537</li>
+<li><strong>トランスフォーマー 5.3.0 アップグレード</strong>: トランスフォーマー 4.57.1 から 5.3.0 へのメジャー アップグレード。HuggingFace の最新モデル アーキテクチャと機能のサポートが解除されます。 GLM-5 モデルは、カスタム ビルド イメージではなく、このイメージでサポートされるようになりました: #17784</li>
+<li><strong>DeepSeek V3.2 / GLM-5 最適化</strong>: <strong>GLM-5 はメイン ブランチで実行可能 (アップグレードされたトランスフォーマーを使用)。</strong> プリフィル KV キャッシュ フェッチ用の融合 Triton カーネル、K キャッシュ用の NSA ヒューズ ストア インデクサー、SM100/SM103 のデフォルトとして TRT-LLM プリフィル/デコード DSA カーネル、および高スループットを 10% 以上向上させる IndexCacheワークロード: #19319、#19148、#20062、#21914、#21405</li>
+<li><strong>Qwen3.5 GDN/KDA 最適化</strong>: リニア アテンション ステート レイアウトを [N、HV、K、V] から [N、HV、V、K] に転置し、Triton カーネルを使用した GDN プロジェクションの分割/リシェイプ/キャット オペレーションを融合し、さらに Qwen3.5 のパフォーマンスを向上させるための CuTeDSL KDA デコード カーネル サポートを追加しました: #20283、#21019、#21203</li>
+<li><strong>MoE レイヤーの LoRA サポート</strong>: JIT アライメント カーネル、融合 Triton カーネル、TP サポート、CUDA グラフ サポート、および LoRA ターゲット モジュールの自動検出を使用して、Mixture-of-Experts レイヤーの LoRA 微調整サポートを追加します。DeepSeek のような MoE モデルで効率的なアダプター ベースの調整を可能にします: #19710、#19711、#14105、#21439、 #21647</li>
+<li><strong>MHA のプレフィル コンテキスト パラレル (Qwen3)</strong>: Qwen3 MoE のようなマルチヘッド アテンション モデルのプレフィル中にコンテキストの並列処理を有効にし、長いシーケンスを GPU 全体に分散して GPU ごとのメモリを削減し、プレフィルを高速化します: #18233</li>
+<li><strong>Flash Attendant 4 公式ライブラリ サポート</strong>: 最新の Attention 最適化と Blackwell GPU サポートをもたらす、公式 FlashAttendant 4 パッケージにアップグレードします: #20303</li>
+<li><strong>FlashInfer TRT-LLM カーネルの Skip-Softmax アテンション</strong>: 冗長なソフトマックス正規化をスキップすることで、アテンション レイヤーの計算オーバーヘッドを削減します: #19089</li>
+<li><strong>FA4 バックエンドによる投機的デコード</strong>: FA4 アテンション バックエンドの投機的デコードを有効にし、投機的推論と次世代フラッシュ アテンションを組み合わせて生成を高速化します: #21080</li>
+<li><strong>SM100 の MM アテンション FA4 デフォルト</strong>: VLM パフォーマンスを向上させるために、Blackwell ハードウェアではマルチモーダル アテンションでデフォルトで FA4 が使用されるようになりました: #21595</li>
+<li><strong>より強力なトランスフォーマー モデリング バックエンド</strong>: 完全な TP、PP、MoE、VLM サポート、および torch.compile 互換性を備えた強化されたトランスフォーマー バックエンド: #19163</li>
+<li><strong>sglang-kernel 0.4.1</strong>: 名前変更されたパッケージ (sgl-kernel → sglang-kernel)、統合されたカーネル、および非推奨の ops のクリーンアップを含むメジャー カーネル パッケージ リリース: #20440、#22009</li>
+<li><strong>Apple Silicon 用ネイティブ MLX バックエンド</strong>: ネイティブ MLX 実行バックエンドを追加して、SGLang が CUDA なしで Apple Silicon Mac 上で直接推論を実行できるようにします: #20342</li>
+</ul>
+<h2>新しいモデルのサポート</h2>
+<ul>
+<li>Nemotron-3-Super (bf16/fp8/nvfp4): #20407、<a href="https://cookbook.sglang.io/autoregressive/NVIDIA/Nemotron3-Super">クックブック</a></li>
+<li>ミストラル スモール 4 (ピクストラル): #20708</li>
+<li>LFM2-VL (リキッドファンデーション モデル 2 ビジョン言語): #21230</li>
+<li>Voxtral (音声からテキストへ): #21635</li>
+<li>GLM-5: 変圧器 5.3.0 を備えた主分岐でサポート</li>
+<li>Helios (拡散 - リアルタイム長時間ビデオ生成): #19782</li>
+<li>Hunyuan3D-2 (拡散): #18170</li>
+<li>LTX-2 (拡散): #19295</li>
+<li>MOVA (拡散): #19489、#20430</li>
+<li>FireRed-画像-編集 (拡散): #20862</li>
+</ul>
+<h2>DeepSeek V3.2 / GLM-5 の最適化</h2>
+<ul>
+<li>プリフィル KV キャッシュのフェッチ用に get_k_and_s Triton カーネルを融合: #19319</li>
+<li>NSA ヒューズ ストア インデクサー K キャッシュをサポート: #19148</li>
+<li>プリフィル時にスパース MLA アテンション カーネルを適用する KV 長のしきい値を制御するための <code>SGLANG_NSA_DENSE_ATTN_KV_LEN_THRESHOLD</code> 環境: #20062</li>
+<li>Blackwell (SM100/SM103) のデフォルトとして TRT-LLM プリフィル/デコード DSA カーネルをサポート: #21914、#21783</li>
+<li>IndexCache を有効にすると、高ワークロードでスループットが 10% 以上向上します: #21405</li>
+<li>TP4 上の V3.2 nvfp4 のデフォルト設定を変更: #20086</li>
+</ul>
+<h2>Qwen3.5 の最適化</h2>
+<ul>
+<li>GDN アテンション状態レイアウトを [N、HV、K、V] から [N、HV、V、K] に転置: #20283</li>
+<li>Triton カーネルを使用した GDN プロジェクションでの分割/再形成/cat ops の融合: #21019</li>
+<li>CuTeDSL KDA デコード カーネル サポート: #21203</li>
+<li>GDN kkt +solve_tril および KDA カーネルを融合: #21411、#21604</li>
+<li>GDN パックされたデコードのサポート: #20627</li>
+</ul>
+<h2>パフォーマンス</h2>
+<ul>
+<li>デフォルトで有効になっている区分的 CUDA グラフ: #16331</li>
+<li>GEMM および MoE 用の FlashInfer MXFP8 カーネル: #19537</li>
+<li>FlashInfer TRT-LLM カーネルの Skip-softmax アテンション: #19089</li>
+<li>P99 TTFT コールド スタート レイテンシを短縮するための NCCL/RCCL プレウォーミング: #20477</li>
+<li>DeepSeek-V3.2 のクエリ計算で NSA-CP キーオールギャザーをオーバーラップ: #20438</li>
+<li>SM120 用の CUTLASS FP8 ブロックごとの GEMM の改善: #20887</li>
+<li>SM120 用 CUTLASS NVFP4 GEMM の改善: #21314</li>
+<li>デフォルトでマルチスレッドの重みロードを有効にします: #20289</li>
+<li>IPC プール ハンドルをキャッシュすることでマルチモーダル転送用に CUDA IPC を最適化: #21418</li>
+</ul>
+<h2>LoRA</h2>
+<ul>
+<li>JIT アライメント カーネル、融合 Triton カーネル、および TP を使用した MoE レイヤーの LoRA サポート: #19710、#19711、#14105</li>
+<li>LoRA ターゲット モジュールの自動検出: #21439</li>
+<li>CUDA グラフの LoRA サポート: #21647</li>
+<li>Qwen3-VL-30B-A3B および GPT-OSS 20B の LoRA サポート: #21469、#21570</li>
+</ul>
+<h2>エラスティック EP</h2>
+<ul>
+<li>Elastic NIXL-EP を SGLang に統合: #19248</li>
+<li>エキスパート ウェイトを DRAM にバックアップ: #17374</li>
+<li>EPLB 中に GPU P2P を使用してエキスパート ウェイトを交換する: #12068</li>
+<li>Kim K2.5 の EPLB リバランス サポートを追加: #21004</li>
+</ul>
+<h2>SGLang 拡散</h2>
+<ul>
+<li>サポートモデル: LTX-2 (#19295)、Hunyuan3D-2 (#18170)、Helios (#19782)、FireRed-Image-Edit (#20862)、MOVA (#19489、#20430)</li>
+<li>パフォーマンス: 融合された Residual/layernorm/scale/shift/gate/select01 カーネルを使用した最適化された Qwen-image (#20395)、融合された Triton ロータリー エンベディングと select01 カーネルを使用した Z-Image (#21387、#21318) — 最大 1.5 倍のスピードアップ</li>
+<li>プラットフォーム: macOS の拡散モデルのサポート (#19549、#20607)</li>
+<li>機能: Cache-DiT のすべての最適化を統合することでディフューザー バックエンドを強化: #20361</li>
+<li>Flux.2 の NVFP4 サポート: #20137</li>
+<li>Z イメージの拡散ノルム融合: #18762</li>
+<li>LTX-2 2 ステージ パイプラインのサポート: #20707</li>
+</ul>
+<h2>投機的デコード</h2>
+<ul>
+<li>参照ベースの投機的デコード リファクタリング: #20393</li>
+<li>FA4 ベースの投機的デコードのサポートを追加: #21080</li>
+</ul>
+<h2>分解 (PD)</h2>
+<ul>
+<li>異種 TP KV 転送用のダイナミック リング アロケータを備えた GPU ステージング バッファ: #19890</li>
+<li>プリフィルからデコード DRAM への HiSparse ダイレクト キャッシュ転送: #21591</li>
+<li>保留キュー内のノンブロッキング <code>try_ensure_parallel_info</code>: #20785</li>
+<li>PD 分解のための kv_cache_dtype 一貫性チェックを追加: #19407</li>
+</ul>
+<h2>ハイキャッシュ</h2>
+<ul>
+<li>スパース アテンションの HiSparse: #20343</li>
+<li>Mamba 状態オフロード用の HybridCacheController: #20457</li>
+</ul>
+<h2>VLM</h2>
+<ul>
+<li>ビデオ デコード用に decord を torchcodec に置き換えます: #20055
+*load_audio 内の soundfile+torchaudio を torchcodec AudioDecoder に置き換えます: #20190</li>
+<li>画像ごとのキャッシュと遅延デバイス転送によるチャンク対応 ViT エンコーディング: #22038</li>
+<li>前処理された VL 入力の M-RoPE 位置を計算する (gRPC): #21244</li>
+</ul>
+<h2>バグ修正</h2>
+<ul>
+<li>ページ化された KV キャッシュ (SWA/MLA) を使用したストリーミング セッションを修正: #20070</li>
+<li>構造化出力によるオーバーラップ スケジューリングにおける VRAM リークを修正: #20697</li>
+<li>ストリーミング セッションのチャンク プレフィルと KV キャッシュ リークを修正: #20476</li>
+<li>共有可変リスト参照によって引き起こされるストリーミング logprobs の破損を修正: #21030</li>
+<li>TRT-LLM MHA CUDA の不正なアドレスを EAGLE v2 + DP アテンションで修正: #21649</li>
+<li>Mistral Small 4 の設定/重量フォーマットの不一致を修正: #21620</li>
+<li>加算器が一致する要求の追加に失敗した場合のマンバ キャッシュ リークを修正: #21404</li>
+<li>文法エラーを伝播し、llguidance バックエンドを改善: #20467</li>
+</ul>
+<h2>特徴</h2>
+<ul>
+<li>推論トークンの使用法を追加: #15562</li>
+<li><code>--stream-response-default-include-usage</code> サーバー フラグを追加: #16711</li>
+<li>スケジューラのクラッシュを検出するためのライブネス モニターのサブプロセス: #18582</li>
+<li>スコア API — EngineScoreMixin を実装: #21342</li>
+<li>RunAI Model Streamer を使用したオブジェクト ストレージからのモデルの直接読み込み: #17948</li>
+<li>Prometheus の MFU メトリック: #19395</li>
+</ul>
+<h2>ネットワーク / IPv6</h2>
+<ul>
+<li>IPv6 で安全なアドレス処理のための <code>NetworkAddress</code> 抽象化を追加: #20306</li>
+<li>IPv6 デュアルスタック サポートのためのソケット ユーティリティとreserve_port を修正: #20491</li>
+<li>予測可能なポート割り当てのための <code>--strict-ports</code> オプションを追加: #21320</li>
+</ul>
+<h2>AMD ハードウェア</h2>
+<ul>
+<li>DeepSeek モデルの基数キャッシュ パスとの FP8 プレフィル統合: #20187</li>
+<li>MHA FP8-KV サポートを追加: #21253</li>
+<li>AMD MXFP4 Qwen3.5-397B-A17B モデルをサポート: #21234
+※融着ロープKVストア：#21315</li>
+<li>Qwen3-VL デコードの最適化 — QK ノルム + 3D mRoPE + KV キャッシュ書き込みを融合: #21458</li>
+<li>TileLang を使用して MI300/MI355 上の NSA の FP8 KV キャッシュと FP8 アテンション カーネルを有効にします: #21511</li>
+<li>openai/gpt-oss のパフォーマンスを向上: #21020</li>
+</ul>
+<h2>NPU/アセンド</h2>
+<ul>
+<li>融合カーネルを使用した GLM-5 最適化: #18617</li>
+<li>NPU で GLM-4.7-Flash をサポート: #21408</li>
+<li>swiglu をカスタム カーネルに置き換えます: #20192</li>
+<li>Ascend で Kim-K2.5-w4a8 をサポート: #20131
+*enable_torch_compile による拡散モデルの NPU サポート: #20687</li>
+</ul>
+<h2>CPU バックエンド</h2>
+<ul>
+<li>Qwen3-VL および Qwen3-Omni 用のカーネル apply_rotary_pos_emb_cpu を追加: #13121</li>
+<li>GPT-OSS シリーズをサポートするために Intel AMX 用の MXFP4 GEMM カーネルを実装します: #14385</li>
+<li>XPU で DeepSeek R1 推論を有効にする [Intel GPU]: #18461</li>
+</ul>
+<h2>MPS (アップルシリコン)</h2>
+<ul>
+<li>Apple Silicon Mac のネイティブ MLX 実行バックエンド: #20342</li>
+<li>Python 3.12+ での Triton スタブ サブモジュールのインポートを修正: #21551</li>
+</ul>
+<h2>依存関係</h2>
+<ul>
+<li>sgl-kernel 0.3.21 → sglang-kernel 0.4.1: #20440、#22009</li>
+<li>FlashInfer 0.6.3 → 0.6.7.post2: #20480、#22097
+※トランスフォーマー4.57.1→5.3.0：#17784</li>
+<li>xgrammar 0.1.25 → 0.1.32: #21032</li>
+<li>月餅トランスファーエンジン 0.3.9 → 0.3.10.post1: #20942、#21844</li>
+<li>フラッシュ アテンション 4 (正式リリース): #20303
+※ディフューザー 0.36.0→0.37.0：#20318</li>
+</ul>
+<h2>セキュリティ</h2>
+<ul>
+<li>CVE-2026-3989 を修正:replay_request_dump.py で安全でない pickle.loads を SafeUnpickler に置き換えます: #20904</li>
+<li>CVE-2026-3059 / CVE-2026-3060 を修正: ZMQ ソケットをローカルホストにバインドして、認証されていないリモート アクセスを防止します (マルチモーダル生成ブローカーとエンコーダーの並列分解): #21435</li>
+</ul>
+<h2>新しい貢献者</h2>
+<ul>
+<li>@842974287 が https://github.com/sgl-project/sglang/pull/21917 に初めて投稿しました</li>
+<li>@adityavaid が https://github.com/sgl-project/sglang/pull/21209 で最初の投稿を行いました</li>
+<li>@alexnails が https://github.com/sgl-project/sglang/pull/21818 に初めて投稿しました</li>
+<li>@Alisehen が https://github.com/sgl-project/sglang/pull/20687 で最初の投稿を行いました</li>
+<li>@AMD-yanfeiwang が https://github.com/sgl-project/sglang/pull/19416 に初めて貢献しました</li>
+<li>@aramasethu が https://github.com/sgl-project/sglang/pull/19395 に初めて投稿しました</li>
+<li>@avjves が https://github.com/sgl-project/sglang/pull/20178 に初めて投稿しました</li>
+<li>@chadvoegele が https://github.com/sgl-project/sglang/pull/20870 に初めて投稿しました</li>
+<li>@ChuanLi1101 が https://github.com/sgl-project/sglang/pull/20409 に初めて投稿しました</li>
+<li>@Cishoon が https://github.com/sgl-project/sglang/pull/20697 で最初の貢献をしました</li>
+<li>@cs-cat が https://github.com/sgl-project/sglang/pull/20368 に初めて貢献しました</li>
+<li>@dubin555 が https://github.com/sgl-project/sglang/pull/20686 に初めて投稿しました</li>
+<li>@e-martirosian が https://github.com/sgl-project/sglang/pull/20352 に初めて貢献しました</li>
+<li>@fanghao566 が https://github.com/sgl-project/sglang/pull/20625 に初めて投稿しました</li>
+<li>@foraxe が https://github.com/sgl-project/sglang/pull/21842 で最初の投稿を行いました</li>
+<li>@froststeam が https://github.com/sgl-project/sglang/pull/21296 で最初の貢献をしました</li>
+<li>@Godmook が https://github.com/sgl-project/sglang/pull/19234 に初めて投稿しました</li>
+<li>@iammrj が https://github.com/sgl-project/sglang/pull/20714 に初めて投稿しました</li>
+<li>@JackZeng0208 が https://github.com/sgl-project/sglang/pull/21050 に初めて投稿しました</li>
+<li>@Jacob0226 が https://github.com/sgl-project/sglang/pull/20175 に初めて投稿しました</li>
+<li>@jasperjiaguo が https://github.com/sgl-project/sglang/pull/19818 に初めて投稿しました</li>
+<li>@Javtor は https://github.com/sgl-project/sglang/pull/20556 で最初の投稿を行いました</li>
+<li>@jellysnack が https://github.com/sgl-project/sglang/pull/20467 に初めて投稿しました</li>
+<li>@jhchouuu が https://github.com/sgl-project/sglang/pull/21673 で最初の投稿を行いました</li>
+<li>@jiabinwa が https://github.com/sgl-project/sglang/pull/21002 に初めて投稿しました</li>
+<li>@jszzr が https://github.com/sgl-project/sglang/pull/20605 に初めて投稿しました</li>
+<li>@karanb192 が https://github.com/sgl-project/sglang/pull/21551 に初めて投稿しました</li>
+<li>@Kare0638 が https://github.com/sgl-project/sglang/pull/20403 に初めて投稿しました</li>
+<li>@kitft が https://github.com/sgl-project/sglang/pull/20376 で最初の貢献をしました</li>
+<li>@kpham-sgl が https://github.com/sgl-project/sglang/pull/19807 で最初の投稿を行いました</li>
+<li>@lawrence-harmonic が https://github.com/sgl-project/sglang/pull/20273 に初めて貢献しました</li>
+<li>@libowen2121 が https://github.com/sgl-project/sglang/pull/20778 に初めて投稿しました</li>
+<li>@LinyuanLi0046 が https://github.com/sgl-project/sglang/pull/20134 に初めて投稿しました</li>
+<li>@litmei が https://github.com/sgl-project/sglang/pull/19939 に初めて投稿しました</li>
+<li>@LiYomi が https://github.com/sgl-project/sglang/pull/21620 で最初の投稿を行いました</li>
+<li>@LLThomas が https://github.com/sgl-project/sglang/pull/20365 に初めて投稿しました</li>
+<li>@lucifer1004 が https://github.com/sgl-project/sglang/pull/20868 に初めて投稿しました</li>
+<li>@lviy が https://github.com/sgl-project/sglang/pull/18213 に初めて投稿しました</li>
+<li>@mvanhorn が https://github.com/sgl-project/sglang/pull/20326 に初めて投稿しました</li>
+<li>@Naveassaf が https://github.com/sgl-project/sglang/pull/21416 に最初の貢献をしました</li>
+<li>@noa-neria が https://github.com/sgl-project/sglang/pull/17948 に初投稿しました</li>
+<li>@nv-anants が https://github.com/sgl-project/sglang/pull/21032 に初めて投稿しました</li>
+<li>@power-more が https://github.com/sgl-project/sglang/pull/20194 に初めて貢献しました</li>
+<li>@psaab が https://github.com/sgl-project/sglang/pull/20491 に初めて投稿しました</li>
+<li>@qy-seu が https://github.com/sgl-project/sglang/pull/20256 に初めて投稿しました</li>
+<li>@randgun が https://github.com/sgl-project/sglang/pull/19246 で最初の投稿を行いました</li>
+<li>@Ricardo-M-L が https://github.com/sgl-project/sglang/pull/22007 に初めて貢献しました</li>
+<li>@roopaksrivastav が https://github.com/sgl-project/sglang/pull/20345 で最初の投稿を行いました</li>
+<li>@saatwiknagpal が https://github.com/sgl-project/sglang/pull/21418 で最初の投稿を行いました</li>
+<li>@sawsa307 が https://github.com/sgl-project/sglang/pull/21463 に初めて投稿しました</li>
+<li>@sbeurnier が https://github.com/sgl-project/sglang/pull/17905 に初めて投稿しました</li>
+<li>@shadowxz109 が https://github.com/sgl-project/sglang/pull/19879 に初めて投稿しました</li>
+<li>@Shunkangz が https://github.com/sgl-project/sglang/pull/18233 で最初の貢献をしました</li>
+<li>@syd520zy が https://github.com/sgl-project/sglang/pull/16711 に初めて貢献しました</li>
+<li>@SYaoJun が https://github.com/sgl-project/sglang/pull/20723 に初めて投稿しました</li>
+<li>@vaibhawvipul が https://github.com/sgl-project/sglang/pull/21010 で最初の貢献をしました</li>
+<li>@wang-zhuoran が https://github.com/sgl-project/sglang/pull/20419 に初めて投稿しました</li>
+<li>@wduan-hai が https://github.com/sgl-project/sglang/pull/21705 に初めて投稿しました</li>
+<li>@Wenjun7J が https://github.com/sgl-project/sglang/pull/21413 に初めて投稿しました</li>
+<li>@wili-65535 が https://github.com/sgl-project/sglang/pull/19749 に初めて投稿しました</li>
+<li>@xiazhahe が https://github.com/sgl-project/sglang/pull/21507 に初めて投稿しました</li>
+<li>@xieminghe1 が https://github.com/sgl-project/sglang/pull/19672 に初めて投稿しました</li>
+<li>@xingsy97 が https://github.com/sgl-project/sglang/pull/19630 に初めて投稿しました</li>
+<li>@xq25478 が https://github.com/sgl-project/sglang/pull/21727 に初めて投稿しました</li>
+<li>@xyuzh が https://github.com/sgl-project/sglang/pull/17684 に初めて投稿しました</li>
+<li>@yafengio が https://github.com/sgl-project/sglang/pull/19959 に初めて投稿しました</li>
+<li>@yang1002378395-cmyk が https://github.com/sgl-project/sglang/pull/21319 に初めて投稿しました</li>
+<li>@yejinkimis が https://github.com/sgl-project/sglang/pull/20210 に初めて投稿しました</li>
+<li>@ykcai-daniel が https://github.com/sgl-project/sglang/pull/20137 に初めて投稿しました</li>
+<li>@youngrok-XCENA が https://github.com/sgl-project/sglang/pull/20560 に初めて投稿しました</li>
+<li>@yuumn が https://github.com/sgl-project/sglang/pull/20862 に初めて投稿しました</li>
+<li>@yyy1000 が https://github.com/sgl-project/sglang/pull/18907 に初めて投稿しました</li>
+<li>@YzXiao101 が https://github.com/sgl-project/sglang/pull/22054 に初めて投稿しました</li>
+<li>@ZhaiFeiyue が https://github.com/sgl-project/sglang/pull/20410 に初めて投稿しました</li>
+<li>@zhentaocc が https://github.com/sgl-project/sglang/pull/18242 に初めて投稿しました</li>
+<li>@Zijun9 が https://github.com/sgl-project/sglang/pull/20891 に初めて投稿しました</li>
+<li>@zzhpro が https://github.com/sgl-project/sglang/pull/20132 に初めて投稿しました
+<strong>フル Changelog</strong>: https://github.com/sgl-project/sglang/compare/v0.5.9...v0.5.10</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>ソース</strong> <a href="https://github.com/sgl-project/sglang">sgl-project/sglang</a> · <code>v0.5.10</code> · 2026-04-06 · <a href="https://github.com/sgl-project/sglang/releases/tag/v0.5.10">アップストリーム リリース</a>
+<em>インデックス作成のためにそのままミラーリングされます。すべての権利は上流プロジェクトに帰属します。</em></p>
+</blockquote></div>  <details class="mt-original"> <summary>English original / English original</summary> <div class="prose mt-original-body"><h1>sglang v0.5.10</h1>
+<h1>Highlights</h1>
+<ul>
+<li>
+<p><strong>Piecewise CUDA Graph Enabled by Default</strong>: Piecewise CUDA graph capture is now the default execution mode, reducing memory overhead and improving throughput for models with complex control flow patterns: #16331</p>
+</li>
+<li>
+<p><strong>Elastic EP for Partial Failure Tolerance</strong>: Integrate Elastic NIXL-EP into SGLang, enabling partial failure tolerance for DeepSeek MoE deployments — when a GPU fails, the system redistributes expert weights and continues serving without full restart: #19248, #17374, #12068 <a href="https://lmsys.org/blog/2026-03-25-eep-partial-failure-tolerance/">blog</a></p>
+</li>
+<li>
+<p><strong>GPU Staging Buffer for PD Disaggregation</strong>: Gathers scattered head slices into contiguous memory for bulk RDMA transfer, reducing RDMA request count on GQA models by ~1000x. TPS/GPU on large concurrency increased by ~5x with Prefill TP4+Decode DEP4 on Qwen3.5: #19890</p>
+</li>
+<li>
+<p><strong>HiSparse for Sparse Attention</strong>: Integrate HiSparse sparse attention backend for efficient long-context inference with reduced compute through sparsity-aware attention: #20343</p>
+</li>
+<li>
+<p><strong>SGLang-Diffusion Update</strong>:</p>
+<ul>
+<li>Model support: LTX-2, Hunyuan3D-2, Helios</li>
+<li>Performance improvements on Qwen-image, Z-image increased by 1.5x</li>
+<li>New platform: macOS</li>
+<li>New feature: enhance the performance of diffusers backend by integrating all optimization from Cache-DiT</li>
+<li>SKILLs: feel free to explore the curated skill for developing and optimizing sglang-diffusion!</li>
+</ul>
+</li>
+<li>
+<p><strong>FlashInfer MXFP8 Kernel Support</strong>: Integrate FlashInfer mxfp8 kernels for GEMM and MoE operations, enabling mixed-precision FP8 inference with higher accuracy through microscaling for RL and general workloads: #19537</p>
+</li>
+<li>
+<p><strong>Transformers 5.3.0 Upgrade</strong>: Major upgrade from transformers 4.57.1 to 5.3.0, unlocking support for the latest model architectures and features from HuggingFace. GLM-5 model is now supported in this image instead of the custom built image: #17784</p>
+</li>
+<li>
+<p><strong>DeepSeek V3.2 / GLM-5 Optimization</strong>: <strong>GLM-5 runnable on main branch (with upgraded transformers).</strong> Fused Triton kernel for prefill KV cache fetching, NSA fuse store indexer for K cache, TRT-LLM prefill/decode DSA kernels as default on SM100/SM103, and IndexCache for improved throughput by more than 10% on high workloads: #19319, #19148, #20062, #21914, #21405</p>
+</li>
+<li>
+<p><strong>Qwen3.5 GDN/KDA Optimization</strong>: Transpose linear attention state layout from [N, HV, K, V] to [N, HV, V, K] and fuse split/reshape/cat ops in GDN projection with Triton kernel, plus CuTeDSL KDA decode kernel support for improved Qwen3.5 performance: #20283, #21019, #21203</p>
+</li>
+<li>
+<p><strong>LoRA Support for MoE Layers</strong>: Add LoRA fine-tuning support for Mixture-of-Experts layers with JIT alignment kernels, fused Triton kernels, TP support, CUDA graph support, and auto-detection of LoRA target modules — enabling efficient adapter-based tuning on MoE models like DeepSeek: #19710, #19711, #14105, #21439, #21647</p>
+</li>
+<li>
+<p><strong>Prefill Context Parallel for MHA (Qwen3)</strong>: Enable context parallelism during prefill for multi-head attention models like Qwen3 MoE, distributing long sequences across GPUs to reduce per-GPU memory and accelerate prefill: #18233</p>
+</li>
+<li>
+<p><strong>Flash Attention 4 Official Library Support</strong>: Upgrade to the official FlashAttention 4 package, bringing the latest attention optimizations and Blackwell GPU support: #20303</p>
+</li>
+<li>
+<p><strong>Skip-Softmax Attention for FlashInfer TRT-LLM Kernels</strong>: Reduce computation overhead in attention layers by skipping redundant softmax normalization: #19089</p>
+</li>
+<li>
+<p><strong>Speculative Decoding with FA4 Backend</strong>: Enable speculative decoding for the FA4 attention backend, combining speculative inference with next-generation flash attention for faster generation: #21080</p>
+</li>
+<li>
+<p><strong>MM Attention FA4 Default on SM100</strong>: Multi-modal attention now uses FA4 by default on Blackwell hardware for improved VLM performance: #21595</p>
+</li>
+<li>
+<p><strong>Stronger Transformers Modeling Backend</strong>: Enhanced transformers backend with full TP, PP, MoE, VLM support, and torch.compile compatibility: #19163</p>
+</li>
+<li>
+<p><strong>sglang-kernel 0.4.1</strong>: Major kernel package release with renamed package (sgl-kernel → sglang-kernel), consolidated kernels, and cleanup of deprecated ops: #20440, #22009</p>
+</li>
+<li>
+<p><strong>Native MLX Backend for Apple Silicon</strong>: Add native MLX execution backend enabling SGLang to run inference directly on Apple Silicon Macs without CUDA: #20342</p>
+</li>
+</ul>
+<h2>New Model Support</h2>
+<ul>
+<li>Nemotron-3-Super (bf16/fp8/nvfp4): #20407, <a href="https://cookbook.sglang.io/autoregressive/NVIDIA/Nemotron3-Super">cookbook</a></li>
+<li>Mistral Small 4 (Pixtral): #20708</li>
+<li>LFM2-VL (Liquid Foundation Model 2 Vision-Language): #21230</li>
+<li>Voxtral (speech-to-text): #21635</li>
+<li>GLM-5: Supported on main branch with transformers 5.3.0</li>
+<li>Helios (Diffusion - Real-Time Long Video Generation): #19782</li>
+<li>Hunyuan3D-2 (Diffusion): #18170</li>
+<li>LTX-2 (Diffusion): #19295</li>
+<li>MOVA (Diffusion): #19489, #20430</li>
+<li>FireRed-Image-Edit (Diffusion): #20862</li>
+</ul>
+<h2>DeepSeek V3.2 / GLM-5 Optimization</h2>
+<ul>
+<li>Fused get_k_and_s Triton kernel for prefill KV cache fetching: #19319</li>
+<li>Support NSA fuse store indexer K cache: #19148</li>
+<li><code>SGLANG_NSA_DENSE_ATTN_KV_LEN_THRESHOLD</code> environ for controlling KV length threshold of applying sparse MLA attention kernel at prefill: #20062</li>
+<li>Support TRT-LLM prefill/decode DSA kernels as default for Blackwell (SM100/SM103): #21914, #21783</li>
+<li>Enable IndexCache for improved throughput by more than 10% on high workloads: #21405</li>
+<li>Change default setting of V3.2 nvfp4 on TP4: #20086</li>
+</ul>
+<h2>Qwen3.5 Optimization</h2>
+<ul>
+<li>GDN attention state layout transposed from [N, HV, K, V] to [N, HV, V, K]: #20283</li>
+<li>Fuse split/reshape/cat ops in GDN projection with Triton kernel: #21019</li>
+<li>CuTeDSL KDA decode kernel support: #21203</li>
+<li>Fuse GDN kkt + solve_tril and KDA kernels: #21411, #21604</li>
+<li>GDN packed decode support: #20627</li>
+</ul>
+<h2>Performance</h2>
+<ul>
+<li>Piecewise CUDA graph enabled by default: #16331</li>
+<li>FlashInfer MXFP8 kernels for GEMM and MoE: #19537</li>
+<li>Skip-softmax attention for FlashInfer TRT-LLM kernels: #19089</li>
+<li>NCCL/RCCL pre-warming to reduce P99 TTFT cold-start latency: #20477</li>
+<li>Overlap NSA-CP key all-gather with query computation for DeepSeek-V3.2: #20438</li>
+<li>CUTLASS FP8 Blockwise GEMM improvement for SM120: #20887</li>
+<li>CUTLASS NVFP4 GEMM improvement for SM120: #21314</li>
+<li>Enable multi-thread weight loading by default: #20289</li>
+<li>Optimize CUDA IPC for multimodal transfer by caching IPC pool handles: #21418</li>
+</ul>
+<h2>LoRA</h2>
+<ul>
+<li>LoRA support for MoE layers with JIT alignment kernel, fused Triton kernel, and TP: #19710, #19711, #14105</li>
+<li>Auto-detect LoRA target modules: #21439</li>
+<li>LoRA support for CUDA graph: #21647</li>
+<li>LoRA support for Qwen3-VL-30B-A3B and GPT-OSS 20B: #21469, #21570</li>
+</ul>
+<h2>Elastic EP</h2>
+<ul>
+<li>Integrate Elastic NIXL-EP into SGLang: #19248</li>
+<li>Back up Expert Weights in DRAM: #17374</li>
+<li>Use GPU P2P to exchange expert weights during EPLB: #12068</li>
+<li>Add EPLB rebalance support for Kimi K2.5: #21004</li>
+</ul>
+<h2>SGLang-Diffusion</h2>
+<ul>
+<li>Model support: LTX-2 (#19295), Hunyuan3D-2 (#18170), Helios (#19782), FireRed-Image-Edit (#20862), MOVA (#19489, #20430)</li>
+<li>Performance: Optimized Qwen-image with fused residual/layernorm/scale/shift/gate/select01 kernel (#20395), Z-Image with fused Triton rotary embedding and select01 kernels (#21387, #21318) — up to 1.5x speedup</li>
+<li>Platform: macOS support for diffusion models (#19549, #20607)</li>
+<li>Feature: Enhance diffusers backend by integrating all optimizations from Cache-DiT: #20361</li>
+<li>NVFP4 support for Flux.2: #20137</li>
+<li>Diffusion norm fusion for Z-Image: #18762</li>
+<li>LTX-2 two-stage pipeline support: #20707</li>
+</ul>
+<h2>Speculative Decoding</h2>
+<ul>
+<li>Reference-based speculative decoding refactor: #20393</li>
+<li>Add FA4-based speculative decoding support: #21080</li>
+</ul>
+<h2>Disaggregation (PD)</h2>
+<ul>
+<li>GPU staging buffer with dynamic ring allocator for heterogeneous TP KV transfer: #19890</li>
+<li>HiSparse direct cache transfer from Prefill to Decode DRAM: #21591</li>
+<li>Non-blocking <code>try_ensure_parallel_info</code> in pending queue: #20785</li>
+<li>Add kv_cache_dtype consistency check for PD disaggregation: #19407</li>
+</ul>
+<h2>HiCache</h2>
+<ul>
+<li>HiSparse for sparse attention: #20343</li>
+<li>HybridCacheController for mamba state offloading: #20457</li>
+</ul>
+<h2>VLM</h2>
+<ul>
+<li>Replace decord with torchcodec for video decoding: #20055</li>
+<li>Replace soundfile+torchaudio with torchcodec AudioDecoder in load_audio: #20190</li>
+<li>Chunk-aware ViT encoding with per-image cache and lazy device transfer: #22038</li>
+<li>Compute M-RoPE positions for preprocessed VL inputs (gRPC): #21244</li>
+</ul>
+<h2>Bug Fixes</h2>
+<ul>
+<li>Fix streaming session with paged KV cache (SWA/MLA): #20070</li>
+<li>Fix VRAM leak in overlap scheduling with structured output: #20697</li>
+<li>Fix chunked prefill and KV cache leaks for streaming sessions: #20476</li>
+<li>Fix streaming logprobs corruption caused by shared mutable list reference: #21030</li>
+<li>Fix TRT-LLM MHA CUDA illegal address with EAGLE v2 + DP attention: #21649</li>
+<li>Fix Mistral Small 4 config/weight format mismatch: #21620</li>
+<li>Fix mamba cache leak when adder fails to add a matched req: #21404</li>
+<li>Propagate grammar errors and improve llguidance backend: #20467</li>
+</ul>
+<h2>Features</h2>
+<ul>
+<li>Add reasoning tokens usage: #15562</li>
+<li>Add <code>--stream-response-default-include-usage</code> server flag: #16711</li>
+<li>Subprocess liveness monitor to detect scheduler crashes: #18582</li>
+<li>Score API — implement EngineScoreMixin: #21342</li>
+<li>Direct model loading from object storage with RunAI Model Streamer: #17948</li>
+<li>MFU metrics in Prometheus: #19395</li>
+</ul>
+<h2>Network / IPv6</h2>
+<ul>
+<li>Add <code>NetworkAddress</code> abstraction for IPv6-safe address handling: #20306</li>
+<li>Fix socket utilities and reserve_port for IPv6 dual-stack support: #20491</li>
+<li>Add <code>--strict-ports</code> option for predictable port assignment: #21320</li>
+</ul>
+<h2>AMD Hardware</h2>
+<ul>
+<li>FP8 prefill integration with radix cache path for DeepSeek models: #20187</li>
+<li>Add MHA FP8-KV support: #21253</li>
+<li>Support AMD MXFP4 Qwen3.5-397B-A17B model: #21234</li>
+<li>Fused rope KV store: #21315</li>
+<li>Optimize Qwen3-VL decode — fuse QK-norm + 3D mRoPE + KV cache write: #21458</li>
+<li>Enable FP8 KV cache and FP8 attention kernel for NSA on MI300/MI355 with TileLang: #21511</li>
+<li>Improve openai/gpt-oss performance: #21020</li>
+</ul>
+<h2>NPU/Ascend</h2>
+<ul>
+<li>GLM-5 optimize with fused kernels: #18617</li>
+<li>Support GLM-4.7-Flash on NPU: #21408</li>
+<li>Replace swiglu with custom kernel: #20192</li>
+<li>Support Kimi-K2.5-w4a8 on Ascend: #20131</li>
+<li>NPU support for diffusion models with enable_torch_compile: #20687</li>
+</ul>
+<h2>CPU Backend</h2>
+<ul>
+<li>Add kernel apply_rotary_pos_emb_cpu for Qwen3-VL and Qwen3-Omni: #13121</li>
+<li>Implement MXFP4 GEMM kernels for Intel AMX to support GPT-OSS series: #14385</li>
+<li>Enable DeepSeek R1 inference on XPU [Intel GPU]: #18461</li>
+</ul>
+<h2>MPS (Apple Silicon)</h2>
+<ul>
+<li>Native MLX execution backend for Apple Silicon Mac: #20342</li>
+<li>Fix Triton stub sub-module imports on Python 3.12+: #21551</li>
+</ul>
+<h2>Dependencies</h2>
+<ul>
+<li>sgl-kernel 0.3.21 → sglang-kernel 0.4.1: #20440, #22009</li>
+<li>FlashInfer 0.6.3 → 0.6.7.post2: #20480, #22097</li>
+<li>Transformers 4.57.1 → 5.3.0: #17784</li>
+<li>xgrammar 0.1.25 → 0.1.32: #21032</li>
+<li>mooncake-transfer-engine 0.3.9 → 0.3.10.post1: #20942, #21844</li>
+<li>Flash Attention 4 (official release): #20303</li>
+<li>Diffusers 0.36.0 → 0.37.0: #20318</li>
+</ul>
+<h2>Security</h2>
+<ul>
+<li>Fix CVE-2026-3989: Replace unsafe pickle.loads with SafeUnpickler in replay_request_dump.py: #20904</li>
+<li>Fix CVE-2026-3059 / CVE-2026-3060: Bind ZMQ sockets to localhost to prevent unauthenticated remote access (multimodal generation broker and encoder parallel disaggregation): #21435</li>
+</ul>
+<h2>New Contributors</h2>
+<ul>
+<li>@842974287 made their first contribution in https://github.com/sgl-project/sglang/pull/21917</li>
+<li>@adityavaid made their first contribution in https://github.com/sgl-project/sglang/pull/21209</li>
+<li>@alexnails made their first contribution in https://github.com/sgl-project/sglang/pull/21818</li>
+<li>@Alisehen made their first contribution in https://github.com/sgl-project/sglang/pull/20687</li>
+<li>@AMD-yanfeiwang made their first contribution in https://github.com/sgl-project/sglang/pull/19416</li>
+<li>@aramasethu made their first contribution in https://github.com/sgl-project/sglang/pull/19395</li>
+<li>@avjves made their first contribution in https://github.com/sgl-project/sglang/pull/20178</li>
+<li>@chadvoegele made their first contribution in https://github.com/sgl-project/sglang/pull/20870</li>
+<li>@ChuanLi1101 made their first contribution in https://github.com/sgl-project/sglang/pull/20409</li>
+<li>@Cishoon made their first contribution in https://github.com/sgl-project/sglang/pull/20697</li>
+<li>@cs-cat made their first contribution in https://github.com/sgl-project/sglang/pull/20368</li>
+<li>@dubin555 made their first contribution in https://github.com/sgl-project/sglang/pull/20686</li>
+<li>@e-martirosian made their first contribution in https://github.com/sgl-project/sglang/pull/20352</li>
+<li>@fanghao566 made their first contribution in https://github.com/sgl-project/sglang/pull/20625</li>
+<li>@foraxe made their first contribution in https://github.com/sgl-project/sglang/pull/21842</li>
+<li>@froststeam made their first contribution in https://github.com/sgl-project/sglang/pull/21296</li>
+<li>@Godmook made their first contribution in https://github.com/sgl-project/sglang/pull/19234</li>
+<li>@iammrj made their first contribution in https://github.com/sgl-project/sglang/pull/20714</li>
+<li>@JackZeng0208 made their first contribution in https://github.com/sgl-project/sglang/pull/21050</li>
+<li>@Jacob0226 made their first contribution in https://github.com/sgl-project/sglang/pull/20175</li>
+<li>@jasperjiaguo made their first contribution in https://github.com/sgl-project/sglang/pull/19818</li>
+<li>@Javtor made their first contribution in https://github.com/sgl-project/sglang/pull/20556</li>
+<li>@jellysnack made their first contribution in https://github.com/sgl-project/sglang/pull/20467</li>
+<li>@jhchouuu made their first contribution in https://github.com/sgl-project/sglang/pull/21673</li>
+<li>@jiabinwa made their first contribution in https://github.com/sgl-project/sglang/pull/21002</li>
+<li>@jszzr made their first contribution in https://github.com/sgl-project/sglang/pull/20605</li>
+<li>@karanb192 made their first contribution in https://github.com/sgl-project/sglang/pull/21551</li>
+<li>@Kare0638 made their first contribution in https://github.com/sgl-project/sglang/pull/20403</li>
+<li>@kitft made their first contribution in https://github.com/sgl-project/sglang/pull/20376</li>
+<li>@kpham-sgl made their first contribution in https://github.com/sgl-project/sglang/pull/19807</li>
+<li>@lawrence-harmonic made their first contribution in https://github.com/sgl-project/sglang/pull/20273</li>
+<li>@libowen2121 made their first contribution in https://github.com/sgl-project/sglang/pull/20778</li>
+<li>@LinyuanLi0046 made their first contribution in https://github.com/sgl-project/sglang/pull/20134</li>
+<li>@litmei made their first contribution in https://github.com/sgl-project/sglang/pull/19939</li>
+<li>@LiYomi made their first contribution in https://github.com/sgl-project/sglang/pull/21620</li>
+<li>@LLThomas made their first contribution in https://github.com/sgl-project/sglang/pull/20365</li>
+<li>@lucifer1004 made their first contribution in https://github.com/sgl-project/sglang/pull/20868</li>
+<li>@lviy made their first contribution in https://github.com/sgl-project/sglang/pull/18213</li>
+<li>@mvanhorn made their first contribution in https://github.com/sgl-project/sglang/pull/20326</li>
+<li>@Naveassaf made their first contribution in https://github.com/sgl-project/sglang/pull/21416</li>
+<li>@noa-neria made their first contribution in https://github.com/sgl-project/sglang/pull/17948</li>
+<li>@nv-anants made their first contribution in https://github.com/sgl-project/sglang/pull/21032</li>
+<li>@power-more made their first contribution in https://github.com/sgl-project/sglang/pull/20194</li>
+<li>@psaab made their first contribution in https://github.com/sgl-project/sglang/pull/20491</li>
+<li>@qy-seu made their first contribution in https://github.com/sgl-project/sglang/pull/20256</li>
+<li>@randgun made their first contribution in https://github.com/sgl-project/sglang/pull/19246</li>
+<li>@Ricardo-M-L made their first contribution in https://github.com/sgl-project/sglang/pull/22007</li>
+<li>@roopaksrivastav made their first contribution in https://github.com/sgl-project/sglang/pull/20345</li>
+<li>@saatwiknagpal made their first contribution in https://github.com/sgl-project/sglang/pull/21418</li>
+<li>@sawsa307 made their first contribution in https://github.com/sgl-project/sglang/pull/21463</li>
+<li>@sbeurnier made their first contribution in https://github.com/sgl-project/sglang/pull/17905</li>
+<li>@shadowxz109 made their first contribution in https://github.com/sgl-project/sglang/pull/19879</li>
+<li>@Shunkangz made their first contribution in https://github.com/sgl-project/sglang/pull/18233</li>
+<li>@syd520zy made their first contribution in https://github.com/sgl-project/sglang/pull/16711</li>
+<li>@SYaoJun made their first contribution in https://github.com/sgl-project/sglang/pull/20723</li>
+<li>@vaibhawvipul made their first contribution in https://github.com/sgl-project/sglang/pull/21010</li>
+<li>@wang-zhuoran made their first contribution in https://github.com/sgl-project/sglang/pull/20419</li>
+<li>@wduan-hai made their first contribution in https://github.com/sgl-project/sglang/pull/21705</li>
+<li>@Wenjun7J made their first contribution in https://github.com/sgl-project/sglang/pull/21413</li>
+<li>@wili-65535 made their first contribution in https://github.com/sgl-project/sglang/pull/19749</li>
+<li>@xiazhahe made their first contribution in https://github.com/sgl-project/sglang/pull/21507</li>
+<li>@xieminghe1 made their first contribution in https://github.com/sgl-project/sglang/pull/19672</li>
+<li>@xingsy97 made their first contribution in https://github.com/sgl-project/sglang/pull/19630</li>
+<li>@xq25478 made their first contribution in https://github.com/sgl-project/sglang/pull/21727</li>
+<li>@xyuzh made their first contribution in https://github.com/sgl-project/sglang/pull/17684</li>
+<li>@yafengio made their first contribution in https://github.com/sgl-project/sglang/pull/19959</li>
+<li>@yang1002378395-cmyk made their first contribution in https://github.com/sgl-project/sglang/pull/21319</li>
+<li>@yejinkimis made their first contribution in https://github.com/sgl-project/sglang/pull/20210</li>
+<li>@ykcai-daniel made their first contribution in https://github.com/sgl-project/sglang/pull/20137</li>
+<li>@youngrok-XCENA made their first contribution in https://github.com/sgl-project/sglang/pull/20560</li>
+<li>@yuumn made their first contribution in https://github.com/sgl-project/sglang/pull/20862</li>
+<li>@yyy1000 made their first contribution in https://github.com/sgl-project/sglang/pull/18907</li>
+<li>@YzXiao101 made their first contribution in https://github.com/sgl-project/sglang/pull/22054</li>
+<li>@ZhaiFeiyue made their first contribution in https://github.com/sgl-project/sglang/pull/20410</li>
+<li>@zhentaocc made their first contribution in https://github.com/sgl-project/sglang/pull/18242</li>
+<li>@Zijun9 made their first contribution in https://github.com/sgl-project/sglang/pull/20891</li>
+<li>@zzhpro made their first contribution in https://github.com/sgl-project/sglang/pull/20132</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/sgl-project/sglang/compare/v0.5.9...v0.5.10</p>
+<hr />
+<blockquote>
+<p><strong>Source</strong> <a href="https://github.com/sgl-project/sglang">sgl-project/sglang</a> · <code>v0.5.10</code> · 2026-04-06 · <a href="https://github.com/sgl-project/sglang/releases/tag/v0.5.10">upstream release</a></p>
+</blockquote>
+<p><em>Mirrored verbatim for indexing. All rights belong to the upstream project.</em></p></div> </details> </div> <p class="muted" style="margin-top:var(--s8);font-size:12.5px;border-top:1px solid var(--line);padding-top:var(--s4)"> リリースノートは上流プロジェクトが公開したものです。私たちはそれらを整理し、関連付けて、バージョンを一眼で比較できるようにしています。コンテンツの権利はすべて原作者に属します。 </p> <nav class="pager" aria-label="Release navigation"> <a href="/releases/sglang/0.5.10.post1"> <span class="k">← 次へ</span> <span class="t">v0.5.10.post1</span> </a> <a href="/releases/sglang/0.5.9"> <span class="k">前へ →</span> <span class="t">v0.5.9</span> </a> </nav> <aside class="ad-slot" aria-label="Advertisement" data-astro-cid-fgwukgf6><div class="ad-slot-label" data-astro-cid-fgwukgf6>Advertisement</div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4184355057086168" data-ad-slot="9133765584" data-ad-format="auto" data-full-width-responsive="true" data-astro-cid-fgwukgf6></ins><script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script></aside> </article> <aside class="rail"> <div class="rail-card"> <div class="rail-title">Source</div> <ul class="rail-list"> <li> <a href="https://github.com/sgl-project/sglang/releases/tag/v0.5.10" target="_blank" rel="noopener"> <span>GitHub で見る</span> <span class="d">↗</span> </a> </li> <li> <a href="https://github.com/sgl-project/sglang" target="_blank" rel="noopener"> <span>sgl-project/sglang</span> <span class="d">↗</span> </a> </li> </ul> </div> <div class="rail-card rail-toc"> <div class="rail-title">このページの目次</div> <nav> <a href="#" class>新しいモデルのサポート</a><a href="#" class>DeepSeek V3.2 / GLM-5 の最適化</a><a href="#" class>Qwen3.5 の最適化</a><a href="#" class>パフォーマンス</a><a href="#" class>LoRA</a><a href="#" class>エラスティック EP</a><a href="#" class>SGLang 拡散</a><a href="#" class>投機的デコード</a><a href="#" class>分解 (PD)</a><a href="#" class>ハイキャッシュ</a><a href="#" class>VLM</a><a href="#" class>バグ修正</a><a href="#" class>特徴</a><a href="#" class>ネットワーク / IPv6</a><a href="#" class>AMD ハードウェア</a><a href="#" class>NPU/アセンド</a><a href="#" class>CPU バックエンド</a><a href="#" class>MPS (アップルシリコン)</a><a href="#" class>依存関係</a><a href="#" class>セキュリティ</a><a href="#" class>新しい貢献者</a> </nav> </div> <div class="rail-card"> <div class="rail-title">バージョン履歴</div> <ul class="rail-list"> <li> <a href="/releases/sglang/0.5.23"> <span class="v">v0.5.23</span> <span class="d">26-11-02</span> </a> </li><li> <a href="/releases/sglang/0.5.22"> <span class="v">v0.5.22</span> <span class="d">26-10-19</span> </a> </li><li> <a href="/releases/sglang/0.5.21"> <span class="v">v0.5.21</span> <span class="d">26-10-02</span> </a> </li><li> <a href="/releases/sglang/0.5.20"> <span class="v">v0.5.20</span> <span class="d">26-09-18</span> </a> </li><li> <a href="/releases/sglang/0.5.19"> <span class="v">v0.5.19</span> <span class="d">26-09-05</span> </a> </li><li> <a href="/releases/sglang/0.5.18"> <span class="v">v0.5.18</span> <span class="d">26-08-22</span> </a> </li><li> <a href="/releases/sglang/0.5.17"> <span class="v">v0.5.17</span> <span class="d">26-08-08</span> </a> </li><li> <a href="/releases/sglang/0.5.16"> <span class="v">v0.5.16</span> <span class="d">26-07-25</span> </a> </li> </ul> <a href="/ja/releases/sglang" class="mono" style="display:inline-block;margin-top:var(--s3);font-size:11.5px;color:var(--ink-3)"> すべての 20 件を見る →
+</a> </div> </aside> </div> </div>  </main> <footer class="site-footer"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/ja/" class="brand" aria-label="STAGS NextStack"><span class="brand-mark" aria-hidden="true">S</span><span class="brand-main">STAGS</span><span class="brand-sub" aria-hidden="true">NextStack</span></a> <p>オープンソースのリリース インテリジェンスが毎日公開されます。</p> </div> <div class="footer-col"> <h3>追跡</h3> <ul> <li><a href="/ja/releases">リリース</a></li> <li><a href="/ja/projects">プロジェクト</a></li> <li><a href="/ja/releases.xml">RSS フィード</a></li> </ul> </div> <div class="footer-col"> <h3>アーカイブ</h3> <ul> <li><a href="/zh/release_note" hreflang="zh-Hans">中文アーカイブ</a></li> <li><a href="/zh/chapters/" hreflang="zh-Hans">技術ノート</a></li> <li><a href="/zh/downloads/">Stags Tracker</a></li> </ul> </div> <div class="footer-col"> <h3>情報</h3> <ul> <li><a href="/privacy">プライバシーポリシー</a></li> <li><a href="/releases.xml">RSS</a></li> <li><a href="/sitemap-index.xml">Sitemap</a></li> </ul> </div> </div> <div class="footer-btm"> <span>© 2026 STAGS</span> <span>Release note は上流プロジェクトに属します。</span> </div> </div> </footer> <!-- 搜索面板 --> <div class="palette-bg" data-palette-bg data-open="false"> <div class="palette" role="dialog" aria-modal="true" aria-label="リリースを検索"> <div class="palette-in"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ink-4);flex:none"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <input type="search" data-palette-input placeholder="リリース、プロジェクト、バージョンを検索…" autocomplete="off" spellcheck="false"> <span class="kbd">esc</span> </div> <ul class="palette-res" data-palette-res></ul> <div class="palette-ft"> <span>↑↓ navigate</span> <span>↵ open</span> <span style="margin-left:auto" data-palette-count></span> </div> </div> </div> <script type="module" src="/assets/Shell.astro_astro_type_script_index_0_lang.0ZkKXV47.js"></script> </body> </html>

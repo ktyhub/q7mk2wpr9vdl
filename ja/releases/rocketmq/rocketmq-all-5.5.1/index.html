@@ -1,0 +1,348 @@
+<!DOCTYPE html><html lang="ja" dir="ltr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>rocketmq rocketmq-all-5.5.1 — STAGS NextStack</title><meta name="description" content="This maintenance release removes fastjson 1.x from the distribution (fastjson2 upgraded to 2.0.63 and DLedger bumped to 0.3.3.4), introduces a native RocksDB CqCompactionFilter with a cross-platform JNI shim, deprecates…"><meta name="keywords" content="オープンソース release note、リリース トラッカー、changelog アグリゲーター、重大な変更、非推奨トラッカー、Kafka リリース、Spring Boot リリース、Kubernetes リリース"><meta name="generator" content="Astro v5.18.2"><link rel="canonical" href="https://www.stags.cn/ja/releases/rocketmq/rocketmq-all-5.5.1/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="STAGS NextStack — releases" href="/ja/releases.xml"><link rel="alternate" hreflang="en" href="https://www.stags.cn/releases/rocketmq/rocketmq-all-5.5.1/"><link rel="alternate" hreflang="zh-Hans" href="https://www.stags.cn/releases/rocketmq/rocketmq-all-5.5.1/"><link rel="alternate" hreflang="x-default" href="https://www.stags.cn/releases/rocketmq/rocketmq-all-5.5.1/"><meta property="og:site_name" content="STAGS"><meta property="og:type" content="article"><meta property="og:title" content="rocketmq rocketmq-all-5.5.1 — STAGS NextStack"><meta property="og:description" content="This maintenance release removes fastjson 1.x from the distribution (fastjson2 upgraded to 2.0.63 and DLedger bumped to 0.3.3.4), introduces a native RocksDB CqCompactionFilter with a cross-platform JNI shim, deprecates…"><meta property="og:url" content="https://www.stags.cn/ja/releases/rocketmq/rocketmq-all-5.5.1/"><meta property="og:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><meta property="og:locale" content="ja_JP"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="de_DE"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:locale:alternate" content="es_ES"><meta property="og:locale:alternate" content="pt_BR"><meta property="og:locale:alternate" content="ko_KR"><meta property="og:locale:alternate" content="it_IT"><meta property="og:locale:alternate" content="ru_RU"><meta property="og:locale:alternate" content="tr_TR"><meta property="og:locale:alternate" content="id_ID"><meta property="og:locale:alternate" content="vi_VN"><meta property="og:locale:alternate" content="ar_SA"><meta property="og:locale:alternate" content="sv_SE"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.stags.cn/#website","name":"STAGS","url":"https://www.stags.cn/","inLanguage":"ja","description":"NextStack はインフラストラクチャおよび AI プロジェクトのリリースノートを索引化し、破壊的変更・非推奨・移行情報を英語優先の単一フィードで提供します。","publisher":{"@id":"https://www.stags.cn/#org"}},{"@type":"Organization","@id":"https://www.stags.cn/#org","name":"STAGS","alternateName":"NextStack","url":"https://www.stags.cn/"},{"@type":"TechArticle","@id":"https://www.stags.cn/ja/releases/rocketmq/rocketmq-all-5.5.1/#article","headline":"rocketmq rocketmq-all-5.5.1 release notes","datePublished":"2026-08-20","inLanguage":"en","isPartOf":{"@id":"https://www.stags.cn/#website"},"about":{"@type":"SoftwareSourceCode","codeRepository":"https://github.com/apache/rocketmq"}}]}</script><!-- 第三方脚本的连接预热：这两个域名几乎每页都要连，
+         提前建连能省掉 DNS + TCP + TLS 一个往返（移动网络 100~300ms）。
+         AdSense 只在开关打开时预热——关掉广告后连这个域名都没必要。 --><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://pagead2.googlesyndication.com"><!-- Google AdSense：站点所有权校验与广告投放共用同一段脚本，全站只加载一次。
+         未创建广告单元时页面上不渲染任何广告容器，站点保持干净。
+         fetchpriority=low：它不参与首屏渲染，不该跟正文抢带宽。 --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184355057086168" crossorigin="anonymous" fetchpriority="low"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-RFRF1TVRMP" fetchpriority="low"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RFRF1TVRMP");
+    </script><!-- 百度统计（国内流量统计）。官方标准片段，is:inline 原样输出，
+         hm.js 动态插到首个 script 前，异步不阻塞首屏渲染。 --><script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?299e5b4e65b86ed16879bdcbe70531d6";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script><link rel="stylesheet" href="/assets/index.DQGt3qLZ.css">
+<style>.ad-slot[data-astro-cid-fgwukgf6]{margin:var(--s10) 0 0;padding-top:var(--s5);border-top:1px solid var(--line)}.ad-slot-label[data-astro-cid-fgwukgf6]{margin-bottom:var(--s3);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{display:block;min-height:100px}@media(min-width:640px){.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{min-height:250px}}
+</style></head> <body> <a class="skip" href="#main">本文へスキップ</a> <header class="hdr" data-header> <div class="wrap hdr-inner"> <a href="/ja/" class="brand" aria-label="STAGS NextStack — オープンソースのリリース情報"> <span class="brand-mark" aria-hidden="true">S</span> <span class="brand-main">STAGS</span> <span class="brand-sub" aria-hidden="true">NextStack</span> </a> <nav class="nav" aria-label="Primary"> <a href="/ja/releases">リリース</a><a href="/ja/projects">プロジェクト</a> </nav>  <details class="navmenu" data-navmenu> <summary class="navmenu-btn" aria-label="Open menu"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> </summary> <div class="navmenu-panel" role="group" aria-label="Primary"> <a href="/ja/releases" class="navmenu-item">リリース</a><a href="/ja/projects" class="navmenu-item">プロジェクト</a> </div> </details> <div class="hdr-tools"> <button class="searchbtn" type="button" data-search-open aria-label="リリースを検索"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <span class="lbl">検索</span> <span class="kbd">⌘K</span> </button> <details class="langmenu" data-langmenu> <summary class="langmenu-btn" aria-label="言語"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"> <circle cx="12" cy="12" r="9"></circle> <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path> </svg> <span class="langmenu-cur">日</span> <svg class="langmenu-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m2 4 4 4 4-4"></path></svg> </summary> <div class="langmenu-panel" role="group" aria-label="言語"> <p class="langmenu-head">言語</p> <a class="langmenu-item" href="/releases/rocketmq/rocketmq-all-5.5.1/" hreflang="en" lang="en" data-on="false"> <span class="langmenu-label">English</span> <span class="langmenu-code">EN</span> </a><a class="langmenu-item" href="/zh/release_note/rocketmq/rocketmq_rocketmq-all-5.5.1" hreflang="zh-Hans" lang="zh-CN" data-on="false"> <span class="langmenu-label">中文</span> <span class="langmenu-code">中</span> </a><a class="langmenu-item" href="/ja/releases/rocketmq/rocketmq-all-5.5.1/" hreflang="ja" lang="ja" aria-current="true" data-on="true"> <span class="langmenu-label">日本語</span> <span class="langmenu-code">日</span> </a><a class="langmenu-item" href="/de/releases/rocketmq/rocketmq-all-5.5.1/" hreflang="de" lang="de" data-on="false"> <span class="langmenu-label">Deutsch</span> <span class="langmenu-code">DE</span> </a><a class="langmenu-item" href="/fr/releases/rocketmq/rocketmq-all-5.5.1/" hreflang="fr" lang="fr" data-on="false"> <span class="langmenu-label">Français</span> <span class="langmenu-code">FR</span> </a><a class="langmenu-item" href="/es/releases/rocketmq/rocketmq-all-5.5.1/" hreflang="es" lang="es" data-on="false"> <span class="langmenu-label">Español</span> <span class="langmenu-code">ES</span> </a><a class="langmenu-item" href="/pt/releases/rocketmq/rocketmq-all-5.5.1/" hreflang="pt-BR" lang="pt-BR" data-on="false"> <span class="langmenu-label">Português</span> <span class="langmenu-code">PT</span> </a><a class="langmenu-item" href="/ko/releases" hreflang="ko" lang="ko" data-on="false"> <span class="langmenu-label">한국어</span> <span class="langmenu-code">한</span> </a><a class="langmenu-item" href="/it/releases" hreflang="it" lang="it" data-on="false"> <span class="langmenu-label">Italiano</span> <span class="langmenu-code">IT</span> </a><a class="langmenu-item" href="/ru/releases" hreflang="ru" lang="ru" data-on="false"> <span class="langmenu-label">Русский</span> <span class="langmenu-code">RU</span> </a><a class="langmenu-item" href="/tr/releases" hreflang="tr" lang="tr" data-on="false"> <span class="langmenu-label">Türkçe</span> <span class="langmenu-code">TR</span> </a><a class="langmenu-item" href="/id/releases" hreflang="id" lang="id" data-on="false"> <span class="langmenu-label">Bahasa Indonesia</span> <span class="langmenu-code">ID</span> </a><a class="langmenu-item" href="/vi/releases" hreflang="vi" lang="vi" data-on="false"> <span class="langmenu-label">Tiếng Việt</span> <span class="langmenu-code">VI</span> </a><a class="langmenu-item" href="/ar/releases" hreflang="ar" lang="ar" data-on="false"> <span class="langmenu-label">العربية</span> <span class="langmenu-code">ع</span> </a><a class="langmenu-item" href="/sv/releases" hreflang="sv" lang="sv" data-on="false"> <span class="langmenu-label">Svenska</span> <span class="langmenu-code">SV</span> </a> </div> </details> <a class="iconlink" href="/releases.xml" aria-label="RSS"> <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"> <path d="M2 12.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM2 7.5a6.5 6.5 0 0 1 6.5 6.5h-2A4.5 4.5 0 0 0 2 9.5v-2ZM2 2.5A11.5 11.5 0 0 1 13.5 14h-2A9.5 9.5 0 0 0 2 4.5v-2Z"></path> </svg> </a> </div> </div> </header> <main id="main">  <div class="wrap"> <div class="detail"> <article> <header class="detail-hd"> <nav class="crumbs" aria-label="Breadcrumb"> <a href="/ja/">ホーム</a> <span class="sep">/</span> <a href="/ja/releases">リリース</a> <span class="sep">/</span> <a href="/ja/releases/rocketmq">rocketmq</a> </nav> <h1 class="detail-title"> <span class="p">rocketmq</span> rocketmq-all-5.5.1 </h1> <div class="detail-meta"> <span class="chip chip--release">リリース</span> <span><span class="k">公開日</span>2026年8月20日</span>  <span class="sep" aria-hidden="true"></span> <a href="https://github.com/apache/rocketmq" target="_blank" rel="noopener"> <span class="k">出典</span>apache/rocketmq </a>   <span class="sep" aria-hidden="true"></span> <a href="/releases/rocketmq/rocketmq-all-5.5.1/"> English original </a>  <span class="sep" aria-hidden="true"></span> <button class="btn btn--ghost btn--sm" type="button" data-copy="https://www.stags.cn/ja/releases/rocketmq/rocketmq-all-5.5.1/">リンクをコピー</button> </div> </header> <div class="prose" style="margin-top:var(--s8)"> <p class="mt-notice" role="note">このページは機械翻訳です。内容は必ず英文原文をご確認ください。</p>  <div><h1>rocketmq rocketmq-all-5.5.1</h1>
+<p>このメンテナンス リリースでは、fastjson 1.x がディストリビューションから削除され (fastjson2 は 2.0.63 にアップグレードされ、DLedger は 0.3.3.4 にアップグレードされました)、クロスプラットフォーム JNI シムを備えたネイティブ RocksDB CqCompactionFilter が導入され、従来の Broker DLedger モードが廃止され、階層型ストレージ、ライト モード、プロキシ、およびストア全体にわたる広範な安定性とパフォーマンスの修正が提供されます。層。</p>
+<h2>セキュリティと依存関係</h2>
+<ul>
+<li>[問題 #7703] https://github.com/apache/rocketmq/pull/10715 の @lizhimins によるセキュリティ修正のために、fastjson2 を 2.0.63 にアップグレードします。</li>
+<li>[問題 #10651] DLedger を 0.3.3.4 (メンテナンス ライン) にバンプ (https://github.com/apache/rocketmq/pull/10958 の @RongtongJin により)</li>
+<li>[問題 #10641] https://github.com/apache/rocketmq/pull/10642 の @RongtongJin による従来の Broker DLedger モードを非推奨にする</li>
+</ul>
+<h2>新機能 (Native RocksDB 圧縮フィルター)</h2>
+<p>クロスプラットフォーム JNI シムをサポートするネイティブ ConsumeQueue 圧縮フィルターを導入し、以前の Pure-Java フィルターとシェーディングされた rocketmq-rocksdb 依存関係を公式の Rocksdbjni アーティファクトに置き換えました。</p>
+<ul>
+<li>[問題 #10334] https://github.com/apache/rocketmq/pull/10335 の @lizhimins によるクロスプラットフォーム JNI シムを使用したネイティブ CqCompactionFilter のサポート</li>
+<li>[問題 #10334] https://github.com/apache/rocketmq/pull/10371 の @lizhimins により、rocksdbjni 依存関係なしでネイティブ CqCompactionFilter シムを自己完結型にする</li>
+</ul>
+<h2>何が変わったのか</h2>
+<h3>階層型ストレージ</h3>
+<ul>
+<li>[問題 #10462] https://github.com/apache/rocketmq/pull/10470 の @lizhimins によるディスパッチにメモリ バックプレッシャーを追加</li>
+<li>[問題 #10462] https://github.com/apache/rocketmq/pull/10471 の @lizhimins による階層型ストレージの同時実行性のバグを修正</li>
+<li>[問題 #10462] https://github.com/apache/rocketmq/pull/10472 の @lizhimins によるコミットおよびフェッチ エグゼキュータのスレッド プール サイズを最適化します。</li>
+<li>[問題 #10462] https://github.com/apache/rocketmq/pull/10473 の @lizhimins による階層型ストレージでのエラー処理を改善</li>
+<li>[問題 #10462] https://github.com/apache/rocketmq/pull/10474 の @lizhimins による階層型ストレージ モジュール全体でログ形式を標準化</li>
+<li>[問題 #10462] 階層型ストレージのリソース リークとライフサイクルの問題を修正 (https://github.com/apache/rocketmq/pull/10476 の @lizhimins により)</li>
+<li>[問題 #10572] https://github.com/apache/rocketmq/pull/10573 の @Houlong66 による階層型ストレージの先読みキャッシュ用のデュアル TTL ポリシーを追加</li>
+</ul>
+<h3>ライトモード</h3>
+<ul>
+<li>[問題 #10253] https://github.com/apache/rocketmq/pull/10254 の @Kris20030907 による LiteTopic ワイルドカード登録解除中の誤った解析によって引き起こされる、古い WildcardGroupMap エントリを修正します</li>
+<li>[問題 #10345] 修正: https://github.com/apache/rocketmq/pull/10346 の @Kris20030907 による自動更新受信ハンドル用のライト トピックを保持</li>
+<li>[問題 #10384] https://github.com/apache/rocketmq/pull/10386 の @f1amingo によるサーバー側の廃棄石を介した Lite 独占サブスクリプションの削除を強制する</li>
+<li>[問題 #10387] https://github.com/apache/rocketmq/pull/10388 の @f1amingo による LiteEventDispatcher.ClientEventSet の maxClientEventCount のランタイム ホット リロードをサポートします</li>
+<li>[問題 #10423] https://github.com/apache/rocketmq/pull/10424 の @f1amingo によってのみ getStoreTimestamp を topK の結果まで延期することで、LiteConsumerLagCalculator.getLagCountTopK を最適化します。</li>
+<li>[問題 #10450] https://github.com/apache/rocketmq/pull/10452 の @imzs による CombineConsumeQueueStore での選択的二重書き込み</li>
+<li>[問題 #10453] https://github.com/apache/rocketmq/pull/10454 の @imzs による lmq カウンターの予期しない減少を修正</li>
+<li>[問題 #10549] ライト トピックのリセット オフセットを修正: メモリ リーク、FIFO ブロック バイパス、https://github.com/apache/rocketmq/pull/10550 の @f1amingo によるオフセット 0 リセットの失敗</li>
+<li>[問題 #10560] https://github.com/apache/rocketmq/pull/10561 の @f1amingo によるenableLiteEventMode 構成スイッチを削除します</li>
+<li>[問題 #10569] https://github.com/apache/rocketmq/pull/10570 の @f1amingo によるサーバー側での Lite Simple Consumer のサポート</li>
+<li>[問題 #10615] https://github.com/apache/rocketmq/pull/10616 の @imzs による CombineConsumeQueue 選択的二重書き込みでロングポーリング通知が欠落していたのを修正</li>
+<li>[問題 #10622] https://github.com/apache/rocketmq/pull/10623 の @f1amingo による LiteEventDispatcher で ConsumerOffsetManager を動的に解決する</li>
+<li>[問題 #10644] https://github.com/apache/rocketmq/pull/10645 の @f1amingo によるブローカーの可観測性に LMQ 番号ゲージ メトリックを追加</li>
+<li>[問題 #10722] https://github.com/apache/rocketmq/pull/10723 の @f1amingo によってメッセージ ストアのタイムスタンプが利用できない場合、Lite トピックがクリーンアップされないことがある</li>
+</ul>
+<h3>ストアと RocksDB</h3>
+<ul>
+<li>[問題 #10344] https://github.com/apache/rocketmq/pull/10344 の @RongtongJin による RocksDB CQ サイズ増幅のパラメーター化</li>
+<li>[問題 #10270] https://github.com/apache/rocketmq/pull/10271 の @lizhimins による MessageStoreConfig 経由で Pop RocksDB の BlockCache サイズを設定可能にする</li>
+<li>[問題 #10421] https://github.com/apache/rocketmq/pull/10422 の @echooymxq により、rocksdb が間違ったキャッシュ キーを使用するタイマー メッセージを修正しました</li>
+<li>[問題 #10417] https://github.com/apache/rocketmq/pull/10418 で @chenxu80 による ConsumerQueue 切り捨て後の古い minOffset を修正</li>
+<li>[問題 #10521] madvise(MADV_RANDOM) を使用して、https://github.com/apache/rocketmq/pull/10523 の @lizhimins によるCorrectMinOffset バイナリ検索中にカーネルの先読みを無効にします</li>
+<li>[問題 #10639] https://github.com/apache/rocketmq/pull/10640 の @wang-jiahua による CommitLog.checkMessageAndReturnSize でスレッドごとのスクラッチ バッファを再利用する</li>
+<li>[問題 #10813] https://github.com/apache/rocketmq/pull/10814 の @ai-yang による LMQ 追加パスの一時割り当てを減らす</li>
+<li>[問題 #10819] https://github.com/apache/rocketmq/pull/10820 の @fuyou001 による誤解を招く CommitLog バッファー コメントを修正</li>
+<li>[問題 #10953] https://github.com/apache/rocketmq/pull/10954 の @qianye1001 によって、シフトされたメッセージ カウント範囲をキュー境界にクランプする</li>
+<li>[問題 #10959] RocksDBConsumeQueue.iterateFrom が https://github.com/apache/rocketmq/pull/10960 の @ymwneu によって最小オフセットを下回るオフセットを拒否する必要がある問題を修正しました</li>
+<li>[問題 #9654] https://github.com/apache/rocketmq/pull/9655 の @ymwneu による TimerMessageStore のbufferLocal サイズの最適化</li>
+<li>[問題 #10713] https://github.com/apache/rocketmq/pull/10714 の @ymwneu による ConsumerFilterManager レジスタの CPU 消費量を最適化する</li>
+<li>[問題 #10515] https://github.com/apache/rocketmq/pull/10517 の @wang-jiahua による TransactionMetricsFlushService のビジー スピン バグを修正</li>
+<li>[問題 #10375] https://github.com/apache/rocketmq/pull/10376 の @f1amingo による getLifeCycle 間接指定を削除することで、deleteTopic と FlushConsumeQueueService の間の競合状態を修正しました。</li>
+<li>[問題 #10543] https://github.com/apache/rocketmq/pull/10544 の @ShadowySpirits による ServiceThread ウェイクアップ メカニズムのデータ競合を解決</li>
+</ul>
+<h3>ブローカー &amp; HA/コントローラー</h3>
+<ul>
+<li>[問題 #10578] https://github.com/apache/rocketmq/pull/10578 の @Aias00 によるマスター選択 maxOffset コンパレータのオーバーフローを修正</li>
+<li>[問題 #10604] https://github.com/apache/rocketmq/pull/10605 の @imzs による分割登録で TopicConfig DataVersion が保持されない問題を修正</li>
+<li>[問題 #10446] https://github.com/apache/rocketmq/pull/10448 の @wang-jiahua によるブローカーでのトピックとサブスクリプション グループの一括削除のサポート</li>
+<li>[問題 #10435] https://github.com/apache/rocketmq/pull/10437 の @chuanxo による非アクティブなチャネルの有効期限を防ぐ共有 ClientChannelInfo を修正しました。</li>
+<li>[問題 #10438] https://github.com/apache/rocketmq/pull/10439 で @chuanxo によるライブ topicConfigTable 参照を公開する buildTopicConfigSerializeWrapper を修正しました。</li>
+<li>[問題 #10284] ConsumerOffset デシリアライゼーション エラーを修正し、https://github.com/apache/rocketmq/pull/10287 に @ ChineseTony によるテストを追加</li>
+<li>[問題 #10457] https://github.com/apache/rocketmq/pull/10447 の @brucelwl による RocketmqColdCtr ロガー レベルを修正</li>
+<li>[ISSUE-10546] https://github.com/apache/rocketmq/pull/10547 の @f1amingo による NettyRequestProcessor の拒否リクエスト() のデフォルト実装を追加</li>
+<li>修正(共通): https://github.com/apache/rocketmq/pull/10884 の @yuluo-yx によるメッセージ キュー ID の安全な比較</li>
+<li>修正(コントローラー): https://github.com/apache/rocketmq/pull/10886 の @yuluo-yx により部分的なブローカー ID を安全に比較</li>
+<li>修正(コントローラー): https://github.com/apache/rocketmq/pull/10885 の @yuluo-yx による非アクティブなラフト マスターを検出</li>
+<li>https://github.com/apache/rocketmq/pull/10925 の @dingshuangxi888 による ACL 2.0 認証コンテキストの処理を改善</li>
+</ul>
+<h3>プロキシ &amp; gRPC</h3>
+<ul>
+<li>[問題 #10260] gRPC の遅延トランザクション メッセージを拒否し、https://github.com/apache/rocketmq/pull/10261 の @yx9o によるパスを送信する</li>
+<li>[問題 #10274] https://github.com/apache/rocketmq/pull/10275 の @Kris20030907 による ForwardMessageToDeadLetterQueue リクエスト マッピング記述子を修正</li>
+<li>[問題 #10276] https://github.com/apache/rocketmq/pull/10277 で @qianye1001 による VisibilityTimeout 衝突時に PopConsumerServicechangeInvisibilityDuration が CK レコードを失う問題を修正</li>
+<li>[問題 #10280] https://github.com/apache/rocketmq/pull/10281 の @yx9o によるプロキシ リモート転送が失敗した場合に不透明を復元する</li>
+<li>[問題 #10297] https://github.com/apache/rocketmq/pull/10298 の @yx9o によってプロキシ ローカル POP パスによって返されるメッセージの BrokerName を設定する</li>
+<li>[問題 #10285] https://github.com/apache/rocketmq/pull/10286 で @yx9o による AckResult を再構築する際の PopTime の保持を修正しました。</li>
+<li>[問題 #10510] https://github.com/apache/rocketmq/pull/10516 で @RockteMQ-AI による gRPC サーバー許可キープアライブ構成を追加</li>
+<li>[問題 #10661] https://github.com/apache/rocketmq/pull/10662 の @yx9o による gRPC client 終了に関するすべてのプロデューサー トピックの登録を解除します</li>
+<li>[問題 #10827] 修正 (ブローカー): https://github.com/apache/rocketmq/pull/10828 での @lizhimins による空の応答を回避するために、same-attemptId のロックをスピンして規則的に再試行します。</li>
+<li>[Fix #10460]: https://github.com/apache/rocketmq/pull/10461 の @HarshMehta112 によるリクエスト パスでの HashMap のサイズ変更を避けるために、ProxyContext マップのサイズを事前に設定します。</li>
+</ul>
+<h3>Client とリモート処理</h3>
+<ul>
+<li>[問題 #10613] https://github.com/apache/rocketmq/pull/10614 で @wang-jiahua によって複数回実行される非同期リクエスト - 返信 RequestCallback を修正</li>
+<li>[問題 #10906] https://github.com/apache/rocketmq/pull/10907 で @qianye1001 による重複した MQClientInstance の作成を防止する</li>
+<li>[問題 #10025] 空白のローカル サーブ アドレスを https://github.com/apache/rocketmq/pull/10663 の @Aias00 によって設定解除されたものとして扱う</li>
+<li>[問題 #10522] https://github.com/apache/rocketmq/pull/10522 の @wang-jiahua による FastCodesHeader/RocketMQSerializable 最適化による Remoting ヘッダー エンコーディング割り当ての削減</li>
+<li>[問題 #8262] https://github.com/apache/rocketmq/pull/10506 の @SummCoder により bitsarray を 1 つずつずらして修正しました。</li>
+<li>修正: https://github.com/apache/rocketmq/pull/10459 で @gaoxiaolei-s59 によるメッセージのバッチ入力を検証</li>
+<li>[問題 #10247] https://github.com/apache/rocketmq/pull/10248 の @yx9o による InvocationChannel の重複した削除呼び出しを削除します</li>
+</ul>
+<h3>インデックスとクエリ</h3>
+<ul>
+<li>[問題 #10268] https://github.com/apache/rocketmq/pull/10269 の @lizhimins による IndexStoreService.queryAsync での誤った時間範囲ファイルの選択を修正</li>
+<li>[問題 #10291] https://github.com/apache/rocketmq/pull/10292 の @yuz10 による queryMessage のデフォルトのインデックス タイプを修正</li>
+</ul>
+<h3>可観測性と安定性</h3>
+<ul>
+<li>[問題 #10266] https://github.com/apache/rocketmq/pull/10267 の @Houlong66 による OpenTelemetry 1.44 OtlpGrpcMetricExporter プール レースによって引き起こされる OOM を修正</li>
+<li>[問題 #10398] https://github.com/apache/rocketmq/pull/10399 の @qianye1001 による TLS 証明書のホットリロードでのネイティブ メモリ リークを修正</li>
+<li>[問題 #10216] https://github.com/apache/rocketmq/pull/10507 の @SGloria によって topicPublishInfo が null の場合に EscapeBridge で発生する可能性のある NPE を修正</li>
+<li>[問題 #10419] クラス フィルター ルート データが欠落している場合の NPE を修正 (https://github.com/apache/rocketmq/pull/10420 の @yin-bo-Final による)</li>
+<li>[問題 #10492] https://github.com/apache/rocketmq/pull/10493 の @SGloria による StatsAllSubCommand に飲み込まれた例外のデバッグ ログを追加</li>
+<li>[問題 #10441] https://github.com/apache/rocketmq/pull/10443 の @wang-jiahua による静的 AttributeKey インスタンスをキャッシュすることで、メトリクスの RPC ごとの割り当てを削減します。</li>
+</ul>
+<h3>パフォーマンス</h3>
+<ul>
+<li>[問題 #10467] https://github.com/apache/rocketmq/pull/10469 の @wang-jiahua による createUniqID と valueOfMagicCode のメッセージごとの割り当てを減らす</li>
+<li>[問題 #10400] https://github.com/apache/rocketmq/pull/10401 の @qianye1001 による繰り返しの配列割り当てを避けるために、MQVersion の Version.values() をキャッシュします。</li>
+<li>[問題 #10511] Enum.values() ループを、https://github.com/apache/rocketmq/pull/10513 の @wang-jiahua による LanguageCode および SerializeType の静的配列検索に置き換えます。</li>
+<li>[問題 #10486] getMessageType(Map) オーバーロードを追加して、https://github.com/apache/rocketmq/pull/10487 の @wang-jiahua によってデコードされた冗長なプロパティを排除します</li>
+</ul>
+<h3>構成と拡張性</h3>
+<ul>
+<li>[問題 #10381] HashedWheelTimer パラメーターを QueueLevelConsumerOrderInfoLockManager で構成可能にする (https://github.com/apache/rocketmq/pull/10382 の @f1amingo による)</li>
+<li>[問題 #10425] https://github.com/apache/rocketmq/pull/10426 の @RongtongJin による分割登録データのバージョン変更を元に戻す</li>
+<li>[問題 #10817] JDK 21 との互換性のために SpotBugs をアップグレード (https://github.com/apache/rocketmq/pull/10818 の @fuyou001 により)</li>
+<li>https://github.com/apache/rocketmq/pull/10821 の @fuyou001 により BrokerShutdownTest を中型 Bazel テストとして分類</li>
+</ul>
+<h3>テストと CI</h3>
+<ul>
+<li>[問題 #10341] https://github.com/apache/rocketmq/pull/10342 の @lizhimins による Maven Central レート制限によって引き起こされる Bazel CI ビルドの失敗を修正</li>
+<li>[問題 #10373] 不安定なテストを隔離し、https://github.com/apache/rocketmq/pull/10374 の @lizhimins による検出計画ドキュメントを追加します</li>
+<li>[問題 #10373] 隔離された不安定なテストを修正し、https://github.com/apache/rocketmq/pull/10379 の @lizhimins による CI 再実行ワークフローを削除</li>
+<li>[問題 #10383] Bazel の依存関係を Maven pom.xml と調整する (https://github.com/apache/rocketmq/pull/10404 の @lizhimins 著)</li>
+<li>[問題 #10389] https://github.com/apache/rocketmq/pull/10390 の @imzs による PopPriorityIT のいくつかの不安定なテストを修正または無視する</li>
+<li>[問題 #10410] https://github.com/apache/rocketmq/pull/10411 の @RongtongJin による RocksDBOptionsFactoryTest のコンパイル失敗を修正</li>
+<li>[問題 #10430] https://github.com/apache/rocketmq/pull/10431 の @lsq3497 による srvutil パッケージの単体テストを追加</li>
+<li>[問題 #10475] @quzizii による CleanupPolicyUtils の単体テストを https://github.com/apache/rocketmq/pull/10475 に追加</li>
+<li>[問題 #10562] 不要なバックグラウンド スレッドを回避するために PopConsumerServiceTest#transferToFsStoreTest を最適化 (https://github.com/apache/rocketmq/pull/10563 の @f1amingo)</li>
+<li>https://github.com/apache/rocketmq/pull/10495 の @RongtongJin による不安定な HATest 半同期レプリケーションを修正</li>
+<li>https://github.com/apache/rocketmq/pull/10445 の @apupier による同時進行キャンセルを使用するように GitHub ワークフローを構成します</li>
+</ul>
+<h3>ドキュメント</h3>
+<ul>
+<li>[問題 #10393] https://github.com/apache/rocketmq/pull/10394 の @majialoong による FAQUrl の古い FAQ ドキュメント URL を修正</li>
+<li>[問題 #10593] https://github.com/apache/rocketmq/pull/10594 の @yx9o により、CLusterSendMsgRTCommand の名前が ClusterSendMsgRTCommand に変更されました。</li>
+<li>[DOCS] https://github.com/apache/rocketmq/pull/10349 の @H145608 により、サンプルの依存関係バージョンを 4.3.0 から 5.5.0 に更新します</li>
+<li>[DOCS] https://github.com/apache/rocketmq/pull/10358 の @H145608 により、中国語ドキュメントの依存関係バージョンを 4.3.0/4.9.1 から 5.5.0 に更新しました</li>
+<li>[DOCS] https://github.com/apache/rocketmq/pull/10360 の @H145608 による Troubleshooting.md ファイル名のタイプミスを修正</li>
+<li>[DOCS] https://github.com/apache/rocketmq/pull/10505 の @quzizii によるドキュメント ファイル名のタイプミスを修正</li>
+<li>ドキュメント: https://github.com/apache/rocketmq/pull/10440 の @gaoxiaolei-s59 による起動例のブローカー IP のタイプミスを修正</li>
+<li>ドキュメント: https://github.com/apache/rocketmq/pull/10449 の @gaoxiaolei-s59 によるブローカー コンテナーの参照とプロデューサーのタイプミスを修正</li>
+<li>ドキュメント: https://github.com/apache/rocketmq/pull/10456 の @lsq3497 による開発者ガイド全体の不正確な例とタイプミスを修正</li>
+<li>ドキュメント: https://github.com/apache/rocketmq/pull/10483 の @fancy-agent による README から無効な Slack 招待リンクを削除</li>
+<li>ドキュメント: https://github.com/apache/rocketmq/pull/10484 の @fancy-agent による tieredstore README の階層ストア構成へのデッド リンクを修正</li>
+<li>ドキュメント: https://github.com/apache/rocketmq/pull/10551 の @skant7 による一貫した Markdown スタイルのための README のフォーマット</li>
+<li>https://github.com/apache/rocketmq/pull/10501 の @SummCoder によるトレース ドキュメント内の古いコンストラクター署名を修正</li>
+<li>https://github.com/apache/rocketmq/pull/10504 の @SummCoder による中国語ドキュメント セクション 7 の ACL mqadmin コマンドを更新</li>
+</ul>
+<p><strong>フル Changelog</strong>: https://github.com/apache/rocketmq/compare/rocketmq-all-5.5.0...rocketmq-all-5.5.1</p>
+<hr />
+<blockquote>
+<p><strong>ソース</strong> <a href="https://github.com/apache/rocketmq">apache/rocketmq</a> · <code>rocketmq-all-5.5.1</code> · 2026-08-20 · <a href="https://github.com/apache/rocketmq/releases/tag/rocketmq-all-5.5.1">アップストリーム リリース</a></p>
+</blockquote>
+<p><em>インデックス作成のためにそのままミラーリングされます。すべての権利は上流プロジェクトに帰属します。</em></p></div>  <details class="mt-original"> <summary>English original / English original</summary> <div class="prose mt-original-body"><h1>rocketmq rocketmq-all-5.5.1</h1>
+<p>This maintenance release removes fastjson 1.x from the distribution (fastjson2 upgraded to 2.0.63 and DLedger bumped to 0.3.3.4), introduces a native RocksDB CqCompactionFilter with a cross-platform JNI shim, deprecates the legacy Broker DLedger mode, and delivers extensive stability and performance fixes across tiered storage, Lite Mode, Proxy, and the store layer.</p>
+<h2>Security &amp; Dependencies</h2>
+<ul>
+<li>[ISSUE #7703] Upgrade fastjson2 to 2.0.63 for security fixes by @lizhimins in https://github.com/apache/rocketmq/pull/10715</li>
+<li>[ISSUE #10651] bump DLedger to 0.3.3.4 (maintenance line) by @RongtongJin in https://github.com/apache/rocketmq/pull/10958</li>
+<li>[ISSUE #10641] Deprecate legacy Broker DLedger mode by @RongtongJin in https://github.com/apache/rocketmq/pull/10642</li>
+</ul>
+<h2>New Feature (Native RocksDB Compaction Filter)</h2>
+<p>Introduced a native ConsumeQueue compaction filter backed by a cross-platform JNI shim, replacing the previous pure-Java filter and the shaded rocketmq-rocksdb dependency with the official rocksdbjni artifact.</p>
+<ul>
+<li>[ISSUE #10334] Support native CqCompactionFilter with cross-platform JNI shim by @lizhimins in https://github.com/apache/rocketmq/pull/10335</li>
+<li>[ISSUE #10334] Make native CqCompactionFilter shim self-contained without rocksdbjni dependency by @lizhimins in https://github.com/apache/rocketmq/pull/10371</li>
+</ul>
+<h2>What's Changed</h2>
+<h3>Tiered Storage</h3>
+<ul>
+<li>[ISSUE #10462] Add memory backpressure to dispatch by @lizhimins in https://github.com/apache/rocketmq/pull/10470</li>
+<li>[ISSUE #10462] Fix concurrency bugs in tiered storage by @lizhimins in https://github.com/apache/rocketmq/pull/10471</li>
+<li>[ISSUE #10462] Optimize thread pool sizes for commit and fetch executors by @lizhimins in https://github.com/apache/rocketmq/pull/10472</li>
+<li>[ISSUE #10462] Improve error handling in tiered storage by @lizhimins in https://github.com/apache/rocketmq/pull/10473</li>
+<li>[ISSUE #10462] Standardize log format across tiered storage module by @lizhimins in https://github.com/apache/rocketmq/pull/10474</li>
+<li>[ISSUE #10462] Fix resource leaks and lifecycle issues in tiered storage by @lizhimins in https://github.com/apache/rocketmq/pull/10476</li>
+<li>[ISSUE #10572] Add dual TTL policy for tiered storage read-ahead cache by @Houlong66 in https://github.com/apache/rocketmq/pull/10573</li>
+</ul>
+<h3>Lite Mode</h3>
+<ul>
+<li>[ISSUE #10253] Fix stale wildcardGroupMap entries caused by incorrect parsing during LiteTopic wildcard unregistration by @Kris20030907 in https://github.com/apache/rocketmq/pull/10254</li>
+<li>[ISSUE #10345] fix: preserve lite topic for auto-renew receipt handles by @Kris20030907 in https://github.com/apache/rocketmq/pull/10346</li>
+<li>[ISSUE #10384] Enforce Lite exclusive subscription eviction via server-side tombstones by @f1amingo in https://github.com/apache/rocketmq/pull/10386</li>
+<li>[ISSUE #10387] Support runtime hot-reload of maxClientEventCount in LiteEventDispatcher.ClientEventSet by @f1amingo in https://github.com/apache/rocketmq/pull/10388</li>
+<li>[ISSUE #10423] Optimize LiteConsumerLagCalculator.getLagCountTopK by deferring getStoreTimestamp to topK results only by @f1amingo in https://github.com/apache/rocketmq/pull/10424</li>
+<li>[ISSUE #10450] Selective double-write in CombineConsumeQueueStore by @imzs in https://github.com/apache/rocketmq/pull/10452</li>
+<li>[ISSUE #10453] Fix unexpected decrement of lmq counter by @imzs in https://github.com/apache/rocketmq/pull/10454</li>
+<li>[ISSUE #10549] Fix lite topic reset offset: memory leak, FIFO block bypass, and offset-0 reset failure by @f1amingo in https://github.com/apache/rocketmq/pull/10550</li>
+<li>[ISSUE #10560] Remove enableLiteEventMode config switch by @f1amingo in https://github.com/apache/rocketmq/pull/10561</li>
+<li>[ISSUE #10569] Support Lite Simple Consumer on server side by @f1amingo in https://github.com/apache/rocketmq/pull/10570</li>
+<li>[ISSUE #10615] Fix missing long-polling notification under CombineConsumeQueue selective double-write by @imzs in https://github.com/apache/rocketmq/pull/10616</li>
+<li>[ISSUE #10622] Resolve ConsumerOffsetManager dynamically in LiteEventDispatcher by @f1amingo in https://github.com/apache/rocketmq/pull/10623</li>
+<li>[ISSUE #10644] Add LMQ number gauge metric to Broker observability by @f1amingo in https://github.com/apache/rocketmq/pull/10645</li>
+<li>[ISSUE #10722] Lite Topic may not be cleaned up when message store timestamp is unavailable by @f1amingo in https://github.com/apache/rocketmq/pull/10723</li>
+</ul>
+<h3>Store &amp; RocksDB</h3>
+<ul>
+<li>[ISSUE #10344] Parameterize RocksDB CQ size amplification by @RongtongJin in https://github.com/apache/rocketmq/pull/10344</li>
+<li>[ISSUE #10270] Make Pop RocksDB BlockCache size configurable via MessageStoreConfig by @lizhimins in https://github.com/apache/rocketmq/pull/10271</li>
+<li>[ISSUE #10421] Fix Timer message rocksdb use wrong cache key by @echooymxq in https://github.com/apache/rocketmq/pull/10422</li>
+<li>[ISSUE #10417] Fix stale minOffset after consumeQueue truncation by @chenxu80 in https://github.com/apache/rocketmq/pull/10418</li>
+<li>[ISSUE #10521] Use madvise(MADV_RANDOM) to disable kernel read-ahead during correctMinOffset binary search by @lizhimins in https://github.com/apache/rocketmq/pull/10523</li>
+<li>[ISSUE #10639] Reuse a per-thread scratch buffer in CommitLog.checkMessageAndReturnSize by @wang-jiahua in https://github.com/apache/rocketmq/pull/10640</li>
+<li>[ISSUE #10813] Reduce temporary allocations in the LMQ append path by @ai-yang in https://github.com/apache/rocketmq/pull/10814</li>
+<li>[ISSUE #10819] Correct misleading CommitLog buffer comment by @fuyou001 in https://github.com/apache/rocketmq/pull/10820</li>
+<li>[ISSUE #10953] Clamp shifted message count range to queue bounds by @qianye1001 in https://github.com/apache/rocketmq/pull/10954</li>
+<li>[ISSUE #10959] Fix RocksDBConsumeQueue.iterateFrom should reject offset below min offset by @ymwneu in https://github.com/apache/rocketmq/pull/10960</li>
+<li>[ISSUE #9654] Optimize the bufferLocal size of the TimerMessageStore by @ymwneu in https://github.com/apache/rocketmq/pull/9655</li>
+<li>[ISSUE #10713] Optimize ConsumerFilterManager register CPU consumption by @ymwneu in https://github.com/apache/rocketmq/pull/10714</li>
+<li>[ISSUE #10515] Fix TransactionMetricsFlushService busy spin bug by @wang-jiahua in https://github.com/apache/rocketmq/pull/10517</li>
+<li>[ISSUE #10375] Fix race condition between deleteTopic and FlushConsumeQueueService by removing getLifeCycle indirection by @f1amingo in https://github.com/apache/rocketmq/pull/10376</li>
+<li>[ISSUE #10543] resolve data race in ServiceThread wakeup mechanism by @ShadowySpirits in https://github.com/apache/rocketmq/pull/10544</li>
+</ul>
+<h3>Broker &amp; HA/Controller</h3>
+<ul>
+<li>[ISSUE #10578] Fix master election maxOffset comparator overflow by @Aias00 in https://github.com/apache/rocketmq/pull/10578</li>
+<li>[ISSUE #10604] Fix TopicConfig DataVersion not persisted in split registration by @imzs in https://github.com/apache/rocketmq/pull/10605</li>
+<li>[ISSUE #10446] Support batch deletion of topics and subscription groups in broker by @wang-jiahua in https://github.com/apache/rocketmq/pull/10448</li>
+<li>[ISSUE #10435] Fix shared ClientChannelInfo preventing inactive channel expiry by @chuanxo in https://github.com/apache/rocketmq/pull/10437</li>
+<li>[ISSUE #10438] Fix buildTopicConfigSerializeWrapper exposing live topicConfigTable reference by @chuanxo in https://github.com/apache/rocketmq/pull/10439</li>
+<li>[ISSUE #10284] Fix consumerOffset deserialization error and add test by @ChineseTony in https://github.com/apache/rocketmq/pull/10287</li>
+<li>[ISSUE #10457] Fix RocketmqColdCtr logger level by @brucelwl in https://github.com/apache/rocketmq/pull/10447</li>
+<li>[ISSUE-10546] Add default implementation for rejectRequest() in NettyRequestProcessor by @f1amingo in https://github.com/apache/rocketmq/pull/10547</li>
+<li>fix(common): compare message queue ids safely by @yuluo-yx in https://github.com/apache/rocketmq/pull/10884</li>
+<li>fix(controller): compare partial broker identities safely by @yuluo-yx in https://github.com/apache/rocketmq/pull/10886</li>
+<li>fix(controller): detect inactive raft masters by @yuluo-yx in https://github.com/apache/rocketmq/pull/10885</li>
+<li>Improve ACL 2.0 authorization context handling by @dingshuangxi888 in https://github.com/apache/rocketmq/pull/10925</li>
+</ul>
+<h3>Proxy &amp; gRPC</h3>
+<ul>
+<li>[ISSUE #10260] Reject delayed transactional messages in gRPC send path by @yx9o in https://github.com/apache/rocketmq/pull/10261</li>
+<li>[ISSUE #10274] Fix ForwardMessageToDeadLetterQueue request mapping descriptor by @Kris20030907 in https://github.com/apache/rocketmq/pull/10275</li>
+<li>[ISSUE #10276] Fix PopConsumerService changeInvisibilityDuration losing CK record when visibilityTimeout collision by @qianye1001 in https://github.com/apache/rocketmq/pull/10277</li>
+<li>[ISSUE #10280] Restore opaque when proxy remoting forward fails by @yx9o in https://github.com/apache/rocketmq/pull/10281</li>
+<li>[ISSUE #10297] Set brokerName for messages returned by proxy local POP path by @yx9o in https://github.com/apache/rocketmq/pull/10298</li>
+<li>[ISSUE #10285] Fix preserve popTime when rebuilding AckResult by @yx9o in https://github.com/apache/rocketmq/pull/10286</li>
+<li>[ISSUE #10510] Add gRPC server permit keepalive configuration by @RockteMQ-AI in https://github.com/apache/rocketmq/pull/10516</li>
+<li>[ISSUE #10661] Unregister all producer topics on gRPC client termination by @yx9o in https://github.com/apache/rocketmq/pull/10662</li>
+<li>[ISSUE #10827] fix(broker): spin for the lock on same-attemptId pop orderly retry to avoid empty response by @lizhimins in https://github.com/apache/rocketmq/pull/10828</li>
+<li>[Fix #10460]: Pre-size ProxyContext map to avoid HashMap resize on request path by @HarshMehta112 in https://github.com/apache/rocketmq/pull/10461</li>
+</ul>
+<h3>Client &amp; Remoting</h3>
+<ul>
+<li>[ISSUE #10613] Fix async request-reply RequestCallback firing multiple times by @wang-jiahua in https://github.com/apache/rocketmq/pull/10614</li>
+<li>[ISSUE #10906] Prevent duplicate MQClientInstance creation by @qianye1001 in https://github.com/apache/rocketmq/pull/10907</li>
+<li>[ISSUE #10025] Treat blank local serve address as unset by @Aias00 in https://github.com/apache/rocketmq/pull/10663</li>
+<li>[ISSUE #10522] Reduce Remoting header encoding allocation via FastCodesHeader/RocketMQSerializable optimizations by @wang-jiahua in https://github.com/apache/rocketmq/pull/10522</li>
+<li>[ISSUE #8262] Fix bitsarray off by one by @SummCoder in https://github.com/apache/rocketmq/pull/10506</li>
+<li>fix: validate message batch input by @gaoxiaolei-s59 in https://github.com/apache/rocketmq/pull/10459</li>
+<li>[ISSUE #10247] Remove duplicate remove call in InvocationChannel by @yx9o in https://github.com/apache/rocketmq/pull/10248</li>
+</ul>
+<h3>Index &amp; Query</h3>
+<ul>
+<li>[ISSUE #10268] Fix incorrect time range file selection in IndexStoreService.queryAsync by @lizhimins in https://github.com/apache/rocketmq/pull/10269</li>
+<li>[ISSUE #10291] fix queryMessage default index type by @yuz10 in https://github.com/apache/rocketmq/pull/10292</li>
+</ul>
+<h3>Observability &amp; Stability</h3>
+<ul>
+<li>[ISSUE #10266] Fix OOM caused by OpenTelemetry 1.44 OtlpGrpcMetricExporter pool race by @Houlong66 in https://github.com/apache/rocketmq/pull/10267</li>
+<li>[ISSUE #10398] Fix native memory leak on TLS certificate hot-reload by @qianye1001 in https://github.com/apache/rocketmq/pull/10399</li>
+<li>[ISSUE #10216] Fix potential NPE in EscapeBridge when topicPublishInfo is null by @SGloria in https://github.com/apache/rocketmq/pull/10507</li>
+<li>[ISSUE #10419] Fix NPE when class filter route data is missing by @yin-bo-Final in https://github.com/apache/rocketmq/pull/10420</li>
+<li>[ISSUE #10492] Add debug logging for swallowed exceptions in StatsAllSubCommand by @SGloria in https://github.com/apache/rocketmq/pull/10493</li>
+<li>[ISSUE #10441] Reduce per-RPC allocation in metrics by caching static AttributeKey instances by @wang-jiahua in https://github.com/apache/rocketmq/pull/10443</li>
+</ul>
+<h3>Performance</h3>
+<ul>
+<li>[ISSUE #10467] Reduce per-message allocation in createUniqID and valueOfMagicCode by @wang-jiahua in https://github.com/apache/rocketmq/pull/10469</li>
+<li>[ISSUE #10400] Cache Version.values() in MQVersion to avoid repeated array allocation by @qianye1001 in https://github.com/apache/rocketmq/pull/10401</li>
+<li>[ISSUE #10511] Replace Enum.values() loop with static array lookup in LanguageCode and SerializeType by @wang-jiahua in https://github.com/apache/rocketmq/pull/10513</li>
+<li>[ISSUE #10486] Add getMessageType(Map) overload to eliminate redundant properties decode by @wang-jiahua in https://github.com/apache/rocketmq/pull/10487</li>
+</ul>
+<h3>Configuration &amp; Extensibility</h3>
+<ul>
+<li>[ISSUE #10381] Make HashedWheelTimer parameters configurable in QueueLevelConsumerOrderInfoLockManager by @f1amingo in https://github.com/apache/rocketmq/pull/10382</li>
+<li>[ISSUE #10425] Revert split registration dataVersion change by @RongtongJin in https://github.com/apache/rocketmq/pull/10426</li>
+<li>[ISSUE #10817] Upgrade SpotBugs for JDK 21 compatibility by @fuyou001 in https://github.com/apache/rocketmq/pull/10818</li>
+<li>Classify BrokerShutdownTest as a medium Bazel test by @fuyou001 in https://github.com/apache/rocketmq/pull/10821</li>
+</ul>
+<h3>Testing &amp; CI</h3>
+<ul>
+<li>[ISSUE #10341] Fix Bazel CI build failure caused by Maven Central rate limiting by @lizhimins in https://github.com/apache/rocketmq/pull/10342</li>
+<li>[ISSUE #10373] Quarantine flaky tests and add detection plan docs by @lizhimins in https://github.com/apache/rocketmq/pull/10374</li>
+<li>[ISSUE #10373] Fix quarantined flaky tests and remove CI rerun workflow by @lizhimins in https://github.com/apache/rocketmq/pull/10379</li>
+<li>[ISSUE #10383] Align Bazel dependencies with Maven pom.xml by @lizhimins in https://github.com/apache/rocketmq/pull/10404</li>
+<li>[ISSUE #10389] Fix or ignore several flaky tests of PopPriorityIT by @imzs in https://github.com/apache/rocketmq/pull/10390</li>
+<li>[ISSUE #10410] Fix RocksDBOptionsFactoryTest compile failure by @RongtongJin in https://github.com/apache/rocketmq/pull/10411</li>
+<li>[ISSUE #10430] Add unit tests for srvutil package by @lsq3497 in https://github.com/apache/rocketmq/pull/10431</li>
+<li>[ISSUE #10475] Add unit tests for CleanupPolicyUtils by @quzizii in https://github.com/apache/rocketmq/pull/10475</li>
+<li>[ISSUE #10562] Optimize PopConsumerServiceTest#transferToFsStoreTest to avoid unnecessary background threads by @f1amingo in https://github.com/apache/rocketmq/pull/10563</li>
+<li>Fix flaky HATest semi-sync replication by @RongtongJin in https://github.com/apache/rocketmq/pull/10495</li>
+<li>Configure GitHub workflows to use concurrency cancel-in-progress by @apupier in https://github.com/apache/rocketmq/pull/10445</li>
+</ul>
+<h3>Documentation</h3>
+<ul>
+<li>[ISSUE #10393] Fix outdated FAQ documentation URL in FAQUrl by @majialoong in https://github.com/apache/rocketmq/pull/10394</li>
+<li>[ISSUE #10593] Rename CLusterSendMsgRTCommand to ClusterSendMsgRTCommand by @yx9o in https://github.com/apache/rocketmq/pull/10594</li>
+<li>[DOCS] Update example dependency version from 4.3.0 to 5.5.0 by @H145608 in https://github.com/apache/rocketmq/pull/10349</li>
+<li>[DOCS] Update Chinese docs dependency version from 4.3.0/4.9.1 to 5.5.0 by @H145608 in https://github.com/apache/rocketmq/pull/10358</li>
+<li>[DOCS] Fix typo in Troubleshooting.md filename by @H145608 in https://github.com/apache/rocketmq/pull/10360</li>
+<li>[DOCS] Fix typos in documentation filenames by @quzizii in https://github.com/apache/rocketmq/pull/10505</li>
+<li>docs: fix broker IP typo in startup examples by @gaoxiaolei-s59 in https://github.com/apache/rocketmq/pull/10440</li>
+<li>docs: fix broker container reference and producer typos by @gaoxiaolei-s59 in https://github.com/apache/rocketmq/pull/10449</li>
+<li>docs: fix inaccurate examples and typos across developer guides by @lsq3497 in https://github.com/apache/rocketmq/pull/10456</li>
+<li>docs: remove dead Slack invite link from README by @fancy-agent in https://github.com/apache/rocketmq/pull/10483</li>
+<li>docs: fix dead link to tiered store config in tieredstore README by @fancy-agent in https://github.com/apache/rocketmq/pull/10484</li>
+<li>docs: format README for consistent Markdown style by @skant7 in https://github.com/apache/rocketmq/pull/10551</li>
+<li>Fix outdated constructor signatures in trace documentation by @SummCoder in https://github.com/apache/rocketmq/pull/10501</li>
+<li>Update ACL mqadmin commands in Chinese doc Section 7 by @SummCoder in https://github.com/apache/rocketmq/pull/10504</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/apache/rocketmq/compare/rocketmq-all-5.5.0...rocketmq-all-5.5.1</p>
+<hr />
+<blockquote>
+<p><strong>Source</strong> <a href="https://github.com/apache/rocketmq">apache/rocketmq</a> · <code>rocketmq-all-5.5.1</code> · 2026-08-20 · <a href="https://github.com/apache/rocketmq/releases/tag/rocketmq-all-5.5.1">upstream release</a></p>
+</blockquote>
+<p><em>Mirrored verbatim for indexing. All rights belong to the upstream project.</em></p></div> </details> </div> <p class="muted" style="margin-top:var(--s8);font-size:12.5px;border-top:1px solid var(--line);padding-top:var(--s4)"> リリースノートは上流プロジェクトが公開したものです。私たちはそれらを整理し、関連付けて、バージョンを一眼で比較できるようにしています。コンテンツの権利はすべて原作者に属します。 </p> <nav class="pager" aria-label="Release navigation"> <span></span> <a href="/releases/rocketmq/rocketmq-all-5.5.0"> <span class="k">前へ →</span> <span class="t">rocketmq-all-5.5.0</span> </a> </nav> <aside class="ad-slot" aria-label="Advertisement" data-astro-cid-fgwukgf6><div class="ad-slot-label" data-astro-cid-fgwukgf6>Advertisement</div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4184355057086168" data-ad-slot="9133765584" data-ad-format="auto" data-full-width-responsive="true" data-astro-cid-fgwukgf6></ins><script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script></aside> </article> <aside class="rail"> <div class="rail-card"> <div class="rail-title">Source</div> <ul class="rail-list"> <li> <a href="https://github.com/apache/rocketmq/releases/tag/rocketmq-all-5.5.1" target="_blank" rel="noopener"> <span>GitHub で見る</span> <span class="d">↗</span> </a> </li> <li> <a href="https://github.com/apache/rocketmq" target="_blank" rel="noopener"> <span>apache/rocketmq</span> <span class="d">↗</span> </a> </li> </ul> </div> <div class="rail-card rail-toc"> <div class="rail-title">このページの目次</div> <nav> <a href="#" class>セキュリティと依存関係</a><a href="#" class>新機能 (Native RocksDB 圧縮フィルター)</a><a href="#" class>何が変わったのか</a><a href="#" class="lv3">階層型ストレージ</a><a href="#" class="lv3">ライトモード</a><a href="#" class="lv3">ストアと RocksDB</a><a href="#" class="lv3">ブローカー &amp; HA/コントローラー</a><a href="#" class="lv3">プロキシ &amp; gRPC</a><a href="#" class="lv3">Client とリモート処理</a><a href="#" class="lv3">インデックスとクエリ</a><a href="#" class="lv3">可観測性と安定性</a><a href="#" class="lv3">パフォーマンス</a><a href="#" class="lv3">構成と拡張性</a><a href="#" class="lv3">テストと CI</a><a href="#" class="lv3">ドキュメント</a> </nav> </div> <div class="rail-card"> <div class="rail-title">バージョン履歴</div> <ul class="rail-list"> <li> <a href="/releases/rocketmq/rocketmq-all-5.5.1" aria-current="true"> <span class="v">rocketmq-all-5.5.1</span> <span class="d">26-08-20</span> </a> </li><li> <a href="/releases/rocketmq/rocketmq-all-5.5.0"> <span class="v">rocketmq-all-5.5.0</span> <span class="d">26-04-10</span> </a> </li><li> <a href="/releases/rocketmq/rocketmq-all-5.4.0"> <span class="v">rocketmq-all-5.4.0</span> <span class="d">25-12-24</span> </a> </li><li> <a href="/releases/rocketmq/rocketmq-all-5.3.4"> <span class="v">rocketmq-all-5.3.4</span> <span class="d">25-11-27</span> </a> </li><li> <a href="/releases/rocketmq/rocketmq-all-5.3.3"> <span class="v">rocketmq-all-5.3.3</span> <span class="d">25-05-07</span> </a> </li><li> <a href="/releases/rocketmq/rocketmq-all-5.3.2"> <span class="v">rocketmq-all-5.3.2</span> <span class="d">25-03-08</span> </a> </li><li> <a href="/releases/rocketmq/rocketmq-all-5.3.1"> <span class="v">rocketmq-all-5.3.1</span> <span class="d">24-09-25</span> </a> </li><li> <a href="/releases/rocketmq/rocketmq-all-5.3.0"> <span class="v">rocketmq-all-5.3.0</span> <span class="d">24-07-17</span> </a> </li> </ul> <a href="/ja/releases/rocketmq" class="mono" style="display:inline-block;margin-top:var(--s3);font-size:11.5px;color:var(--ink-3)"> すべての 23 件を見る →
+</a> </div> </aside> </div> </div>  </main> <footer class="site-footer"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/ja/" class="brand" aria-label="STAGS NextStack"><span class="brand-mark" aria-hidden="true">S</span><span class="brand-main">STAGS</span><span class="brand-sub" aria-hidden="true">NextStack</span></a> <p>オープンソースのリリース インテリジェンスが毎日公開されます。</p> </div> <div class="footer-col"> <h3>追跡</h3> <ul> <li><a href="/ja/releases">リリース</a></li> <li><a href="/ja/projects">プロジェクト</a></li> <li><a href="/ja/releases.xml">RSS フィード</a></li> </ul> </div> <div class="footer-col"> <h3>アーカイブ</h3> <ul> <li><a href="/zh/release_note" hreflang="zh-Hans">中文アーカイブ</a></li> <li><a href="/zh/chapters/" hreflang="zh-Hans">技術ノート</a></li> <li><a href="/zh/downloads/">Stags Tracker</a></li> </ul> </div> <div class="footer-col"> <h3>情報</h3> <ul> <li><a href="/privacy">プライバシーポリシー</a></li> <li><a href="/releases.xml">RSS</a></li> <li><a href="/sitemap-index.xml">Sitemap</a></li> </ul> </div> </div> <div class="footer-btm"> <span>© 2026 STAGS</span> <span>Release note は上流プロジェクトに属します。</span> </div> </div> </footer> <!-- 搜索面板 --> <div class="palette-bg" data-palette-bg data-open="false"> <div class="palette" role="dialog" aria-modal="true" aria-label="リリースを検索"> <div class="palette-in"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ink-4);flex:none"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <input type="search" data-palette-input placeholder="リリース、プロジェクト、バージョンを検索…" autocomplete="off" spellcheck="false"> <span class="kbd">esc</span> </div> <ul class="palette-res" data-palette-res></ul> <div class="palette-ft"> <span>↑↓ navigate</span> <span>↵ open</span> <span style="margin-left:auto" data-palette-count></span> </div> </div> </div> <script type="module" src="/assets/Shell.astro_astro_type_script_index_0_lang.0ZkKXV47.js"></script> </body> </html>

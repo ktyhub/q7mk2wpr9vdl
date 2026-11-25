@@ -1,0 +1,968 @@
+<!DOCTYPE html><html lang="de" dir="ltr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>druid 37.0.0 — STAGS NextStack</title><meta name="description" content="Apache Druid 37.0.0 contains over 255 new features, bug fixes, performance enhancements, documentation improvements, and additional test coverage from 29 contributors."><meta name="keywords" content="Open-Source-release notes, Release-Tracker, changelog-Aggregator, Breaking Changes, Deprecation-Tracker, Kafka-Releases, Spring Boot-Releases, Kubernetes-Releases"><meta name="generator" content="Astro v5.18.2"><link rel="canonical" href="https://www.stags.cn/de/releases/druid/37.0.0/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="STAGS NextStack — releases" href="/de/releases.xml"><link rel="alternate" hreflang="en" href="https://www.stags.cn/releases/druid/37.0.0/"><link rel="alternate" hreflang="zh-Hans" href="https://www.stags.cn/releases/druid/37.0.0/"><link rel="alternate" hreflang="x-default" href="https://www.stags.cn/releases/druid/37.0.0/"><meta property="og:site_name" content="STAGS"><meta property="og:type" content="article"><meta property="og:title" content="druid 37.0.0 — STAGS NextStack"><meta property="og:description" content="Apache Druid 37.0.0 contains over 255 new features, bug fixes, performance enhancements, documentation improvements, and additional test coverage from 29 contributors."><meta property="og:url" content="https://www.stags.cn/de/releases/druid/37.0.0/"><meta property="og:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><meta property="og:locale" content="de_DE"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="ja_JP"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:locale:alternate" content="es_ES"><meta property="og:locale:alternate" content="pt_BR"><meta property="og:locale:alternate" content="ko_KR"><meta property="og:locale:alternate" content="it_IT"><meta property="og:locale:alternate" content="ru_RU"><meta property="og:locale:alternate" content="tr_TR"><meta property="og:locale:alternate" content="id_ID"><meta property="og:locale:alternate" content="vi_VN"><meta property="og:locale:alternate" content="ar_SA"><meta property="og:locale:alternate" content="sv_SE"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.stags.cn/#website","name":"STAGS","url":"https://www.stags.cn/","inLanguage":"de","description":"NextStack indexiert Release Notes aus Infrastruktur- und KI-Projekten – Breaking Changes, Deprecations und Migrationen – in einem englischsprachigen Feed.","publisher":{"@id":"https://www.stags.cn/#org"}},{"@type":"Organization","@id":"https://www.stags.cn/#org","name":"STAGS","alternateName":"NextStack","url":"https://www.stags.cn/"},{"@type":"TechArticle","@id":"https://www.stags.cn/de/releases/druid/37.0.0/#article","headline":"druid 37.0.0 release notes","datePublished":"2026-05-08","inLanguage":"en","isPartOf":{"@id":"https://www.stags.cn/#website"},"about":{"@type":"SoftwareSourceCode","codeRepository":"https://github.com/apache/druid"}}]}</script><!-- 第三方脚本的连接预热：这两个域名几乎每页都要连，
+         提前建连能省掉 DNS + TCP + TLS 一个往返（移动网络 100~300ms）。
+         AdSense 只在开关打开时预热——关掉广告后连这个域名都没必要。 --><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://pagead2.googlesyndication.com"><!-- Google AdSense：站点所有权校验与广告投放共用同一段脚本，全站只加载一次。
+         未创建广告单元时页面上不渲染任何广告容器，站点保持干净。
+         fetchpriority=low：它不参与首屏渲染，不该跟正文抢带宽。 --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184355057086168" crossorigin="anonymous" fetchpriority="low"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-RFRF1TVRMP" fetchpriority="low"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RFRF1TVRMP");
+    </script><!-- 百度统计（国内流量统计）。官方标准片段，is:inline 原样输出，
+         hm.js 动态插到首个 script 前，异步不阻塞首屏渲染。 --><script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?299e5b4e65b86ed16879bdcbe70531d6";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script><link rel="stylesheet" href="/assets/index.DQGt3qLZ.css">
+<style>.ad-slot[data-astro-cid-fgwukgf6]{margin:var(--s10) 0 0;padding-top:var(--s5);border-top:1px solid var(--line)}.ad-slot-label[data-astro-cid-fgwukgf6]{margin-bottom:var(--s3);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{display:block;min-height:100px}@media(min-width:640px){.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{min-height:250px}}
+</style></head> <body> <a class="skip" href="#main">Zum Inhalt springen</a> <header class="hdr" data-header> <div class="wrap hdr-inner"> <a href="/de/" class="brand" aria-label="STAGS NextStack — Release-Informationen für Open Source"> <span class="brand-mark" aria-hidden="true">S</span> <span class="brand-main">STAGS</span> <span class="brand-sub" aria-hidden="true">NextStack</span> </a> <nav class="nav" aria-label="Primary"> <a href="/de/releases">Releases</a><a href="/de/projects">Projekte</a> </nav>  <details class="navmenu" data-navmenu> <summary class="navmenu-btn" aria-label="Open menu"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> </summary> <div class="navmenu-panel" role="group" aria-label="Primary"> <a href="/de/releases" class="navmenu-item">Releases</a><a href="/de/projects" class="navmenu-item">Projekte</a> </div> </details> <div class="hdr-tools"> <button class="searchbtn" type="button" data-search-open aria-label="Releases durchsuchen"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <span class="lbl">Suche</span> <span class="kbd">⌘K</span> </button> <details class="langmenu" data-langmenu> <summary class="langmenu-btn" aria-label="Sprache"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"> <circle cx="12" cy="12" r="9"></circle> <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path> </svg> <span class="langmenu-cur">DE</span> <svg class="langmenu-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m2 4 4 4 4-4"></path></svg> </summary> <div class="langmenu-panel" role="group" aria-label="Sprache"> <p class="langmenu-head">Sprache</p> <a class="langmenu-item" href="/releases/druid/37.0.0/" hreflang="en" lang="en" data-on="false"> <span class="langmenu-label">English</span> <span class="langmenu-code">EN</span> </a><a class="langmenu-item" href="/zh/release_note/druid/druid_druid-37.0.0" hreflang="zh-Hans" lang="zh-CN" data-on="false"> <span class="langmenu-label">中文</span> <span class="langmenu-code">中</span> </a><a class="langmenu-item" href="/ja/releases/druid/37.0.0/" hreflang="ja" lang="ja" data-on="false"> <span class="langmenu-label">日本語</span> <span class="langmenu-code">日</span> </a><a class="langmenu-item" href="/de/releases/druid/37.0.0/" hreflang="de" lang="de" aria-current="true" data-on="true"> <span class="langmenu-label">Deutsch</span> <span class="langmenu-code">DE</span> </a><a class="langmenu-item" href="/fr/releases/druid/37.0.0/" hreflang="fr" lang="fr" data-on="false"> <span class="langmenu-label">Français</span> <span class="langmenu-code">FR</span> </a><a class="langmenu-item" href="/es/releases/druid/37.0.0/" hreflang="es" lang="es" data-on="false"> <span class="langmenu-label">Español</span> <span class="langmenu-code">ES</span> </a><a class="langmenu-item" href="/pt/releases/druid/37.0.0/" hreflang="pt-BR" lang="pt-BR" data-on="false"> <span class="langmenu-label">Português</span> <span class="langmenu-code">PT</span> </a><a class="langmenu-item" href="/ko/releases" hreflang="ko" lang="ko" data-on="false"> <span class="langmenu-label">한국어</span> <span class="langmenu-code">한</span> </a><a class="langmenu-item" href="/it/releases" hreflang="it" lang="it" data-on="false"> <span class="langmenu-label">Italiano</span> <span class="langmenu-code">IT</span> </a><a class="langmenu-item" href="/ru/releases" hreflang="ru" lang="ru" data-on="false"> <span class="langmenu-label">Русский</span> <span class="langmenu-code">RU</span> </a><a class="langmenu-item" href="/tr/releases" hreflang="tr" lang="tr" data-on="false"> <span class="langmenu-label">Türkçe</span> <span class="langmenu-code">TR</span> </a><a class="langmenu-item" href="/id/releases" hreflang="id" lang="id" data-on="false"> <span class="langmenu-label">Bahasa Indonesia</span> <span class="langmenu-code">ID</span> </a><a class="langmenu-item" href="/vi/releases" hreflang="vi" lang="vi" data-on="false"> <span class="langmenu-label">Tiếng Việt</span> <span class="langmenu-code">VI</span> </a><a class="langmenu-item" href="/ar/releases" hreflang="ar" lang="ar" data-on="false"> <span class="langmenu-label">العربية</span> <span class="langmenu-code">ع</span> </a><a class="langmenu-item" href="/sv/releases" hreflang="sv" lang="sv" data-on="false"> <span class="langmenu-label">Svenska</span> <span class="langmenu-code">SV</span> </a> </div> </details> <a class="iconlink" href="/releases.xml" aria-label="RSS"> <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"> <path d="M2 12.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM2 7.5a6.5 6.5 0 0 1 6.5 6.5h-2A4.5 4.5 0 0 0 2 9.5v-2ZM2 2.5A11.5 11.5 0 0 1 13.5 14h-2A9.5 9.5 0 0 0 2 4.5v-2Z"></path> </svg> </a> </div> </div> </header> <main id="main">  <div class="wrap"> <div class="detail"> <article> <header class="detail-hd"> <nav class="crumbs" aria-label="Breadcrumb"> <a href="/de/">Startseite</a> <span class="sep">/</span> <a href="/de/releases">Releases</a> <span class="sep">/</span> <a href="/de/releases/druid">druid</a> </nav> <h1 class="detail-title"> <span class="p">druid</span> 37.0.0 </h1> <div class="detail-meta"> <span class="chip chip--major">Major</span> <span><span class="k">Veröffentlicht</span>8. Mai 2026</span>  <span class="sep" aria-hidden="true"></span> <a href="https://github.com/apache/druid" target="_blank" rel="noopener"> <span class="k">Quelle</span>apache/druid </a>   <span class="sep" aria-hidden="true"></span> <a href="/releases/druid/37.0.0/"> Englisches Original </a>  <span class="sep" aria-hidden="true"></span> <button class="btn btn--ghost btn--sm" type="button" data-copy="https://www.stags.cn/de/releases/druid/37.0.0/">Link kopieren</button> </div> </header> <div class="prose" style="margin-top:var(--s8)"> <p class="mt-notice" role="note">Diese Seite ist maschinell übersetzt. Maßgeblich ist der englische Originaltext.</p>  <div><h1>Druide Druide-37.0.0</h1>
+<p>Apache Druid 37.0.0 enthält über 255 neue Funktionen, Fehlerbehebungen, Leistungsverbesserungen, Dokumentationsverbesserungen und zusätzliche Testabdeckung von 29 Mitwirkenden.</p>
+<p>Weitere Details, einschließlich Fehlerbehebungen, finden Sie im <a href="https://github.com/apache/druid/issues?q=is%3Aclosed+milestone%3A37.0.0+sort%3Aupdated-desc+">vollständigen Änderungssatz</a>.</p>
+<p>Lesen Sie die <a href="#upgrade-notes">Upgrade-Hinweise</a> und <a href="#inkompatible-changes">inkompatible Änderungen</a>, bevor Sie ein Upgrade auf Druid 37.0.0 durchführen.
+Wenn Sie ein Upgrade über mehrere Versionen durchführen, sehen Sie sich die Seite [Upgrade-Hinweise] (upgrade-notes.md) an, auf der Upgrade-Hinweise für die neuesten Druid-Versionen aufgeführt sind.</p>
+<h2>Wichtige Funktionen, Änderungen und veraltete Funktionen</h2>
+<p>Dieser Abschnitt enthält wichtige Informationen zu neuen und bestehenden Funktionen.</p>
+<h3>Hadoop-basierte Aufnahme</h3>
+<p>Die Unterstützung für die Hadoop-basierte Aufnahme wurde entfernt. Die Funktion wurde in Druid 34 veraltet.</p>
+<p>Verwenden Sie eine der anderen von Druid unterstützten Aufnahmemethoden, z. B. die SQL-basierte Aufnahme oder die MiddleManager-lose Aufnahme mit Kubernetes.</p>
+<p><a href="https://github.com/apache/druid/pull/19109">#19109</a></p>
+<h3>Sperrliste abfragen</h3>
+<p>Sie können jetzt den Broker API (<code>/druid/coordinator/v1/config/broker</code>) verwenden, um eine Abfrageblockliste zu erstellen, um Abfragen dynamisch nach Datenquelle, Abfragetyp oder Abfragekontext zu blockieren. Die Sperrliste wird wirksam, ohne dass Druid neu gestartet werden muss. Blockregeln verwenden die <code>AND</code>-Logik, was bedeutet, dass alle Kriterien übereinstimmen müssen.</p>
+<p>Das folgende Beispiel blockiert alle GroupBy-Abfragen für die Datenquelle <code>wikipedia</code> mit einem Abfragekontextparameter von <code>priority</code> gleich <code>0</code>:</p>
+<pre><code>POST /druid/coordinator/v1/config/broker
+  {
+    &quot;queryBlocklist&quot;: [
+      {
+        &quot;ruleName&quot;: &quot;block-wikipedia-groupbys&quot;,
+        &quot;dataSources&quot;: [&quot;wikipedia&quot;],
+        &quot;queryTypes&quot;: [&quot;groupBy&quot;],
+        &quot;contextMatches&quot;: {&quot;priority&quot;: &quot;0&quot;}
+      }
+    ]
+  }
+</code></pre>
+<p><a href="https://github.com/apache/druid/pull/19011">#19011</a></p>
+<h3>Kleinere Komprimierung für Overlord-basierte Komprimierung (experimentell)</h3>
+<p>Sie können jetzt eine geringfügige Komprimierung konfigurieren, um nur neu aufgenommene Segmente zu komprimieren und gleichzeitig vorhandene komprimierte Segmente zu aktualisieren. Wenn Druid Segmente aktualisiert, aktualisiert es die Metadaten, anstatt Ressourcen zu verwenden, um sie erneut zu komprimieren. Sie können die native Komprimierungs-Engine oder die MSQ-Task-Engine verwenden.</p>
+<p>Verwenden Sie die Komprimierungsrichtlinie <code>mostFragmentedFirst</code> und legen Sie entweder einen Prozentsatz des zeilenbasierten oder bytebasierten Schwellenwerts für die geringfügige Komprimierung fest.</p>
+<p><a href="https://github.com/apache/druid/pull/19059">#19059</a> <a href="https://github.com/apache/druid/pull/19205">#19205</a> <a href="https://github.com/apache/druid/pull/19016">#19016</a></p>
+<h3>Kaskadierende Neuindizierung (experimentell)</h3>
+<p>Mithilfe der kaskadierenden Neuindizierung können Sie jetzt altersbasierte Regeln definieren, um basierend auf dem Alter Ihrer Daten automatisch unterschiedliche Komprimierungskonfigurationen anzuwenden. Während die standardmäßige automatische Komprimierung eine einzelne flache Konfiguration auf die gesamte Datenquelle anwendet, können Sie durch die kaskadierende Neuindizierung Ihre Komprimierungseinstellungen an die Eigenschaften Ihrer Daten anpassen.</p>
+<p>Beispielsweise können Sie aktuelle Daten in stündlichen Segmenten speichern und diese nach 90 Tagen automatisch auf tägliche Segmente übertragen, um die Segmentanzahl zu reduzieren. Sie können auch eine altersbasierte Zeilenlöschung vornehmen (z. B. das Löschen von Bot-Traffic aus älteren Daten), die Komprimierungseinstellungen ändern oder mit zunehmendem Alter der Daten zu einem Rollup mit gröberer Abfragegranularität wechseln. Regeln werden inline in der Supervisor-Spezifikation definiert.</p>
+<p>Sie müssen Komprimierungs-Supervisoren mit der MSQ-Task-Engine verwenden, um die kaskadierende Neuindizierung zu verwenden.</p>
+<p><a href="https://github.com/apache/druid/pull/18939">#18939</a> <a href="https://github.com/apache/druid/pull/19213">#19213</a> <a href="https://github.com/apache/druid/pull/19106">#19106</a> <a href="https://github.com/apache/druid/pull/19078">#19078</a></p>
+<h3>Multi-Supervisor-Aufnahme</h3>
+<p>Die Multi-Supervisor-Aufnahme ist jetzt allgemein verfügbar. Sie können mehrere Stream-Supervisoren ausführen, die in dieselbe Datenquelle aufnehmen.</p>
+<p><a href="https://github.com/apache/druid/pull/18983">#18983</a></p>
+<h3>Schreibgeschützter Autorisierer</h3>
+<p>Druid wurde ein <code>ReadOnly</code>-Genehmiger hinzugefügt. Dies ist der erste globale Autorisierer für Druid. Der Autorisierer erzwingt eine globale Beschränkung für alle Nicht-READ-Vorgänge und verweigert diese unabhängig von den individuellen Benutzerberechtigungen. Mit dieser Funktion können Sie sicherstellen, dass alle Benutzer eines bestimmten Autorisierers nur auf den Lesezugriff zugreifen können.</p>
+<p>Es gibt eine bekannte Einschränkung, bei der einige Endpunkte derzeit Schreibzugriff benötigen, obwohl sie schreibgeschützt sind, wie z. B. <code>GET /druid/indexer/v1/supervisor</code>. Diese Vorgänge werden fehlschlagen.</p>
+<p><a href="https://github.com/apache/druid/pull/19243">#19243</a></p>
+<h3>Thrift-Eingabeformat</h3>
+<p>Als Teil der Thrift-Contributor-Erweiterung unterstützt Druid jetzt Thrift-codierte Daten für die Kafka- und Kinesis-Streaming-Aufnahme mit <code>InputFormat</code>. Zuvor unterstützte Druid dies durch Parser, die in Druid 37 entfernt wurden.</p>
+<p><a href="https://github.com/apache/druid/pull/19111">#19111</a></p>
+<p>Um diese Funktion nutzen zu können, müssen Sie <code>druid-thrift-extensions</code> zu Ihrer Erweiterungsladeliste hinzufügen.</p>
+<h3>Inkrementeller Cache</h3>
+<p>Der inkrementelle Segmentmetadaten-Cache (<code>useIncrementalCache</code>) ist jetzt allgemein verfügbar und standardmäßig auf <code>ifSynced</code> eingestellt. Druid blockiert Lesevorgänge aus dem Cache, bis er mindestens einmal mit dem Metadatenspeicher synchronisiert wurde, nachdem er zum Anführer geworden ist.</p>
+<p><a href="https://github.com/apache/druid/pull/19252">#19252</a></p>
+<h3>Kubernetes-basiertes Aufgabenmanagement</h3>
+<p>Diese Erweiterung ist jetzt allgemein verfügbar.</p>
+<p><a href="https://github.com/apache/druid/pull/19128">#19128</a></p>
+<h3>Dynamischer Standardabfragekontext</h3>
+<p>Sie können dem Broker jetzt standardmäßige Abfragekontextparameter als dynamische Konfiguration hinzufügen. Dadurch können Sie in Ihren Laufzeiteigenschaften festgelegte statische Standardwerte überschreiben, ohne Ihre Bereitstellung neu starten oder mehrere Abfragen einzeln aktualisieren zu müssen. Druid wendet Abfragekontextparameter basierend auf der folgenden Priorität an:</p>
+<ol>
+<li>Der in der Abfrage enthaltene Abfragekontext</li>
+<li>Der Abfragekontext wird als dynamische Konfiguration auf dem Broker festgelegt</li>
+<li>Die in den Laufzeiteigenschaften festgelegten Abfragekontextparameter</li>
+<li>Die im Lieferumfang von Druid enthaltenen Standardeinstellungen</li>
+</ol>
+<p>Beachten Sie, dass dies wie bei anderen dynamischen Broker-Konfigurationen die beste Lösung ist. In bestimmten Fällen werden die Einstellungen möglicherweise nicht angewendet
+Fälle, beispielsweise wenn ein Broker kürzlich gestartet wurde und die Konfiguration noch nicht erhalten hat, oder wenn der
+Der Makler kann den Koordinator nicht kontaktieren. Wenn ein Abfragekontextparameter für alle Ihre Abfragen von entscheidender Bedeutung ist, legen Sie ihn in den Laufzeiteigenschaften fest.</p>
+<p><a href="https://github.com/apache/druid/pull/19144">#19144</a></p>
+<h3><code>sys.queries</code>-Tabelle (experimentell)</h3>
+<p>Die neue Systemabfragetabelle bietet Informationen zu aktuell ausgeführten und kürzlich abgeschlossenen Abfragen, die die Dart-Engine verwenden. Diese Tabelle ist standardmäßig deaktiviert. Um die Tabelle zu aktivieren, legen Sie Folgendes fest:</p>
+<pre><code>druid.sql.planner.enableSysQueriesTable = true
+</code></pre>
+<p>Im Rahmen dieser Änderung unterstützt der <code>/druid/v2/sql/queries</code> API jetzt einen <code>includeComplete</code>-Parameter, der kürzlich abgeschlossene Abfragen anzeigt.</p>
+<p><a href="https://github.com/apache/druid/pull/18923">#18923</a></p>
+<h3>Automatische Verdichtung mit Verdichtungsüberwachern</h3>
+<p>Die automatische Komprimierung mithilfe von Komprimierungs-Supervisoren wurde verbessert, ist jetzt allgemein verfügbar und die empfohlene Standardeinstellung. Automatischen Komprimierungsaufgaben wird jetzt <code>auto</code> anstelle von <code>coordinator-issued</code> vorangestellt.</p>
+<p>Als Teil der Verbesserung werden Verdichtungszustände nun an einem zentralen Ort gespeichert, einer neuen <code>indexingStates</code>-Tabelle. Einzelne Segmente müssen lediglich einen eindeutigen Verweis (<code>indexing_state_fingerprint</code>) auf ihren vollständigen Komprimierungszustand speichern.</p>
+<p>Da viele Segmente in einer einzelnen Datenquelle denselben zugrunde liegenden Komprimierungsstatus aufweisen, werden die Anforderungen an die Metadatenspeicherung für die automatische Komprimierung erheblich reduziert.</p>
+<p>Aus Gründen der Abwärtskompatibilität behält Druid weiterhin den detaillierten Komprimierungsstatus in jedem Segment bei. Diese Funktionalität wird in einer zukünftigen Version entfernt.
+Sie können die Speicherung des detaillierten Komprimierungsstatus stoppen, indem Sie <code>storeCompactionStatePerSegment</code> in der Cluster-Komprimierungskonfiguration auf <code>false</code> setzen. Wenn Sie es deaktivieren und ein Downgrade durchführen müssen, muss Druid alle Segmente erneut komprimieren, die seit der Änderung der Konfiguration komprimiert wurden.</p>
+<p>Diese Änderung hat Auswirkungen auf das Upgrade der Metadatenspeicherung und des Metadaten-Cachings. Weitere Informationen finden Sie im Upgrade-Hinweis zum <a href="#metadata-storage-for-auto-compaction-with-compaction-supervisors">Metadatenspeicher für die automatische Komprimierung mit Komprimierungs-Supervisoren</a>.</p>
+<p><a href="https://github.com/apache/druid/pull/19113">#19113</a> <a href="https://github.com/apache/druid/pull/18844">#18844</a> <a href="https://github.com/apache/druid/pull/19252">#19252</a></p>
+<h3>Auswahl der Brokerstufe für Echtzeitserver</h3>
+<p>Den Brokern wurden <code>druid.broker.realtime.select.tier</code> und <code>druid.broker.realtime.balancer.type</code> hinzugefügt, um optional die Stufenauswahl- und Balancer-Strategien des Brokers für Echtzeitserver zu überschreiben. Wenn diese Eigenschaften nicht festgelegt sind (Standardeinstellung), verwenden Echtzeitserver weiterhin die vorhandenen Konfigurationen <code>druid.broker.select</code> und <code>druid.broker.balancer</code>, die sowohl für historische als auch für Echtzeitserver gelten.</p>
+<p><a href="https://github.com/apache/druid/pull/19062">#19062</a></p>
+<h3>Manuelles Broker-Routing in der Webkonsole</h3>
+<p>Sie können jetzt konfigurieren, welchen Broker der Router für von der Webkonsole ausgegebene Abfragen verwendet. Dies empfiehlt sich möglicherweise, wenn es Broker gibt, die keinen Einblick in bestimmte Datenebenen haben, und Sie wissen, dass Sie Daten abfragen, die nur auf einer bestimmten Ebene verfügbar sind.</p>
+<p>Um einen Broker anzugeben, fügen Sie die folgende Konfiguration zu <code>web-console/console-config.js</code> hinzu:</p>
+<pre><code class="language-js">consoleBrokerService: 'druid/BROKER_NAME'
+</code></pre>
+<p><a href="https://github.com/apache/druid/pull/19069">#19069</a></p>
+<h3>Konsulverlängerung</h3>
+<p>Mit der Mitwirkendenerweiterung <code>druid-consul-extensions</code> können Druid-Cluster Consul für die Diensterkennung und verwenden
+Wahl des Koordinators/Overlord-Anführers anstelle von ZooKeeper. Die Erweiterung unterstützt ACLs, TLS/mTLS und Metriken.</p>
+<p>Bevor Sie zu Consul wechseln, müssen Sie die Einstellungen vornehmen
+Clusterweit <code>druid.serverview.type=http</code> und <code>druid.indexer.runner.type=httpRemote</code>.</p>
+<p><a href="https://github.com/apache/druid/pull/18843">#18843</a></p>
+<h2>Funktionsbereich und damit verbundene Änderungen</h2>
+<p>Dieser Abschnitt enthält detaillierte release notes, getrennt nach Bereichen.</p>
+<h3>Webkonsole</h3>
+<h4>Geänderte Speicherspaltenanzeigen</h4>
+<p>Die folgenden Verbesserungen wurden an der Anzeige von Speicherspalten in der Webkonsole vorgenommen:</p>
+<ul>
+<li>Die Komprimierungskonfigurationsansicht wurde verbessert</li>
+<li><strong>Aktuelle Größe</strong> in <strong>Zugewiesene Größe</strong> umbenannt.</li>
+<li><strong>Maximale Größe</strong> in <strong>Effektive Größe</strong> umbenannt. Es wird jetzt der kleinere Wert zwischen <code>max_size</code> und <code>storage_size</code> angezeigt. Die maximale Größe wird weiterhin als Tooltip angezeigt.</li>
+<li>Nutzungsberechnung geändert, um <code>effective_size</code> zu verwenden</li>
+</ul>
+<p><a href="https://github.com/apache/druid/pull/19007">#19007</a></p>
+<h4>Weitere Verbesserungen der Webkonsole</h4>
+<p>– <code>workerDesc</code> zu <code>WorkerStats</code> hinzugefügt, was es einfacher macht, zu identifizieren, wo ein Worker ausgeführt wird <a href="https://github.com/apache/druid/pull/19171">#19171</a>
+– Die eindeutige Dart-Ausführungs-ID (<code>dartQueryId</code>) und die <code>sqlQueryId</code> wurden zum <strong>Details</strong>-Bereich in der Webkonsole hinzugefügt <a href="https://github.com/apache/druid/pull/19185">#19185</a>
+– Unterstützung für die Anzeige abgeschlossener Dart-Abfragen in der Webkonsole hinzugefügt <a href="https://github.com/apache/druid/pull/18940">#18940</a></p>
+<ul>
+<li>Ein Detaildialog zur Seite <strong>Dienste</strong> hinzugefügt <a href="https://github.com/apache/druid/pull/18960">#18960</a>
+– Symbole hinzugefügt, um anzuzeigen, wann Daten in den virtuellen Speicher geladen werden, einschließlich eines Tooltips, der alle Zähler für die Daten anzeigt <a href="https://github.com/apache/druid/pull/19010">#19010</a>
+– Unterstützung für Dart-Berichte hinzugefügt <a href="https://github.com/apache/druid/pull/18897">#18897</a>
+– Die Kriterien für aktive Worker wurden geändert: Alle Zeilen, Dateien, Bytes, Frames oder Wandzeiten ungleich Null reichen aus, um einen Worker als aktiv zu betrachten <a href="https://github.com/apache/druid/pull/19183">#19183</a>
+– Die Option <strong>Abfrage abbrechen</strong> wurde so geändert, dass sie nur angezeigt wird, wenn sich eine Abfrage im akzeptierten oder ausgeführten Zustand befindet <a href="https://github.com/apache/druid/pull/19182">#19182</a>
+– Die Reihenfolge des aktuellen Dart-Abfragebereichs wurde geändert, um Abfragen in der folgenden Reihenfolge anzuzeigen: WIRD AUSGEFÜHRT, AKZEPTIERT und dann ABGESCHLOSSEN. RUNNING- und ACCEPTED-Abfragen werden nach dem Neuesten zuerst sortiert (basierend auf dem Zeitstempel). ABGESCHLOSSENE Abfragen werden nach Endzeit sortiert <a href="https://github.com/apache/druid/pull/19237">#19237</a></li>
+</ul>
+<h3>Einnahme</h3>
+<h4>Zeichenfolgenspalten abschneiden</h4>
+<p>Verwenden Sie die <code>StringColumnFormatSpec</code>-Konfiguration, um die maximale Länge für String-Dimensionsspalten festzulegen, die Sie aufnehmen:</p>
+<ul>
+<li>Für eine bestimmte Abmessung: <code>dimensionSchema.columnFormatSpec.maxStringLength</code></li>
+<li>Für einen bestimmten Auftrag: <code>indexSpec.columnFormatSpec.maxStringLength</code></li>
+<li>Clusterweit: <code>druid.indexing.formats.maxStringLength</code></li>
+</ul>
+<p>Druid schneidet jede Zeichenfolge ab, die länger als die angegebene Länge ist. Standardmäßig werden Zeichenfolgenwerte nicht abgeschnitten.</p>
+<p><a href="https://github.com/apache/druid/pull/19146">#19146</a> <a href="https://github.com/apache/druid/pull/19258">#19258</a> (https://github.com/apache/druid/pull/19198)</p>
+<h4>Weitere Verbesserungen bei der Einnahme</h4>
+<ul>
+<li>Beschleunigte Aufgabenplanung auf dem Overlord <a href="https://github.com/apache/druid/pull/19199">#19199</a></li>
+</ul>
+<h4>SQL-basierte Aufnahme</h4>
+<h5>Weitere Verbesserungen der SQL-basierten Aufnahme</h5>
+<p>– Unterstützung für virtuelle Speicherstruktur bei der SQL-basierten Aufnahme hinzugefügt <a href="https://github.com/apache/druid/pull/18873">#18873</a>
+– Unterstützung für <code>StorageMonitor</code> hinzugefügt, sodass MSQ-Task-Engine-Aufgaben immer <code>taskId</code> und <code>groupId</code> ausgeben <a href="https://github.com/apache/druid/pull/19048">#19048</a></p>
+<ul>
+<li>Verbesserte Arbeitsstornierung <a href="https://github.com/apache/druid/pull/18931">#18931</a></li>
+<li>Verbesserte Ausnahmebehandlung <a href="https://github.com/apache/druid/pull/19234">#19234</a></li>
+</ul>
+<h4>Streaming-Aufnahme</h4>
+<h5>Die Art und Weise, wie Aufgaben für die automatische Skalierung gestartet werden, wurde geändert</h5>
+<p>Das Verhalten von <code>taskCountMin</code> und <code>taskCountStart</code> wurde für die automatische Skalierung geändert. Druid berechnet nun die anfängliche Anzahl der zu startenden Aufgaben, indem es die Konfigurationen in der folgenden Reihenfolge überprüft: <code>taskCountStart</code> (optional), dann <code>taskCount</code> (in <code>ioConfig</code>), dann <code>taskCountMin</code>.</p>
+<p><a href="https://github.com/apache/druid/pull/19091">#19091</a></p>
+<h5>Verbesserte Abfrageisolation</h5>
+<p>Parameter <code>serverPriorityToReplicas</code> zu den Streaming-Supervisor-Spezifikationen hinzugefügt (Kafka, Kinesis und Rabbit). Dies ermöglicht es Betreibern, Aufgabenreplikate für Echtzeit-Indizierungsaufgaben auf verschiedene Serverprioritäten zu verteilen. Ähnlich wie beim historischen Tiering ermöglicht dies die Abfrageisolation für gemischte Arbeitslastszenarien auf den Peons, sodass einige Aufgabenreplikate Abfragen mit bestimmten Prioritäten verarbeiten können.</p>
+<p><a href="https://github.com/apache/druid/pull/19040">#19040</a></p>
+<h5>Weitere Verbesserungen bei der Streaming-Aufnahme</h5>
+<p>– Verbesserte kostenbasierte Autoscaling-Leistung in Szenarien mit hoher Verzögerung <a href="https://github.com/apache/druid/pull/19045">#19045</a>
+– Verbesserte Leistung der Echtzeit-Aufgabenplanung durch Sortieren von Zeitplananfragen nach Priorität auf dem <code>TaskQueue</code> <a href="https://github.com/apache/druid/pull/19203">#19203</a></p>
+<h3>Abfragen</h3>
+<h4>GroupBy-Abfragekonfiguration</h4>
+<p>Es wurde eine neue GroupBy-Abfragekonfigurationseigenschaft <code>druid.query.groupBy.maxSpillFileCount</code> hinzugefügt, um die maximale Anzahl der pro Abfrage erstellten Überlaufdateien zu begrenzen. Wenn der Grenzwert überschritten wird, schlägt die Abfrage mit einer eindeutigen Fehlermeldung fehl, anstatt dass historische Knoten beim Zusammenführen von Überlaufdateien nicht mehr über genügend Speicher verfügen. Das Limit kann auch pro Abfrage mit dem Abfragekontextparameter <code>maxSpillFileCount</code> übersteuert werden.</p>
+<p><a href="https://github.com/apache/druid/pull/19141">#19141</a></p>
+<h4>Verbesserte Handhabung verschachtelter Aggregate</h4>
+<p>Druid kann jetzt zwei Aggregate mit einer Projektion dazwischen zusammenführen. Beispielsweise die folgende Abfrage:</p>
+<pre><code class="language-sql">SELECT
+  hr,
+  UPPER(t1.x) x,
+  SUM(t1.cnt) cnt,
+  MIN(t1.mn) mn,
+  MAX(t1.mx) mx
+FROM (
+  SELECT
+    floor(__time to hour) hr,
+    dim2 x,
+    COUNT(*) cnt,
+    MIN(m1 * 5) mn,
+    MAX(m1 + m2) mx
+  FROM druid.foo
+  WHERE dim2 IN ('abc', 'def', 'a', 'b', '')
+  GROUP BY 1, 2
+) t1
+WHERE t1.x IN ('abc', 'foo', 'bar', 'a', '')
+GROUP BY 1, 2
+</code></pre>
+<p>kann wie folgt vereinfacht werden:</p>
+<pre><code class="language-sql">SELECT
+  FLOOR(__time TO hour) hr,
+  UPPER(dim2) x,
+  COUNT(*) cnt,
+  MIN(m1 * 5) mn,
+  MAX(m1 + m2) mx
+FROM druid.foo
+WHERE dim2 IN ('abc', 'a', '')
+GROUP BY 1, 2
+</code></pre>
+<p><a href="https://github.com/apache/druid/pull/18498">#18498</a></p>
+<h4>Weitere Abfrageverbesserungen</h4>
+<p>– <code>durationMs</code> zu Dart-Abfrageberichten hinzugefügt <a href="https://github.com/apache/druid/pull/19169">#19169</a>
+– Verbesserte Fehlerbehandlung, sodass die Reihenfolge der Zeilensignaturspalten erhalten bleibt, wenn bei der Spaltenanalyse ein Fehler auftritt <a href="https://github.com/apache/druid/pull/19162">#19162</a>
+– Verbesserte GROUP BY-Leistung <a href="https://github.com/apache/druid/pull/18952">#18952</a>
+– Verbesserte Ausdrucksfilter, um nach Möglichkeit spezielle virtuelle Spalten zu nutzen, was zu einer besseren Leistung für die Abfrage führt <a href="https://github.com/apache/druid/pull/18965">#18965</a></p>
+<h3>Clusterverwaltung</h3>
+<h4>Neue Strategien zur Auswahl der Broker-Stufe</h4>
+<p>Betreiber können jetzt zwei neue Broker <code>TierSelectorStrategy</code>-Implementierungen konfigurieren:</p>
+<ul>
+<li><code>strict</code> – Wählt nur Server aus, deren Prioritäten mit der konfigurierten Liste übereinstimmen. Beispielkonfiguration: <code>druid.broker.select.tier=strict</code> und <code>druid.broker.select.tier.strict.priorities=[1]</code>.
+– <code>pooled</code> – Bündelt Server über die konfigurierten Prioritäten hinweg und wählt unter ihnen aus, sodass Abfragen für eine verbesserte Verfügbarkeit mehrere Prioritätsstufen verwenden können. Beispielkonfiguration: <code>druid.broker.select.tier=pooled</code> und <code>druid.broker.select.tier.pooled.priorities=[2,1]</code>.</li>
+</ul>
+<p>Sie können <code>druid.broker.realtime.select.tier</code> auch verwenden, um diese Strategien für Echtzeitserver zu konfigurieren.</p>
+<p><a href="https://github.com/apache/druid/pull/19094">#19094</a></p>
+<h4>Druidenoperator</h4>
+<p>Der Druid-Operator befindet sich jetzt in seinem eigenen Repository: <a href="https://github.com/apache/druid-operator"><code>apache/druid-operator</code></a>.</p>
+<p><a href="https://github.com/apache/druid/pull/19156">#19156</a></p>
+<h4>Kostenbasierter Autoscaling-Algorithmus</h4>
+<p>Der Algorithmus für kostenbasiertes Autoscaling wurde geändert:</p>
+<p>– Skalieren Sie aggressiver, wenn die Verzögerung pro Partition von Bedeutung ist
+– Lockern Sie das Limit für die Erhöhung der Partitionen pro Aufgabe basierend auf der Schwere der Verzögerung und dem Spielraum</p>
+<ul>
+<li>Verhalten Sie sich in der Nähe von <code>taskCountMax</code> konservativ und vermeiden Sie negative Headroom-Effekte</li>
+</ul>
+<p><a href="https://github.com/apache/druid/pull/18936">#18936</a></p>
+<h4>Weitere Verbesserungen bei der Clusterverwaltung</h4>
+<p>– <code>/status/ready</code>-Endpunkt für den Dienstzustand hinzugefügt, damit externe Lastausgleichsdienste ein ordnungsgemäßes Herunterfahren besser bewältigen können <a href="https://github.com/apache/druid/pull/19148">#19148</a>
+– Es wurde eine konfigurierbare Option zum Herunterskalieren während der Aufgabenlaufzeit für kostenbasierte Autoskalierung hinzugefügt <a href="https://github.com/apache/druid/pull/18958">#18958</a>
+– <code>storage_size</code> zu <code>sys.servers</code> hinzugefügt, um das Abrufen der Festplatten-Cache-Größe für Historicals bei Verwendung der virtuellen Speicherstruktur zu erleichtern <a href="https://github.com/apache/druid/pull/18979">#18979</a>
+– Ein Protokoll für die Berechnung der neuen Aufgabenanzahl für den kostenbasierten Autoscaler hinzugefügt <a href="https://github.com/apache/druid/pull/18929">#18929</a>
+– Die Art und Weise, wie die Skalierung berechnet wird, wurde von einer Quadratwurzel-basierten Skalierungsformel zu einer logarithmischen Formel geändert, die eine bessere Notfallwiederherstellung bei geringer Aufgabenanzahl und Millionen von Verzögerungen ermöglicht <a href="https://github.com/apache/druid/pull/18976">#18976</a>
+– Die Ladegeschwindigkeit von zwischengespeicherten Segmenten während des historischen Starts wurde verbessert <a href="https://github.com/apache/druid/pull/18489">#18489</a>
+– Verbesserte Broker-Startzeit durch Parallelisierung der Pufferinitialisierung <a href="https://github.com/apache/druid/pull/19025">#19025</a>
+– Der Stack-Trace für MSQ-Task-Engine-Worker-Fehler wurde verbessert, sodass diese erhalten bleiben <a href="https://github.com/apache/druid/pull/19049">#19049</a>
+– Die Leistung des kostenbasierten Autoscalings bei Lastverzögerungsbedingungen wurde verbessert <a href="https://github.com/apache/druid/pull/18991">#18991</a></p>
+<h3>Datenverwaltung</h3>
+<h4>Timeout-Konfiguration pro Segment</h4>
+<p>Sie können jetzt mithilfe einer dynamischen Konfiguration ein Timeout für die Segmente in einer bestimmten Datenquelle festlegen:</p>
+<pre><code>POST /druid/coordinator/v1/config/broker
+  {
+    &quot;perSegmentTimeoutConfig&quot;: {
+      &quot;my_large_datasource&quot;: { &quot;perSegmentTimeoutMs&quot;: 5000, &quot;monitorOnly&quot;: false },
+      &quot;my_new_datasource&quot;: { &quot;perSegmentTimeoutMs&quot;: 3000, &quot;monitorOnly&quot;: true }
+    }
+  }
+</code></pre>
+<p>Dies ist nützlich, wenn verschiedene Datenquellen unterschiedliche Leistungsmerkmale aufweisen – beispielsweise um längere Zeitüberschreitungen für größere Datensätze zu ermöglichen.</p>
+<p><a href="https://github.com/apache/druid/pull/19221">#19221</a></p>
+<h4>Dauerhafter Lagerreiniger</h4>
+<p>Der dauerhafte Speicherreiniger unterstützt jetzt die konfigurierbare zeitbasierte Aufbewahrung für MSQ-Abfrageergebnisse. Bisher wurden Abfrageergebnisse für alle bekannten Aufgaben beibehalten, was bei abgeschlossenen Aufgaben unzuverlässig war. Mit dieser Änderung werden Abfrageergebnisse für einen konfigurierbaren Zeitraum basierend auf dem Zeitpunkt der Aufgabenerstellung aufbewahrt.</p>
+<p>Die neue Konfigurationseigenschaft <code>druid.msq.intermediate.storage.cleaner.durationToRetain</code> steuert den Aufbewahrungszeitraum für Abfrageergebnisse. Die Standardaufbewahrungsdauer beträgt 6 Stunden.</p>
+<p><a href="https://github.com/apache/druid/pull/19074">#19074</a></p>
+<h4>Weitere Verbesserungen bei der Datenverwaltung</h4>
+<p>– Die <code>druid.storage.transfer.asyncHttpClientType</code>-Konfiguration wurde hinzugefügt, die angibt, welches asynchrone HTTP client für S3-Übertragungen verwendet werden soll: <code>crt</code> für Amazon CRT oder <code>netty</code> für Netty NIO <a href="https://github.com/apache/druid/pull/19249">#19249</a>
+– Mechanismus zum automatischen Bereinigen von Zwischendateien im HDFS-Speicher hinzugefügt <a href="https://github.com/apache/druid/pull/19187">#19187</a></p>
+<h3>Metriken und Überwachung</h3>
+<h4><code>buildRevision</code>-Feld</h4>
+<p>Alle Druid-Metriken enthalten jetzt ein <code>buildRevision</code>-Feld, um die Git-Build-Revision des Druid-Servers zu identifizieren, der eine Metrik ausgibt. Mithilfe dieser Informationen können Sie überprüfen, ob auf allen Knoten in einem Cluster die beabsichtigte Revision ausgeführt wird.</p>
+<p><a href="https://github.com/apache/druid/pull/19123">#19123</a></p>
+<h4>Überwachung des Supervisor-Status</h4>
+<p>Eine neue <code>supervisor/count</code>-Metrik wurde hinzugefügt, wenn <code>SupervisorStatsMonitor</code> in <code>druid.monitoring.monitors</code> aktiviert ist. Die Metrik meldet den Status jedes Supervisors, z. B. <code>RUNNING</code> oder <code>SUSPENDED</code>, für Prometheus, StatsD und andere Metriksysteme.</p>
+<p><a href="https://github.com/apache/druid/pull/19114">#19114</a></p>
+<h4>Verbesserte <code>groupBy</code>-Metriken</h4>
+<p><code>GroupByStatsMonitor</code> stellt jetzt die folgenden Metriken bereit:</p>
+<ul>
+<li><code>mergeBuffer/bytesUsed</code></li>
+<li><code>mergeBuffer/maxBytesUsed</code></li>
+<li><code>mergeBuffer/maxAcquisitionTimeNs</code></li>
+<li><code>groupBy/maxSpilledBytes</code></li>
+<li><code>groupBy/maxMergeDictionarySize</code></li>
+</ul>
+<p><a href="https://github.com/apache/druid/pull/18731">#18731</a> <a href="https://github.com/apache/druid/pull/18970">#18970</a> <a href="https://github.com/apache/druid/pull/18934">#18934</a></p>
+<h4>Metriken filtern</h4>
+<p>Operatoren können <code>druid.emitter.logging.shouldFilterMetrics=true</code> festlegen, um zu begrenzen, welche Metriken der Protokollierungsemitter schreibt. Optional können sie <code>druid.emitter.logging.allowedMetricsPath</code> auf eine JSON-Objektdatei festlegen, in der die Schlüssel Metriknamen sind. Eine fehlende benutzerdefinierte Datei führt zu einer Warnung und zur Verwendung des mitgelieferten <code>loggingEmitterAllowedMetrics.json</code>. Warnungen und andere nicht metrische Ereignisse werden immer protokolliert.</p>
+<p><a href="https://github.com/apache/druid/pull/19030">#19030</a> <a href="https://github.com/apache/druid/pull/19359">#19359</a></p>
+<h4>Neue Broker-Metriken</h4>
+<p><code>segment/schemaCache/rowSignature/changed</code>- und <code>segment/schemaCache/rowSignature/column/count</code>-Metriken hinzugefügt, um Ereignisse anzuzeigen, wenn der Broker die Zeilensignatur im Segmentmetadaten-Cache für jede Datenquelle initialisiert und aktualisiert.</p>
+<p><a href="https://github.com/apache/druid/pull/18966">#18966</a></p>
+<h4>Weitere Metriken und Überwachungsverbesserungen</h4>
+<p>– Die folgenden Metriken wurden zum Standard für Prometheus hinzugefügt: <code>mergeBuffer/bytesUsed</code> und <code>mergeBuffer/maxBytesUsed</code> <a href="https://github.com/apache/druid/pull/19110">#19110</a>
+– Komprimierungsmodus zur <code>compact/task/count</code>-Metrik hinzugefügt <a href="https://github.com/apache/druid/pull/19151">#19151</a>
+– Unterstützung für die Protokollierung und Ausgabe dynamischer SQL-Parameterwerte hinzugefügt <a href="https://github.com/apache/druid/pull/19067">#19067</a>
+– <code>ingest/rows/published</code> hinzugefügt, das von allen Aufgabentypen ausgegeben wird, um die Gesamtzeilenanzahl erfolgreich veröffentlichter Segmente anzugeben <a href="https://github.com/apache/druid/pull/19177">#19177</a>
+– <code>queries</code>- und <code>totalQueries</code>-Zähler hinzugefügt, die Anfragen an Echtzeitserver widerspiegeln, um Echtzeitdaten abzurufen <a href="https://github.com/apache/druid/pull/19196">#19196</a></p>
+<ul>
+<li><code>tier/storage/capacity</code>-Metrik für den Koordinator hinzugefügt. Diese Metrik spiegelt garantiert die Gesamtgröße von <code>StorageLocation</code> wider, die für alle historischen Daten in einer Ebene konfiguriert ist <a href="https://github.com/apache/druid/pull/18962">#18962</a>
+– Der MSQ-Task-Engine <code>ChannelCounters</code> wurden neue Metriken für die virtuelle Speicherstruktur hinzugefügt: <code>loadBytes</code>, <code>loadTime</code>, <code>loadWait</code> und <code>loadFiles</code> <a href="https://github.com/apache/druid/pull/18971">#18971</a></li>
+<li>Die Metriken <code>storage/virtual/hit/bytes</code>, <code>storage/virtual/hold/count</code> und <code>storage/virtual/hold/bytes</code> wurden zu <code>StorageMonitor</code> hinzugefügt
+<a href="https://github.com/apache/druid/pull/18895">#18895</a> <a href="https://github.com/apache/druid/pull/19217">#19217</a>
+– <code>supervisorId</code>-Dimension für Streaming-Aufgaben zu <code>TaskCountStatsMonitor</code> hinzugefügt <a href="https://github.com/apache/druid/pull/18920">#18920</a>
+– <code>StorageMonitor</code> so geändert, dass es immer eingeschaltet ist <a href="https://github.com/apache/druid/pull/19048">#19048</a>
+– Die Metriken für Autoscaling wurden verbessert, sodass sie alle die gleichen Metriken ausgeben: <code>supervisorId</code>, <code>dataSource</code> und <code>stream</code> <a href="https://github.com/apache/druid/pull/19097">#19097</a></li>
+</ul>
+<h3>Erweiterungen</h3>
+<h4>Kubernetes</h4>
+<p>Ein neuer <code>WebClientOptions</code>-Passthrough für den Vert.x HTTP client im <code>kubernetes-overlord-extensions</code> hinzugefügt. Operatoren können jetzt jede Eigenschaft des zugrunde liegenden Vert.x-<code>WebClientOptions</code>-Objekts mithilfe von Druid-Laufzeiteigenschaften konfigurieren. Zu den Optionen, die Sie konfigurieren können, gehören die Größe des Verbindungspools, Keep-Alive-Zeitüberschreitungen und Leerlauf-Zeitüberschreitungen. Dies ist besonders nützlich für Umgebungen mit zwischengeschalteten Load Balancern, die inaktive Verbindungen schließen. Die meisten Druid-Bereitstellungen benötigen diese Konfiguration nicht.</p>
+<p><a href="https://github.com/apache/druid/pull/19071">#19071</a></p>
+<h4>gRPC</h4>
+<p>Die gRPC-Abfrageerweiterung bricht jetzt In-Flight-Abfragen ab, wenn clients abbrechen oder die Verbindung trennen.</p>
+<p><a href="https://github.com/apache/druid/pull/19005">#19005</a></p>
+<h4>Eisberg</h4>
+<h5>GCS-Lager</h5>
+<p>Die Iceberg-Eingabequelle unterstützt jetzt GCS-Warehouses. Um diese Funktion nutzen zu können, müssen Sie zusätzlich zur Iceberg-Erweiterung die Erweiterung <code>druid-google-extensions</code> laden.
+<a href="https://github.com/apache/druid/pull/19137">#19137</a></p>
+<h5>Filter</h5>
+<p>Sie können jetzt Restfilter für Nicht-Partitionsspalten konfigurieren, wenn Sie die Iceberg-Eingabequelle verwenden. Stellen Sie <code>residualFilterMode</code> in der Iceberg-Eingabequelle auf einen der folgenden Werte ein:</p>
+<p>– <code>ignore</code>: (Standard) Erfassen Sie die verbleibenden Zeilen mit einem Warnprotokoll, sofern sie nicht durch <code>transformSpec</code> gefiltert werden.
+– <code>fail</code>: Der Aufnahmejob schlägt fehl, wenn restliche Filter erkannt werden. Damit stellen Sie sicher, dass Filter nur auf Partitionsspalten abzielen.</p>
+<p><a href="https://github.com/apache/druid/pull/18953">#18953</a></p>
+<h4>HDFS-Speicher</h4>
+<p>Unterstützung für <code>lz4</code>-Komprimierung hinzugefügt. Im Rahmen dieser Änderung sind nun die folgenden Metriken verfügbar:</p>
+<ul>
+<li><code>hdfs/pull/size</code></li>
+<li><code>hdfs/pull/duration</code></li>
+<li><code>hdfs/push/size</code></li>
+<li><code>hdfs/push/duration</code></li>
+</ul>
+<p><a href="https://github.com/apache/druid/pull/18982">#18982</a></p>
+<h2>Upgrade-Hinweise und inkompatible Änderungen</h2>
+<h3>Upgrade-Hinweise</h3>
+<h4>Hadoop-basierte Aufnahme</h4>
+<p>Die Unterstützung für die Hadoop-basierte Aufnahme wurde entfernt. Die Funktion wurde in Druid 34 veraltet.</p>
+<p>Verwenden Sie eine der anderen von Druid unterstützten Aufnahmemethoden, z. B. die SQL-basierte Aufnahme oder die MiddleManager-lose Aufnahme mit Kubernetes.</p>
+<p><a href="https://github.com/apache/druid/pull/19109">#19109</a></p>
+<h4>AWS SDK v2</h4>
+<p>Druid verwendet jetzt die AWS SDK-Version <code>2.40.0</code>, da v1 von SDK das Ende ihrer Lebensdauer erreicht hat.</p>
+<p><a href="https://github.com/apache/druid/pull/18891">#18891</a></p>
+<h4>Segment-Metadaten-Cache standardmäßig aktiviert</h4>
+<p>Ab Druid 37 ist der Segmentmetadaten-Cache standardmäßig aktiviert. Diese Funktion ermöglicht es dem Broker, vom Koordinator abgefragte Segmentmetadaten zwischenzuspeichern, anstatt Metadaten für jede Abfrage in der Tabelle <code>sys.segments</code> abrufen zu müssen. Dies verbessert die Leistung, erhöht jedoch die Speichernutzung auf Brokern.</p>
+<p>Die <code>druid.sql.planner.metadataSegmentCacheEnable</code>-Konfiguration steuert diese Funktion.</p>
+<p><a href="https://github.com/apache/druid/pull/19075">#19075</a></p>
+<h4>Parser-Änderungen</h4>
+<h5>Streaming-Aufnahme <code>parser</code></h5>
+<p>Die Unterstützung für das veraltete <code>parser</code> wurde für Streaming-Ingest-Aufgaben wie Kafka und Kinesis entfernt. Operatoren müssen nun <code>inputSource</code>/<code>inputFormat</code> im <code>ioConfig</code> der Supervisor-Spezifikation angeben, und der <code>dataSchema</code> darf keinen Parser angeben. Tun Sie dies, bevor Sie auf Druid 37 oder höher aktualisieren.</p>
+<p><a href="https://github.com/apache/druid/pull/19173">#19173</a> <a href="https://github.com/apache/druid/pull/19166">#19166</a></p>
+<h5><code>ParseSpec</code> und veraltete Parser entfernt</h5>
+<p>Der Parser für native Batch-Aufgaben und Indexierungsdienste für die Streaming-Aufnahme wurde entfernt. Verwenden Sie nach Möglichkeit stattdessen das Eingabeformat. Beachten Sie, dass <code>JavascriptParseSpec</code> und <code>JSONLowercaseParseSpec</code> keine InputFormat-Entsprechungen haben.</p>
+<p>Druid unterstützt benutzerdefinierte Textdatenformate und kann das Regex-Eingabeformat zum Parsen verwenden. Seien Sie jedoch vorsichtig, wenn Sie dies tun
+Das Parsen von Daten ist weniger effizient als das Schreiben einer nativen Java-Erweiterung <code>InputFormat</code> oder die Verwendung eines externen Stream-Prozessors. Wir freuen uns über Beiträge neuer Eingabeformate.</p>
+<p><a href="https://github.com/apache/druid/pull/19239">#19239</a></p>
+<h4>Laufende Upgrades von Druid-Versionen vor Version 0.23</h4>
+<p>Sie können kein fortlaufendes Upgrade von Versionen vor Druid 0.23 durchführen.</p>
+<p><a href="https://github.com/apache/druid/pull/18961">#18961</a></p>
+<h4>Metadatenspeicher für die automatische Komprimierung mit Komprimierungs-Supervisoren</h4>
+<p>Die automatische Komprimierung mit Supervisoren erfordert ein inkrementelles Segment-Metadaten-Caching auf dem Overlord und eine neue Metadatenspeichertabelle. Es ist keine Aktion erforderlich, wenn Sie die Standardeinstellungen für die folgenden Konfigurationen verwenden:</p>
+<ul>
+<li><code>druid.manager.segments.useIncrementalCache</code></li>
+<li><code>druid.metadata.storage.connector.createTables</code></li>
+</ul>
+<p>Wenn <code>druid.manager.segments.useIncrementalCache</code> auf <code>never</code> gesetzt ist, aktualisieren Sie es auf <code>ifSynced</code> oder <code>always</code>. Weitere Informationen zur Konfiguration finden Sie unter <a href="https://druid.apache.org/docs/latest/configuration/#segment-metadata-cache-experimental">Segment-Metadaten-Cache</a>.</p>
+<p>Wenn Sie die <code>druid.metadata.storage.connector.createTables</code>-Konfiguration auf <code>false</code> setzen, müssen Sie die Segmenttabelle manuell ändern und die <code>compactionStates</code>-Tabelle erstellen. Die Postgres-DDL wird unten als Leitfaden bereitgestellt:</p>
+<pre><code>-- create the indexing states lookup table and associated indices
+CREATE TABLE druid_indexingStates (
+    created_date VARCHAR(255) NOT NULL,
+    datasource VARCHAR(255) NOT NULL,
+    fingerprint VARCHAR(255) NOT NULL,
+    payload BYTEA NOT NULL,
+    used BOOLEAN NOT NULL,
+    pending BOOLEAN NOT NULL,
+    used_status_last_updated VARCHAR(255) NOT NULL,
+    PRIMARY KEY (fingerprint),
+  );
+
+  CREATE INDEX idx_druid_compactionStates_used ON druid_compactionStates(used, used_status_last_updated);
+</code></pre>
+<pre><code>-- modify druid_segments table to have a column for storing compaction state fingerprints
+ALTER TABLE druid_segments ADD COLUMN indexing_state_fingerprint VARCHAR(255);
+</code></pre>
+<p>Möglicherweise müssen Sie die Syntax an Ihr Tabellenbenennungspräfix und Ihr Metadatenspeicher-Backend anpassen.</p>
+<p><a href="https://github.com/apache/druid/pull/18844">#18844</a></p>
+<h4>Segmentverriegelung</h4>
+<p>Segmentsperre und <code>NumberedOverwriteShardSpec</code> sind veraltet und werden in einer zukünftigen Version entfernt. Verwenden Sie stattdessen die Zeitblocksperre. Sie können sicherstellen, dass nur die zeitliche Blocksperre verwendet wird, indem Sie <code>druid.indexer.tasklock.forceTimeChunkLock</code> auf <code>true</code> setzen, was die Standardeinstellung ist.</p>
+<p><a href="https://github.com/apache/druid/pull/19050">#19050</a></p>
+<h3>Inkompatible Änderungen</h3>
+<h4><code>defaultProcessingRate</code>-Konfiguration entfernt</h4>
+<p>Diese Konfiguration ermöglichte den Beginn von Skalierungsaktionen, bevor die ersten Metriken verfügbar wurden.</p>
+<p><a href="https://github.com/apache/druid/pull/19028">#19028</a></p>
+<h4>Frontcodierungsformat</h4>
+<p>Druid verwendet jetzt standardmäßig Version 1 des frontcodierten Formats anstelle von Version 0, wenn diese aktiviert ist. Version 1 wurde in Druid 26 eingeführt. Ein Downgrade oder Upgrade von einer Druid-Version vor 26 erfordert möglicherweise eine Neuindizierung, wenn Sie die Frontcodierung mit Version 0 aktiviert haben.</p>
+<p><a href="https://github.com/apache/druid/pull/18984">#18984</a></p>
+<h3>Entwicklerhinweise</h3>
+<p>– <code>typecheck</code> zu <code>npm run test-unit</code> hinzugefügt, um sicherzustellen, dass die Typprüfung TypeScript bei Aufrufen von <code>test-unit</code> <a href="https://github.com/apache/druid/pull/19251">#19251</a> erfolgt.
+– Den <code>dependabot</code>-Updates wurde eine 14-tägige Abklingzeit hinzugefügt, um vor noch nicht entdeckten Regressionen und Sicherheitsproblemen zu schützen <a href="https://github.com/apache/druid/pull/19241">#19241</a></p>
+<ul>
+<li><code>AGENTS.md</code> <a href="https://github.com/apache/druid/pull/19084">#19084</a> hinzugefügt
+– Anforderung zur Verwendung der [konventionellen Commit-Syntax] hinzugefügt (https://www.conventionalcommits.org/en/v1.0.0/) <a href="https://github.com/apache/druid/pull/19089">#19089</a></li>
+<li><code>checkstyle</code> von <code>3.0.0</code> auf <code>3.6.0</code> aktualisiert <a href="https://github.com/apache/druid/pull/19064">#19064</a></li>
+</ul>
+<h4>Abhängigkeitsaktualisierungen</h4>
+<p>Die folgenden Abhängigkeiten wurden aktualisiert:</p>
+<p>– <code>software.amazon.awssdk</code> zur Unterstützung von <code>WebIdentityTokenProvider</code> hinzugefügt <a href="https://github.com/apache/druid/pull/19178">#19178</a></p>
+<ul>
+<li><code>org.apache.iceberg</code> von <code>1.6.1</code> zu <code>1.7.2</code> <a href="https://github.com/apache/druid/pull/19172">#19172</a></li>
+<li>Knotenmodul <code>diff</code> von 4.0.1 bis 4.0.4 <a href="https://github.com/apache/druid/pull/18933">#18933</a></li>
+<li><code>org.apache.avro</code> von 1.11.4 zu 1.11.5 <a href="https://github.com/apache/druid/pull/19103">#19103</a></li>
+<li><code>bytebuddy</code> von <code>1.17.7</code> zu <code>1.18.3</code> <a href="https://github.com/apache/druid/pull/19000">#19000</a></li>
+<li><code>slf4j</code> von <code>2.0.16</code> zu <code>2.0.17</code> <a href="https://github.com/apache/druid/pull/18990">#18990</a></li>
+<li>Apache Commons Codec von <code>1.16.1</code> bis <code>1.17.1</code> <a href="https://github.com/apache/druid/pull/18990">#18990</a></li>
+<li><code>jacoco</code> von <code>0.8.12</code> zu <code>0.8.14</code> <a href="https://github.com/apache/druid/pull/18990">#18990</a></li>
+<li><code>docker-java-bom</code> von <code>3.6.0</code> zu <code>3.7.0</code> <a href="https://github.com/apache/druid/pull/18990">#18990</a></li>
+<li><code>assertj-core</code> von <code>3.24.2</code> zu <code>3.27.7</code> <a href="https://github.com/apache/druid/pull/18994">#18994</a></li>
+<li><code>maven-surefire-plugin</code> von <code>3.2.5</code> zu <code>3.5.4</code> <a href="https://github.com/apache/druid/pull/18847">#18847</a></li>
+<li><code>guice</code> von <code>5.1.0</code> zu <code>6.0.0</code> <a href="https://github.com/apache/druid/pull/18986">#18986</a></li>
+<li>JDK-Compiler von 11 bis 17 <a href="https://github.com/apache/druid/pull/18977">#18977</a></li>
+<li><code>vertx</code> von <code>4.5.14</code> zu <code>4.5.24</code> <a href="https://github.com/apache/druid/pull/18947">#18947</a></li>
+<li><code>fabric8</code> von <code>7.4.0</code> zu <code>7.5.2</code> <a href="https://github.com/apache/druid/pull/18947">#18947</a></li>
+<li><code>mockito</code> von <code>5.14.2</code> zu <code>5.23</code> <a href="https://github.com/apache/druid/pull/19145">#19145</a></li>
+<li><code>easymock</code> von <code>5.2.0</code> zu <code>5.6.0</code> <a href="https://github.com/apache/druid/pull/19145">#19145</a></li>
+<li><code>equalsverifier</code> von <code>3.15.8</code> zu <code>4.4.1</code> <a href="https://github.com/apache/druid/pull/19145">#19145</a></li>
+<li><code>bytebuddy</code> von <code>1.18.3</code> zu <code>1.18.5</code> <a href="https://github.com/apache/druid/pull/19145">#19145</a></li>
+<li>Hinzugefügt <code>objenesis</code> <code>3.5</code> <a href="https://github.com/apache/druid/pull/19145">#19145</a></li>
+<li><code>org.apache.zookeeper</code> von 3.8.4 zu 3.8.6 <a href="https://github.com/apache/druid/pull/19135">#19135</a></li>
+<li><code>com.lmax.disruptor</code> von <code>3.3.6</code> zu <code>3.4.4</code> <a href="https://github.com/apache/druid/pull/19122">#19122</a></li>
+<li><code>org.junit.junit-bom</code> von <code>5.13.3</code> zu <code>5.14.3</code> <a href="https://github.com/apache/druid/pull/19122">#19122</a></li>
+<li><code>io.fabric8:kubernetes-client</code> 7.5.2 → 7.6.0 <a href="https://github.com/apache/druid/pull/19071">#19071</a></li>
+<li><code>io.kubernetes:client-java</code> 19.0.0 → 25.0.0-legacy <a href="https://github.com/apache/druid/pull/19071">#19071</a></li>
+<li><code>com.squareup.okhttp3:okhttp</code> 4.12.0 → 5.3.2 <a href="https://github.com/apache/druid/pull/19071">#19071</a></li>
+<li><code>org.jetbrains.kotlin:kotlin-stdlib</code> 1.9.25 → 2.2.21 <a href="https://github.com/apache/druid/pull/19071">#19071</a></li>
+<li><code>commons-codec:commons-codec</code> 1.17.1 → 1.20.0 <a href="https://github.com/apache/druid/pull/19071">#19071</a></li>
+<li><code>org.apache.commons:commons-lang3</code> 3.19.0 → 3.20.0 <a href="https://github.com/apache/druid/pull/19071">#19071</a></li>
+<li><code>com.google.code.gson:gson</code> 2.12.0 → 2.13.2 <a href="https://github.com/apache/druid/pull/19071">#19071</a></li>
+<li><code>com.amazonaws:aws-java-sdk</code> 1.12.784 → 1.12.793 <a href="https://github.com/apache/druid/pull/19071">#19071</a></li>
+<li><code>caffeine</code> von <code>2.8.0</code> zu <code>2.9.3</code> <a href="https://github.com/apache/druid/pull/19208">#19208</a></li>
+<li><code>commons-io</code> von <code>2.17.0</code> zu <code>2.21.0</code> <a href="https://github.com/apache/druid/pull/19208">#19208</a></li>
+<li><code>commons-collections4</code> von <code>4.2</code> zu <code>4.5.0</code> <a href="https://github.com/apache/druid/pull/19208">#19208</a></li>
+<li><code>commons-compress</code> von <code>1.27.0</code> zu <code>1.28.0</code> <a href="https://github.com/apache/druid/pull/19208">#19208</a></li>
+<li><code>zstd-jni</code> von <code>1.5.2-3</code> zu <code>1.5.7-7</code> <a href="https://github.com/apache/druid/pull/19208">#19208</a></li>
+<li><code>scala-library</code> von <code>2.12.7</code> zu <code>2.13.16</code> <a href="https://github.com/apache/druid/pull/19208">#19208</a></li>
+<li><code>iceberg</code> von <code>1.7.2</code> zu <code>1.10.0</code> <a href="https://github.com/apache/druid/pull/19232">#19232</a></li>
+<li><code>parquet</code> von <code>1.15.2</code> zu <code>1.16.0</code> <a href="https://github.com/apache/druid/pull/19232">#19232</a></li>
+<li><code>avro</code> von <code>1.11.5</code> zu <code>1.12.0</code> <a href="https://github.com/apache/druid/pull/19232">#19232</a></li>
+<li><code>jackson</code> von <code>2.19.2</code> zu <code>2.20.2</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+<li><code>netty4</code> von <code>4.2.6.Final</code> zu <code>4.2.12.Final</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+<li><code>errorprone</code> von <code>2.35.1</code> zu <code>2.41.0</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+<li><code>bcprov-jdk18on</code> / <code>bcpkix-jdk18on</code> von <code>1.81</code> bis <code>1.82</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+<li><code>RoaringBitmap</code> von <code>0.9.49</code> zu <code>1.6.13</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+<li><code>jedis</code> von <code>5.1.2</code> zu <code>7.0.0</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+<li><code>snakeyaml</code> von <code>2.4</code> zu <code>2.5</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+<li><code>aircompressor</code> von <code>0.21</code> zu <code>2.0.2</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+<li><code>reflections</code> von <code>0.9.12</code> zu <code>0.10.2</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+<li><code>httpclient5</code> von <code>5.5</code> zu <code>5.5.1</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+<li><code>jakarta.activation</code> von <code>1.2.2</code> zu <code>2.0.1</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+<li><code>netty-tcnative-boringssl-static</code> von <code>2.0.73.Final</code> zu <code>2.0.75.Final</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+<li><code>maven-compiler-plugin</code> von <code>3.11.0</code> zu <code>3.14.1</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+</ul>
+<h1>Credits</h1>
+<p>@317brian
+@abhishekrb19
+@aho135
+@Akshat-Jain
+@amaechler
+@aruraghuwanshi
+@ashwintumma23
+@bsmithgall
+@capistrant
+@cecemei
+@clintropolis
+@Fly-Style
+@FrankChen021
+@gianm
+@GWphua
+@jaykanakiya
+@jtuglu1
+@kfaraz
+@kgyrtkirk
+@maytasm
+@mshahid6
+@puzpuzpuz
+@razinbouzar
+@santosh-d3vpl3x
+@sarangv
+@vogievetsky
+@vtlim
+@wuguowei1994
+@zhan7236</p>
+<hr />
+<blockquote>
+<p><strong>Quelle</strong> <a href="https://github.com/apache/druid">Apache/Druide</a> · <code>druid-37.0.0</code> · 08.05.2026 · <a href="https://github.com/apache/druid/releases/tag/druid-37.0.0">Upstream-Version</a></p>
+</blockquote>
+<p><em>Zum Indexieren wörtlich gespiegelt. Alle Rechte liegen beim Upstream-Projekt.</em></p></div>  <details class="mt-original"> <summary>Englisches Original / English original</summary> <div class="prose mt-original-body"><h1>druid druid-37.0.0</h1>
+<p>Apache Druid 37.0.0 contains over 255 new features, bug fixes, performance enhancements, documentation improvements, and additional test coverage from 29 contributors.</p>
+<p>See the <a href="https://github.com/apache/druid/issues?q=is%3Aclosed+milestone%3A37.0.0+sort%3Aupdated-desc+">complete set of changes</a> for additional details, including bug fixes.</p>
+<p>Review the <a href="#upgrade-notes">upgrade notes</a> and <a href="#incompatible-changes">incompatible changes</a> before you upgrade to Druid 37.0.0.
+If you are upgrading across multiple versions, see the <a href="upgrade-notes.md">Upgrade notes</a> page, which lists upgrade notes for the most recent Druid versions.</p>
+<h2>Important features, changes, and deprecations</h2>
+<p>This section contains important information about new and existing features.</p>
+<h3>Hadoop-based ingestion</h3>
+<p>Support for Hadoop-based ingestion has been removed. The feature was deprecated in Druid 34.</p>
+<p>Use one of Druid's other supported ingestion methods, such as SQL-based ingestion or MiddleManager-less ingestion using Kubernetes.</p>
+<p><a href="https://github.com/apache/druid/pull/19109">#19109</a></p>
+<h3>Query blocklist</h3>
+<p>You can now use the Broker API (<code>/druid/coordinator/v1/config/broker</code>) to create a query blocklist to dynamically block queries by datasource, query type, or query context. The blocklist takes effect without a restarting Druid. Block rules use <code>AND</code> logic, which means all criteria must match.</p>
+<p>The following example blocks all groupBy queries on the <code>wikipedia</code> datasource with a query context parameter of <code>priority</code> equal to <code>0</code>:</p>
+<pre><code>POST /druid/coordinator/v1/config/broker
+  {
+    &quot;queryBlocklist&quot;: [
+      {
+        &quot;ruleName&quot;: &quot;block-wikipedia-groupbys&quot;,
+        &quot;dataSources&quot;: [&quot;wikipedia&quot;],
+        &quot;queryTypes&quot;: [&quot;groupBy&quot;],
+        &quot;contextMatches&quot;: {&quot;priority&quot;: &quot;0&quot;}
+      }
+    ]
+  }
+</code></pre>
+<p><a href="https://github.com/apache/druid/pull/19011">#19011</a></p>
+<h3>Minor compaction for Overlord-based compaction (experimental)</h3>
+<p>You can now configure minor compaction to compact only newly ingested segments while upgrading existing compacted segments. When Druid upgrades segments, it updates the metadata instead of using resources to compact it again. You can use the native compaction engine or the  MSQ task engine.</p>
+<p>Use the <code>mostFragmentedFirst</code> compaction policy and set either a percentage of rows-based or byte-based threshold for minor compaction.</p>
+<p><a href="https://github.com/apache/druid/pull/19059">#19059</a> <a href="https://github.com/apache/druid/pull/19205">#19205</a> <a href="https://github.com/apache/druid/pull/19016">#19016</a></p>
+<h3>Cascading reindexing (experimental)</h3>
+<p>Using cascading reindexing, you can now define age-based rules to automatically apply different compaction configurations based on the age of your data. While standard auto-compaction applies a single flat configuration across an entire datasource, cascading reindexing lets you tailor your compaction settings to the characteristics of your data.</p>
+<p>For example, you can keep recent data in hourly segments while automatically rolling up to daily segments after 90 days to reduce segment count. You can also layer on age-based row deletion (such as dropping bot traffic from older data), change compression settings, or shift to rollup with coarser query granularity as data ages. Rules are defined inline in the supervisor spec.</p>
+<p>You must use compaction supervisors with the MSQ task engine to use cascading reindexing.</p>
+<p><a href="https://github.com/apache/druid/pull/18939">#18939</a> <a href="https://github.com/apache/druid/pull/19213">#19213</a> <a href="https://github.com/apache/druid/pull/19106">#19106</a> <a href="https://github.com/apache/druid/pull/19078">#19078</a></p>
+<h3>Multi-supervisor ingestion</h3>
+<p>Multi-supervisor ingestion is now generally available. You can run multiple stream supervisors that ingest into the same datasource.</p>
+<p><a href="https://github.com/apache/druid/pull/18983">#18983</a></p>
+<h3>Read-only authorizer</h3>
+<p>Added a <code>ReadOnly</code> authorizer to Druid. This is the first global authorizer for Druid. The authorizer enforces a global restriction on all non-READ operations, denying them regardless of individual user permissions. You can use this capability to ensure all users of a specific authorizer are limited to READ access.</p>
+<p>There is a known limitation where some endpoints currently require WRITE access despite being READ-only, such as <code>GET /druid/indexer/v1/supervisor</code>. These operations will fail.</p>
+<p><a href="https://github.com/apache/druid/pull/19243">#19243</a></p>
+<h3>Thrift input format</h3>
+<p>As part of the Thrift contributor extension, Druid now supports Thrift-encoded data for Kafka and Kinesis streaming ingestion using <code>InputFormat</code>. Previously, Druid  supported this through parsers, which have been removed in Druid 37.</p>
+<p><a href="https://github.com/apache/druid/pull/19111">#19111</a></p>
+<p>To use this feature, you must add <code>druid-thrift-extensions</code> to your extension load list.</p>
+<h3>Incremental cache</h3>
+<p>Incremental segment metadata cache (<code>useIncrementalCache</code>) is now generally available and defaults to <code>ifSynced</code>. Druid blocks reads from the cache until it has synced with the metadata store at least once after becoming leader.</p>
+<p><a href="https://github.com/apache/druid/pull/19252">#19252</a></p>
+<h3>Kubernetes-based task management</h3>
+<p>This extension is now generally available.</p>
+<p><a href="https://github.com/apache/druid/pull/19128">#19128</a></p>
+<h3>Dynamic default query context</h3>
+<p>You can now add default query context parameters as a dynamic configuration to the Broker. This allows you to override static defaults set in your runtime properties without restarting your deployment or having to update multiple queries individually. Druid applies query context parameters based on the following priority:</p>
+<ol>
+<li>The query context included with the query</li>
+<li>The query context set as a dynamic configuration on the Broker</li>
+<li>The query context parameters set in the runtime properties</li>
+<li>The defaults that ship with Druid</li>
+</ol>
+<p>Note that like other Broker dynamic configuration, this is best-effort. Settings may not be applied in certain
+cases, such as when a Broker has recently started and hasn't received the configuration yet, or if the
+Broker can't contact the Coordinator. If a query context parameter is critical for all your queries, set it in the runtime properties.</p>
+<p><a href="https://github.com/apache/druid/pull/19144">#19144</a></p>
+<h3><code>sys.queries</code> table (experimental)</h3>
+<p>The new system queries table provides information about currently running and recently completed queries that use the Dart engine. This table is off by default. To enable the table, set the following:</p>
+<pre><code>druid.sql.planner.enableSysQueriesTable = true
+</code></pre>
+<p>As part of this change, the <code>/druid/v2/sql/queries</code> API now supports an <code>includeComplete</code> parameter that shows recently completed queries.</p>
+<p><a href="https://github.com/apache/druid/pull/18923">#18923</a></p>
+<h3>Auto-compaction with compaction supervisors</h3>
+<p>Auto-compaction using compaction supervisors has been improved, now generally available, and the recommended default. Automatic compaction tasks are now prefixed with <code>auto</code> instead of <code>coordinator-issued</code>.</p>
+<p>As part of the improvement compaction states are now stored in a central location, a new <code>indexingStates</code> table. Individual segments only need to store a unique reference (<code>indexing_state_fingerprint</code>) to their full compaction state.</p>
+<p>Since many segments in a single datasource share the same underlying compaction state, this greatly reduces metadata storage requirements for automatic compaction.</p>
+<p>For backwards compatibility, Druid continues to persist the detailed compaction state in each segment. This functionality will be removed in a future release.</p>
+<p>You can stop storing detailed compaction state by setting <code>storeCompactionStatePerSegment</code> to <code>false</code> in the cluster compaction config. If you turn it off and need to downgrade, Druid needs to re-compact any segments that have been compacted since you changed the config.</p>
+<p>This change has upgrade impacts for metadata storage and metadata caching. For more information, see the <a href="#metadata-storage-for-auto-compaction-with-compaction-supervisors">Metadata storage for auto-compaction with compaction supervisors</a> upgrade note.</p>
+<p><a href="https://github.com/apache/druid/pull/19113">#19113</a> <a href="https://github.com/apache/druid/pull/18844">#18844</a> <a href="https://github.com/apache/druid/pull/19252">#19252</a></p>
+<h3>Broker tier selection for realtime servers</h3>
+<p>Added <code>druid.broker.realtime.select.tier</code> and <code>druid.broker.realtime.balancer.type</code> on the Brokers to optionally override the Broker’s tier selection and balancer strategies for realtime servers. If these properties are not set (the default), realtime servers continue to use the existing <code>druid.broker.select</code> and <code>druid.broker.balancer</code> configurations that apply to both historical and realtime servers.</p>
+<p><a href="https://github.com/apache/druid/pull/19062">#19062</a></p>
+<h3>Manual Broker routing in the web console</h3>
+<p>You can now configure which Broker the Router uses for queries issued from the web console. You may want to do this if there are Brokers that don't have visibility into certain data tiers, and you know you're querying data available only on a certain tier.</p>
+<p>To specify a Broker, add the following config to <code>web-console/console-config.js</code>:</p>
+<pre><code class="language-js">consoleBrokerService: 'druid/BROKER_NAME'
+</code></pre>
+<p><a href="https://github.com/apache/druid/pull/19069">#19069</a></p>
+<h3>Consul extension</h3>
+<p>The contributor extension <code>druid-consul-extensions</code> lets Druid clusters use Consul for service discovery and
+Coordinator/Overlord leader election instead of ZooKeeper. The extension supports ACLs, TLS/mTLS, and metrics.</p>
+<p>Before you switch to Consul, you need to set
+<code>druid.serverview.type=http</code> and <code>druid.indexer.runner.type=httpRemote</code> cluster wide.</p>
+<p><a href="https://github.com/apache/druid/pull/18843">#18843</a></p>
+<h2>Functional area and related changes</h2>
+<p>This section contains detailed release notes separated by areas.</p>
+<h3>Web console</h3>
+<h4>Changed storage column displays</h4>
+<p>The following improvements have been made to how storage columns are displayed in the web console:</p>
+<ul>
+<li>Improved the compaction config view to</li>
+<li>Renamed <strong>Current size</strong> to <strong>Assigned size</strong>.</li>
+<li>Renamed <strong>Max size</strong> to <strong>Effective size</strong>. It now displays the smaller value between <code>max_size</code> and <code>storage_size</code>. The max size is still shown as a tooltip.</li>
+<li>Changed usage calculation to use <code>effective_size</code></li>
+</ul>
+<p><a href="https://github.com/apache/druid/pull/19007">#19007</a></p>
+<h4>Other web console improvements</h4>
+<ul>
+<li>Added <code>workerDesc</code> to <code>WorkerStats</code>, which makes it easier to identify where a worker is running <a href="https://github.com/apache/druid/pull/19171">#19171</a></li>
+<li>Added the Dart unique execution ID (<code>dartQueryId</code>) and the <code>sqlQueryId</code> to the <strong>Details</strong> pane in the web console <a href="https://github.com/apache/druid/pull/19185">#19185</a></li>
+<li>Added support for showing completed Dart queries in the web console <a href="https://github.com/apache/druid/pull/18940">#18940</a></li>
+<li>Added a detail dialog to the <strong>Services</strong> page <a href="https://github.com/apache/druid/pull/18960">#18960</a></li>
+<li>Added icons to indicate when data is loaded into virtual storage, including a tooltip that shows all the counters for the data <a href="https://github.com/apache/druid/pull/19010">#19010</a></li>
+<li>Added support for Dart reports <a href="https://github.com/apache/druid/pull/18897">#18897</a></li>
+<li>Changed the criteria for active workers: any nonzero rows, files, bytes, frames, or wall time is enough to consider a worker active <a href="https://github.com/apache/druid/pull/19183">#19183</a></li>
+<li>Changed the <strong>Cancel query</strong> option to show only if a query is in an accepted or running state <a href="https://github.com/apache/druid/pull/19182">#19182</a></li>
+<li>Changed the ordering of the current Dart queries panel to show queries in the following order: RUNNING, ACCEPTED, and then COMPLETED. RUNNING and ACCEPTED queries are ordered by the most recent first (based on timestamp). COMPLETED queries are sorted by finish time <a href="https://github.com/apache/druid/pull/19237">#19237</a></li>
+</ul>
+<h3>Ingestion</h3>
+<h4>Truncate string columns</h4>
+<p>Use the <code>StringColumnFormatSpec</code> config to set the maximum length for string dimension columns you ingest:</p>
+<ul>
+<li>For a specific dimension: <code>dimensionSchema.columnFormatSpec.maxStringLength</code></li>
+<li>For a specific job: <code>indexSpec.columnFormatSpec.maxStringLength</code></li>
+<li>Cluster-wide: <code>druid.indexing.formats.maxStringLength</code></li>
+</ul>
+<p>Druid truncates any string longer than the specified length. The default is to not truncate string values.</p>
+<p><a href="https://github.com/apache/druid/pull/19146">#19146</a> <a href="https://github.com/apache/druid/pull/19258">#19258</a> (https://github.com/apache/druid/pull/19198)</p>
+<h4>Other ingestion improvements</h4>
+<ul>
+<li>Sped up task scheduling on the Overlord <a href="https://github.com/apache/druid/pull/19199">#19199</a></li>
+</ul>
+<h4>SQL-based ingestion</h4>
+<h5>Other SQL-based ingestion improvements</h5>
+<ul>
+<li>Added support for virtual storage fabric when performing SQL-based ingestion <a href="https://github.com/apache/druid/pull/18873">#18873</a></li>
+<li>Added support for <code>StorageMonitor</code> so that MSQ task engine tasks always emit <code>taskId</code> and <code>groupId</code> <a href="https://github.com/apache/druid/pull/19048">#19048</a></li>
+<li>Improved worker cancellation <a href="https://github.com/apache/druid/pull/18931">#18931</a></li>
+<li>Improved exception handling <a href="https://github.com/apache/druid/pull/19234">#19234</a></li>
+</ul>
+<h4>Streaming ingestion</h4>
+<h5>Changed how tasks get launched for autoscaling</h5>
+<p>The behavior of <code>taskCountMin</code> and <code>taskCountStart</code> has been changed for autoscaling. Druid now computes the initial number of tasks to launch by checking the configs in the following order: <code>taskCountStart</code> (optional), then <code>taskCount</code> (in <code>ioConfig</code>), then <code>taskCountMin</code>.</p>
+<p><a href="https://github.com/apache/druid/pull/19091">#19091</a></p>
+<h5>Improved query isolation</h5>
+<p>Added <code>serverPriorityToReplicas</code> parameter to the streaming supervisor specs (Kafka, Kinesis, and Rabbit). This allows operators to distribute task replicas across different server priorities for realtime indexing tasks. Similar to Historical tiering, this enables query isolation for mixed workload scenarios on the Peons, allowing some task replicas to handle queries of specific priorities.</p>
+<p><a href="https://github.com/apache/druid/pull/19040">#19040</a></p>
+<h5>Other streaming ingestion improvements</h5>
+<ul>
+<li>Improved cost-based autoscaler performance in high lag scenarios <a href="https://github.com/apache/druid/pull/19045">#19045</a></li>
+<li>Improved the performance of realtime task scheduling by ordering schedule requests by priority on the <code>TaskQueue</code> <a href="https://github.com/apache/druid/pull/19203">#19203</a></li>
+</ul>
+<h3>Querying</h3>
+<h4>groupBy query configuration</h4>
+<p>Added a new groupBy query configuration property <code>druid.query.groupBy.maxSpillFileCount</code> to limit the maximum number of spill files created per query. When the limit is exceeded, the query fails with a clear error message instead of causing Historical nodes to run out of memory during spill file merging. The limit can also be overridden per query using the query context parameter <code>maxSpillFileCount</code>.</p>
+<p><a href="https://github.com/apache/druid/pull/19141">#19141</a></p>
+<h4>Improved handling of nested aggregates</h4>
+<p>Druid can now merge two aggregates with a projection between them. For example, the following query:</p>
+<pre><code class="language-sql">SELECT
+  hr,
+  UPPER(t1.x) x,
+  SUM(t1.cnt) cnt,
+  MIN(t1.mn) mn,
+  MAX(t1.mx) mx
+FROM (
+  SELECT
+    floor(__time to hour) hr,
+    dim2 x,
+    COUNT(*) cnt,
+    MIN(m1 * 5) mn,
+    MAX(m1 + m2) mx
+  FROM druid.foo
+  WHERE dim2 IN ('abc', 'def', 'a', 'b', '')
+  GROUP BY 1, 2
+) t1
+WHERE t1.x IN ('abc', 'foo', 'bar', 'a', '')
+GROUP BY 1, 2
+</code></pre>
+<p>can be simplified to the following:</p>
+<pre><code class="language-sql">SELECT
+  FLOOR(__time TO hour) hr,
+  UPPER(dim2) x,
+  COUNT(*) cnt,
+  MIN(m1 * 5) mn,
+  MAX(m1 + m2) mx
+FROM druid.foo
+WHERE dim2 IN ('abc', 'a', '')
+GROUP BY 1, 2
+</code></pre>
+<p><a href="https://github.com/apache/druid/pull/18498">#18498</a></p>
+<h4>Other querying improvements</h4>
+<ul>
+<li>Added <code>durationMs</code> to Dart query reports <a href="https://github.com/apache/druid/pull/19169">#19169</a></li>
+<li>Improved error handling so that row signature column order is preserved when column analysis encounters an error <a href="https://github.com/apache/druid/pull/19162">#19162</a></li>
+<li>Improved GROUP BY performance <a href="https://github.com/apache/druid/pull/18952">#18952</a></li>
+<li>Improved expression filters to take advantage of specialized virtual columns when possible, resulting in better performance for the query <a href="https://github.com/apache/druid/pull/18965">#18965</a></li>
+</ul>
+<h3>Cluster management</h3>
+<h4>New Broker tier selection strategies</h4>
+<p>Operators can now configure two new Broker <code>TierSelectorStrategy</code> implementations:</p>
+<ul>
+<li><code>strict</code> - Only selects servers whose priorities match the configured list. Example configuration: <code>druid.broker.select.tier=strict</code> and <code>druid.broker.select.tier.strict.priorities=[1]</code>.</li>
+<li><code>pooled</code> - Pools servers across the configured priorities and selects among them, allowing queries to use multiple priority tiers for improved availability. Example configuration: <code>druid.broker.select.tier=pooled</code> and <code>druid.broker.select.tier.pooled.priorities=[2,1]</code>.</li>
+</ul>
+<p>You can also use <code>druid.broker.realtime.select.tier</code> to  configure these strategies for realtime servers.</p>
+<p><a href="https://github.com/apache/druid/pull/19094">#19094</a></p>
+<h4>Druid operator</h4>
+<p>The Druid operator now resides in its own repository: <a href="https://github.com/apache/druid-operator"><code>apache/druid-operator</code></a>.</p>
+<p><a href="https://github.com/apache/druid/pull/19156">#19156</a></p>
+<h4>Cost-based autoscaler algorithm</h4>
+<p>The algorithm for cost-based autoscaling has been changed:</p>
+<ul>
+<li>Scale up more aggressively when per-partition lag is meaningful</li>
+<li>Relax the partitions-per-task increase limit based on lag severity and headroom</li>
+<li>Keep behavior conservative near <code>taskCountMax</code> and avoid negative headroom effects</li>
+</ul>
+<p><a href="https://github.com/apache/druid/pull/18936">#18936</a></p>
+<h4>Other cluster management improvements</h4>
+<ul>
+<li>Added <code>/status/ready</code> endpoint for service health so that external load balancers can handle a graceful shutdown better <a href="https://github.com/apache/druid/pull/19148">#19148</a></li>
+<li>Added a configurable option to scale-down during task run time for cost-based autoscaler <a href="https://github.com/apache/druid/pull/18958">#18958</a></li>
+<li>Added <code>storage_size</code> to <code>sys.servers</code> to facilitate retrieving disk cache size for Historicals when using the virtual storage fabric <a href="https://github.com/apache/druid/pull/18979">#18979</a></li>
+<li>Added a log for new task count computation for the cost-based auto scaler <a href="https://github.com/apache/druid/pull/18929">#18929</a></li>
+<li>Changed how the scaling is calculated from a square root-based scaling formula to a logarithmic formula that provides better emergency recovery at low task counts and millions of lag <a href="https://github.com/apache/druid/pull/18976">#18976</a></li>
+<li>Improved the load speed of cached segments during Historical startup <a href="https://github.com/apache/druid/pull/18489">#18489</a></li>
+<li>Improved Broker startup time by parallelizing buffer initialization <a href="https://github.com/apache/druid/pull/19025">#19025</a></li>
+<li>Improved the stack trace for MSQ task engine worker failures so that they're preserved <a href="https://github.com/apache/druid/pull/19049">#19049</a></li>
+<li>Improved the performance of the cost-based autoscaler during loaded lag conditions <a href="https://github.com/apache/druid/pull/18991">#18991</a></li>
+</ul>
+<h3>Data management</h3>
+<h4>Per-segment timeout configuration</h4>
+<p>You can now set a timeout for the segments in a specific datasource using a dynamic configuration:</p>
+<pre><code>POST /druid/coordinator/v1/config/broker
+  {
+    &quot;perSegmentTimeoutConfig&quot;: {
+      &quot;my_large_datasource&quot;: { &quot;perSegmentTimeoutMs&quot;: 5000, &quot;monitorOnly&quot;: false },
+      &quot;my_new_datasource&quot;: { &quot;perSegmentTimeoutMs&quot;: 3000, &quot;monitorOnly&quot;: true }
+    }
+  }
+</code></pre>
+<p>This is useful when different datasources have different performance characteristics — for example, allowing longer timeouts for larger datasets.</p>
+<p><a href="https://github.com/apache/druid/pull/19221">#19221</a></p>
+<h4>Durable storage cleaner</h4>
+<p>The durable storage cleaner now supports configurable time-based retention for MSQ query results. Previously, query results were retained for all known tasks, which was unreliable for completed tasks. With this change, query results are retained for a configurable time period based on the task creation time.</p>
+<p>The new configuration property <code>druid.msq.intermediate.storage.cleaner.durationToRetain</code> controls the retention period for query results. The default retention period is 6 hours.</p>
+<p><a href="https://github.com/apache/druid/pull/19074">#19074</a></p>
+<h4>Other data management improvements</h4>
+<ul>
+<li>Added the <code>druid.storage.transfer.asyncHttpClientType</code> config that specifies which async HTTP client to use for S3 transfers: <code>crt</code> for Amazon CRT or <code>netty</code> for Netty NIO <a href="https://github.com/apache/druid/pull/19249">#19249</a></li>
+<li>Added a mechanism to automatically clean up intermediary files on HDFS storage <a href="https://github.com/apache/druid/pull/19187">#19187</a></li>
+</ul>
+<h3>Metrics and monitoring</h3>
+<h4><code>buildRevision</code> field</h4>
+<p>All Druid metrics now include a <code>buildRevision</code> field to help identify the Git build revision of the Druid server emitting a metric. You can use this information to verify that all nodes in a cluster are running the intended revision.</p>
+<p><a href="https://github.com/apache/druid/pull/19123">#19123</a></p>
+<h4>Monitoring supervisor state</h4>
+<p>Added a new <code>supervisor/count</code> metric when <code>SupervisorStatsMonitor</code> is enabled in <code>druid.monitoring.monitors</code>. The metric reports each supervisor’s state, such as <code>RUNNING</code> or <code>SUSPENDED</code>, for Prometheus, StatsD, and other metric systems.</p>
+<p><a href="https://github.com/apache/druid/pull/19114">#19114</a></p>
+<h4>Improved <code>groupBy</code> metrics</h4>
+<p><code>GroupByStatsMonitor</code> now provides the following metrics:</p>
+<ul>
+<li><code>mergeBuffer/bytesUsed</code></li>
+<li><code>mergeBuffer/maxBytesUsed</code></li>
+<li><code>mergeBuffer/maxAcquisitionTimeNs</code></li>
+<li><code>groupBy/maxSpilledBytes</code></li>
+<li><code>groupBy/maxMergeDictionarySize</code></li>
+</ul>
+<p><a href="https://github.com/apache/druid/pull/18731">#18731</a> <a href="https://github.com/apache/druid/pull/18970">#18970</a> <a href="https://github.com/apache/druid/pull/18934">#18934</a></p>
+<h4>Filtering metrics</h4>
+<p>Operators can set <code>druid.emitter.logging.shouldFilterMetrics=true</code> to limit which metrics the logging emitter writes. Optionally, they can set <code>druid.emitter.logging.allowedMetricsPath</code> to a JSON object file where the keys are metric names. A missing custom file results in a warning and use of the bundled <code>loggingEmitterAllowedMetrics.json</code>. Alerts and other non-metric events are always logged.</p>
+<p><a href="https://github.com/apache/druid/pull/19030">#19030</a> <a href="https://github.com/apache/druid/pull/19359">#19359</a></p>
+<h4>New Broker metrics</h4>
+<p>Added <code>segment/schemaCache/rowSignature/changed</code> and <code>segment/schemaCache/rowSignature/column/count</code> metrics to expose events when the Broker initializes and updates the row signature in the segment metadata cache for each datasource.</p>
+<p><a href="https://github.com/apache/druid/pull/18966">#18966</a></p>
+<h4>Other metrics and monitoring improvements</h4>
+<ul>
+<li>Added the following metrics to the default for Prometheus: <code>mergeBuffer/bytesUsed</code> and <code>mergeBuffer/maxBytesUsed</code> <a href="https://github.com/apache/druid/pull/19110">#19110</a></li>
+<li>Added compaction mode to the <code>compact/task/count</code> metric <a href="https://github.com/apache/druid/pull/19151">#19151</a></li>
+<li>Added support for logging and emitting SQL dynamic parameter values <a href="https://github.com/apache/druid/pull/19067">#19067</a></li>
+<li>Added <code>ingest/rows/published</code>, which all task types emit to denote the total row count of successfully published segments <a href="https://github.com/apache/druid/pull/19177">#19177</a></li>
+<li>Added <code>queries</code> and <code>totalQueries</code> counters, which reflect queries made to realtime servers to retrieve realtime data <a href="https://github.com/apache/druid/pull/19196">#19196</a></li>
+<li>Added <code>tier/storage/capacity</code> metric for the Coordinator. This metric is guaranteed to reflect the total <code>StorageLocation</code> size configured across all Historicals in a tier <a href="https://github.com/apache/druid/pull/18962">#18962</a></li>
+<li>Added new metrics for virtual storage fabric to the MSQ task engine <code>ChannelCounters</code>: <code>loadBytes</code>, <code>loadTime</code>, <code>loadWait</code>, and <code>loadFiles</code> <a href="https://github.com/apache/druid/pull/18971">#18971</a></li>
+<li>Added <code>storage/virtual/hit/bytes</code>, <code>storage/virtual/hold/count</code> and <code>storage/virtual/hold/bytes</code> metric to <code>StorageMonitor</code>
+<a href="https://github.com/apache/druid/pull/18895">#18895</a> <a href="https://github.com/apache/druid/pull/19217">#19217</a></li>
+<li>Added <code>supervisorId</code> dimension for streaming tasks to <code>TaskCountStatsMonitor</code> <a href="https://github.com/apache/druid/pull/18920">#18920</a></li>
+<li>Changed <code>StorageMonitor</code> to always be on <a href="https://github.com/apache/druid/pull/19048">#19048</a></li>
+<li>Improved the metrics for autoscalers, so that they all emit the same metrics: <code>supervisorId</code>, <code>dataSource</code>, and <code>stream</code> <a href="https://github.com/apache/druid/pull/19097">#19097</a></li>
+</ul>
+<h3>Extensions</h3>
+<h4>Kubernetes</h4>
+<p>Added a new <code>WebClientOptions</code> pass-through for the Vert.x HTTP client in the <code>kubernetes-overlord-extensions</code>. Operators can now configure any property on the underlying Vert.x <code>WebClientOptions</code> object by using Druid runtime properties. Some of the options you can configure include connection pool size, keep-alive timeouts, and idle timeouts. This is particularly useful for environments with intermediate load balancers that close idle connections. Most Druid deployments will not need this configuration.</p>
+<p><a href="https://github.com/apache/druid/pull/19071">#19071</a></p>
+<h4>gRPC</h4>
+<p>The gRPC query extension now cancels in-flight queries when clients cancel or disconnect.</p>
+<p><a href="https://github.com/apache/druid/pull/19005">#19005</a></p>
+<h4>Iceberg</h4>
+<h5>GCS warehouse</h5>
+<p>The Iceberg input source now supports GCS warehouses. To use this feature, you must load the <code>druid-google-extensions</code> extension in addition to the Iceberg extension.
+<a href="https://github.com/apache/druid/pull/19137">#19137</a></p>
+<h5>Filters</h5>
+<p>You can now configure residual filters for non-partition columns when using the Iceberg input source. Set <code>residualFilterMode</code> in the Iceberg input source to one of the following:</p>
+<ul>
+<li><code>ignore</code>: (default) Ingest the residual rows with a warning log unless filtered by <code>transformSpec</code>.</li>
+<li><code>fail</code>: Fail the ingestion job when residual filters are detected. Use this to ensure that filters only target partition columns.</li>
+</ul>
+<p><a href="https://github.com/apache/druid/pull/18953">#18953</a></p>
+<h4>HDFS storage</h4>
+<p>Added support for <code>lz4</code> compression. As part of this change, the following metrics are now available:</p>
+<ul>
+<li><code>hdfs/pull/size</code></li>
+<li><code>hdfs/pull/duration</code></li>
+<li><code>hdfs/push/size</code></li>
+<li><code>hdfs/push/duration</code></li>
+</ul>
+<p><a href="https://github.com/apache/druid/pull/18982">#18982</a></p>
+<h2>Upgrade notes and incompatible changes</h2>
+<h3>Upgrade notes</h3>
+<h4>Hadoop-based ingestion</h4>
+<p>Support for Hadoop-based ingestion has been removed. The feature was deprecated in Druid 34.</p>
+<p>Use one of Druid's other supported ingestion methods, such as SQL-based ingestion or MiddleManager-less ingestion using Kubernetes.</p>
+<p><a href="https://github.com/apache/druid/pull/19109">#19109</a></p>
+<h4>AWS SDK v2</h4>
+<p>Druid now uses AWS SDK version <code>2.40.0</code> since v1 of the SDK is at end of life.</p>
+<p><a href="https://github.com/apache/druid/pull/18891">#18891</a></p>
+<h4>Segment metadata cache on by default</h4>
+<p>Starting in Druid 37, the segment metadata cache is on by default. This feature allows the Broker to cache segment metadata polled from the Coordinator, rather than having to fetch metadata for every query against the <code>sys.segments</code> table. This improves performance but increases memory usage on Brokers.</p>
+<p>The <code>druid.sql.planner.metadataSegmentCacheEnable</code> config controls this feature.</p>
+<p><a href="https://github.com/apache/druid/pull/19075">#19075</a></p>
+<h4>Parser changes</h4>
+<h5>Streaming ingestion <code>parser</code></h5>
+<p>Support for the deprecated <code>parser</code> has been removed for streaming ingest tasks such as Kafka and Kinesis. Operators must now specify <code>inputSource</code>/<code>inputFormat</code> on the <code>ioConfig</code> of the supervisor spec, and the <code>dataSchema</code> must not specify a parser. Do this before upgrading to Druid 37 or newer.</p>
+<p><a href="https://github.com/apache/druid/pull/19173">#19173</a> <a href="https://github.com/apache/druid/pull/19166">#19166</a></p>
+<h5>Removed <code>ParseSpec</code> and deprecated parsers</h5>
+<p>The Parser for native batch tasks and streaming ingestion indexing services has been removed. Where possible, use the input format instead. Note that <code>JavascriptParseSpec</code> and <code>JSONLowercaseParseSpec</code> have no InputFormat equivalents.</p>
+<p>Druid supports custom text data formats and can use the Regex input format to parse them. However, be aware doing this to
+parse data is less efficient than writing a native Java <code>InputFormat</code> extension, or using an external stream processor. We welcome contributions of new input formats.</p>
+<p><a href="https://github.com/apache/druid/pull/19239">#19239</a></p>
+<h4>Rolling upgrades from Druid versions prior to version 0.23</h4>
+<p>You can't perform a rolling upgrade from versions earlier than Druid 0.23.</p>
+<p><a href="https://github.com/apache/druid/pull/18961">#18961</a></p>
+<h4>Metadata storage for auto-compaction with compaction supervisors</h4>
+<p>Automatic compaction with supervisors requires incremental segment metadata caching on the Overlord and a new metadata store table; no action is required if you are using the default settings for the following configs:</p>
+<ul>
+<li><code>druid.manager.segments.useIncrementalCache</code></li>
+<li><code>druid.metadata.storage.connector.createTables</code></li>
+</ul>
+<p>If <code>druid.manager.segments.useIncrementalCache</code> is set to <code>never</code>, update it to <code>ifSynced</code> or <code>always</code>. For more information about the config, see <a href="https://druid.apache.org/docs/latest/configuration/#segment-metadata-cache-experimental">Segment metadata cache</a>.</p>
+<p>If you set the <code>druid.metadata.storage.connector.createTables</code> config to <code>false</code>, you need to manually alter the segments table and create the <code>compactionStates</code> table. The Postgres DDL is provided below as a guide:</p>
+<pre><code>-- create the indexing states lookup table and associated indices
+CREATE TABLE druid_indexingStates (
+    created_date VARCHAR(255) NOT NULL,
+    datasource VARCHAR(255) NOT NULL,
+    fingerprint VARCHAR(255) NOT NULL,
+    payload BYTEA NOT NULL,
+    used BOOLEAN NOT NULL,
+    pending BOOLEAN NOT NULL,
+    used_status_last_updated VARCHAR(255) NOT NULL,
+    PRIMARY KEY (fingerprint),
+  );
+
+  CREATE INDEX idx_druid_compactionStates_used ON druid_compactionStates(used, used_status_last_updated);
+</code></pre>
+<pre><code>-- modify druid_segments table to have a column for storing compaction state fingerprints
+ALTER TABLE druid_segments ADD COLUMN indexing_state_fingerprint VARCHAR(255);
+</code></pre>
+<p>You may have to adapt the syntax to fit your table naming prefix and metadata store backend.</p>
+<p><a href="https://github.com/apache/druid/pull/18844">#18844</a></p>
+<h4>Segment locking</h4>
+<p>Segment locking and <code>NumberedOverwriteShardSpec</code> are deprecated and will be removed in a future release. Use time chunk locking instead. You can make sure only time chunk locking is used by setting <code>druid.indexer.tasklock.forceTimeChunkLock</code> to <code>true</code>, which is the default.</p>
+<p><a href="https://github.com/apache/druid/pull/19050">#19050</a></p>
+<h3>Incompatible changes</h3>
+<h4>Removed <code>defaultProcessingRate</code> config</h4>
+<p>This config allowed scaling actions to begin prior to the first metrics becoming available.</p>
+<p><a href="https://github.com/apache/druid/pull/19028">#19028</a></p>
+<h4>Front-coding format</h4>
+<p>Druid now defaults to v1 of the front-coded format instead of version 0 if enabled. Version 1 was introduced in Druid 26. Downgrading to or upgrading from a version of Druid prior to 26 may require reindexing if you have front-coding enabled with version 0.</p>
+<p><a href="https://github.com/apache/druid/pull/18984">#18984</a></p>
+<h3>Developer notes</h3>
+<ul>
+<li>Added <code>typecheck</code> to <code>npm run test-unit</code> to ensure TypeScript type checking happens on calls to <code>test-unit</code> <a href="https://github.com/apache/druid/pull/19251">#19251</a></li>
+<li>Added a 14 day cooldown to <code>dependabot</code> updates to protect against not-yet-discovered regressions and security issues <a href="https://github.com/apache/druid/pull/19241">#19241</a></li>
+<li>Added <code>AGENTS.md</code> <a href="https://github.com/apache/druid/pull/19084">#19084</a></li>
+<li>Added a requirement to use <a href="https://www.conventionalcommits.org/en/v1.0.0/">conventional commit syntax</a> <a href="https://github.com/apache/druid/pull/19089">#19089</a></li>
+<li>Updated <code>checkstyle</code> from <code>3.0.0</code> to <code>3.6.0</code> <a href="https://github.com/apache/druid/pull/19064">#19064</a></li>
+</ul>
+<h4>Dependency updates</h4>
+<p>The following dependencies have been updated:</p>
+<ul>
+<li>Added <code>software.amazon.awssdk</code> to support <code>WebIdentityTokenProvider</code> <a href="https://github.com/apache/druid/pull/19178">#19178</a></li>
+<li><code>org.apache.iceberg</code> from <code>1.6.1</code> to <code>1.7.2</code> <a href="https://github.com/apache/druid/pull/19172">#19172</a></li>
+<li><code>diff</code> node module from 4.0.1 to 4.0.4 <a href="https://github.com/apache/druid/pull/18933">#18933</a></li>
+<li><code>org.apache.avro</code> from 1.11.4 to 1.11.5 <a href="https://github.com/apache/druid/pull/19103">#19103</a></li>
+<li><code>bytebuddy</code> from <code>1.17.7</code> to <code>1.18.3</code> <a href="https://github.com/apache/druid/pull/19000">#19000</a></li>
+<li><code>slf4j</code> from <code>2.0.16</code> to <code>2.0.17</code> <a href="https://github.com/apache/druid/pull/18990">#18990</a></li>
+<li>Apache Commons Codec from <code>1.16.1</code> to <code>1.17.1</code> <a href="https://github.com/apache/druid/pull/18990">#18990</a></li>
+<li><code>jacoco</code> from <code>0.8.12</code> to <code>0.8.14</code> <a href="https://github.com/apache/druid/pull/18990">#18990</a></li>
+<li><code>docker-java-bom</code> from <code>3.6.0</code> to <code>3.7.0</code> <a href="https://github.com/apache/druid/pull/18990">#18990</a></li>
+<li><code>assertj-core</code> from <code>3.24.2</code> to <code>3.27.7</code> <a href="https://github.com/apache/druid/pull/18994">#18994</a></li>
+<li><code>maven-surefire-plugin</code> from <code>3.2.5</code> to <code>3.5.4</code> <a href="https://github.com/apache/druid/pull/18847">#18847</a></li>
+<li><code>guice</code> from <code>5.1.0</code> to <code>6.0.0</code> <a href="https://github.com/apache/druid/pull/18986">#18986</a></li>
+<li>JDK compiler from 11 to 17 <a href="https://github.com/apache/druid/pull/18977">#18977</a></li>
+<li><code>vertx</code> from <code>4.5.14</code> to <code>4.5.24</code> <a href="https://github.com/apache/druid/pull/18947">#18947</a></li>
+<li><code>fabric8</code> from <code>7.4.0</code> to <code>7.5.2</code> <a href="https://github.com/apache/druid/pull/18947">#18947</a></li>
+<li><code>mockito</code> from <code>5.14.2</code> to <code>5.23</code> <a href="https://github.com/apache/druid/pull/19145">#19145</a></li>
+<li><code>easymock</code> from <code>5.2.0</code> to <code>5.6.0</code> <a href="https://github.com/apache/druid/pull/19145">#19145</a></li>
+<li><code>equalsverifier</code> from <code>3.15.8</code> to <code>4.4.1</code> <a href="https://github.com/apache/druid/pull/19145">#19145</a></li>
+<li><code>bytebuddy</code> from <code>1.18.3</code> to <code>1.18.5</code> <a href="https://github.com/apache/druid/pull/19145">#19145</a></li>
+<li>Added <code>objenesis</code> <code>3.5</code> <a href="https://github.com/apache/druid/pull/19145">#19145</a></li>
+<li><code>org.apache.zookeeper</code> from 3.8.4 to 3.8.6 <a href="https://github.com/apache/druid/pull/19135">#19135</a></li>
+<li><code>com.lmax.disruptor</code> from <code>3.3.6</code> to <code>3.4.4</code> <a href="https://github.com/apache/druid/pull/19122">#19122</a></li>
+<li><code>org.junit.junit-bom</code> from <code>5.13.3</code> to <code>5.14.3</code> <a href="https://github.com/apache/druid/pull/19122">#19122</a></li>
+<li><code>io.fabric8:kubernetes-client</code> 7.5.2 → 7.6.0  <a href="https://github.com/apache/druid/pull/19071">#19071</a></li>
+<li><code>io.kubernetes:client-java</code> 19.0.0 → 25.0.0-legacy  <a href="https://github.com/apache/druid/pull/19071">#19071</a></li>
+<li><code>com.squareup.okhttp3:okhttp</code> 4.12.0 → 5.3.2  <a href="https://github.com/apache/druid/pull/19071">#19071</a></li>
+<li><code>org.jetbrains.kotlin:kotlin-stdlib</code> 1.9.25 → 2.2.21  <a href="https://github.com/apache/druid/pull/19071">#19071</a></li>
+<li><code>commons-codec:commons-codec</code> 1.17.1 → 1.20.0  <a href="https://github.com/apache/druid/pull/19071">#19071</a></li>
+<li><code>org.apache.commons:commons-lang3</code> 3.19.0 → 3.20.0  <a href="https://github.com/apache/druid/pull/19071">#19071</a></li>
+<li><code>com.google.code.gson:gson</code> 2.12.0 → 2.13.2  <a href="https://github.com/apache/druid/pull/19071">#19071</a></li>
+<li><code>com.amazonaws:aws-java-sdk</code> 1.12.784 → 1.12.793 <a href="https://github.com/apache/druid/pull/19071">#19071</a></li>
+<li><code>caffeine</code> from <code>2.8.0</code> to <code>2.9.3</code> <a href="https://github.com/apache/druid/pull/19208">#19208</a></li>
+<li><code>commons-io</code> from <code>2.17.0</code> to <code>2.21.0</code> <a href="https://github.com/apache/druid/pull/19208">#19208</a></li>
+<li><code>commons-collections4</code> from <code>4.2</code> to <code>4.5.0</code> <a href="https://github.com/apache/druid/pull/19208">#19208</a></li>
+<li><code>commons-compress</code> from <code>1.27.0</code> to <code>1.28.0</code> <a href="https://github.com/apache/druid/pull/19208">#19208</a></li>
+<li><code>zstd-jni</code> from <code>1.5.2-3</code> to <code>1.5.7-7</code> <a href="https://github.com/apache/druid/pull/19208">#19208</a></li>
+<li><code>scala-library</code> from <code>2.12.7</code> to <code>2.13.16</code> <a href="https://github.com/apache/druid/pull/19208">#19208</a></li>
+<li><code>iceberg</code> from <code>1.7.2</code> to <code>1.10.0</code> <a href="https://github.com/apache/druid/pull/19232">#19232</a></li>
+<li><code>parquet</code> from <code>1.15.2</code> to <code>1.16.0</code> <a href="https://github.com/apache/druid/pull/19232">#19232</a></li>
+<li><code>avro</code> from <code>1.11.5</code> to <code>1.12.0</code> <a href="https://github.com/apache/druid/pull/19232">#19232</a></li>
+<li><code>jackson</code> from <code>2.19.2</code> to <code>2.20.2</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+<li><code>netty4</code> from <code>4.2.6.Final</code> to <code>4.2.12.Final</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+<li><code>errorprone</code> from <code>2.35.1</code> to <code>2.41.0</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+<li><code>bcprov-jdk18on</code> / <code>bcpkix-jdk18on</code> from <code>1.81</code> to <code>1.82</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+<li><code>RoaringBitmap</code> from <code>0.9.49</code> to <code>1.6.13</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+<li><code>jedis</code> from <code>5.1.2</code> to <code>7.0.0</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+<li><code>snakeyaml</code> from <code>2.4</code> to <code>2.5</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+<li><code>aircompressor</code> from <code>0.21</code> to <code>2.0.2</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+<li><code>reflections</code> from <code>0.9.12</code> to <code>0.10.2</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+<li><code>httpclient5</code> from <code>5.5</code> to <code>5.5.1</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+<li><code>jakarta.activation</code> from <code>1.2.2</code> to <code>2.0.1</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+<li><code>netty-tcnative-boringssl-static</code> from <code>2.0.73.Final</code> to <code>2.0.75.Final</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+<li><code>maven-compiler-plugin</code> from <code>3.11.0</code> to <code>3.14.1</code> <a href="https://github.com/apache/druid/pull/19248">#19248</a></li>
+</ul>
+<h1>Credits</h1>
+<p>@317brian
+@abhishekrb19
+@aho135
+@Akshat-Jain
+@amaechler
+@aruraghuwanshi
+@ashwintumma23
+@bsmithgall
+@capistrant
+@cecemei
+@clintropolis
+@Fly-Style
+@FrankChen021
+@gianm
+@GWphua
+@jaykanakiya
+@jtuglu1
+@kfaraz
+@kgyrtkirk
+@maytasm
+@mshahid6
+@puzpuzpuz
+@razinbouzar
+@santosh-d3vpl3x
+@sarangv
+@vogievetsky
+@vtlim
+@wuguowei1994
+@zhan7236</p>
+<hr />
+<blockquote>
+<p><strong>Source</strong> <a href="https://github.com/apache/druid">apache/druid</a> · <code>druid-37.0.0</code> · 2026-05-08 · <a href="https://github.com/apache/druid/releases/tag/druid-37.0.0">upstream release</a></p>
+</blockquote>
+<p><em>Mirrored verbatim for indexing. All rights belong to the upstream project.</em></p></div> </details> </div> <p class="muted" style="margin-top:var(--s8);font-size:12.5px;border-top:1px solid var(--line);padding-top:var(--s4)"> Versionshinweise stammen aus dem Upstream-Projekt. Wir ordnen und verknüpfen sie, damit du Versionen auf einen Blick vergleichen kannst. Alle Rechte liegen bei den ursprünglichen Autoren. </p> <nav class="pager" aria-label="Release navigation"> <a href="/releases/druid/38.0.0"> <span class="k">← Weiter</span> <span class="t">38.0.0</span> </a> <a href="/releases/druid/36.0.0"> <span class="k">Zurück →</span> <span class="t">36.0.0</span> </a> </nav> <aside class="ad-slot" aria-label="Advertisement" data-astro-cid-fgwukgf6><div class="ad-slot-label" data-astro-cid-fgwukgf6>Advertisement</div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4184355057086168" data-ad-slot="9133765584" data-ad-format="auto" data-full-width-responsive="true" data-astro-cid-fgwukgf6></ins><script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script></aside> </article> <aside class="rail"> <div class="rail-card"> <div class="rail-title">Source</div> <ul class="rail-list"> <li> <a href="https://github.com/apache/druid/releases/tag/37.0.0" target="_blank" rel="noopener"> <span>Original auf GitHub</span> <span class="d">↗</span> </a> </li> <li> <a href="https://github.com/apache/druid" target="_blank" rel="noopener"> <span>apache/druid</span> <span class="d">↗</span> </a> </li> </ul> </div> <div class="rail-card rail-toc"> <div class="rail-title">Auf dieser Seite</div> <nav> <a href="#" class>Wichtige Funktionen, Änderungen und veraltete Funktionen</a><a href="#" class="lv3">Hadoop-basierte Aufnahme</a><a href="#" class="lv3">Sperrliste abfragen</a><a href="#" class="lv3">Kleinere Komprimierung für Overlord-basierte Komprimierung (experimentell)</a><a href="#" class="lv3">Kaskadierende Neuindizierung (experimentell)</a><a href="#" class="lv3">Multi-Supervisor-Aufnahme</a><a href="#" class="lv3">Schreibgeschützter Autorisierer</a><a href="#" class="lv3">Thrift-Eingabeformat</a><a href="#" class="lv3">Inkrementeller Cache</a><a href="#" class="lv3">Kubernetes-basiertes Aufgabenmanagement</a><a href="#" class="lv3">Dynamischer Standardabfragekontext</a><a href="#" class="lv3">sys.queries-Tabelle (experimentell)</a><a href="#" class="lv3">Automatische Verdichtung mit Verdichtungsüberwachern</a><a href="#" class="lv3">Auswahl der Brokerstufe für Echtzeitserver</a><a href="#" class="lv3">Manuelles Broker-Routing in der Webkonsole</a><a href="#" class="lv3">Konsulverlängerung</a><a href="#" class>Funktionsbereich und damit verbundene Änderungen</a><a href="#" class="lv3">Webkonsole</a><a href="#" class="lv3">Einnahme</a><a href="#" class="lv3">Abfragen</a><a href="#" class="lv3">Clusterverwaltung</a><a href="#" class="lv3">Datenverwaltung</a><a href="#" class="lv3">Metriken und Überwachung</a><a href="#" class="lv3">Erweiterungen</a> </nav> </div> <div class="rail-card"> <div class="rail-title">Versionsverlauf</div> <ul class="rail-list"> <li> <a href="/releases/druid/39.0.0"> <span class="v">39.0.0</span> <span class="d">26-11-19</span> </a> </li><li> <a href="/releases/druid/38.0.0"> <span class="v">38.0.0</span> <span class="d">26-10-01</span> </a> </li><li> <a href="/releases/druid/37.0.0" aria-current="true"> <span class="v">37.0.0</span> <span class="d">26-05-08</span> </a> </li><li> <a href="/releases/druid/36.0.0"> <span class="v">36.0.0</span> <span class="d">26-02-09</span> </a> </li><li> <a href="/releases/druid/35.0.1"> <span class="v">35.0.1</span> <span class="d">25-12-15</span> </a> </li><li> <a href="/releases/druid/35.0.0"> <span class="v">35.0.0</span> <span class="d">25-11-18</span> </a> </li><li> <a href="/releases/druid/34.0.0"> <span class="v">34.0.0</span> <span class="d">25-08-11</span> </a> </li><li> <a href="/releases/druid/33.0.0"> <span class="v">33.0.0</span> <span class="d">25-04-29</span> </a> </li> </ul> <a href="/de/releases/druid" class="mono" style="display:inline-block;margin-top:var(--s3);font-size:11.5px;color:var(--ink-3)"> Alle anzeigen 71 →
+</a> </div> </aside> </div> </div>  </main> <footer class="site-footer"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/de/" class="brand" aria-label="STAGS NextStack"><span class="brand-mark" aria-hidden="true">S</span><span class="brand-main">STAGS</span><span class="brand-sub" aria-hidden="true">NextStack</span></a> <p>Open-Source-Release-Informationen, täglich veröffentlicht.</p> </div> <div class="footer-col"> <h3>Verfolgen</h3> <ul> <li><a href="/de/releases">Releases</a></li> <li><a href="/de/projects">Projekte</a></li> <li><a href="/de/releases.xml">RSS-Feed</a></li> </ul> </div> <div class="footer-col"> <h3>Archiv</h3> <ul> <li><a href="/zh/release_note" hreflang="zh-Hans">Chinesisches Archiv</a></li> <li><a href="/zh/chapters/" hreflang="zh-Hans">Technische Notizen</a></li> <li><a href="/zh/downloads/">Stags Tracker</a></li> </ul> </div> <div class="footer-col"> <h3>Info</h3> <ul> <li><a href="/privacy">Datenschutzrichtlinie</a></li> <li><a href="/releases.xml">RSS</a></li> <li><a href="/sitemap-index.xml">Sitemap</a></li> </ul> </div> </div> <div class="footer-btm"> <span>© 2026 STAGS</span> <span>Release notes gehören zu ihren Upstream-Projekten.</span> </div> </div> </footer> <!-- 搜索面板 --> <div class="palette-bg" data-palette-bg data-open="false"> <div class="palette" role="dialog" aria-modal="true" aria-label="Releases durchsuchen"> <div class="palette-in"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ink-4);flex:none"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <input type="search" data-palette-input placeholder="Suchen Sie nach Releases, Projekten, Versionen ..." autocomplete="off" spellcheck="false"> <span class="kbd">esc</span> </div> <ul class="palette-res" data-palette-res></ul> <div class="palette-ft"> <span>↑↓ navigate</span> <span>↵ open</span> <span style="margin-left:auto" data-palette-count></span> </div> </div> </div> <script type="module" src="/assets/Shell.astro_astro_type_script_index_0_lang.0ZkKXV47.js"></script> </body> </html>

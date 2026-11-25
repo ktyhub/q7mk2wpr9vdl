@@ -1,0 +1,642 @@
+<!DOCTYPE html><html lang="ja" dir="ltr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>vitess v24.0.0 — STAGS NextStack</title><meta name="description" content="Major Changes · New Support · Window function pushdown for sharded keyspaces · View Routing Rules"><meta name="keywords" content="オープンソース release note、リリース トラッカー、changelog アグリゲーター、重大な変更、非推奨トラッカー、Kafka リリース、Spring Boot リリース、Kubernetes リリース"><meta name="generator" content="Astro v5.18.2"><link rel="canonical" href="https://www.stags.cn/ja/releases/vitess/24.0.0/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="STAGS NextStack — releases" href="/ja/releases.xml"><link rel="alternate" hreflang="en" href="https://www.stags.cn/releases/vitess/24.0.0/"><link rel="alternate" hreflang="zh-Hans" href="https://www.stags.cn/releases/vitess/24.0.0/"><link rel="alternate" hreflang="x-default" href="https://www.stags.cn/releases/vitess/24.0.0/"><meta property="og:site_name" content="STAGS"><meta property="og:type" content="article"><meta property="og:title" content="vitess v24.0.0 — STAGS NextStack"><meta property="og:description" content="Major Changes · New Support · Window function pushdown for sharded keyspaces · View Routing Rules"><meta property="og:url" content="https://www.stags.cn/ja/releases/vitess/24.0.0/"><meta property="og:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><meta property="og:locale" content="ja_JP"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="de_DE"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:locale:alternate" content="es_ES"><meta property="og:locale:alternate" content="pt_BR"><meta property="og:locale:alternate" content="ko_KR"><meta property="og:locale:alternate" content="it_IT"><meta property="og:locale:alternate" content="ru_RU"><meta property="og:locale:alternate" content="tr_TR"><meta property="og:locale:alternate" content="id_ID"><meta property="og:locale:alternate" content="vi_VN"><meta property="og:locale:alternate" content="ar_SA"><meta property="og:locale:alternate" content="sv_SE"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.stags.cn/#website","name":"STAGS","url":"https://www.stags.cn/","inLanguage":"ja","description":"NextStack はインフラストラクチャおよび AI プロジェクトのリリースノートを索引化し、破壊的変更・非推奨・移行情報を英語優先の単一フィードで提供します。","publisher":{"@id":"https://www.stags.cn/#org"}},{"@type":"Organization","@id":"https://www.stags.cn/#org","name":"STAGS","alternateName":"NextStack","url":"https://www.stags.cn/"},{"@type":"TechArticle","@id":"https://www.stags.cn/ja/releases/vitess/24.0.0/#article","headline":"vitess v24.0.0 release notes","datePublished":"2026-04-30","inLanguage":"en","isPartOf":{"@id":"https://www.stags.cn/#website"},"about":{"@type":"SoftwareSourceCode","codeRepository":"https://github.com/vitessio/vitess"}}]}</script><!-- 第三方脚本的连接预热：这两个域名几乎每页都要连，
+         提前建连能省掉 DNS + TCP + TLS 一个往返（移动网络 100~300ms）。
+         AdSense 只在开关打开时预热——关掉广告后连这个域名都没必要。 --><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://pagead2.googlesyndication.com"><!-- Google AdSense：站点所有权校验与广告投放共用同一段脚本，全站只加载一次。
+         未创建广告单元时页面上不渲染任何广告容器，站点保持干净。
+         fetchpriority=low：它不参与首屏渲染，不该跟正文抢带宽。 --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184355057086168" crossorigin="anonymous" fetchpriority="low"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-RFRF1TVRMP" fetchpriority="low"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RFRF1TVRMP");
+    </script><!-- 百度统计（国内流量统计）。官方标准片段，is:inline 原样输出，
+         hm.js 动态插到首个 script 前，异步不阻塞首屏渲染。 --><script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?299e5b4e65b86ed16879bdcbe70531d6";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script><link rel="stylesheet" href="/assets/index.DQGt3qLZ.css">
+<style>.ad-slot[data-astro-cid-fgwukgf6]{margin:var(--s10) 0 0;padding-top:var(--s5);border-top:1px solid var(--line)}.ad-slot-label[data-astro-cid-fgwukgf6]{margin-bottom:var(--s3);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{display:block;min-height:100px}@media(min-width:640px){.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{min-height:250px}}
+</style></head> <body> <a class="skip" href="#main">本文へスキップ</a> <header class="hdr" data-header> <div class="wrap hdr-inner"> <a href="/ja/" class="brand" aria-label="STAGS NextStack — オープンソースのリリース情報"> <span class="brand-mark" aria-hidden="true">S</span> <span class="brand-main">STAGS</span> <span class="brand-sub" aria-hidden="true">NextStack</span> </a> <nav class="nav" aria-label="Primary"> <a href="/ja/releases">リリース</a><a href="/ja/projects">プロジェクト</a> </nav>  <details class="navmenu" data-navmenu> <summary class="navmenu-btn" aria-label="Open menu"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> </summary> <div class="navmenu-panel" role="group" aria-label="Primary"> <a href="/ja/releases" class="navmenu-item">リリース</a><a href="/ja/projects" class="navmenu-item">プロジェクト</a> </div> </details> <div class="hdr-tools"> <button class="searchbtn" type="button" data-search-open aria-label="リリースを検索"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <span class="lbl">検索</span> <span class="kbd">⌘K</span> </button> <details class="langmenu" data-langmenu> <summary class="langmenu-btn" aria-label="言語"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"> <circle cx="12" cy="12" r="9"></circle> <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path> </svg> <span class="langmenu-cur">日</span> <svg class="langmenu-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m2 4 4 4 4-4"></path></svg> </summary> <div class="langmenu-panel" role="group" aria-label="言語"> <p class="langmenu-head">言語</p> <a class="langmenu-item" href="/releases/vitess/24.0.0/" hreflang="en" lang="en" data-on="false"> <span class="langmenu-label">English</span> <span class="langmenu-code">EN</span> </a><a class="langmenu-item" href="/zh/release_note/vitess/vitess_v24.0.0" hreflang="zh-Hans" lang="zh-CN" data-on="false"> <span class="langmenu-label">中文</span> <span class="langmenu-code">中</span> </a><a class="langmenu-item" href="/ja/releases/vitess/24.0.0/" hreflang="ja" lang="ja" aria-current="true" data-on="true"> <span class="langmenu-label">日本語</span> <span class="langmenu-code">日</span> </a><a class="langmenu-item" href="/de/releases/vitess/24.0.0/" hreflang="de" lang="de" data-on="false"> <span class="langmenu-label">Deutsch</span> <span class="langmenu-code">DE</span> </a><a class="langmenu-item" href="/fr/releases/vitess/24.0.0/" hreflang="fr" lang="fr" data-on="false"> <span class="langmenu-label">Français</span> <span class="langmenu-code">FR</span> </a><a class="langmenu-item" href="/es/releases/vitess/24.0.0/" hreflang="es" lang="es" data-on="false"> <span class="langmenu-label">Español</span> <span class="langmenu-code">ES</span> </a><a class="langmenu-item" href="/pt/releases/vitess/24.0.0/" hreflang="pt-BR" lang="pt-BR" data-on="false"> <span class="langmenu-label">Português</span> <span class="langmenu-code">PT</span> </a><a class="langmenu-item" href="/ko/releases" hreflang="ko" lang="ko" data-on="false"> <span class="langmenu-label">한국어</span> <span class="langmenu-code">한</span> </a><a class="langmenu-item" href="/it/releases" hreflang="it" lang="it" data-on="false"> <span class="langmenu-label">Italiano</span> <span class="langmenu-code">IT</span> </a><a class="langmenu-item" href="/ru/releases" hreflang="ru" lang="ru" data-on="false"> <span class="langmenu-label">Русский</span> <span class="langmenu-code">RU</span> </a><a class="langmenu-item" href="/tr/releases" hreflang="tr" lang="tr" data-on="false"> <span class="langmenu-label">Türkçe</span> <span class="langmenu-code">TR</span> </a><a class="langmenu-item" href="/id/releases" hreflang="id" lang="id" data-on="false"> <span class="langmenu-label">Bahasa Indonesia</span> <span class="langmenu-code">ID</span> </a><a class="langmenu-item" href="/vi/releases" hreflang="vi" lang="vi" data-on="false"> <span class="langmenu-label">Tiếng Việt</span> <span class="langmenu-code">VI</span> </a><a class="langmenu-item" href="/ar/releases" hreflang="ar" lang="ar" data-on="false"> <span class="langmenu-label">العربية</span> <span class="langmenu-code">ع</span> </a><a class="langmenu-item" href="/sv/releases" hreflang="sv" lang="sv" data-on="false"> <span class="langmenu-label">Svenska</span> <span class="langmenu-code">SV</span> </a> </div> </details> <a class="iconlink" href="/releases.xml" aria-label="RSS"> <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"> <path d="M2 12.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM2 7.5a6.5 6.5 0 0 1 6.5 6.5h-2A4.5 4.5 0 0 0 2 9.5v-2ZM2 2.5A11.5 11.5 0 0 1 13.5 14h-2A9.5 9.5 0 0 0 2 4.5v-2Z"></path> </svg> </a> </div> </div> </header> <main id="main">  <div class="wrap"> <div class="detail"> <article> <header class="detail-hd"> <nav class="crumbs" aria-label="Breadcrumb"> <a href="/ja/">ホーム</a> <span class="sep">/</span> <a href="/ja/releases">リリース</a> <span class="sep">/</span> <a href="/ja/releases/vitess">vitess</a> </nav> <h1 class="detail-title"> <span class="p">vitess</span> v24.0.0 </h1> <div class="detail-meta"> <span class="chip chip--major">メジャー</span> <span><span class="k">公開日</span>2026年4月30日</span>  <span class="sep" aria-hidden="true"></span> <a href="https://github.com/vitessio/vitess" target="_blank" rel="noopener"> <span class="k">出典</span>vitessio/vitess </a>   <span class="sep" aria-hidden="true"></span> <a href="/releases/vitess/24.0.0/"> English original </a>  <span class="sep" aria-hidden="true"></span> <button class="btn btn--ghost btn--sm" type="button" data-copy="https://www.stags.cn/ja/releases/vitess/24.0.0/">リンクをコピー</button> </div> </header> <div class="prose" style="margin-top:var(--s8)"> <p class="mt-notice" role="note">このページは機械翻訳です。内容は必ず英文原文をご確認ください。</p>  <div><p>#ヴィテスv24.0.0</p>
+<h1>Vitess v24.0.0 発売</h1>
+<h2>概要</h2>
+<h3>目次</h3>
+<ul>
+<li><strong><a href="#major-changes">主な変更点</a></strong>
+<ul>
+<li><strong><a href="#new-support">新しいサポート</a></strong>
+<ul>
+<li><a href="#window-function-pushdown">シャーディングされたキースペースのウィンドウ関数プッシュダウン</a></li>
+<li><a href="#view-routing-rules">ルーティング ルールを表示</a></li>
+<li><a href="#tablet-targeting">USE ステートメントによるタブレット ターゲティング</a></li>
+<li><a href="#vtgate-binlog-dump">VTGate Binlog ストリーミング サポート</a></li>
+<li><a href="#structurd-logging">構造化ログ</a></li>
+</ul>
+</li>
+<li><strong><a href="#breaking-changes">重大な変更</a></strong>
+<ul>
+<li><a href="#vttablet-external-decompressor-manifest">外部解凍プログラムはデフォルトでバックアップ MANIFEST から読み取られなくなりました</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong><a href="#minor-changes">マイナー変更</a></strong>
+<ul>
+<li><strong><a href="#minor-changes-vreplication">VReplication</a></strong>
+<ul>
+<li><a href="#vreplication-shards-flag-start-stop">MoveTables/Reshard の開始と停止の <code>--shards</code> フラグ</a></li>
+<li><a href="#vreplication-tablet-error-retry">タブレット固有のエラーに対するタブレットの自動再試行</a></li>
+</ul>
+</li>
+<li><strong><a href="#%E3%83%9E%E3%82%A4%E3%83%8A%E3%83%BC%E5%A4%89%E6%9B%B4-vtgate">VTGate</a></strong>
+<ul>
+<li><a href="#vtgate-removed-grpc-send-session-in-streaming"><code>--grpc-send-session-in-streaming</code> フラグを削除しました</a></li>
+<li><a href="#vtgate-new-default-legacy-replication-lag-algorithm"><code>--legacy-replication-lag-algorithm</code> フラグの新しいデフォルト</a></li>
+<li><a href="#vtgate-session-balancer-mode"><code>--vtgate-balancer-mode</code> フラグの新しい「セッション」モード</a></li>
+</ul>
+</li>
+<li><strong><a href="#minor-changes-query-serving">クエリの提供</a></strong>
+<ul>
+<li><a href="#query-serving-json-extract-dynamic-args">JSON_EXTRACT は動的パス引数をサポートするようになりました</a></li>
+</ul>
+</li>
+<li><strong><a href="#%E3%83%9E%E3%82%A4%E3%83%8A%E3%83%BC%E5%A4%89%E6%9B%B4-vttablet">VTTablet</a></strong>
+<ul>
+<li><a href="#vttablet-init-tablet-type-lookup">新しい実験フラグ <code>--init-tablet-type-lookup</code></a></li>
+<li><a href="#vttablet-querythrottler-metrics">QueryThrottler 可観測性メトリクス</a></li>
+<li><a href="#vttablet-querythrottler-config-watch">QueryThrottler イベント駆動型構成更新</a></li>
+<li><a href="#vttablet-conn-pool-waiter-cap">接続プールウェイターキャップ</a></li>
+</ul>
+</li>
+<li><strong><a href="#%E3%83%9E%E3%82%A4%E3%83%8A%E3%83%BC%E5%A4%89%E6%9B%B4-%E3%83%88%E3%83%AC%E3%83%BC%E3%82%B9">トレース</a></strong>
+<ul>
+<li><a href="#tracing-opentelemetry">OpenTelemetry トレース サポート</a></li>
+<li><a href="#tracing-opentracing-deprecation">OpenTracing ベースのトレース バックエンドの非推奨</a></li>
+</ul>
+</li>
+<li><strong><a href="#%E3%83%9E%E3%82%A4%E3%83%8A%E3%83%BC%E5%A4%89%E6%9B%B4-vtorc">VTOrc</a></strong>
+<ul>
+<li><a href="#vtorc-cell-flag">新しい <code>--cell</code> フラグ</a></li>
+<li><a href="#vtorc-owned-recovery-semi-sync">順序付きリカバリの実行と準同期ロールアウト</a></li>
+<li><a href="#vtorc-deprecated-metric-removed">非推奨の VTOrc メトリックが削除されました</a></li>
+<li><a href="#vtorc-snapshot-topology-deprecation">スナップショット トポロジ機能の廃止</a></li>
+<li><a href="#vtorc-replication-analysis-api-removed">非推奨の <code>/api/replication-analysis</code> エンドポイントが削除されました</a></li>
+</ul>
+</li>
+<li><strong><a href="#minor-changes-metrics">メトリクス</a></strong>
+<ul>
+<li><a href="#metrics-extended-go-runtime">Prometheus による拡張 Go ランタイム メトリクス</a></li>
+</ul>
+</li>
+<li><strong><a href="#minor-changes-backup-restore">バックアップと復元</a></strong>
+<ul>
+<li><a href="#mysql-clone-support">レプリカ プロビジョニングの MySQL CLONE サポート</a></li>
+<li><a href="#restore-hook-backup-engine-env">復元フックの改善</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2>&lt;a id=&quot;major-changes&quot;/&gt;大きな変更点&lt;/a&gt;</h2>
+<h3>&lt;a id=&quot;new-support&quot;/&gt;新しいサポート&lt;/a&gt;</h3>
+<h4>&lt;a id=&quot;window-function-pushdown&quot;/&gt;シャーディングされたキースペースのウィンドウ関数のプッシュダウン&lt;/a&gt;</h4>
+<p>このリリースでは、一意の vindex に一致する列によってウィンドウ関数が分割されている場合に、ウィンドウ関数を個々のシャードにプッシュダウンできる最適化が導入されました。
+以前は、すべてのウィンドウ関数クエリには単一シャード ルーティングが必要であり、シャード テーブルへの適用が制限されていました。この変更により、<code>PARTITION BY</code> 句が一意の vindex と一致するクエリをプッシュダウンして、各シャードで実行できるようになりました。
+例と詳細については、<a href="https://vitess.io/docs/24.0/reference/compatibility/mysql-compatibility/#window-functions">ドキュメント</a> を参照してください。</p>
+<h4>&lt;a id=&quot;view-routing-rules&quot;/&gt;ルーティング ルールを表示&lt;/a&gt;</h4>
+<p>Vites はビューのルーティング ルールをサポートするようになり、<code>vtctldclient ApplyRoutingRules</code> を使用したテーブルと同じように適用できます。ビュー ルーティング ルールがアクティブな場合、VTGate はソース ビューを参照するクエリを書き換えて、代わりにターゲット ビューの定義を使用します。たとえば、次のルーティング ルールがあるとします。</p>
+<pre><code class="language-json">{
+  &quot;rules&quot;: [
+    {
+      &quot;from_table&quot;: &quot;source_ks.my_view&quot;,
+      &quot;to_tables&quot;: [&quot;target_ks.my_view&quot;]
+    }
+  ]
+}
+</code></pre>
+<p>そして、このビュー定義は次のようになります。</p>
+<pre><code class="language-sql">CREATE VIEW target_ks.my_view AS SELECT id, name FROM user;
+</code></pre>
+<p><code>SELECT * FROM source_ks.my_view</code> のようなクエリは、内部的に次のように書き換えられます。</p>
+<pre><code class="language-sql">SELECT * FROM (SELECT id, name FROM target_ks.user) AS my_view;
+</code></pre>
+<p>ビュー ルーティング ルールでは、ビューを監視するためにスキーマ トラッカーが必要です。つまり、VTGate は <code>--enable-views</code> フラグを使用して開始し、VTTablet は <code>--queryserver-enable-views</code> フラグを使用して開始する必要があります。ルーティング ルールが正しく機能するには、ターゲット ビューが指定されたキースペースに存在する必要があります。詳細については、<a href="https://vitess.io/docs/24.0/reference/features/schema-routing-rules/">スキーマ ルーティング ルールのドキュメント</a> を参照してください。</p>
+<h4>&lt;a id=&quot;tablet-targeting&quot;/&gt;USE ステートメントによるタブレット ターゲティング&lt;/a&gt;</h4>
+<p>VTGate は、拡張 <code>USE</code> ステートメント構文を使用したエイリアスによる特定のタブレットへのクエリのルーティングをサポートするようになりました。</p>
+<pre><code class="language-sql">USE keyspace:shard@tablet_type|tablet_alias;
+</code></pre>
+<p>たとえば、特定のレプリカ タブレットをターゲットにするには:</p>
+<pre><code class="language-sql">USE commerce:-80@replica|zone1-0000000100;
+</code></pre>
+<p>一度設定すると、標準の <code>USE keyspace</code> または <code>USE keyspace@tablet_type</code> ステートメントでクリアされるまで、セッション内の後続のすべてのクエリは指定されたタブレットにルーティングされます。これは、デバッグ、タブレットごとの監視、キャッシュのウォーミング、および特定のタブレットをターゲットにする必要があるその他の操作タスクに役立ちます。
+注: タブレット ターゲティングを使用する場合は、シャードを指定する必要があります。シャード ターゲティングと同様に、これは vindex ベースのルーティングをバイパスするため、使用には注意してください。</p>
+<h4>&lt;a id=&quot;vtgate-binlog-dump&quot;/&gt;ビンログ ストリーミングのサポート&lt;/a&gt;</h4>
+<p>VTGate は、次の 2 つのプロトコルを介した GTID ベースのバイナリ ストリーミングをサポートするようになりました。</p>
+<ul>
+<li><strong>MySQL プロトコル</strong>: Client は、標準の MySQL <code>COM_BINLOG_DUMP_GTID</code> レプリケーション プロトコル コマンドを使用して接続できます。特別な VStream 対応アダプターや MySQL への直接アクセスは必要ありません。</li>
+<li><strong>gRPC</strong>: <code>vtgateservice</code> の新しい <code>BinlogDumpGTID</code> ストリーミング RPC は、MySQL プロトコルに依存することなく、カスタム client にネイティブ gRPC アクセスを提供します。
+注: GTID ベースのストリーミングのみがサポートされています。ファイル/位置ベースのストリーミングは、<code>COM_BINLOG_DUMP</code> または <code>COM_BINLOG_DUMP_GTID</code> では利用できず、エラーが返されます。
+この機能はデフォルトでは無効になっています。 <code>--enable-binlog-dump</code>で有効にします。
+<strong>新しいフラグ:</strong></li>
+<li><code>--enable-binlog-dump</code>: binlog ダンプのサポートを有効にします。このフラグがないと、binlog ダンプ要求はエラーを返します。</li>
+<li><code>--binlog-dump-authorized-users</code>: バイナリ ログ ダンプ操作の実行を許可されたユーザーのカンマ区切りリスト、またはすべてのユーザーに許可する <code>%</code>。
+<strong>要件:</strong>
+ビンログ ダンプ接続を開始するとき、clients は以下を指定する必要があります。</li>
+<li>空のファイル名</li>
+<li>ファイル位置 (<code>filepos</code>) 4</li>
+<li>GTID の位置
+gRPC clients の場合は、キースペース、シャード、およびオプションでタブレット タイプまたはタブレット エイリアスを <code>BinlogDumpGTIDRequest</code> に直接指定します。
+<strong>制限事項:</strong></li>
+<li>各ストリームは単一のタブレット上で動作します。シャード間のデータ集約はありません。</li>
+<li>自動フェイルオーバーなし - ターゲットのタブレットが使用できなくなると、ストリームが失敗し、client は別のタブレットに再接続する必要があります。
+・<code>MoveTables</code>、<code>Reshard</code>の動作には対応しておりません。このようなユースケースには、VStream API を使用してください。</li>
+</ul>
+<h4>&lt;a id=&quot;structed-logging&quot;/&gt;構造化ログ&lt;/a&gt;</h4>
+<p>Vites はデフォルトで構造化 JSON ログを使用するようになりました。ログ出力は JSON として標準エラー出力に出力されます。最小ログ レベルを構成するには、<code>--log-level</code> (<code>debug</code>、<code>info</code>、<code>warn</code>、<code>error</code> のいずれか。デフォルトは <code>info</code>) を渡します。自動色検出を備えた人間が判読できる形式の場合は、<code>--log-format=text</code> を渡します。以前の <code>glog</code> バックエンドに戻すには、<code>--log-structured=false</code> を渡します。
+<code>glog</code> は v24 で非推奨となり、v25 で削除される予定です。</p>
+<h3>&lt;a id=&quot;breaking-changes&quot;/&gt;重大な変更&lt;/a&gt;</h3>
+<h4>&lt;a id=&quot;vttablet-external-decompressor-manifest&quot;/&gt;外部解凍プログラムはデフォルトでバックアップ MANIFEST から読み取られなくなりました&lt;/a&gt;</h4>
+<p>バックアップの <code>MANIFEST</code> ファイルに保存されている外部圧縮解除コマンドは、デフォルトでは復元時に使用されなくなりました。以前は、<code>--external-decompressor</code> フラグが指定されていない場合、VTTablet は <code>MANIFEST</code> で指定されたコマンドにフォールバックしていました。これにより、セキュリティ リスクが発生しました。バックアップ ストレージへの書き込みアクセス権を持つ攻撃者が、<code>MANIFEST</code> を改変してタブレット上で任意のコマンドを実行する可能性がありました。
+v24 以降、新しい <code>--external-decompressor-use-manifest</code> フラグを明示的にオプトインしない限り、<code>MANIFEST</code> ベースの解凍プログラムは無視されます。この動作に依存する場合は、VTTablet 構成にフラグを追加しますが、セキュリティへの影響に注意してください。
+詳細は<a href="https://github.com/vitessio/vitess/pull/19460">#19460</a>を参照してください。</p>
+<h2>&lt;a id=&quot;minor-changes&quot;/&gt;マイナーな変更&lt;/a&gt;</h2>
+<h3>&lt;a id=&quot;minor-changes-vreplication&quot;/&gt;Vレプリケーション&lt;/a&gt;</h3>
+<h4>&lt;a id=&quot;vreplication-shards-flag-start-stop&quot;/&gt;MoveTables/Reshard の開始と停止用の <code>--shards</code> フラグ&lt;/a&gt;</h4>
+<p>MoveTables および Reshard ワークフローの <code>start</code> および <code>stop</code> コマンドで <code>--shards</code> フラグがサポートされるようになり、ユーザーはすべてのシャードを一度にではなく、シャードの特定のサブセットでワークフローを開始または停止できるようになります。
+<strong>使用例:</strong></p>
+<pre><code class="language-bash"># Start workflow on specific shards only
+vtctldclient MoveTables --target-keyspace customer --workflow commerce2customer start --shards=&quot;-80,80-&quot;
+
+# Stop workflow on specific shards only
+vtctldclient Reshard --target-keyspace customer --workflow cust2cust stop --shards=&quot;80-&quot;
+</code></pre>
+<h4>&lt;a id=&quot;vreplication-tablet-error-retry&quot;/&gt;タブレット固有のエラーに対するタブレットの自動再試行&lt;/a&gt;</h4>
+<p>VReplication ワークフローは、タブレット固有のエラーが発生した場合に、別のタブレットで自動的に再試行するようになりました。以前は、セル設定のないワークフローはデフォルトでローカル セルを使用し、同じ失敗したタブレットを無期限に再試行してスタックする可能性がありました。
+タブレットでバイナリ ログのパージ (MySQL エラー 1236 または 1789) や GTID セットの不一致などのエラーが発生すると、VReplication はそのタブレットを無視リストに追加し、すべてのセルで他のタブレットを試します。一致するすべてのタブレットが試行されると、無視リストがクリアされ、ワー​​クフローが最初から再試行されます。
+これは、ローカル セルのタブレットに必要なバイナリ ログが不足している可能性があるが、他のセルのタブレットにはまだバイナリ ログがあるマルチセル展開で特に役立ちます。</p>
+<h3>&lt;a id=&quot;minor-changes-vtgate&quot;/&gt;VTGate&lt;/a&gt;</h3>
+<h4>&lt;a id=&quot;vtgate-removed-grpc-send-session-in-streaming&quot;/&gt;<code>--grpc-send-session-in-streaming</code> フラグを削除しました&lt;/a&gt;</h4>
+<p>VTGate フラグ <code>--grpc-send-session-in-streaming</code> が削除されました。このフラグは <a href="https://github.com/vitessio/vitess/pull/17907">#17907</a> によって v22 で非推奨となり、デフォルトで <code>true</code> になりました。
+セッションは、<code>StreamExecute</code> および <code>StreamExecuteMulti</code> RPC のストリーミング応答の最後のパケットとして常に送信されるようになりました。この動作はストリーミングでのトランザクションをサポートするために必要であり、無効にすることはできません。
+<strong>影響</strong>: VTGate 起動スクリプトまたは構成から <code>--grpc-send-session-in-streaming</code> フラグの使用を削除します。</p>
+<h4>&lt;a id=&quot;vtgate-new-default-legacy-replication-lag-algorithm&quot;/&gt;<code>--legacy-replication-lag-algorithm</code> フラグの新しいデフォルト&lt;/a&gt;</h4>
+<p>VTGate フラグ <code>--legacy-replication-lag-algorithm</code> はデフォルトで <code>false</code> になり、デフォルトでレプリケーション ラグを処理する従来のアプローチが無効になります。
+代わりに、純粋に低ラグ、高ラグ、最小タブレット数に基づいた単純なアルゴリズムが使用されており、多くの実稼働環境でより安定していることが証明されています。 2 つのアプローチの詳細な説明は <a href="https://github.com/vitessio/vitess/blob/main/go/vt/discovery/replicationlag.go#L125-L149">このコード コメントで説明されています</a>。
+v25 では、このフラグは非推奨になり、次のリリースでは削除されます。それまでの間は、<code>--legacy-replication-lag-algorithm=true</code> を設定することで従来の動作を使用できます。この非推奨は https://github.com/vitessio/vitess/issues/18914. で追跡されます。</p>
+<h4>&lt;a id=&quot;vtgate-session-balancer-mode&quot;/&gt;<code>--vtgate-balancer-mode</code> フラグの新しい「セッション」モード&lt;/a&gt;</h4>
+<p>VTGate フラグ <code>--vtgate-balancer-mode</code> は、既存の「セル」、「優先セル」、および「ランダム」モードに加えて、新しい「セッション」モードをサポートするようになりました。セッション モードでは、セッションの継続期間中、各セッションが同じタブレットに一貫してルーティングされます。
+セッション モードを有効にするには、VTGate の起動時にフラグを設定します。</p>
+<pre><code>--vtgate-balancer-mode=session
+</code></pre>
+<h3>&lt;a id=&quot;minor-changes-query-serving&quot;/&gt;クエリ処理&lt;/a&gt;</h3>
+<h4>&lt;a id=&quot;query-serving-json-extract-dynamic-args&quot;/&gt;JSON_EXTRACT が動的パス引数をサポートするようになりました&lt;/a&gt;</h4>
+<p><code>JSON_EXTRACT</code> 関数は、バインド変数や他の関数呼び出しの結果などの動的パス引数をサポートするようになりました。以前は、<code>JSON_EXTRACT</code> はパス引数の静的文字列リテラルでのみ機能していました。
+NULL 処理が MySQL の動作と一致するようになりました。 document または path 引数のいずれかが NULL の場合、この関数は NULL を返します。
+静的パス引数は、動的引数と混合した場合でも最適化されるため、既存のクエリではパフォーマンスの低下が見られません。</p>
+<h3>&lt;a id=&quot;minor-changes-vttablet&quot;/&gt;VTTablet&lt;/a&gt;</h3>
+<h4>&lt;a id=&quot;vttablet-init-tablet-type-lookup&quot;/&gt;新しい実験フラグ <code>--init-tablet-type-lookup</code>&lt;/a&gt;</h4>
+<p>VTTablet の新しい実験的フラグ <code>--init-tablet-type-lookup</code> を使用すると、常に静的な <code>--init-tablet-type</code> 値を使用するのではなく、既存のトポロジ レコードを検索することによって、再起動時にタブレットが自動的に以前のタブレット タイプを復元できるようになります。
+有効にすると、タブレットはそのエイリアスを使用して、再起動時に既存のトポロジ レコードからタブレット タイプを検索します。これにより、タブレットは手動で再構成しなくても、再起動後も変更された役割 (RDONLY/DRAINED など) を維持できるようになります。無効になっている場合、またはトポロジ レコードが存在しない場合は、代わりに標準の <code>--init-tablet-type</code> 値が使用されます。
+<strong>注意</strong>: Vites Operator が管理する展開では、通常、ポッドの交換後もトポ内のタブレット レコードの一致が維持されないため、この機能の効果はこれらの環境ではより限定的になります。</p>
+<h4>&lt;a id=&quot;vttablet-querythrottler-metrics&quot;/&gt;QueryThrottler 可観測性メトリクス&lt;/a&gt;</h4>
+<p>VTTablet は、QueryThrottler の動作を追跡するための新しいメトリクスを公開するようになりました。
+4 つの新しい指標が追加されました。</p>
+<ul>
+<li><strong>QueryThrottlerRequests</strong>: クエリ スロットラーによって評価されたリクエストの合計数</li>
+<li><strong>QueryThrottlerThrottled</strong>: 調整されたリクエストの数</li>
+<li><strong>QueryThrottlerTotalLatencyNs</strong>: 各リクエストがクエリ スロットルにかかる合計時間 (評価、メトリック チェック、その他のオーバーヘッドを含む) (ナノ秒単位)</li>
+<li><strong>QueryThrottlerEvaluateLatencyNs</strong>: スロットリングの決定にかかる時間 (ナノ秒単位)
+すべてのメトリックには、<code>Strategy</code>、<code>Workload</code>、および <code>Priority</code> のラベルが含まれます。 <code>QueryThrottlerThrottled</code> メトリックには、どのメトリックがスロットリングをトリガーしたか、またスロットルがドライラン モードで発生したかどうかを識別するための <code>MetricName</code>、<code>MetricValue</code>、および <code>DryRun</code> の追加ラベルがあります。
+これらのメトリクスは、スロットル パターンの監視、スロットリングされているワークロードの特定、パフォーマンス オーバーヘッドの測定、構成変更前のドライラン モードでの動作の検証に役立ちます。</li>
+</ul>
+<h4>&lt;a id=&quot;vttablet-querythrottler-config-watch&quot;/&gt;QueryThrottler イベント駆動型構成の更新&lt;/a&gt;</h4>
+<p>QueryThrottler 構成は、トポロジ サーバー内の <code>SrvKeyspace</code> レコードに伝播されて保存され、標準のトポロジ ツールを使用して管理されるようになりました。以前は、タブレットは 60 秒ごとに構成変更をポーリングしていました。タブレットはイベント ドリブン ウォッチ (<code>WatchSrvKeyspace</code>) を使用して、クエリ スロットリング構成が変更されたときにすぐに更新を受信するようになりました。キースペース内のすべてのタブレットは構成の変更をほぼ同時に認識し、トポロジ サーバーの変更はバージョン管理され、監査可能です。
+この変更により、以前のファイルベースの設定ローダーが、トポロジに保存されている protobuf 定義の設定構造に置き換えられます。新しい構成には、スロットルの有効化/無効化、スロットル戦略の選択、戦略固有のルールの構成のためのフィールドが含まれています。</p>
+<h4>&lt;a id=&quot;vttablet-conn-pool-waiter-cap&quot;/&gt;タブレット接続プール ウェイター キャップ&lt;/a&gt;</h4>
+<p>VTTablet では、ユーザーが接続プールからの接続を取得するのを待機しているリクエストの数に制限を設定できるようになりました。
+クエリ、ストリーム、トランザクション接続プール。制限は次のフラグで設定されます。</p>
+<ul>
+<li><code>--queryserver-config-query-pool-waiter-cap</code>
+*<code>--queryserver-config-stream-pool-waiter-cap</code></li>
+<li><code>--queryserver-config-txpool-waiter-cap</code>
+上記のすべてのデフォルト値は <code>0</code> であり、制限がないことを意味するため、以前のバージョンの動作が維持されます。</li>
+</ul>
+<h3>&lt;a id=&quot;minor-changes-tracing&quot;/&gt;トレース&lt;/a&gt;</h3>
+<h4>&lt;a id=&quot;tracing-opentelemetry&quot;/&gt;OpenTelemetry トレースのサポート&lt;/a&gt;</h4>
+<p>Vites は、トレース バックエンドとして <a href="https://opentelemetry.io/">OpenTelemetry</a> をサポートするようになりました。これを使用するには、任意の Vitess バイナリで <code>--tracer opentelemetry</code> を設定します。トレースは OTLP/gRPC 経由でエクスポートされ、次のフラグで構成できます。</p>
+<ul>
+<li><code>--otel-endpoint</code>: OpenTelemetry コレクター エンドポイント。空の場合、<code>OTEL_EXPORTER_OTLP_ENDPOINT</code> 環境変数が使用されます。これも設定されていない場合、OTel SDK はデフォルトで <code>localhost:4317</code> になります。</li>
+<li><code>--otel-insecure</code> (デフォルト <code>false</code>): コレクターへの安全でない接続を使用します。</li>
+<li><code>--tracing-sampling-rate</code> (デフォルト <code>0.1</code>): トレースのサンプリング レート (すべてのトレース バックエンドで共有)。
+OTLP 互換のバックエンド (Jaeger v1.35+、Grafana Tempo、Datadog Agent など) はこれらのトレースを受信できます。</li>
+</ul>
+<h4>&lt;a id=&quot;tracing-opentracing-deprecation&quot;/&gt;OpenTracing ベースのトレース バックエンドの非推奨&lt;/a&gt;</h4>
+<p>次のトレース バックエンドは v24 の時点で非推奨となり、v25 で削除される予定です。</p>
+<ul>
+<li><code>opentracing-jaeger</code> — アーカイブされている <a href="https://github.com/uber/jaeger-client-go">Jaeger client-go</a> ライブラリを使用します。イェーガー プロジェクト <a href="https://www.jaegertracing.io/docs/next-release/getting-started/#migrating-from-jaeger-clients-to-opentelemetry-sdk">OpenTelemetry への移行を推奨</a>。ユーザーは、OTLP 互換の Jaeger エンドポイント (v1.35+) を備えた <code>--tracer opentelemetry</code> に移行する必要があります。</li>
+<li><code>opentracing-datadog</code> — <code>dd-trace-go</code> の OpenTracing ブリッジを使用します。ユーザーは、Datadog Agent の OTLP インジェスト エンドポイントを使用して ZZPH100​​ZZ に移行する必要があります。
+<code>--tracer opentracing-jaeger</code> および <code>--tracer opentracing-datadog</code> オプションは v24 でも引き続き機能しますが、起動時に非推奨の警告がログに記録されます。次のイエーガー固有のフラグも非推奨となり、v25 で削除されます。</li>
+<li><code>--jaeger-agent-host</code></li>
+<li><code>--tracing-sampling-type</code>
+<strong>移行</strong>: <code>--tracer opentracing-jaeger</code> を <code>--tracer opentelemetry</code> に、<code>--jaeger-agent-host host:port</code> を <code>--otel-endpoint host:4317</code> に置き換えます。 Jaeger 導入環境が OTLP を受け入れていることを確認してください (Jaeger v1.35+ はデフォルトでポート 4317 をリッスンします)。</li>
+</ul>
+<h3>&lt;a id=&quot;minor-changes-vtorc&quot;/&gt;VTOrc&lt;/a&gt;</h3>
+<h4>&lt;a id=&quot;vtorc-cell-flag&quot;/&gt;新しい <code>--cell</code> フラグ&lt;/a&gt;</h4>
+<p>VTOrc は、VTOrc プロセスが実行されている Vitess セルを指定する <code>--cell</code> フラグをサポートするようになりました。このフラグは、v24 ではオプションですが、VTGate の <code>--cell</code> フラグと同様に、v25 以降では必須になります。
+これを指定すると、VTOrc は起動時にセルがトポロジ サービスに存在することを検証します。フラグがないと、VTOrc は v25+ フラグ要件に関する警告をログに記録します。
+これにより、将来のクロスセル問題検証が可能になり、VTOrc は回復アクションを実行する前に、検出された問題を検証するよう別のセルに要求できるようになります。このフラグは現在検証されていますが、VTOrc リカバリ ロジックではまだ使用されていません。
+<strong>注意</strong>: マルチセル展開で VTOrc を実行している場合は、v25 要件に備えるために、今すぐ <code>--cell</code> フラグの使用を開始してください。</p>
+<h4>&lt;a id=&quot;vtorc-owned-recovery-semi-sync&quot;/&gt;順序付きリカバリの実行と準同期ロールアウト&lt;/a&gt;</h4>
+<p>VTOrc は、タブレットごとに個別にリカバリを実行するのではなく、定義された順序でシャードごとにリカバリを実行するようになりました。順序依存関係のある問題 (半同期構成など) は最初にシリアルに実行され、独立した問題は同時に実行されます。これにより、依存関係のあるリカバリがシャード内で正しい順序で行われることが保証されます。
+ユーザー向けの主な改善点は、準同期ロールアウトです。VTOrc では、プライマリを更新する前に、レプリカで準同期が有効になっていることを確認します。以前は、十分なレプリカの準備ができる前にプライマリで半同期を有効にすると、プライマリがレプリカの送信準備ができていない半同期確認応答を待機している間、書き込みが停止する可能性がありました。
+詳細は<a href="https://github.com/vitessio/vitess/pull/19427">#19427</a>を参照してください。</p>
+<h4>&lt;a id=&quot;vtorc-deprecated-metric-removed&quot;/&gt;非推奨の VTOrc メトリックが削除されました&lt;/a&gt;</h4>
+<p><code>DiscoverInstanceTimings</code> メトリックは、v24 の VTOrc から削除されました。このメトリクスは v23 で非推奨になりました。
+<strong>移行</strong>: 代わりに <code>DiscoveryInstanceTimings</code> を使用します。これにより、インスタンス検出アクション (バックエンド、インスタンス、その他) に同じタイミング情報が提供されます。
+<strong>影響</strong>: <code>DiscoverInstanceTimings</code> を使用する監視ダッシュボードまたはアラート システムは、<code>DiscoveryInstanceTimings</code> を使用するように更新する必要があります。</p>
+<h4>&lt;a id=&quot;vtorc-snapshot-topology-deprecation&quot;/&gt;スナップショット トポロジ機能の非推奨&lt;/a&gt;</h4>
+<p><code>--snapshot-topology-interval</code> をゼロ以外の値に設定することで有効になる VTOrc のスナップショット トポロジ機能は、v24 で非推奨となり、このロジックは v25 で削除される予定です。
+この機能によって作成されたスナップショットを読み取る機能が欠如していることと、VTOrc のバックエンドのメモリ内の性質により、このロジックの有用性は限られていることを意味します。この非推奨については、https://github.com/vitessio/vitess/issues/18691. で詳しく説明および追跡されています。
+<strong>移行</strong>: v25 より前の VTOrc フラグ <code>--snapshot-topology-interval</code> を削除します。
+<strong>影響</strong>: VTOrc は、バックエンド データベースにトポロジのスナップショットを作成できなくなりました。</p>
+<h4>&lt;a id=&quot;vtorc-replication-analysis-api-removed&quot;/&gt;非推奨の <code>/api/replication-analysis</code> エンドポイントが削除されました&lt;/a&gt;</h4>
+<p><code>/api/replication-analysis</code> エンドポイントは、v24 の VTOrc から削除されました。代わりに、同じ機能を提供する <code>/api/detection-analysis</code> を使用してください。
+<strong>移行</strong>: <code>/api/replication-analysis</code> を呼び出すスクリプト、監視システム、または自動化を更新して、代わりに <code>/api/detection-analysis</code> を使用します。置換エンドポイントは同じクエリ パラメーター (<code>keyspace</code>、<code>shard</code>) を受け入れ、同じ JSON 応答形式を返します。
+<strong>影響</strong>: <code>/api/replication-analysis</code> への HTTP リクエストは 404 Not Found エラーを返します。</p>
+<h3>&lt;a id=&quot;minor-changes-metrics&quot;/&gt;指標&lt;/a&gt;</h3>
+<h4>&lt;a id=&quot;metrics-extended-go-runtime&quot;/&gt;Prometheus による拡張 Go ランタイム メトリクス&lt;/a&gt;</h4>
+<p>Vites は、Prometheus 経由で Go ランタイム メトリクスの完全なセットを公開するようになりました。デフォルトの Prometheus <code>GoCollector</code> は、3 つの <code>runtime/metrics</code> (<code>/gc/gogc:percent</code>、<code>/gc/gomemlimit:bytes</code>、<code>/sched/gomaxprocs:threads</code>) と従来の <code>go_memstats_*</code> セットのみを公開します。 v24 以降、すべての Vitess コンポーネントは Go の <code>runtime/metrics</code> パッケージから約 150 の追加メトリクスを公開します。
+<strong>新しい指標には次のものが含まれます:</strong></p>
+<ul>
+<li>ヒープ割り当てヒストグラム</li>
+<li>GC サイクル数と一時停止ヒストグラム</li>
+<li>記憶クラスの内訳</li>
+<li>Goroutine の状態の内訳</li>
+<li>スケジューラ遅延ヒストグラム</li>
+<li>クラス別の CPU 時間の内訳 (ユーザー、GC、スカベンジ、アイドル)
+新しい <code>go_info_ext</code> ゲージにも <code>compiler</code>、<code>GOARCH</code>、および <code>GOOS</code> ラベルが追加され、標準の <code>go_info</code> メトリックを超える拡張ビルド環境情報が提供されます。
+<strong>影響を受けるコンポーネント</strong>: vtgate、vttablet、vtctld、vtorc、vtbackup、mysqlctld
+<strong>構成は必要ありません</strong> — メトリクスは、Prometheus バックエンドを使用するすべてのコンポーネントの <code>/metrics</code> エンドポイントに自動的に表示されます。</li>
+</ul>
+<h3>&lt;a id=&quot;minor-changes-backup-restore&quot;/&gt;バックアップと復元&lt;/a&gt;</h3>
+<h4>&lt;a id=&quot;mysql-clone-support&quot;/&gt;レプリカ プロビジョニングの MySQL CLONE サポート&lt;/a&gt;</h4>
+<p>VTTablet と VTBackup は、MySQL のネイティブ <a href="https://dev.mysql.com/doc/refman/en/clone-plugin.html">CLONE プラグイン</a> を使用して、ドナー タブレットからネットワーク経由でデータを直接コピーすることで新しいレプリカをプロビジョニングすることをサポートするようになりました。物理レベルのデータ コピーは、特に大規模なデータセットの場合、論理バックアップおよび復元よりも大幅に高速です。 MySQL 8.0.17+ および InnoDB 専用テーブルが必要です。
+<strong>新しいフラグ:</strong>
+|旗 |説明 |
+|------|---------------|
+| <code>--mysql-clone-enabled</code> | MySQL CLONE プラグインを有効にし、MySQL の初期化中にクローン ユーザーを作成します。 CLONE操作に参加するすべてのタブレットに必要です。 |
+| <code>--clone-from-primary</code> |バックアップから復元するのではなく、シャードのプライマリ タブレットからデータのクローンを作成します。 <code>--clone-from-tablet</code>とは相互に排他的です。 |
+| <code>--clone-from-tablet</code> |バックアップから復元するのではなく、エイリアス (<code>zone1-123</code> など) を使用して特定のタブレットからデータのクローンを作成します。 <code>--clone-from-primary</code>とは相互に排他的です。 |
+| <code>--restore-with-clone</code> |復元フェーズでは、バックアップから復元するのではなく、MySQL CLONE を使用します。 <code>--clone-from-primary</code> または <code>--clone-from-tablet</code> のいずれかが必要です。 |
+| <code>--clone-restart-wait-timeout</code> | CLONE REMOTE 完了後の MySQL の再起動を待機するタイムアウト。デフォルト: 5 分。 |
+<strong>ユーザー設定のクローンを作成します:</strong>
+|旗 |説明 |
+|------|---------------|
+| <code>--db-clone-user</code> | MySQL CLONE 操作 (ドナー認証) のユーザー名。 |
+| <code>--db-clone-password</code> | CLONEユーザーのパスワード。 |
+| <code>--db-clone-use-ssl</code> | CLONE 操作のためにドナーに接続する場合は SSL を使用します。 |
+<strong>使用例:</strong>
+シャードのプライマリからクローンを作成します。</p>
+<pre><code class="language-bash">vttablet \
+  --mysql-clone-enabled \
+  --restore-with-clone \
+  --clone-from-primary \
+  ...
+</code></pre>
+<p>特定のタブレットからクローンを作成します。</p>
+<pre><code class="language-bash">vtbackup \
+  --mysql-clone-enabled \
+  --restore-with-clone \
+  --clone-from-tablet=zone1-0000000100 \
+  ...
+</code></pre>
+<p><strong>注意:</strong> CLONE 操作に参加しているすべてのタブレット (提供者と受信者の両方) は、CLONE プラグインがロードされ、クローン ユーザーが存在していることを確認するために、MySQL の初期化中に <code>--mysql-clone-enabled</code> を設定する必要があります。</p>
+<h4>&lt;a id=&quot;restore-hook-backup-engine-env&quot;/&gt;復元フックの改善&lt;/a&gt;</h4>
+<h2><strong>フック範囲の拡張</strong>: <code>vtctldclient RestoreFromBackup</code> 経由でリストアがトリガーされると、<code>vttablet_restore_done</code> フックが起動されるようになりました。以前は、このフックはタブレットの起動時またはクローン操作中にのみ実行されていました。
+<strong>新しい環境変数</strong>: フックは、どのバックアップ エンジンが使用されたかを示すために <code>TM_RESTORE_DATA_BACKUP_ENGINE</code> を設定するようになりました。値はバックアップ マニフェストの <code>BackupMethod</code> フィールドから取得されます。
+<code>TM_RESTORE_DATA_BACKUP_ENGINE</code> は、リストアが実際のバックアップから読み取られる場合にのみ設定されます。クローンベースのリストアやバックアップが使用されない場合には設定されません。フック スクリプトはこれを使用して、復元で <code>builtin</code>、<code>xtrabackup</code>、または別のエンジンが使用されたかどうかに基づいて、エンジン固有のアクションを実行できます。</h2>
+<h2>このリリースの changelog 全体は、<a href="https://github.com/vitessio/vitess/blob/main/changelog/24.0/24.0.0/changelog.md">ここ</a> にあります。
+このリリースには 460 件のマージされたプル リクエストが含まれています。
+すべての寄稿者に感謝します: @ChaitanyaD48、@Devanshusharma2005、@MargaretMorehead、@anujagrawal380、@aparajon、@app/dependabot、@app/promptless、@app/vites-bot、@arthurschreiber、@c-r-dev、@chengyuan、@connorolaya、@dasl-、 @dbussink、@demmer、@derekperkins、@ejortegau、@esignorelli、@farhann-saleem、@frouioui、@ghostframe、@harshit-gangal、@jdoupe、@khkim6040、@lizztheblizz、@maksimov、@mattlord、@maxenglander、@mcpherrinm、@mcrauwel、@mhamza15、 @nickvanw、@pourtorabehsan、@rjlaine、@rvrangel、@sbaker617、@shlomi-noach、@siddharth16396、@stefanb、@stutibiyani、@systay、@tanjinx、@tesro-ohyama、@timvaillancourt、@ttran397、@twthorn、@varundeepsaini、 @speedbot、@yushuqin</h2>
+<blockquote>
+<p><strong>ソース</strong> <a href="https://github.com/vitessio/vitess">速度</a> · <code>v24.0.0</code> · 2026-04-30 · <a href="https://github.com/vitessio/vitess/releases/tag/v24.0.0">アップストリーム リリース</a>
+<em>インデックス作成のためにそのままミラーリングされます。無断転載を禁じます。</em></p>
+</blockquote></div>  <details class="mt-original"> <summary>English original / English original</summary> <div class="prose mt-original-body"><h1>vitess v24.0.0</h1>
+<h1>Release of Vitess v24.0.0</h1>
+<h2>Summary</h2>
+<h3>Table of Contents</h3>
+<ul>
+<li><strong><a href="#major-changes">Major Changes</a></strong>
+<ul>
+<li><strong><a href="#new-support">New Support</a></strong>
+<ul>
+<li><a href="#window-function-pushdown">Window function pushdown for sharded keyspaces</a></li>
+<li><a href="#view-routing-rules">View Routing Rules</a></li>
+<li><a href="#tablet-targeting">Tablet targeting via USE statement</a></li>
+<li><a href="#vtgate-binlog-dump">VTGate Binlog Streaming Support</a></li>
+<li><a href="#structured-logging">Structured logging</a></li>
+</ul>
+</li>
+<li><strong><a href="#breaking-changes">Breaking Changes</a></strong>
+<ul>
+<li><a href="#vttablet-external-decompressor-manifest">External Decompressor No Longer Read from Backup MANIFEST by Default</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong><a href="#minor-changes">Minor Changes</a></strong>
+<ul>
+<li><strong><a href="#minor-changes-vreplication">VReplication</a></strong>
+<ul>
+<li><a href="#vreplication-shards-flag-start-stop"><code>--shards</code> flag for MoveTables/Reshard start and stop</a></li>
+<li><a href="#vreplication-tablet-error-retry">Automatic tablet retry for tablet-specific errors</a></li>
+</ul>
+</li>
+<li><strong><a href="#minor-changes-vtgate">VTGate</a></strong>
+<ul>
+<li><a href="#vtgate-removed-grpc-send-session-in-streaming">Removed <code>--grpc-send-session-in-streaming</code> flag</a></li>
+<li><a href="#vtgate-new-default-legacy-replication-lag-algorithm">New default for <code>--legacy-replication-lag-algorithm</code> flag</a></li>
+<li><a href="#vtgate-session-balancer-mode">New &quot;session&quot; mode for <code>--vtgate-balancer-mode</code> flag</a></li>
+</ul>
+</li>
+<li><strong><a href="#minor-changes-query-serving">Query Serving</a></strong>
+<ul>
+<li><a href="#query-serving-json-extract-dynamic-args">JSON_EXTRACT now supports dynamic path arguments</a></li>
+</ul>
+</li>
+<li><strong><a href="#minor-changes-vttablet">VTTablet</a></strong>
+<ul>
+<li><a href="#vttablet-init-tablet-type-lookup">New Experimental flag <code>--init-tablet-type-lookup</code></a></li>
+<li><a href="#vttablet-querythrottler-metrics">QueryThrottler Observability Metrics</a></li>
+<li><a href="#vttablet-querythrottler-config-watch">QueryThrottler Event-Driven Configuration Updates</a></li>
+<li><a href="#vttablet-conn-pool-waiter-cap">Connection Pool Waiter Cap</a></li>
+</ul>
+</li>
+<li><strong><a href="#minor-changes-tracing">Tracing</a></strong>
+<ul>
+<li><a href="#tracing-opentelemetry">OpenTelemetry tracing support</a></li>
+<li><a href="#tracing-opentracing-deprecation">Deprecation of OpenTracing-based tracing backends</a></li>
+</ul>
+</li>
+<li><strong><a href="#minor-changes-vtorc">VTOrc</a></strong>
+<ul>
+<li><a href="#vtorc-cell-flag">New <code>--cell</code> Flag</a></li>
+<li><a href="#vtorc-ordered-recovery-semi-sync">Ordered Recovery Execution and Semi-Sync Rollout</a></li>
+<li><a href="#vtorc-deprecated-metric-removed">Deprecated VTOrc Metric Removed</a></li>
+<li><a href="#vtorc-snapshot-topology-deprecation">Deprecation of Snapshot Topology feature</a></li>
+<li><a href="#vtorc-replication-analysis-api-removed">Deprecated <code>/api/replication-analysis</code> Endpoint Removed</a></li>
+</ul>
+</li>
+<li><strong><a href="#minor-changes-metrics">Metrics</a></strong>
+<ul>
+<li><a href="#metrics-extended-go-runtime">Extended Go Runtime Metrics via Prometheus</a></li>
+</ul>
+</li>
+<li><strong><a href="#minor-changes-backup-restore">Backup and Restore</a></strong>
+<ul>
+<li><a href="#mysql-clone-support">MySQL CLONE Support for Replica Provisioning</a></li>
+<li><a href="#restore-hook-backup-engine-env">Restore Hook Improvements</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2>&lt;a id=&quot;major-changes&quot;/&gt;Major Changes&lt;/a&gt;</h2>
+<h3>&lt;a id=&quot;new-support&quot;/&gt;New Support&lt;/a&gt;</h3>
+<h4>&lt;a id=&quot;window-function-pushdown&quot;/&gt;Window function pushdown for sharded keyspaces&lt;/a&gt;</h4>
+<p>This release introduces an optimization that allows window functions to be pushed down to individual shards when they are partitioned by a column that matches a unique vindex.</p>
+<p>Previously, all window function queries required single-shard routing, which limited their applicability on sharded tables. With this change, queries where the <code>PARTITION BY</code> clause aligns with a unique vindex can now be pushed down and executed on each shard.</p>
+<p>For examples and more details, see the <a href="https://vitess.io/docs/24.0/reference/compatibility/mysql-compatibility/#window-functions">documentation</a>.</p>
+<h4>&lt;a id=&quot;view-routing-rules&quot;/&gt;View Routing Rules&lt;/a&gt;</h4>
+<p>Vitess now supports routing rules for views, and can be applied the same as tables with <code>vtctldclient ApplyRoutingRules</code>. When a view routing rule is active, VTGate rewrites queries that reference the source view to use the target view's definition instead. For example, given this routing rule:</p>
+<pre><code class="language-json">{
+  &quot;rules&quot;: [
+    {
+      &quot;from_table&quot;: &quot;source_ks.my_view&quot;,
+      &quot;to_tables&quot;: [&quot;target_ks.my_view&quot;]
+    }
+  ]
+}
+</code></pre>
+<p>And this view definition:</p>
+<pre><code class="language-sql">CREATE VIEW target_ks.my_view AS SELECT id, name FROM user;
+</code></pre>
+<p>A query like <code>SELECT * FROM source_ks.my_view</code> would be internally rewritten to:</p>
+<pre><code class="language-sql">SELECT * FROM (SELECT id, name FROM target_ks.user) AS my_view;
+</code></pre>
+<p>View routing rules require the schema tracker to monitor views, which means VTGate must be started with the <code>--enable-views</code> flag and VTTablet with the <code>--queryserver-enable-views</code> flag. The target view must exist in the specified keyspace for the routing rule to function correctly. For more details, see the <a href="https://vitess.io/docs/24.0/reference/features/schema-routing-rules/">Schema Routing Rules documentation</a>.</p>
+<h4>&lt;a id=&quot;tablet-targeting&quot;/&gt;Tablet targeting via USE statement&lt;/a&gt;</h4>
+<p>VTGate now supports routing queries to a specific tablet by alias using an extended <code>USE</code> statement syntax:</p>
+<pre><code class="language-sql">USE keyspace:shard@tablet_type|tablet_alias;
+</code></pre>
+<p>For example, to target a specific replica tablet:</p>
+<pre><code class="language-sql">USE commerce:-80@replica|zone1-0000000100;
+</code></pre>
+<p>Once set, all subsequent queries in the session route to the specified tablet until cleared with a standard <code>USE keyspace</code> or <code>USE keyspace@tablet_type</code> statement. This is useful for debugging, per-tablet monitoring, cache warming, and other operational tasks where targeting a specific tablet is required.</p>
+<p>Note: A shard must be specified when using tablet targeting. Like shard targeting, this bypasses vindex-based routing, so use with care.</p>
+<h4>&lt;a id=&quot;vtgate-binlog-dump&quot;/&gt;Binlog Streaming Support&lt;/a&gt;</h4>
+<p>VTGate now supports GTID-based binlog streaming through two protocols:</p>
+<ul>
+<li><strong>MySQL protocol</strong>: Clients can connect using the standard MySQL <code>COM_BINLOG_DUMP_GTID</code> replication protocol command—no special VStream-aware adapters or direct MySQL access required.</li>
+<li><strong>gRPC</strong>: The new <code>BinlogDumpGTID</code> streaming RPC in <code>vtgateservice</code> provides native gRPC access for custom clients without the MySQL protocol dependency.</li>
+</ul>
+<p>Note: Only GTID-based streaming is supported. File/position-based streaming is not available through either <code>COM_BINLOG_DUMP</code> or <code>COM_BINLOG_DUMP_GTID</code> and returns an error.</p>
+<p>This feature is disabled by default. Enable it with <code>--enable-binlog-dump</code>.</p>
+<p><strong>New flags:</strong></p>
+<ul>
+<li><code>--enable-binlog-dump</code>: Enables binlog dump support. Without this flag, binlog dump requests return an error.</li>
+<li><code>--binlog-dump-authorized-users</code>: Comma-separated list of users authorized to execute binlog dump operations, or <code>%</code> to allow all users.</li>
+</ul>
+<p><strong>Requirements:</strong></p>
+<p>When initiating a binlog dump connection, clients must specify:</p>
+<ul>
+<li>An empty filename</li>
+<li>A file position (<code>filepos</code>) of 4</li>
+<li>A GTID position</li>
+</ul>
+<p>For gRPC clients, specify the keyspace, shard, and optionally the tablet type or tablet alias directly in the <code>BinlogDumpGTIDRequest</code>.</p>
+<p><strong>Limitations:</strong></p>
+<ul>
+<li>Each stream operates on a single tablet—no data aggregation across shards.</li>
+<li>No automatic failover—if the targeted tablet becomes unavailable, the stream fails and the client must reconnect to a different tablet.</li>
+<li>Not compatible with <code>MoveTables</code> or <code>Reshard</code> operations. Use the VStream API for those use cases.</li>
+</ul>
+<h4>&lt;a id=&quot;structured-logging&quot;/&gt;Structured logging&lt;/a&gt;</h4>
+<p>Vitess now uses structured JSON logging by default. Log output is emitted as JSON to stderr. To configure the minimum log level, pass <code>--log-level</code> (one of <code>debug</code>, <code>info</code>, <code>warn</code>, <code>error</code>; default <code>info</code>). For a human-readable format with automatic color detection, pass <code>--log-format=text</code>. To revert to the previous <code>glog</code> backend, pass <code>--log-structured=false</code>.</p>
+<p><code>glog</code> is deprecated as of v24 and will be removed in v25.</p>
+<h3>&lt;a id=&quot;breaking-changes&quot;/&gt;Breaking Changes&lt;/a&gt;</h3>
+<h4>&lt;a id=&quot;vttablet-external-decompressor-manifest&quot;/&gt;External Decompressor No Longer Read from Backup MANIFEST by Default&lt;/a&gt;</h4>
+<p>The external decompressor command stored in a backup's <code>MANIFEST</code> file is no longer used at restore time by default. Previously, when no <code>--external-decompressor</code> flag was provided, VTTablet would fall back to the command specified in the <code>MANIFEST</code>. This posed a security risk: an attacker with write access to backup storage could modify the <code>MANIFEST</code> to execute arbitrary commands on the tablet.</p>
+<p>Starting in v24, the <code>MANIFEST</code>-based decompressor is ignored unless you explicitly opt in with the new <code>--external-decompressor-use-manifest</code> flag. If you rely on this behavior, add the flag to your VTTablet configuration, but be aware of the security implications.</p>
+<p>See <a href="https://github.com/vitessio/vitess/pull/19460">#19460</a> for details.</p>
+<h2>&lt;a id=&quot;minor-changes&quot;/&gt;Minor Changes&lt;/a&gt;</h2>
+<h3>&lt;a id=&quot;minor-changes-vreplication&quot;/&gt;VReplication&lt;/a&gt;</h3>
+<h4>&lt;a id=&quot;vreplication-shards-flag-start-stop&quot;/&gt;<code>--shards</code> flag for MoveTables/Reshard start and stop&lt;/a&gt;</h4>
+<p>The <code>start</code> and <code>stop</code> commands for MoveTables and Reshard workflows now support the <code>--shards</code> flag, allowing users to start or stop workflows on a specific subset of shards rather than all shards at once.</p>
+<p><strong>Example usage:</strong></p>
+<pre><code class="language-bash"># Start workflow on specific shards only
+vtctldclient MoveTables --target-keyspace customer --workflow commerce2customer start --shards=&quot;-80,80-&quot;
+
+# Stop workflow on specific shards only
+vtctldclient Reshard --target-keyspace customer --workflow cust2cust stop --shards=&quot;80-&quot;
+</code></pre>
+<h4>&lt;a id=&quot;vreplication-tablet-error-retry&quot;/&gt;Automatic tablet retry for tablet-specific errors&lt;/a&gt;</h4>
+<p>VReplication workflows now automatically retry with different tablets when encountering tablet-specific errors. Previously, workflows without a cell preference would default to the local cell and could get stuck retrying the same failing tablet indefinitely.</p>
+<p>When a tablet encounters errors like binary log purging (MySQL error 1236 or 1789) or GTID set mismatches, VReplication adds that tablet to an ignore list and tries other tablets across all cells. Once all matching tablets have been tried, the ignore list is cleared and the workflow retries from scratch.</p>
+<p>This is particularly useful in multi-cell deployments where a tablet in the local cell may lack the required binary logs, but tablets in other cells still have them.</p>
+<h3>&lt;a id=&quot;minor-changes-vtgate&quot;/&gt;VTGate&lt;/a&gt;</h3>
+<h4>&lt;a id=&quot;vtgate-removed-grpc-send-session-in-streaming&quot;/&gt;Removed <code>--grpc-send-session-in-streaming</code> flag&lt;/a&gt;</h4>
+<p>The VTGate flag <code>--grpc-send-session-in-streaming</code> has been removed. This flag was deprecated in v22 via <a href="https://github.com/vitessio/vitess/pull/17907">#17907</a> and defaulted to <code>true</code>.</p>
+<p>The session is now always sent as the last packet in the streaming response for <code>StreamExecute</code> and <code>StreamExecuteMulti</code> RPCs. This behavior is required to support transactions in streaming and cannot be disabled.</p>
+<p><strong>Impact</strong>: Remove any usage of the <code>--grpc-send-session-in-streaming</code> flag from VTGate startup scripts or configuration.</p>
+<h4>&lt;a id=&quot;vtgate-new-default-legacy-replication-lag-algorithm&quot;/&gt;New default for <code>--legacy-replication-lag-algorithm</code> flag&lt;/a&gt;</h4>
+<p>The VTGate flag <code>--legacy-replication-lag-algorithm</code> now defaults to <code>false</code>, disabling the legacy approach to handling replication lag by default.</p>
+<p>Instead, a simpler algorithm purely based on low lag, high lag and minimum number of tablets is used, which has proven to be more stable in many production environments. A detailed explanation of the two approaches <a href="https://github.com/vitessio/vitess/blob/main/go/vt/discovery/replicationlag.go#L125-L149">is explained in this code comment</a>.</p>
+<p>In v25 this flag will become deprecated and in the following release it will be removed. In the meantime, the legacy behaviour can be used by setting <code>--legacy-replication-lag-algorithm=true</code>. This deprecation is tracked in https://github.com/vitessio/vitess/issues/18914.</p>
+<h4>&lt;a id=&quot;vtgate-session-balancer-mode&quot;/&gt;New &quot;session&quot; mode for <code>--vtgate-balancer-mode</code> flag&lt;/a&gt;</h4>
+<p>The VTGate flag <code>--vtgate-balancer-mode</code> now supports a new &quot;session&quot; mode in addition to the existing &quot;cell&quot;, &quot;prefer-cell&quot;, and &quot;random&quot; modes. Session mode routes each session consistently to the same tablet for the session's duration.</p>
+<p>To enable session mode, set the flag when starting VTGate:</p>
+<pre><code>--vtgate-balancer-mode=session
+</code></pre>
+<h3>&lt;a id=&quot;minor-changes-query-serving&quot;/&gt;Query Serving&lt;/a&gt;</h3>
+<h4>&lt;a id=&quot;query-serving-json-extract-dynamic-args&quot;/&gt;JSON_EXTRACT now supports dynamic path arguments&lt;/a&gt;</h4>
+<p>The <code>JSON_EXTRACT</code> function now supports dynamic path arguments like bind variables or results from other function calls. Previously, <code>JSON_EXTRACT</code> only worked with static string literals for path arguments.</p>
+<p>NULL handling now matches MySQL behavior. The function returns NULL when either the document or path argument is NULL.</p>
+<p>Static path arguments are still optimized, even when mixed with dynamic arguments, so existing queries won't see any performance regression.</p>
+<h3>&lt;a id=&quot;minor-changes-vttablet&quot;/&gt;VTTablet&lt;/a&gt;</h3>
+<h4>&lt;a id=&quot;vttablet-init-tablet-type-lookup&quot;/&gt;New Experimental flag <code>--init-tablet-type-lookup</code>&lt;/a&gt;</h4>
+<p>The new experimental flag <code>--init-tablet-type-lookup</code> for VTTablet allows tablets to automatically restore their previous tablet type on restart by looking up the existing topology record, rather than always using the static <code>--init-tablet-type</code> value.</p>
+<p>When enabled, the tablet uses its alias to look up the tablet type from the existing topology record on restart. This allows tablets to maintain their changed roles (e.g., RDONLY/DRAINED) across restarts without manual reconfiguration. If disabled or if no topology record exists, the standard <code>--init-tablet-type</code> value will be used instead.</p>
+<p><strong>Note</strong>: Vitess Operator–managed deployments generally do not keep matching tablet records in the topo across pod replacements, so this feature will have a more limited effect in those environments.</p>
+<h4>&lt;a id=&quot;vttablet-querythrottler-metrics&quot;/&gt;QueryThrottler Observability Metrics&lt;/a&gt;</h4>
+<p>VTTablet now exposes new metrics to track QueryThrottler behavior.</p>
+<p>Four new metrics have been added:</p>
+<ul>
+<li><strong>QueryThrottlerRequests</strong>: Total number of requests evaluated by the query throttler</li>
+<li><strong>QueryThrottlerThrottled</strong>: Number of requests that were throttled</li>
+<li><strong>QueryThrottlerTotalLatencyNs</strong>: Total time each request takes in query throttling, including evaluation, metric checks, and other overhead (in nanoseconds)</li>
+<li><strong>QueryThrottlerEvaluateLatencyNs</strong>: Time taken to make the throttling decision (in nanoseconds)</li>
+</ul>
+<p>All metrics include labels for <code>Strategy</code>, <code>Workload</code>, and <code>Priority</code>. The <code>QueryThrottlerThrottled</code> metric has additional labels for <code>MetricName</code>, <code>MetricValue</code>, and <code>DryRun</code> to identify which metric triggered the throttling and whether it occurred in dry-run mode.</p>
+<p>These metrics help monitor throttling patterns, identify which workloads are throttled, measure performance overhead, and validate behavior in dry-run mode before configuration changes.</p>
+<h4>&lt;a id=&quot;vttablet-querythrottler-config-watch&quot;/&gt;QueryThrottler Event-Driven Configuration Updates&lt;/a&gt;</h4>
+<p>QueryThrottler configuration is now propagated to and stored in the <code>SrvKeyspace</code> record within the topology server and managed using standard topology tools. Previously, tablets polled for configuration changes every 60 seconds. Tablets now use event-driven watches (<code>WatchSrvKeyspace</code>) to receive updates immediately when the query throttling configuration changes. All tablets in a keyspace see configuration changes at roughly the same time, and topology server changes are versioned and auditable.</p>
+<p>This change replaces the previous file-based configuration loader with a protobuf-defined configuration structure stored in the topology. The new configuration includes fields for enabling/disabling throttling, selecting the throttling strategy, and configuring strategy-specific rules.</p>
+<h4>&lt;a id=&quot;vttablet-conn-pool-waiter-cap&quot;/&gt;Tablet Connection Pool Waiter Cap&lt;/a&gt;</h4>
+<p>VTTablet now allows users to set a limit on the number of requests waiting to get a connection from the connection pool, for
+the query, stream, and transaction connection pools. The limits are set with the following flags:</p>
+<ul>
+<li><code>--queryserver-config-query-pool-waiter-cap</code></li>
+<li><code>--queryserver-config-stream-pool-waiter-cap</code></li>
+<li><code>--queryserver-config-txpool-waiter-cap</code></li>
+</ul>
+<p>All of the above have a default value of <code>0</code>, meaning no limit, thus preserving the behavior of the previous version.</p>
+<h3>&lt;a id=&quot;minor-changes-tracing&quot;/&gt;Tracing&lt;/a&gt;</h3>
+<h4>&lt;a id=&quot;tracing-opentelemetry&quot;/&gt;OpenTelemetry tracing support&lt;/a&gt;</h4>
+<p>Vitess now supports <a href="https://opentelemetry.io/">OpenTelemetry</a> as a tracing backend. To use it, set <code>--tracer opentelemetry</code> on any Vitess binary. Traces are exported via OTLP/gRPC, configurable with the following flags:</p>
+<ul>
+<li><code>--otel-endpoint</code>: OpenTelemetry collector endpoint. If empty, the <code>OTEL_EXPORTER_OTLP_ENDPOINT</code> env var is used; if that is also unset, the OTel SDK defaults to <code>localhost:4317</code>.</li>
+<li><code>--otel-insecure</code> (default <code>false</code>): use insecure connection to the collector.</li>
+<li><code>--tracing-sampling-rate</code> (default <code>0.1</code>): sampling rate for traces (shared across all tracing backends).</li>
+</ul>
+<p>Any OTLP-compatible backend (Jaeger v1.35+, Grafana Tempo, Datadog Agent, etc.) can receive these traces.</p>
+<h4>&lt;a id=&quot;tracing-opentracing-deprecation&quot;/&gt;Deprecation of OpenTracing-based tracing backends&lt;/a&gt;</h4>
+<p>The following tracing backends are deprecated as of v24 and will be removed in v25:</p>
+<ul>
+<li><code>opentracing-jaeger</code> — Uses the <a href="https://github.com/uber/jaeger-client-go">Jaeger client-go</a> library, which has been archived. The Jaeger project <a href="https://www.jaegertracing.io/docs/next-release/getting-started/#migrating-from-jaeger-clients-to-opentelemetry-sdk">recommends migrating to OpenTelemetry</a>. Users should migrate to <code>--tracer opentelemetry</code> with an OTLP-compatible Jaeger endpoint (v1.35+).</li>
+<li><code>opentracing-datadog</code> — Uses the OpenTracing bridge in <code>dd-trace-go</code>. Users should migrate to <code>--tracer opentelemetry</code> with the Datadog Agent's OTLP ingestion endpoint.</li>
+</ul>
+<p>The <code>--tracer opentracing-jaeger</code> and <code>--tracer opentracing-datadog</code> options continue to work in v24 but will log a deprecation warning at startup. The following Jaeger-specific flags are also deprecated and will be removed in v25:</p>
+<ul>
+<li><code>--jaeger-agent-host</code></li>
+<li><code>--tracing-sampling-type</code></li>
+</ul>
+<p><strong>Migration</strong>: Replace <code>--tracer opentracing-jaeger</code> with <code>--tracer opentelemetry</code> and <code>--jaeger-agent-host host:port</code> with <code>--otel-endpoint host:4317</code>. Ensure your Jaeger deployment accepts OTLP (Jaeger v1.35+ listens on port 4317 by default).</p>
+<h3>&lt;a id=&quot;minor-changes-vtorc&quot;/&gt;VTOrc&lt;/a&gt;</h3>
+<h4>&lt;a id=&quot;vtorc-cell-flag&quot;/&gt;New <code>--cell</code> Flag&lt;/a&gt;</h4>
+<p>VTOrc now supports a <code>--cell</code> flag that specifies which Vitess cell the VTOrc process is running in. The flag is optional in v24 but will be required in v25+, similar to VTGate's <code>--cell</code> flag.</p>
+<p>When provided, VTOrc validates that the cell exists in the topology service on startup. Without the flag, VTOrc logs a warning about the v25+ flag requirement.</p>
+<p>This enables future cross-cell problem validation, where VTOrc will be able to ask another cell to validate detected problems before taking recovery actions. The flag is currently validated but not yet used in VTOrc recovery logic.</p>
+<p><strong>Note</strong>: If you're running VTOrc in a multi-cell deployment, start using the <code>--cell</code> flag now to prepare for the v25 requirement.</p>
+<h4>&lt;a id=&quot;vtorc-ordered-recovery-semi-sync&quot;/&gt;Ordered Recovery Execution and Semi-Sync Rollout&lt;/a&gt;</h4>
+<p>VTOrc now executes recoveries per-shard with a defined ordering, rather than per-tablet in isolation. Problems that have ordering dependencies (e.g., semi-sync configuration) are executed serially first, while independent problems are executed concurrently. This ensures that dependent recoveries happen in the correct sequence within a shard.</p>
+<p>The main user-facing improvement is for semi-sync rollouts: VTOrc now ensures replicas have semi-sync enabled before updating the primary. Previously, enabling semi-sync on the primary before enough replicas were ready could stall writes while the primary waited for semi-sync acknowledgements that no replica was prepared to send.</p>
+<p>See <a href="https://github.com/vitessio/vitess/pull/19427">#19427</a> for details.</p>
+<h4>&lt;a id=&quot;vtorc-deprecated-metric-removed&quot;/&gt;Deprecated VTOrc Metric Removed&lt;/a&gt;</h4>
+<p>The <code>DiscoverInstanceTimings</code> metric has been removed from VTOrc in v24. This metric was deprecated in v23.</p>
+<p><strong>Migration</strong>: Use <code>DiscoveryInstanceTimings</code> instead, which provides the same timing information for instance discovery actions (Backend, Instance, Other).</p>
+<p><strong>Impact</strong>: Monitoring dashboards or alerting systems using <code>DiscoverInstanceTimings</code> must be updated to use <code>DiscoveryInstanceTimings</code>.</p>
+<h4>&lt;a id=&quot;vtorc-snapshot-topology-deprecation&quot;/&gt;Deprecation of Snapshot Topology feature&lt;/a&gt;</h4>
+<p>VTOrc's Snapshot Topology feature, which is enabled by setting <code>--snapshot-topology-interval</code> to a non-zero-value is deprecated as of v24 and the logic is planned for removal in v25.</p>
+<p>The lack of facilities to read the snapshots created by this feature coupled with the in-memory nature of VTOrc's backend means this logic has limited usefulness. This deprecation is explained and tracked in detail in https://github.com/vitessio/vitess/issues/18691.</p>
+<p><strong>Migration</strong>: remove the VTOrc flag <code>--snapshot-topology-interval</code> before v25.</p>
+<p><strong>Impact</strong>: VTOrc can no longer create snapshots of the topology in it's backend database.</p>
+<h4>&lt;a id=&quot;vtorc-replication-analysis-api-removed&quot;/&gt;Deprecated <code>/api/replication-analysis</code> Endpoint Removed&lt;/a&gt;</h4>
+<p>The <code>/api/replication-analysis</code> endpoint has been removed from VTOrc in v24. Use <code>/api/detection-analysis</code> instead, which provides the same functionality.</p>
+<p><strong>Migration</strong>: Update any scripts, monitoring systems, or automation that calls <code>/api/replication-analysis</code> to use <code>/api/detection-analysis</code> instead. The replacement endpoint accepts the same query parameters (<code>keyspace</code>, <code>shard</code>) and returns the same JSON response format.</p>
+<p><strong>Impact</strong>: HTTP requests to <code>/api/replication-analysis</code> will return a 404 Not Found error.</p>
+<h3>&lt;a id=&quot;minor-changes-metrics&quot;/&gt;Metrics&lt;/a&gt;</h3>
+<h4>&lt;a id=&quot;metrics-extended-go-runtime&quot;/&gt;Extended Go Runtime Metrics via Prometheus&lt;/a&gt;</h4>
+<p>Vitess now exposes the full set of Go runtime metrics via Prometheus. The default Prometheus <code>GoCollector</code> only exposes three <code>runtime/metrics</code> (<code>/gc/gogc:percent</code>, <code>/gc/gomemlimit:bytes</code>, <code>/sched/gomaxprocs:threads</code>) plus the legacy <code>go_memstats_*</code> set. Starting in v24, all Vitess components expose approximately 150 additional metrics from Go's <code>runtime/metrics</code> package.</p>
+<p><strong>New metrics include:</strong></p>
+<ul>
+<li>Heap allocation histograms</li>
+<li>GC cycle counts and pause histograms</li>
+<li>Memory class breakdowns</li>
+<li>Goroutine state breakdowns</li>
+<li>Scheduler latency histograms</li>
+<li>CPU time breakdowns by class (user, GC, scavenge, idle)</li>
+</ul>
+<p>A new <code>go_info_ext</code> gauge is also added with <code>compiler</code>, <code>GOARCH</code>, and <code>GOOS</code> labels, providing extended build environment information beyond the standard <code>go_info</code> metric.</p>
+<p><strong>Affected components</strong>: vtgate, vttablet, vtctld, vtorc, vtbackup, mysqlctld</p>
+<p><strong>No configuration required</strong> — the metrics appear automatically on the <code>/metrics</code> endpoint for all components using the Prometheus backend.</p>
+<h3>&lt;a id=&quot;minor-changes-backup-restore&quot;/&gt;Backup and Restore&lt;/a&gt;</h3>
+<h4>&lt;a id=&quot;mysql-clone-support&quot;/&gt;MySQL CLONE Support for Replica Provisioning&lt;/a&gt;</h4>
+<p>VTTablet and VTBackup now support using MySQL's native <a href="https://dev.mysql.com/doc/refman/en/clone-plugin.html">CLONE plugin</a> to provision new replicas by copying data directly from a donor tablet over the network. Physical-level data copying is significantly faster than logical backup and restore, especially for large datasets. Requires MySQL 8.0.17+ and InnoDB-only tables.</p>
+<p><strong>New Flags:</strong></p>
+<p>| Flag | Description |
+|------|-------------|
+| <code>--mysql-clone-enabled</code> | Enable the MySQL CLONE plugin and create the clone user during MySQL initialization. Required for all tablets that will participate in CLONE operations. |
+| <code>--clone-from-primary</code> | Clone data from the shard's primary tablet instead of restoring from backup. Mutually exclusive with <code>--clone-from-tablet</code>. |
+| <code>--clone-from-tablet</code> | Clone data from a specific tablet by alias (e.g., <code>zone1-123</code>) instead of restoring from backup. Mutually exclusive with <code>--clone-from-primary</code>. |
+| <code>--restore-with-clone</code> | Use MySQL CLONE for the restore phase instead of restoring from backup. Requires either <code>--clone-from-primary</code> or <code>--clone-from-tablet</code>. |
+| <code>--clone-restart-wait-timeout</code> | Timeout for waiting for MySQL to restart after CLONE REMOTE completes. Default: 5 minutes. |</p>
+<p><strong>Clone User Configuration:</strong></p>
+<p>| Flag | Description |
+|------|-------------|
+| <code>--db-clone-user</code> | MySQL username for CLONE operations (donor authentication). |
+| <code>--db-clone-password</code> | Password for the CLONE user. |
+| <code>--db-clone-use-ssl</code> | Use SSL when connecting to the donor for CLONE operations. |</p>
+<p><strong>Example Usage:</strong></p>
+<p>Clone from the shard's primary:</p>
+<pre><code class="language-bash">vttablet \
+  --mysql-clone-enabled \
+  --restore-with-clone \
+  --clone-from-primary \
+  ...
+</code></pre>
+<p>Clone from a specific tablet:</p>
+<pre><code class="language-bash">vtbackup \
+  --mysql-clone-enabled \
+  --restore-with-clone \
+  --clone-from-tablet=zone1-0000000100 \
+  ...
+</code></pre>
+<p><strong>Note:</strong> All tablets participating in CLONE operations (both donors and recipients) must have <code>--mysql-clone-enabled</code> set during MySQL initialization to ensure the CLONE plugin is loaded and the clone user exists.</p>
+<h4>&lt;a id=&quot;restore-hook-backup-engine-env&quot;/&gt;Restore Hook Improvements&lt;/a&gt;</h4>
+<p><strong>Extended Hook Coverage</strong>: The <code>vttablet_restore_done</code> hook now fires when restores are triggered via <code>vtctldclient RestoreFromBackup</code>. Previously, this hook only ran during tablet startup or clone operations.</p>
+<p><strong>New Environment Variable</strong>: The hook now sets <code>TM_RESTORE_DATA_BACKUP_ENGINE</code> to indicate which backup engine was used. The value comes from the backup manifest's <code>BackupMethod</code> field.</p>
+<p><code>TM_RESTORE_DATA_BACKUP_ENGINE</code> is only set when a restore reads from an actual backup—not for clone-based restores or when no backup is used. Hook scripts can use this to perform engine-specific actions based on whether the restore used <code>builtin</code>, <code>xtrabackup</code>, or another engine.</p>
+<hr />
+<p>The entire changelog for this release can be found <a href="https://github.com/vitessio/vitess/blob/main/changelog/24.0/24.0.0/changelog.md">here</a>.</p>
+<p>The release includes 460 merged Pull Requests.</p>
+<p>Thanks to all our contributors: @ChaitanyaD48, @Devanshusharma2005, @MargaretMorehead, @anujagrawal380, @aparajon, @app/dependabot, @app/promptless, @app/vitess-bot, @arthurschreiber, @c-r-dev, @chengyuan, @connorolaya, @dasl-, @dbussink, @demmer, @derekperkins, @ejortegau, @esignorelli, @farhann-saleem, @frouioui, @ghostframe, @harshit-gangal, @jdoupe, @khkim6040, @lizztheblizz, @maksimov, @mattlord, @maxenglander, @mcpherrinm, @mcrauwel, @mhamza15, @nickvanw, @pourtorabehsan, @rjlaine, @rvrangel, @sbaker617, @shlomi-noach, @siddharth16396, @stefanb, @stutibiyani, @systay, @tanjinx, @tetsuro-ohyama, @timvaillancourt, @ttran397, @twthorn, @varundeepsaini, @vitess-bot, @yushuqin</p>
+<hr />
+<blockquote>
+<p><strong>Source</strong> <a href="https://github.com/vitessio/vitess">vitessio/vitess</a> · <code>v24.0.0</code> · 2026-04-30 · <a href="https://github.com/vitessio/vitess/releases/tag/v24.0.0">upstream release</a></p>
+</blockquote>
+<p><em>Mirrored verbatim for indexing. All rights belong to the upstream project.</em></p></div> </details> </div> <p class="muted" style="margin-top:var(--s8);font-size:12.5px;border-top:1px solid var(--line);padding-top:var(--s4)"> リリースノートは上流プロジェクトが公開したものです。私たちはそれらを整理し、関連付けて、バージョンを一眼で比較できるようにしています。コンテンツの権利はすべて原作者に属します。 </p> <nav class="pager" aria-label="Release navigation"> <a href="/releases/vitess/23.0.4"> <span class="k">← 次へ</span> <span class="t">v23.0.4</span> </a> <a href="/releases/vitess/23.0.3"> <span class="k">前へ →</span> <span class="t">v23.0.3</span> </a> </nav> <aside class="ad-slot" aria-label="Advertisement" data-astro-cid-fgwukgf6><div class="ad-slot-label" data-astro-cid-fgwukgf6>Advertisement</div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4184355057086168" data-ad-slot="9133765584" data-ad-format="auto" data-full-width-responsive="true" data-astro-cid-fgwukgf6></ins><script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script></aside> </article> <aside class="rail"> <div class="rail-card"> <div class="rail-title">Source</div> <ul class="rail-list"> <li> <a href="https://github.com/vitessio/vitess/releases/tag/v24.0.0" target="_blank" rel="noopener"> <span>GitHub で見る</span> <span class="d">↗</span> </a> </li> <li> <a href="https://github.com/vitessio/vitess" target="_blank" rel="noopener"> <span>vitessio/vitess</span> <span class="d">↗</span> </a> </li> </ul> </div> <div class="rail-card rail-toc"> <div class="rail-title">このページの目次</div> <nav> <a href="#" class>概要</a><a href="#" class="lv3">目次</a><a href="#" class>&lt;a id=&quot;major-changes&quot;/&gt;大きな変更点&lt;/a&gt;</a><a href="#" class="lv3">&lt;a id=&quot;new-support&quot;/&gt;新しいサポート&lt;/a&gt;</a><a href="#" class="lv3">&lt;a id=&quot;breaking-changes&quot;/&gt;重大な変更&lt;/a&gt;</a><a href="#" class>&lt;a id=&quot;minor-changes&quot;/&gt;マイナーな変更&lt;/a&gt;</a><a href="#" class="lv3">&lt;a id=&quot;minor-changes-vreplication&quot;/&gt;Vレプリケーション&lt;/a&gt;</a><a href="#" class="lv3">&lt;a id=&quot;minor-changes-vtgate&quot;/&gt;VTGate&lt;/a&gt;</a><a href="#" class="lv3">&lt;a id=&quot;minor-changes-query-serving&quot;/&gt;クエリ処理&lt;/a&gt;</a><a href="#" class="lv3">&lt;a id=&quot;minor-changes-vttablet&quot;/&gt;VTTablet&lt;/a&gt;</a><a href="#" class="lv3">&lt;a id=&quot;minor-changes-tracing&quot;/&gt;トレース&lt;/a&gt;</a><a href="#" class="lv3">&lt;a id=&quot;minor-changes-vtorc&quot;/&gt;VTOrc&lt;/a&gt;</a><a href="#" class="lv3">&lt;a id=&quot;minor-changes-metrics&quot;/&gt;指標&lt;/a&gt;</a><a href="#" class="lv3">&lt;a id=&quot;minor-changes-backup-restore&quot;/&gt;バックアップと復元&lt;/a&gt;</a> </nav> </div> <div class="rail-card"> <div class="rail-title">バージョン履歴</div> <ul class="rail-list"> <li> <a href="/releases/vitess/24.0.5"> <span class="v">v24.0.5</span> <span class="d">26-10-13</span> </a> </li><li> <a href="/releases/vitess/23.0.8"> <span class="v">v23.0.8</span> <span class="d">26-10-13</span> </a> </li><li> <a href="/releases/vitess/24.0.4"> <span class="v">v24.0.4</span> <span class="d">26-10-01</span> </a> </li><li> <a href="/releases/vitess/23.0.7"> <span class="v">v23.0.7</span> <span class="d">26-10-01</span> </a> </li><li> <a href="/releases/vitess/24.0.3"> <span class="v">v24.0.3</span> <span class="d">26-09-03</span> </a> </li><li> <a href="/releases/vitess/23.0.6"> <span class="v">v23.0.6</span> <span class="d">26-09-03</span> </a> </li><li> <a href="/releases/vitess/24.0.2"> <span class="v">v24.0.2</span> <span class="d">26-06-24</span> </a> </li><li> <a href="/releases/vitess/23.0.5"> <span class="v">v23.0.5</span> <span class="d">26-06-24</span> </a> </li> </ul> <a href="/ja/releases/vitess" class="mono" style="display:inline-block;margin-top:var(--s3);font-size:11.5px;color:var(--ink-3)"> すべての 20 件を見る →
+</a> </div> </aside> </div> </div>  </main> <footer class="site-footer"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/ja/" class="brand" aria-label="STAGS NextStack"><span class="brand-mark" aria-hidden="true">S</span><span class="brand-main">STAGS</span><span class="brand-sub" aria-hidden="true">NextStack</span></a> <p>オープンソースのリリース インテリジェンスが毎日公開されます。</p> </div> <div class="footer-col"> <h3>追跡</h3> <ul> <li><a href="/ja/releases">リリース</a></li> <li><a href="/ja/projects">プロジェクト</a></li> <li><a href="/ja/releases.xml">RSS フィード</a></li> </ul> </div> <div class="footer-col"> <h3>アーカイブ</h3> <ul> <li><a href="/zh/release_note" hreflang="zh-Hans">中文アーカイブ</a></li> <li><a href="/zh/chapters/" hreflang="zh-Hans">技術ノート</a></li> <li><a href="/zh/downloads/">Stags Tracker</a></li> </ul> </div> <div class="footer-col"> <h3>情報</h3> <ul> <li><a href="/privacy">プライバシーポリシー</a></li> <li><a href="/releases.xml">RSS</a></li> <li><a href="/sitemap-index.xml">Sitemap</a></li> </ul> </div> </div> <div class="footer-btm"> <span>© 2026 STAGS</span> <span>Release note は上流プロジェクトに属します。</span> </div> </div> </footer> <!-- 搜索面板 --> <div class="palette-bg" data-palette-bg data-open="false"> <div class="palette" role="dialog" aria-modal="true" aria-label="リリースを検索"> <div class="palette-in"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ink-4);flex:none"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <input type="search" data-palette-input placeholder="リリース、プロジェクト、バージョンを検索…" autocomplete="off" spellcheck="false"> <span class="kbd">esc</span> </div> <ul class="palette-res" data-palette-res></ul> <div class="palette-ft"> <span>↑↓ navigate</span> <span>↵ open</span> <span style="margin-left:auto" data-palette-count></span> </div> </div> </div> <script type="module" src="/assets/Shell.astro_astro_type_script_index_0_lang.0ZkKXV47.js"></script> </body> </html>

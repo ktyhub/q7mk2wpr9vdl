@@ -1,0 +1,320 @@
+<!DOCTYPE html><html lang="de" dir="ltr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>duckdb v1.5.2 — STAGS NextStack</title><meta name="description" content="This is a bug fix release for various issues discovered after we released v1.5.1"><meta name="keywords" content="Open-Source-release notes, Release-Tracker, changelog-Aggregator, Breaking Changes, Deprecation-Tracker, Kafka-Releases, Spring Boot-Releases, Kubernetes-Releases"><meta name="generator" content="Astro v5.18.2"><link rel="canonical" href="https://www.stags.cn/de/releases/duckdb/1.5.2/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="STAGS NextStack — releases" href="/de/releases.xml"><link rel="alternate" hreflang="en" href="https://www.stags.cn/releases/duckdb/1.5.2/"><link rel="alternate" hreflang="zh-Hans" href="https://www.stags.cn/releases/duckdb/1.5.2/"><link rel="alternate" hreflang="x-default" href="https://www.stags.cn/releases/duckdb/1.5.2/"><meta property="og:site_name" content="STAGS"><meta property="og:type" content="article"><meta property="og:title" content="duckdb v1.5.2 — STAGS NextStack"><meta property="og:description" content="This is a bug fix release for various issues discovered after we released v1.5.1"><meta property="og:url" content="https://www.stags.cn/de/releases/duckdb/1.5.2/"><meta property="og:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><meta property="og:locale" content="de_DE"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="ja_JP"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:locale:alternate" content="es_ES"><meta property="og:locale:alternate" content="pt_BR"><meta property="og:locale:alternate" content="ko_KR"><meta property="og:locale:alternate" content="it_IT"><meta property="og:locale:alternate" content="ru_RU"><meta property="og:locale:alternate" content="tr_TR"><meta property="og:locale:alternate" content="id_ID"><meta property="og:locale:alternate" content="vi_VN"><meta property="og:locale:alternate" content="ar_SA"><meta property="og:locale:alternate" content="sv_SE"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.stags.cn/#website","name":"STAGS","url":"https://www.stags.cn/","inLanguage":"de","description":"NextStack indexiert Release Notes aus Infrastruktur- und KI-Projekten – Breaking Changes, Deprecations und Migrationen – in einem englischsprachigen Feed.","publisher":{"@id":"https://www.stags.cn/#org"}},{"@type":"Organization","@id":"https://www.stags.cn/#org","name":"STAGS","alternateName":"NextStack","url":"https://www.stags.cn/"},{"@type":"TechArticle","@id":"https://www.stags.cn/de/releases/duckdb/1.5.2/#article","headline":"duckdb v1.5.2 release notes","datePublished":"2026-04-13","inLanguage":"en","isPartOf":{"@id":"https://www.stags.cn/#website"},"about":{"@type":"SoftwareSourceCode","codeRepository":"https://github.com/duckdb/duckdb"}}]}</script><!-- 第三方脚本的连接预热：这两个域名几乎每页都要连，
+         提前建连能省掉 DNS + TCP + TLS 一个往返（移动网络 100~300ms）。
+         AdSense 只在开关打开时预热——关掉广告后连这个域名都没必要。 --><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://pagead2.googlesyndication.com"><!-- Google AdSense：站点所有权校验与广告投放共用同一段脚本，全站只加载一次。
+         未创建广告单元时页面上不渲染任何广告容器，站点保持干净。
+         fetchpriority=low：它不参与首屏渲染，不该跟正文抢带宽。 --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184355057086168" crossorigin="anonymous" fetchpriority="low"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-RFRF1TVRMP" fetchpriority="low"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RFRF1TVRMP");
+    </script><!-- 百度统计（国内流量统计）。官方标准片段，is:inline 原样输出，
+         hm.js 动态插到首个 script 前，异步不阻塞首屏渲染。 --><script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?299e5b4e65b86ed16879bdcbe70531d6";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script><link rel="stylesheet" href="/assets/index.DQGt3qLZ.css">
+<style>.ad-slot[data-astro-cid-fgwukgf6]{margin:var(--s10) 0 0;padding-top:var(--s5);border-top:1px solid var(--line)}.ad-slot-label[data-astro-cid-fgwukgf6]{margin-bottom:var(--s3);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{display:block;min-height:100px}@media(min-width:640px){.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{min-height:250px}}
+</style></head> <body> <a class="skip" href="#main">Zum Inhalt springen</a> <header class="hdr" data-header> <div class="wrap hdr-inner"> <a href="/de/" class="brand" aria-label="STAGS NextStack — Release-Informationen für Open Source"> <span class="brand-mark" aria-hidden="true">S</span> <span class="brand-main">STAGS</span> <span class="brand-sub" aria-hidden="true">NextStack</span> </a> <nav class="nav" aria-label="Primary"> <a href="/de/releases">Releases</a><a href="/de/projects">Projekte</a> </nav>  <details class="navmenu" data-navmenu> <summary class="navmenu-btn" aria-label="Open menu"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> </summary> <div class="navmenu-panel" role="group" aria-label="Primary"> <a href="/de/releases" class="navmenu-item">Releases</a><a href="/de/projects" class="navmenu-item">Projekte</a> </div> </details> <div class="hdr-tools"> <button class="searchbtn" type="button" data-search-open aria-label="Releases durchsuchen"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <span class="lbl">Suche</span> <span class="kbd">⌘K</span> </button> <details class="langmenu" data-langmenu> <summary class="langmenu-btn" aria-label="Sprache"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"> <circle cx="12" cy="12" r="9"></circle> <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path> </svg> <span class="langmenu-cur">DE</span> <svg class="langmenu-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m2 4 4 4 4-4"></path></svg> </summary> <div class="langmenu-panel" role="group" aria-label="Sprache"> <p class="langmenu-head">Sprache</p> <a class="langmenu-item" href="/releases/duckdb/1.5.2/" hreflang="en" lang="en" data-on="false"> <span class="langmenu-label">English</span> <span class="langmenu-code">EN</span> </a><a class="langmenu-item" href="/zh/release_note/duckdb/duckdb_v1.5.2" hreflang="zh-Hans" lang="zh-CN" data-on="false"> <span class="langmenu-label">中文</span> <span class="langmenu-code">中</span> </a><a class="langmenu-item" href="/ja/releases/duckdb/1.5.2/" hreflang="ja" lang="ja" data-on="false"> <span class="langmenu-label">日本語</span> <span class="langmenu-code">日</span> </a><a class="langmenu-item" href="/de/releases/duckdb/1.5.2/" hreflang="de" lang="de" aria-current="true" data-on="true"> <span class="langmenu-label">Deutsch</span> <span class="langmenu-code">DE</span> </a><a class="langmenu-item" href="/fr/releases/duckdb/1.5.2/" hreflang="fr" lang="fr" data-on="false"> <span class="langmenu-label">Français</span> <span class="langmenu-code">FR</span> </a><a class="langmenu-item" href="/es/releases/duckdb/1.5.2/" hreflang="es" lang="es" data-on="false"> <span class="langmenu-label">Español</span> <span class="langmenu-code">ES</span> </a><a class="langmenu-item" href="/pt/releases/duckdb/1.5.2/" hreflang="pt-BR" lang="pt-BR" data-on="false"> <span class="langmenu-label">Português</span> <span class="langmenu-code">PT</span> </a><a class="langmenu-item" href="/ko/releases" hreflang="ko" lang="ko" data-on="false"> <span class="langmenu-label">한국어</span> <span class="langmenu-code">한</span> </a><a class="langmenu-item" href="/it/releases" hreflang="it" lang="it" data-on="false"> <span class="langmenu-label">Italiano</span> <span class="langmenu-code">IT</span> </a><a class="langmenu-item" href="/ru/releases" hreflang="ru" lang="ru" data-on="false"> <span class="langmenu-label">Русский</span> <span class="langmenu-code">RU</span> </a><a class="langmenu-item" href="/tr/releases" hreflang="tr" lang="tr" data-on="false"> <span class="langmenu-label">Türkçe</span> <span class="langmenu-code">TR</span> </a><a class="langmenu-item" href="/id/releases" hreflang="id" lang="id" data-on="false"> <span class="langmenu-label">Bahasa Indonesia</span> <span class="langmenu-code">ID</span> </a><a class="langmenu-item" href="/vi/releases" hreflang="vi" lang="vi" data-on="false"> <span class="langmenu-label">Tiếng Việt</span> <span class="langmenu-code">VI</span> </a><a class="langmenu-item" href="/ar/releases" hreflang="ar" lang="ar" data-on="false"> <span class="langmenu-label">العربية</span> <span class="langmenu-code">ع</span> </a><a class="langmenu-item" href="/sv/releases" hreflang="sv" lang="sv" data-on="false"> <span class="langmenu-label">Svenska</span> <span class="langmenu-code">SV</span> </a> </div> </details> <a class="iconlink" href="/releases.xml" aria-label="RSS"> <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"> <path d="M2 12.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM2 7.5a6.5 6.5 0 0 1 6.5 6.5h-2A4.5 4.5 0 0 0 2 9.5v-2ZM2 2.5A11.5 11.5 0 0 1 13.5 14h-2A9.5 9.5 0 0 0 2 4.5v-2Z"></path> </svg> </a> </div> </div> </header> <main id="main">  <div class="wrap"> <div class="detail"> <article> <header class="detail-hd"> <nav class="crumbs" aria-label="Breadcrumb"> <a href="/de/">Startseite</a> <span class="sep">/</span> <a href="/de/releases">Releases</a> <span class="sep">/</span> <a href="/de/releases/duckdb">duckdb</a> </nav> <h1 class="detail-title"> <span class="p">duckdb</span> v1.5.2 </h1> <div class="detail-meta"> <span class="chip chip--patch">Patch</span> <span><span class="k">Veröffentlicht</span>13. Apr. 2026</span>  <span class="sep" aria-hidden="true"></span> <a href="https://github.com/duckdb/duckdb" target="_blank" rel="noopener"> <span class="k">Quelle</span>duckdb/duckdb </a>   <span class="sep" aria-hidden="true"></span> <a href="/releases/duckdb/1.5.2/"> Englisches Original </a>  <span class="sep" aria-hidden="true"></span> <button class="btn btn--ghost btn--sm" type="button" data-copy="https://www.stags.cn/de/releases/duckdb/1.5.2/">Link kopieren</button> </div> </header> <div class="prose" style="margin-top:var(--s8)"> <p class="mt-notice" role="note">Diese Seite ist maschinell übersetzt. Maßgeblich ist der englische Originaltext.</p>  <div><h1>duckdb v1.5.2</h1>
+<p>Dies ist eine Fehlerbehebungsversion für verschiedene Probleme, die nach der Veröffentlichung von v1.5.1 entdeckt wurden</p>
+<h2>Was hat sich geändert?</h2>
+<ul>
+<li>Backport verschiedener Race-Condition-Korrekturen auf v1.4 von @Mytherin in https://github.com/duckdb/duckdb/pull/20804</li>
+<li>Referenz auf Azure für v1.4.4 (Neuaufbau) von @benfleis in https://github.com/duckdb/duckdb/pull/20888 verschieben</li>
+<li>Intern #7584: AsOf Simple Joins von @hawkfish in https://github.com/duckdb/duckdb/pull/21090</li>
+<li>Schreiben Sie den Ccache nicht in den github-Cache für v1.4-andium von @smvv in https://github.com/duckdb/duckdb/pull/21109</li>
+<li>Deaktivieren Sie das Erweiterungs-Caching für v1.4, um github-Cache-Speicherplatz von @smvv in https://github.com/duckdb/duckdb/pull/21150 freizugeben</li>
+<li>Deaktivieren Sie save_cache für v1.4-andium von @smvv in https://github.com/duckdb/duckdb/pull/21167</li>
+<li>Backport #19232: erlauben * Nicht ähnlich zu „Muster“ von @Dtenwolde in https://github.com/duckdb/duckdb/pull/21177</li>
+<li>zstd PR nach 1.4 von @artjomPlaunov in https://github.com/duckdb/duckdb/pull/21178 zurückportieren</li>
+<li>Unbegrenztes Zeilengruppenwachstum für indizierte Tabellen bei wiederholten Lade- und Einfügezyklen von @abramk in https://github.com/duckdb/duckdb/pull/21316 behoben</li>
+<li>Backport #21271 von @artjomPlaunov in https://github.com/duckdb/duckdb/pull/21326</li>
+<li>[lance] Für v1.4-andium von @carlopi in https://github.com/duckdb/duckdb/pull/21410 hinzufügen</li>
+<li>Lanze für v1.4 von @samansmink in https://github.com/duckdb/duckdb/pull/21113 hinzufügen</li>
+<li>Überläufe beim Dekodieren von Ganzzahlen aus dem Speicher von @Mytherin in https://github.com/duckdb/duckdb/pull/21482 korrekt erkennen</li>
+<li>Wörterbuchgröße korrekt zurücksetzen, wenn von @Mytherin in https://github.com/duckdb/duckdb/pull/21489 angehängte Zeichenfolgen zurückgesetzt werden</li>
+<li>Beschreibungen für Vortex und Lanze von @carlopi in https://github.com/duckdb/duckdb/pull/21500 hinzufügen</li>
+<li>Fixup-Schreibbytes werden von @carlopi in https://github.com/duckdb/duckdb/pull/21501 als BYTES_WRITTEN gezählt</li>
+<li>Speicherverlust bei Wiederverwendung von PreparedStatement (#21089) von @wzharies in https://github.com/duckdb/duckdb/pull/21104 behoben</li>
+<li>Machen Sie einige MultiStatements und PRAGMAs Transactional von @yan-alex in https://github.com/duckdb/duckdb/pull/21171</li>
+<li>Reduzieren Sie die Anzahl gleichzeitiger Threads im Test von @Mytherin in https://github.com/duckdb/duckdb/pull/21511</li>
+<li>Ganzzahlüberlauf in list_resize von @hannes in https://github.com/duckdb/duckdb/pull/21515 behoben</li>
+<li>Fix #21512: Leere Ergebnisse im .mode json von @Mytherin in https://github.com/duckdb/duckdb/pull/21517 korrekt rendern</li>
+<li>Korrigieren Sie den Parsing-Testpfad, um @jeewonhh in https://github.com/duckdb/duckdb/pull/21495 zu überspringen</li>
+<li>Einstellung zur Begrenzung der Anzahl gleichzeitig gestarteter Threads im Testläufer (<code>max_test_threads</code>) von @Mytherin in https://github.com/duckdb/duckdb/pull/21520 hinzugefügt</li>
+<li>Das Hinzufügen von Suffixen zum Pfad in <code>Path:: AddSuffixToPath</code> vereinheitlichen – Fehler bei der Aufteilung des temporären Verzeichnisses von @Mytherin in https://github.com/duckdb/duckdb/pull/21527 behoben</li>
+<li>Behandeln Sie negative Werte in <code>GetPosixVersionTag</code> korrekt und korrigieren Sie konstante <code>NULL</code>-Strukturscans nach der kürzlichen Korrektur durch @Mytherin in https://github.com/duckdb/duckdb/pull/21549</li>
+<li>Fehlende statische Erweiterungsbibliotheken im Windows MinGW-Bundle von @mlafeldt in https://github.com/duckdb/duckdb/pull/21559 behoben</li>
+<li>PEG-Grammatikkorrekturen: Erweiterung aktualisieren und numerische Strukturschlüssel von @Dtenwolde in https://github.com/duckdb/duckdb/pull/21331 zulassen</li>
+<li>[v1.5-variegata] Fix #21514: ASOF-Join leer rechts von @Pieczasz in https://github.com/duckdb/duckdb/pull/21553</li>
+<li>Datenpfad in <code>test/sql/copy/parquet/parquet_no_stats.test</code> von @jeewonhh in https://github.com/duckdb/duckdb/pull/21561 korrigiert</li>
+<li>TopNWindowElimination Column Binding Fix von @d-justen in https://github.com/duckdb/duckdb/pull/21564</li>
+<li>lance: Bump lance-duckdb zu 4d9ecab von @Xuanwo in https://github.com/duckdb/duckdb/pull/21572</li>
+<li>Julia auf <code>v1.5.0</code> von @taniabogatsch in https://github.com/duckdb/duckdb/pull/21588 bringen</li>
+<li>Bring Julia auf <code>v1.4.4</code> auf <code>v1.4-andium</code> von @taniabogatsch in https://github.com/duckdb/duckdb/pull/21589</li>
+<li>Vereinfachen Sie die Art und Weise, wie wir bei Checkpoints bestimmen, welche Zeilengruppen überprüft werden sollen, von @Mytherin in https://github.com/duckdb/duckdb/pull/21574</li>
+<li>Korrektur für den Puffergrenzwert des CSV-Readers, der von @Mytherin in https://github.com/duckdb/duckdb/pull/21577 gelesen wurde</li>
+<li>CLI: Division durch Null vermeiden, wenn ein großes Ergebnis mit einer nicht breiten Shell von @Mytherin in https://github.com/duckdb/duckdb/pull/21591 formatiert wird</li>
+<li>Backport <code>__EMSCRIPTEN__</code>-Fix von @Mytherin in https://github.com/duckdb/duckdb/pull/21581</li>
+<li>Fehlendes SetSizeAndFinalize in BIGNUM Add für Null-Ergebnis-Fall von @pdet in https://github.com/duckdb/duckdb/pull/21465 behoben</li>
+<li>Segfault wegen ungeprüftem malloc/realloc, vorgeschlagener Fix für #21593 von @wasade in https://github.com/duckdb/duckdb/pull/21594</li>
+<li>Reduzieren Sie die Heap-Vorbelegung arg_min_max_n um @feichai0017 in https://github.com/duckdb/duckdb/pull/21467</li>
+<li>Es wurde ein Problem behoben, bei dem die Describe-Anweisung im Markdown-Ausgabemodus (ISSUE:#21579) von @ArNine in https://github.com/duckdb/duckdb/pull/21611 nicht korrekt funktionierte</li>
+<li>Unpivot-Serialisierung durch @Maxxen in https://github.com/duckdb/duckdb/pull/21595 behoben</li>
+<li>Windows-Shell: Aktivieren Sie die VT100-Verarbeitung beim Start durch @staticlibs in https://github.com/duckdb/duckdb/pull/21615</li>
+<li>Lassen Sie den PEG-Parser den strikten Modus in CI verwenden von @Dtenwolde in https://github.com/duckdb/duckdb/pull/21590</li>
+<li>Fix #21623: Eingabeblock in TopNHeap::CheckBoundaryValues von @Mytherin in https://github.com/duckdb/duckdb/pull/21629 reduzieren</li>
+<li>Problem Nr. 21592: Window Self-Join Framing von @hawkfish in https://github.com/duckdb/duckdb/pull/21628</li>
+<li>Bring Julia zu v1.5.1 von @taniabogatsch in https://github.com/duckdb/duckdb/pull/21637</li>
+<li>v1.4-andium in v1.5-variegata von @Mytherin in https://github.com/duckdb/duckdb/pull/21639 zusammenführen</li>
+<li>Bump-Storage-Version auf <code>v1.5.2</code> von @taniabogatsch in https://github.com/duckdb/duckdb/pull/21638</li>
+<li>Bump Delta und Unity_catalog Ext Refs in v1.5-variegata von @benfleis in https://github.com/duckdb/duckdb/pull/21640</li>
+<li>Abbruchreihenfolge zwischen Pipelines und Aufgaben in CancelTasks von @carlopi in https://github.com/duckdb/duckdb/pull/21642 korrigiert</li>
+<li>Korrigiert die Shell-Completion-Enter-Behandlung durch @atulagrwl in https://github.com/duckdb/duckdb/pull/21552</li>
+<li>fix(adbc): fehlerhafte Verwendung nach Free durch @gishor in https://github.com/duckdb/duckdb/pull/21605</li>
+<li>Behebung einiger Parkett-Fuzzer-Probleme von @lnkuiper in https://github.com/duckdb/duckdb/pull/21635</li>
+<li>WAL-Wiedergabe leicht neu organisieren und leere Checkpoint-WAL-Dateien in der WAL-Wiederherstellung von @Mytherin in https://github.com/duckdb/duckdb/pull/21645 korrekt behandeln</li>
+<li>Warnung statt Fehler beim Versuch, Geometriespalten mit CRS im alten Speicherformat von @Maxxen in https://github.com/duckdb/duckdb/pull/21649 beizubehalten</li>
+<li>Vermeiden Sie das Auslösen eines Fehlers, wenn das Binden von Ansichten in <code>duckdb_columns</code> von @Mytherin in https://github.com/duckdb/duckdb/pull/21658 fehlschlägt</li>
+<li>Zeitstempel mit Zeitzone in read_json_auto von @leo-altertable in https://github.com/duckdb/duckdb/pull/21660 ableiten</li>
+<li>Windows: Präfix aus kanonischen Pfaden von @staticlibs in https://github.com/duckdb/duckdb/pull/21652 entfernen</li>
+<li>CLI: .help-Verknüpfungen von @carlopi in https://github.com/duckdb/duckdb/pull/21662 hinzugefügt</li>
+<li>Intern #8553: Window TopN Außer von @hawkfish in https://github.com/duckdb/duckdb/pull/21671</li>
+<li>Problem mit Strukturfilter bei fehlenden Strukturen von @Mytherin in https://github.com/duckdb/duckdb/pull/21676 behoben</li>
+<li>Intern #7568: ASOF SEMI Test von @hawkfish in https://github.com/duckdb/duckdb/pull/21683</li>
+<li>Typprüfung in <code>st_crs</code> von @Maxxen in https://github.com/duckdb/duckdb/pull/21688 behoben</li>
+<li>Regelmäßige Updates für Geometrie von @Maxxen in https://github.com/duckdb/duckdb/pull/21641 deaktivieren</li>
+<li>Stoi-Absturz beim String-Parsing im Arrow-Format für die Typen w: und +w: von @yharby in https://github.com/duckdb/duckdb/pull/21692 behoben</li>
+<li>Testläufer: Unterstützt Ersatz ohne Dollar (<code>{i}</code> statt <code>${i}</code>) in Schleifeniteratoren von @Mytherin in https://github.com/duckdb/duckdb/pull/21708</li>
+<li>Intern #8657: IEJoin Filter Sides von @hawkfish in https://github.com/duckdb/duckdb/pull/21721</li>
+<li>Fehlenden Test für Delta-Byte-Array von @ccfelius in https://github.com/duckdb/duckdb/pull/21714 hinzugefügt</li>
+<li>Problem mit der Varianten-Shredder-Konsistenz von @Tishj in https://github.com/duckdb/duckdb/pull/21715 behoben</li>
+<li>TopNWindowElimination-Korrekturen von @d-justen in https://github.com/duckdb/duckdb/pull/21663</li>
+<li>Ignorieren Sie <code>NULL</code>/<code>__HIVE_DEFAULT_PARTITION__</code>, wenn Sie Typen von @lnkuiper in https://github.com/duckdb/duckdb/pull/21731 erkennen</li>
+<li>Pfadtestwarnungen von @benfleis in https://github.com/duckdb/duckdb/pull/21711 behoben</li>
+<li>Erlauben Sie <code>SET DEFAULT / DROP DEFAULT</code> für Tabellen, die Abhängigkeiten von @Mytherin in https://github.com/duckdb/duckdb/pull/21729 haben</li>
+<li>clickbench von @c-herrewijn in https://github.com/duckdb/duckdb/pull/21730 hinzufügen</li>
+<li>Korrigiert die INSERT-Ungültigmachung der vorbereiteten temporären Tabelle nach DROP durch @wordhardqi in https://github.com/duckdb/duckdb/pull/21712</li>
+<li>Join-Filter-Pushdown durch integrierte Up/Down-Casts von @lnkuiper in https://github.com/duckdb/duckdb/pull/21743 zulassen</li>
+<li>Join-Filter-Pushdown für NOP-Sortierungen von @lnkuiper in https://github.com/duckdb/duckdb/pull/21742 zulassen</li>
+<li>Zählkorrektur von @artjomPlaunov in https://github.com/duckdb/duckdb/pull/21733</li>
+<li>[Variante] Fügen Sie die entfernte <code>variant_legacy_encoding</code>-Einstellung von @Tishj in https://github.com/duckdb/duckdb/pull/21710 erneut hinzu</li>
+<li>Aktualisierungspläne beim Deserialisieren behoben, wenn der Typ keine regelmäßigen Aktualisierungen durch @Maxxen in https://github.com/duckdb/duckdb/pull/21718 mehr unterstützt</li>
+<li>Abhängigkeiten der Tabellen für <code>ALTER TABLE ... DROP COLUMN</code> und <code>ALTER TABLE .. SET DEFAULT</code> von @Mytherin in https://github.com/duckdb/duckdb/pull/21752 neu instanziieren</li>
+<li>Korrekte Fehlermeldung für Namenskonflikte zwischen Tabelle und Ansichten von @JelteF in https://github.com/duckdb/duckdb/pull/21760 verwenden</li>
+<li>Bump Spatial von @taniabogatsch in https://github.com/duckdb/duckdb/pull/21781</li>
+<li>Strikter PEG-Parser-Modus: Folgekorrekturen und Verbesserungen von @Dtenwolde in https://github.com/duckdb/duckdb/pull/21709</li>
+<li>Korrektur von DELETE RETURNING für Zeilen, die in derselben Transaktion von @rustyconover in https://github.com/duckdb/duckdb/pull/21541 eingefügt wurden</li>
+<li>Bloom-Filter-Pushdown durch Casts von @lnkuiper in https://github.com/duckdb/duckdb/pull/21792 deaktivieren</li>
+<li>Fehlerbehebungen von @lnkuiper in https://github.com/duckdb/duckdb/pull/21793</li>
+<li>Bump-Test-Utilities von @taniabogatsch in https://github.com/duckdb/duckdb/pull/21795</li>
+<li>HIDDEN als ATTACH-Option von @utay in https://github.com/duckdb/duckdb/pull/21764 verfügbar machen</li>
+<li>TopN-Fenstereliminierung mit externen CTE-Refs von @feichai0017 in https://github.com/duckdb/duckdb/pull/21686 behoben</li>
+<li>Problem Nr. 21682: TopN-Fenstersets von @hawkfish in https://github.com/duckdb/duckdb/pull/21775</li>
+<li>Unterstützung für das Lesen des Geometrietyps zum C-API von @Maxxen in https://github.com/duckdb/duckdb/pull/21763 hinzugefügt</li>
+<li>ADBC-Datenrennen von @dentiny in https://github.com/duckdb/duckdb/pull/21800 behoben</li>
+<li>Behebung von Arrow REE INT64 run_ends mit falschem Vorlagenparameter von @rustyconover in https://github.com/duckdb/duckdb/pull/21847</li>
+<li>Absturz durch Ganzzahlüberlauf in der Listenwiederholungsfunktion von @rustyconover in https://github.com/duckdb/duckdb/pull/21873 behoben</li>
+<li>[geringfügig] Fix: CreateViewInfo::Copy() kopiert keine Namen von @LucaSoato in https://github.com/duckdb/duckdb/pull/21819</li>
+<li>Korrektur der Groß-/Kleinschreibung bei der Standarddatenbankprüfung, die das Trennen der Standarddatenbank durch @rustyconover in https://github.com/duckdb/duckdb/pull/21863 ermöglicht</li>
+<li>Korrigiert den Geometrie-TextWriter, der die Koordinaten in der wissenschaftlichen Notation von @rustyconover in https://github.com/duckdb/duckdb/pull/21893 beschädigt</li>
+<li>Problem Nr. 21820: TopN-Fensterprojektionen von @hawkfish in https://github.com/duckdb/duckdb/pull/21902</li>
+<li>Bump Postgres, MySQL und SQLite von @staticlibs in https://github.com/duckdb/duckdb/pull/21899</li>
+<li>AddToBeRescheduled: UB beim Zuweisen vs. Verschieben durch @carlopi in https://github.com/duckdb/duckdb/pull/21912 vermeiden</li>
+<li>Schwellenwerteinstellung „vacuum_rebuild_indexes“ von @artjomPlaunov in https://github.com/duckdb/duckdb/pull/21769</li>
+<li>CSV-Prozess über Puffer-Out-of-Bound-Zugriff durch @dentiny in https://github.com/duckdb/duckdb/pull/21840 behoben</li>
+<li>Korrigiert is_histogram_other_bin handle null von @dentiny in https://github.com/duckdb/duckdb/pull/21841</li>
+<li><code>v1.4-andium</code> in <code>v1.5-variegata</code> von @Mytherin in https://github.com/duckdb/duckdb/pull/21919 zusammenführen</li>
+<li>Das In-Place-Update wurde so korrigiert, dass nur aktualisierte Spalten von @jeewonhh in https://github.com/duckdb/duckdb/pull/21922 angezeigt werden</li>
+<li>Problem Nr. 21905: AGO-Überlaufprüfung von @hawkfish in https://github.com/duckdb/duckdb/pull/21936</li>
+<li>Behebung eines häufigen Fehlers im Subplan-Optimierer von @kryonix in https://github.com/duckdb/duckdb/pull/21932</li>
+<li>Problem Nr. 21907: Ungültige Fenstermakros von @hawkfish in https://github.com/duckdb/duckdb/pull/21929</li>
+<li>[ART] Informationsverlust beim Index-Build von @taniabogatsch in https://github.com/duckdb/duckdb/pull/21815 behoben</li>
+<li>Verbessern Sie die WKT-Analyse der Geometrie und fügen Sie Geometrie zu <code>test_all_types</code> v2 von @taniabogatsch in https://github.com/duckdb/duckdb/pull/21805 hinzu</li>
+<li>Führen Sie ArrowConverter::ToArrowSchema in einer Transaktion von @evertlammerts in https://github.com/duckdb/duckdb/pull/21927 aus</li>
+<li>Behebung eines ungültigen Speicherzugriffs, wenn die CSV-Spalten kleiner sind als von @dentiny in https://github.com/duckdb/duckdb/pull/21822 erwartet</li>
+<li>Verwenden Sie <code>BLOB</code>, nicht <code>VARCHAR</code> für die Zeilengruppenbereinigung durch @lnkuiper in https://github.com/duckdb/duckdb/pull/21946</li>
+<li>Fügen Sie HTTPUtil::CloseClient(...) mit trivialer No-Op-Implementierung und das Feld base_url zu HTTPClient von @carlopi in https://github.com/duckdb/duckdb/pull/21924 hinzu</li>
+<li>Korrigieren Sie falsche Ergebnisse bei Verwendung von <code>try</code> innerhalb von <code>if</code> von @jankramer in https://github.com/duckdb/duckdb/pull/21943</li>
+<li>lance: Bump lance-duckdb auf 1b4ef68 von @Xuanwo in https://github.com/duckdb/duckdb/pull/21944</li>
+<li>Problem behoben, bei dem der Arrow Union Type_IDs-Puffer chunk_offset von @rustyconover in https://github.com/duckdb/duckdb/pull/21848 ignoriert</li>
+<li>Sorgen Sie dafür, dass die Parser-Überschreibung mit Parser-Erweiterungen von @Dtenwolde in https://github.com/duckdb/duckdb/pull/21761 funktioniert</li>
+<li>[Dev] Erhöhen Sie das Skript <code>merge_vcpkg_deps</code>, um die Grundlinie der Registrierung von @Tishj in https://github.com/duckdb/duckdb/pull/21950 zu erhöhen</li>
+<li>Erweitern Sie httpfs, um aktuelle Korrekturen einzuschließen, und fügen Sie außerdem eine neue No-Op-Einstellung von @carlopi in https://github.com/duckdb/duckdb/pull/21949 hinzu</li>
+<li>Parquet Writer: Ermöglicht das teilweise Schreddern von Varianten in Parquet, anstatt auszusteigen, wenn ein einzelnes Strukturfeld nicht mit @Mytherin in https://github.com/duckdb/duckdb/pull/21959 übereinstimmt</li>
+<li>Bump Postgres von @staticlibs in https://github.com/duckdb/duckdb/pull/21958</li>
+<li>Bump Iceberg von @Tmonster in https://github.com/duckdb/duckdb/pull/21967</li>
+<li>[Parquet][VARIANT] Unterstützung für von Snowflake erstellte, geschredderte VARIANT-Parquet-Dateien von @Tishj in https://github.com/duckdb/duckdb/pull/21814 hinzugefügt</li>
+<li>Lassen Sie Oids bei 20.000 beginnen, um unbeabsichtigte Kollisionen von @JelteF in https://github.com/duckdb/duckdb/pull/20979 zu vermeiden</li>
+<li>Entsperren Sie die Transaktionssperre während des Fallback-WAL-Schreibens von @Mytherin in https://github.com/duckdb/duckdb/pull/21969</li>
+<li>Bump-Avro-Hash von @Tishj in https://github.com/duckdb/duckdb/pull/21974</li>
+<li>Beim Schreiben in Parquet von @Mytherin in https://github.com/duckdb/duckdb/pull/21973 werden unsignierte Typen in VARIANT vernichtet</li>
+<li>„make clangd“ von @JelteF in https://github.com/duckdb/duckdb/pull/21981 behoben</li>
+<li>MERGE INTO – logisches Get muss nicht extrahiert werden, wir wissen bereits von @Mytherin in https://github.com/duckdb/duckdb/pull/21984, wo es sich befindet</li>
+<li>Versuch, ungültigen Speicherzugriff durch @dentiny in https://github.com/duckdb/duckdb/pull/21985 zu beheben</li>
+<li>Die Funktion Json sollte von @tianjq16 in https://github.com/duckdb/duckdb/pull/21972 auf CanThrow gesetzt werden</li>
+<li>Bump Azure und Delta für v1.5.2 von @benfleis in https://github.com/duckdb/duckdb/pull/21979</li>
+<li>Bumping DuckLake von @pdet in https://github.com/duckdb/duckdb/pull/21989</li>
+<li>Bump httpfs, jetzt mit implementiertem httpfs_connection_caching (Opt-in) von @carlopi in https://github.com/duckdb/duckdb/pull/21982</li>
+<li>Setzen Sie „ArrowConverter::ToArrowSchema in einer Transaktion ausführen“ von @evertlammerts in https://github.com/duckdb/duckdb/pull/22007 zurück
+<strong>Vollständig Changelog</strong>: https://github.com/duckdb/duckdb/compare/v1.5.1...v1.5.2</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>Quelle</strong> <a href="https://github.com/duckdb/duckdb">duckdb/duckdb</a> · <code>v1.5.2</code> · 13.04.2026 · <a href="https://github.com/duckdb/duckdb/releases/tag/v1.5.2">Upstream-Version</a>
+<em>Zum Indexieren wörtlich gespiegelt. Alle Rechte liegen beim Upstream-Projekt.</em></p>
+</blockquote></div>  <details class="mt-original"> <summary>Englisches Original / English original</summary> <div class="prose mt-original-body"><h1>duckdb v1.5.2</h1>
+<p>This is a bug fix release for various issues discovered after we released v1.5.1</p>
+<h2>What's Changed</h2>
+<ul>
+<li>Backport various race condition fixes to v1.4 by @Mytherin in https://github.com/duckdb/duckdb/pull/20804</li>
+<li>bump ref to azure for v1.4.4 (rebuild) by @benfleis in https://github.com/duckdb/duckdb/pull/20888</li>
+<li>Internal #7584: AsOf Simple Joins by @hawkfish in https://github.com/duckdb/duckdb/pull/21090</li>
+<li>Do not write ccache to github cache for v1.4-andium by @smvv in https://github.com/duckdb/duckdb/pull/21109</li>
+<li>Disable extension caching for v1.4 to free github cache space by @smvv in https://github.com/duckdb/duckdb/pull/21150</li>
+<li>Disable save_cache for v1.4-andium by @smvv in https://github.com/duckdb/duckdb/pull/21167</li>
+<li>Backport #19232: allow * Not similar to 'pattern' by @Dtenwolde in https://github.com/duckdb/duckdb/pull/21177</li>
+<li>backport zstd PR to 1.4 by @artjomPlaunov in https://github.com/duckdb/duckdb/pull/21178</li>
+<li>Fix unbounded row group growth for indexed tables on repeated load+insert cycles by @abramk in https://github.com/duckdb/duckdb/pull/21316</li>
+<li>Backport #21271 by @artjomPlaunov in https://github.com/duckdb/duckdb/pull/21326</li>
+<li>[lance] Add for v1.4-andium by @carlopi in https://github.com/duckdb/duckdb/pull/21410</li>
+<li>add lance for v1.4 by @samansmink in https://github.com/duckdb/duckdb/pull/21113</li>
+<li>Correctly detect overflows when decoding integers from storage by @Mytherin in https://github.com/duckdb/duckdb/pull/21482</li>
+<li>Correctly revert dictionary size when reverting string appends by @Mytherin in https://github.com/duckdb/duckdb/pull/21489</li>
+<li>Add descriptions for vortex and lance by @carlopi in https://github.com/duckdb/duckdb/pull/21500</li>
+<li>Fixup Write bytes are counted as BYTES_WRITTEN by @carlopi in https://github.com/duckdb/duckdb/pull/21501</li>
+<li>Fix memory leak when reusing PreparedStatement (#21089) by @wzharies in https://github.com/duckdb/duckdb/pull/21104</li>
+<li>Make some MultiStatements and PRAGMAs Transactional by @yan-alex in https://github.com/duckdb/duckdb/pull/21171</li>
+<li>Reduce concurrent thread count in test by @Mytherin in https://github.com/duckdb/duckdb/pull/21511</li>
+<li>Fixing integer overflow in list_resize by @hannes in https://github.com/duckdb/duckdb/pull/21515</li>
+<li>Fix #21512: correctly render empty results in .mode json by @Mytherin in https://github.com/duckdb/duckdb/pull/21517</li>
+<li>Fix parsing test path to skip by @jeewonhh in https://github.com/duckdb/duckdb/pull/21495</li>
+<li>Add setting for limiting the number of threads launched concurrently in the test runner (<code>max_test_threads</code>) by @Mytherin in https://github.com/duckdb/duckdb/pull/21520</li>
+<li>Unify adding suffixes to path in <code>Path:: AddSuffixToPath</code> - fix temp directory split bug by @Mytherin in https://github.com/duckdb/duckdb/pull/21527</li>
+<li>Correctly deal with negative values in <code>GetPosixVersionTag</code>, and fix constant <code>NULL</code> struct scans after recent fix by @Mytherin in https://github.com/duckdb/duckdb/pull/21549</li>
+<li>Fix missing extension static libs in Windows MinGW bundle by @mlafeldt in https://github.com/duckdb/duckdb/pull/21559</li>
+<li>PEG grammar fixes: Update extension and allow numeric struct keys by @Dtenwolde in https://github.com/duckdb/duckdb/pull/21331</li>
+<li>[v1.5-variegata] Fix #21514: ASOF join empty right by @Pieczasz in https://github.com/duckdb/duckdb/pull/21553</li>
+<li>Fix data path in <code>test/sql/copy/parquet/parquet_no_stats.test</code> by @jeewonhh in https://github.com/duckdb/duckdb/pull/21561</li>
+<li>TopNWindowElimination Column Binding Fix by @d-justen in https://github.com/duckdb/duckdb/pull/21564</li>
+<li>lance: bump lance-duckdb to 4d9ecab by @Xuanwo in https://github.com/duckdb/duckdb/pull/21572</li>
+<li>Bump Julia to <code>v1.5.0</code> by @taniabogatsch in https://github.com/duckdb/duckdb/pull/21588</li>
+<li>Bump Julia to <code>v1.4.4</code> on <code>v1.4-andium</code> by @taniabogatsch in https://github.com/duckdb/duckdb/pull/21589</li>
+<li>Simplify the way we determine which row groups to checkpoint during checkpoints by @Mytherin in https://github.com/duckdb/duckdb/pull/21574</li>
+<li>Fix for CSV reader buffer-boundary value read by @Mytherin in https://github.com/duckdb/duckdb/pull/21577</li>
+<li>CLI: Avoid division by zero when formatting a large result with a non-wide shell by @Mytherin in https://github.com/duckdb/duckdb/pull/21591</li>
+<li>Backport <code>__EMSCRIPTEN__</code> fix by @Mytherin in https://github.com/duckdb/duckdb/pull/21581</li>
+<li>Fix missing SetSizeAndFinalize in BIGNUM Add for zero result case by @pdet in https://github.com/duckdb/duckdb/pull/21465</li>
+<li>Segfault due to unchecked malloc/realloc, proposed fix to #21593 by @wasade in https://github.com/duckdb/duckdb/pull/21594</li>
+<li>Reduce arg_min_max_n heap preallocation by @feichai0017 in https://github.com/duckdb/duckdb/pull/21467</li>
+<li>Fixed an issue where the describe statement did not work correctly in markdown output mode(ISSUE:#21579) by @ArNine in https://github.com/duckdb/duckdb/pull/21611</li>
+<li>fix unpivot serialization by @Maxxen in https://github.com/duckdb/duckdb/pull/21595</li>
+<li>Windows shell: enable VT100 processing on startup by @staticlibs in https://github.com/duckdb/duckdb/pull/21615</li>
+<li>Make PEG Parser use strict mode in CI by @Dtenwolde in https://github.com/duckdb/duckdb/pull/21590</li>
+<li>Fix #21623: flatten input chunk in TopNHeap::CheckBoundaryValues by @Mytherin in https://github.com/duckdb/duckdb/pull/21629</li>
+<li>Issue #21592: Window Self-Join Framing by @hawkfish in https://github.com/duckdb/duckdb/pull/21628</li>
+<li>Bump Julia to v1.5.1 by @taniabogatsch in https://github.com/duckdb/duckdb/pull/21637</li>
+<li>Merge v1.4-andium into v1.5-variegata by @Mytherin in https://github.com/duckdb/duckdb/pull/21639</li>
+<li>Bump storage version to <code>v1.5.2</code> by @taniabogatsch in https://github.com/duckdb/duckdb/pull/21638</li>
+<li>bump delta and unity_catalog ext refs in v1.5-variegata by @benfleis in https://github.com/duckdb/duckdb/pull/21640</li>
+<li>Fix cancellation order between pipelines and tasks in CancelTasks by @carlopi in https://github.com/duckdb/duckdb/pull/21642</li>
+<li>Fix shell completion enter handling by @atulagrwl in https://github.com/duckdb/duckdb/pull/21552</li>
+<li>fix(adbc): err use after free by @gishor in https://github.com/duckdb/duckdb/pull/21605</li>
+<li>Fix some Parquet fuzzer issues by @lnkuiper in https://github.com/duckdb/duckdb/pull/21635</li>
+<li>Re-organize WAL replay slightly, and correctly deal with empty checkpoint WAL files in WAL recovery by @Mytherin in https://github.com/duckdb/duckdb/pull/21645</li>
+<li>Warn instead of error when trying to persist geometry columns with CRS in old storage format by @Maxxen in https://github.com/duckdb/duckdb/pull/21649</li>
+<li>Avoid throwing an error when failing to bind views in <code>duckdb_columns</code> by @Mytherin in https://github.com/duckdb/duckdb/pull/21658</li>
+<li>Infer timestamps with timezone in read_json_auto by @leo-altertable in https://github.com/duckdb/duckdb/pull/21660</li>
+<li>Windows: remove prefix from canonical paths by @staticlibs in https://github.com/duckdb/duckdb/pull/21652</li>
+<li>CLI: Add .help shortcuts by @carlopi in https://github.com/duckdb/duckdb/pull/21662</li>
+<li>Internal #8553: Window TopN Except by @hawkfish in https://github.com/duckdb/duckdb/pull/21671</li>
+<li>Fix issue with struct filter on missing structs by @Mytherin in https://github.com/duckdb/duckdb/pull/21676</li>
+<li>Internal #7568: ASOF SEMI Test by @hawkfish in https://github.com/duckdb/duckdb/pull/21683</li>
+<li>Fix type check in <code>st_crs</code> by @Maxxen in https://github.com/duckdb/duckdb/pull/21688</li>
+<li>Disable regular updates for geometry by @Maxxen in https://github.com/duckdb/duckdb/pull/21641</li>
+<li>Fix stoi crash in Arrow format string parsing for w: and +w: types by @yharby in https://github.com/duckdb/duckdb/pull/21692</li>
+<li>Test runner: Support replacement without dollar (<code>{i}</code> instead of <code>${i}</code>) in loop iterators by @Mytherin in https://github.com/duckdb/duckdb/pull/21708</li>
+<li>Internal #8657: IEJoin Filter Sides by @hawkfish in https://github.com/duckdb/duckdb/pull/21721</li>
+<li>Add missing test for delta byte array by @ccfelius in https://github.com/duckdb/duckdb/pull/21714</li>
+<li>Fix variant shredding consistency issue by @Tishj in https://github.com/duckdb/duckdb/pull/21715</li>
+<li>TopNWindowElimination fixes by @d-justen in https://github.com/duckdb/duckdb/pull/21663</li>
+<li>Ignore <code>NULL</code>/<code>__HIVE_DEFAULT_PARTITION__</code> when detecting types by @lnkuiper in https://github.com/duckdb/duckdb/pull/21731</li>
+<li>fix path test warnings by @benfleis in https://github.com/duckdb/duckdb/pull/21711</li>
+<li>Allow <code>SET DEFAULT / DROP DEFAULT</code> for tables that have dependencies by @Mytherin in https://github.com/duckdb/duckdb/pull/21729</li>
+<li>Add clickbench by @c-herrewijn in https://github.com/duckdb/duckdb/pull/21730</li>
+<li>Fix prepared temp-table INSERT invalidation after DROP by @wordhardqi in https://github.com/duckdb/duckdb/pull/21712</li>
+<li>Allow join filter pushdown through integral up/down casts by @lnkuiper in https://github.com/duckdb/duckdb/pull/21743</li>
+<li>Allow join filter pushdown for NOP collations by @lnkuiper in https://github.com/duckdb/duckdb/pull/21742</li>
+<li>counting fix by @artjomPlaunov in https://github.com/duckdb/duckdb/pull/21733</li>
+<li>[Variant] Re-add the removed <code>variant_legacy_encoding</code> setting by @Tishj in https://github.com/duckdb/duckdb/pull/21710</li>
+<li>Fix update plans when deserializing if type no longer supports regular updates by @Maxxen in https://github.com/duckdb/duckdb/pull/21718</li>
+<li>Re-instantiate dependencies of tables for <code>ALTER TABLE ... DROP COLUMN</code> and <code>ALTER TABLE .. SET DEFAULT</code> by @Mytherin in https://github.com/duckdb/duckdb/pull/21752</li>
+<li>Use correct error message for name conflicts between table and views by @JelteF in https://github.com/duckdb/duckdb/pull/21760</li>
+<li>Bump spatial by @taniabogatsch in https://github.com/duckdb/duckdb/pull/21781</li>
+<li>PEG parser strict mode: followup fixes and improvements by @Dtenwolde in https://github.com/duckdb/duckdb/pull/21709</li>
+<li>Fix DELETE RETURNING for rows inserted in the same transaction by @rustyconover in https://github.com/duckdb/duckdb/pull/21541</li>
+<li>Disable bloom filter pushdown through casts by @lnkuiper in https://github.com/duckdb/duckdb/pull/21792</li>
+<li>Bugfixes by @lnkuiper in https://github.com/duckdb/duckdb/pull/21793</li>
+<li>Bump test utils by @taniabogatsch in https://github.com/duckdb/duckdb/pull/21795</li>
+<li>Expose HIDDEN as an ATTACH option by @utay in https://github.com/duckdb/duckdb/pull/21764</li>
+<li>Fix TopN window elimination with external CTE refs by @feichai0017 in https://github.com/duckdb/duckdb/pull/21686</li>
+<li>Issue #21682: TopN Window Sets by @hawkfish in https://github.com/duckdb/duckdb/pull/21775</li>
+<li>Add support for reading geometry type to the C-API by @Maxxen in https://github.com/duckdb/duckdb/pull/21763</li>
+<li>Fix ADBC data race by @dentiny in https://github.com/duckdb/duckdb/pull/21800</li>
+<li>Fix Arrow REE INT64 run_ends using wrong template parameter by @rustyconover in https://github.com/duckdb/duckdb/pull/21847</li>
+<li>Fix integer overflow crash in list repeat function by @rustyconover in https://github.com/duckdb/duckdb/pull/21873</li>
+<li>[minor] Fix CreateViewInfo::Copy() not copying names by @LucaSoato in https://github.com/duckdb/duckdb/pull/21819</li>
+<li>Fix case-sensitive default database check allowing detach of default database by @rustyconover in https://github.com/duckdb/duckdb/pull/21863</li>
+<li>Fix geometry TextWriter corrupting coordinates in scientific notation by @rustyconover in https://github.com/duckdb/duckdb/pull/21893</li>
+<li>Issue #21820: TopN Window Projections by @hawkfish in https://github.com/duckdb/duckdb/pull/21902</li>
+<li>Bump Postgres, MySQL and SQLite by @staticlibs in https://github.com/duckdb/duckdb/pull/21899</li>
+<li>AddToBeRescheduled: Avoid UB in assigning vs move by @carlopi in https://github.com/duckdb/duckdb/pull/21912</li>
+<li>vacuum_rebuild_indexes threshold setting by @artjomPlaunov in https://github.com/duckdb/duckdb/pull/21769</li>
+<li>Fix CSV process over buffer out-of-bound access by @dentiny in https://github.com/duckdb/duckdb/pull/21840</li>
+<li>Fix is_histogram_other_bin handle null by @dentiny in https://github.com/duckdb/duckdb/pull/21841</li>
+<li>Merge <code>v1.4-andium</code> into <code>v1.5-variegata</code> by @Mytherin in https://github.com/duckdb/duckdb/pull/21919</li>
+<li>Fix in-place update to look only at updated columns by @jeewonhh in https://github.com/duckdb/duckdb/pull/21922</li>
+<li>Issue #21905: AGO Overflow Check by @hawkfish in https://github.com/duckdb/duckdb/pull/21936</li>
+<li>Fix common subplan optimizer bug by @kryonix in https://github.com/duckdb/duckdb/pull/21932</li>
+<li>Issue #21907: Invalid Window Macros by @hawkfish in https://github.com/duckdb/duckdb/pull/21929</li>
+<li>[ART] Fix information loss on index build cast by @taniabogatsch in https://github.com/duckdb/duckdb/pull/21815</li>
+<li>Improve geometry WKT parsing and add geometry to <code>test_all_types</code> v2 by @taniabogatsch in https://github.com/duckdb/duckdb/pull/21805</li>
+<li>Run ArrowConverter::ToArrowSchema in a transaction by @evertlammerts in https://github.com/duckdb/duckdb/pull/21927</li>
+<li>Fix invalid memory access when CSV columns less than expected by @dentiny in https://github.com/duckdb/duckdb/pull/21822</li>
+<li>Use <code>BLOB</code>, not <code>VARCHAR</code> for row group pruning by @lnkuiper in https://github.com/duckdb/duckdb/pull/21946</li>
+<li>Add HTTPUtil::CloseClient(...) with trivial no-op implementation, and base_url field to HTTPClient by @carlopi in https://github.com/duckdb/duckdb/pull/21924</li>
+<li>Fix incorrect results when using <code>try</code> within <code>if</code> by @jankramer in https://github.com/duckdb/duckdb/pull/21943</li>
+<li>lance: bump lance-duckdb to 1b4ef68 by @Xuanwo in https://github.com/duckdb/duckdb/pull/21944</li>
+<li>Fix Arrow union type_ids buffer ignoring chunk_offset by @rustyconover in https://github.com/duckdb/duckdb/pull/21848</li>
+<li>Make parser override work with parser extensions by @Dtenwolde in https://github.com/duckdb/duckdb/pull/21761</li>
+<li>[Dev] Bump the <code>merge_vcpkg_deps</code> script to bump the baseline of the registry by @Tishj in https://github.com/duckdb/duckdb/pull/21950</li>
+<li>Bump httpfs to include recent fixes, also adding new no-op setting by @carlopi in https://github.com/duckdb/duckdb/pull/21949</li>
+<li>Parquet writer: allow partial variant shredding in Parquet, instead of bailing out when a single struct field does not match by @Mytherin in https://github.com/duckdb/duckdb/pull/21959</li>
+<li>Bump Postgres by @staticlibs in https://github.com/duckdb/duckdb/pull/21958</li>
+<li>bump iceberg by @Tmonster in https://github.com/duckdb/duckdb/pull/21967</li>
+<li>[Parquet][VARIANT] Add support for Snowflake-produced shredded VARIANT Parquet files by @Tishj in https://github.com/duckdb/duckdb/pull/21814</li>
+<li>Make Oids start at 20k to avoid unintended collisions by @JelteF in https://github.com/duckdb/duckdb/pull/20979</li>
+<li>Unlock transaction lock during fallback WAL write by @Mytherin in https://github.com/duckdb/duckdb/pull/21969</li>
+<li>bump avro hash by @Tishj in https://github.com/duckdb/duckdb/pull/21974</li>
+<li>Shred unsigned types in VARIANT when writing to Parquet by @Mytherin in https://github.com/duckdb/duckdb/pull/21973</li>
+<li>Fix &quot;make clangd&quot; by @JelteF in https://github.com/duckdb/duckdb/pull/21981</li>
+<li>MERGE INTO - no need to extract logical get, we already know where it is by @Mytherin in https://github.com/duckdb/duckdb/pull/21984</li>
+<li>Attempt to fix invalid memory access by @dentiny in https://github.com/duckdb/duckdb/pull/21985</li>
+<li>Json function should be set CanThrow by @tianjq16 in https://github.com/duckdb/duckdb/pull/21972</li>
+<li>bump azure and delta for v1.5.2 by @benfleis in https://github.com/duckdb/duckdb/pull/21979</li>
+<li>Bumping DuckLake by @pdet in https://github.com/duckdb/duckdb/pull/21989</li>
+<li>Bump httpfs, now with implemented httpfs_connection_caching (opt-in) by @carlopi in https://github.com/duckdb/duckdb/pull/21982</li>
+<li>Revert &quot;Run ArrowConverter::ToArrowSchema in a transaction&quot; by @evertlammerts in https://github.com/duckdb/duckdb/pull/22007</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/duckdb/duckdb/compare/v1.5.1...v1.5.2</p>
+<hr />
+<blockquote>
+<p><strong>Source</strong> <a href="https://github.com/duckdb/duckdb">duckdb/duckdb</a> · <code>v1.5.2</code> · 2026-04-13 · <a href="https://github.com/duckdb/duckdb/releases/tag/v1.5.2">upstream release</a></p>
+</blockquote>
+<p><em>Mirrored verbatim for indexing. All rights belong to the upstream project.</em></p></div> </details> </div> <p class="muted" style="margin-top:var(--s8);font-size:12.5px;border-top:1px solid var(--line);padding-top:var(--s4)"> Versionshinweise stammen aus dem Upstream-Projekt. Wir ordnen und verknüpfen sie, damit du Versionen auf einen Blick vergleichen kannst. Alle Rechte liegen bei den ursprünglichen Autoren. </p> <nav class="pager" aria-label="Release navigation"> <a href="/releases/duckdb/1.5.3"> <span class="k">← Weiter</span> <span class="t">v1.5.3</span> </a> <a href="/releases/duckdb/1.5.1"> <span class="k">Zurück →</span> <span class="t">v1.5.1</span> </a> </nav> <aside class="ad-slot" aria-label="Advertisement" data-astro-cid-fgwukgf6><div class="ad-slot-label" data-astro-cid-fgwukgf6>Advertisement</div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4184355057086168" data-ad-slot="9133765584" data-ad-format="auto" data-full-width-responsive="true" data-astro-cid-fgwukgf6></ins><script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script></aside> </article> <aside class="rail"> <div class="rail-card"> <div class="rail-title">Source</div> <ul class="rail-list"> <li> <a href="https://github.com/duckdb/duckdb/releases/tag/v1.5.2" target="_blank" rel="noopener"> <span>Original auf GitHub</span> <span class="d">↗</span> </a> </li> <li> <a href="https://github.com/duckdb/duckdb" target="_blank" rel="noopener"> <span>duckdb/duckdb</span> <span class="d">↗</span> </a> </li> </ul> </div>  <div class="rail-card"> <div class="rail-title">Versionsverlauf</div> <ul class="rail-list"> <li> <a href="/releases/duckdb/2.0.1"> <span class="v">v2.0.1</span> <span class="d">26-11-20</span> </a> </li><li> <a href="/releases/duckdb/2.0.0"> <span class="v">v2.0.0</span> <span class="d">26-10-21</span> </a> </li><li> <a href="/releases/duckdb/1.5.6"> <span class="v">v1.5.6</span> <span class="d">26-09-28</span> </a> </li><li> <a href="/releases/duckdb/1.5.5"> <span class="v">v1.5.5</span> <span class="d">26-07-22</span> </a> </li><li> <a href="/releases/duckdb/1.5.4"> <span class="v">v1.5.4</span> <span class="d">26-06-17</span> </a> </li><li> <a href="/releases/duckdb/1.4.5"> <span class="v">v1.4.5</span> <span class="d">26-06-17</span> </a> </li><li> <a href="/releases/duckdb/1.5.3"> <span class="v">v1.5.3</span> <span class="d">26-05-20</span> </a> </li><li> <a href="/releases/duckdb/1.5.2" aria-current="true"> <span class="v">v1.5.2</span> <span class="d">26-04-13</span> </a> </li> </ul> <a href="/de/releases/duckdb" class="mono" style="display:inline-block;margin-top:var(--s3);font-size:11.5px;color:var(--ink-3)"> Alle anzeigen 20 →
+</a> </div> </aside> </div> </div>  </main> <footer class="site-footer"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/de/" class="brand" aria-label="STAGS NextStack"><span class="brand-mark" aria-hidden="true">S</span><span class="brand-main">STAGS</span><span class="brand-sub" aria-hidden="true">NextStack</span></a> <p>Open-Source-Release-Informationen, täglich veröffentlicht.</p> </div> <div class="footer-col"> <h3>Verfolgen</h3> <ul> <li><a href="/de/releases">Releases</a></li> <li><a href="/de/projects">Projekte</a></li> <li><a href="/de/releases.xml">RSS-Feed</a></li> </ul> </div> <div class="footer-col"> <h3>Archiv</h3> <ul> <li><a href="/zh/release_note" hreflang="zh-Hans">Chinesisches Archiv</a></li> <li><a href="/zh/chapters/" hreflang="zh-Hans">Technische Notizen</a></li> <li><a href="/zh/downloads/">Stags Tracker</a></li> </ul> </div> <div class="footer-col"> <h3>Info</h3> <ul> <li><a href="/privacy">Datenschutzrichtlinie</a></li> <li><a href="/releases.xml">RSS</a></li> <li><a href="/sitemap-index.xml">Sitemap</a></li> </ul> </div> </div> <div class="footer-btm"> <span>© 2026 STAGS</span> <span>Release notes gehören zu ihren Upstream-Projekten.</span> </div> </div> </footer> <!-- 搜索面板 --> <div class="palette-bg" data-palette-bg data-open="false"> <div class="palette" role="dialog" aria-modal="true" aria-label="Releases durchsuchen"> <div class="palette-in"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ink-4);flex:none"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <input type="search" data-palette-input placeholder="Suchen Sie nach Releases, Projekten, Versionen ..." autocomplete="off" spellcheck="false"> <span class="kbd">esc</span> </div> <ul class="palette-res" data-palette-res></ul> <div class="palette-ft"> <span>↑↓ navigate</span> <span>↵ open</span> <span style="margin-left:auto" data-palette-count></span> </div> </div> </div> <script type="module" src="/assets/Shell.astro_astro_type_script_index_0_lang.0ZkKXV47.js"></script> </body> </html>

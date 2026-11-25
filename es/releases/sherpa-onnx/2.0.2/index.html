@@ -1,0 +1,230 @@
+<!DOCTYPE html><html lang="es" dir="ltr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>sherpa-onnx v2.0.2 — STAGS NextStack</title><meta name="description" content="Fix modified_beam_search dropping speech for NeMo TDT models · Support per-stream language candidates for Whisper · Add an optional QNN HTP performance mode · Support VoxLock 1.2 models in the speech denoisers"><meta name="keywords" content="release note de código abierto, rastreador de lanzamientos, agregador changelog, cambios importantes, rastreador de desuso, lanzamientos de Kafka, lanzamientos de Spring Boot, lanzamientos de Kubernetes"><meta name="generator" content="Astro v5.18.2"><link rel="canonical" href="https://www.stags.cn/es/releases/sherpa-onnx/2.0.2/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="STAGS NextStack — releases" href="/es/releases.xml"><link rel="alternate" hreflang="en" href="https://www.stags.cn/releases/sherpa-onnx/2.0.2/"><link rel="alternate" hreflang="zh-Hans" href="https://www.stags.cn/releases/sherpa-onnx/2.0.2/"><link rel="alternate" hreflang="x-default" href="https://www.stags.cn/releases/sherpa-onnx/2.0.2/"><meta property="og:site_name" content="STAGS"><meta property="og:type" content="article"><meta property="og:title" content="sherpa-onnx v2.0.2 — STAGS NextStack"><meta property="og:description" content="Fix modified_beam_search dropping speech for NeMo TDT models · Support per-stream language candidates for Whisper · Add an optional QNN HTP performance mode · Support VoxLock 1.2 models in the speech denoisers"><meta property="og:url" content="https://www.stags.cn/es/releases/sherpa-onnx/2.0.2/"><meta property="og:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><meta property="og:locale" content="es_ES"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="ja_JP"><meta property="og:locale:alternate" content="de_DE"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:locale:alternate" content="pt_BR"><meta property="og:locale:alternate" content="ko_KR"><meta property="og:locale:alternate" content="it_IT"><meta property="og:locale:alternate" content="ru_RU"><meta property="og:locale:alternate" content="tr_TR"><meta property="og:locale:alternate" content="id_ID"><meta property="og:locale:alternate" content="vi_VN"><meta property="og:locale:alternate" content="ar_SA"><meta property="og:locale:alternate" content="sv_SE"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.stags.cn/#website","name":"STAGS","url":"https://www.stags.cn/","inLanguage":"es","description":"NextStack indexa las notas de versión de proyectos de infraestructura e IA – cambios incompatibles, obsolescencias y migraciones – en un único feed en inglés.","publisher":{"@id":"https://www.stags.cn/#org"}},{"@type":"Organization","@id":"https://www.stags.cn/#org","name":"STAGS","alternateName":"NextStack","url":"https://www.stags.cn/"},{"@type":"TechArticle","@id":"https://www.stags.cn/es/releases/sherpa-onnx/2.0.2/#article","headline":"sherpa-onnx v2.0.2 release notes","datePublished":"2026-11-19","inLanguage":"en","isPartOf":{"@id":"https://www.stags.cn/#website"},"about":{"@type":"SoftwareSourceCode","codeRepository":"https://github.com/k2-fsa/sherpa-onnx"}}]}</script><!-- 第三方脚本的连接预热：这两个域名几乎每页都要连，
+         提前建连能省掉 DNS + TCP + TLS 一个往返（移动网络 100~300ms）。
+         AdSense 只在开关打开时预热——关掉广告后连这个域名都没必要。 --><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://pagead2.googlesyndication.com"><!-- Google AdSense：站点所有权校验与广告投放共用同一段脚本，全站只加载一次。
+         未创建广告单元时页面上不渲染任何广告容器，站点保持干净。
+         fetchpriority=low：它不参与首屏渲染，不该跟正文抢带宽。 --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184355057086168" crossorigin="anonymous" fetchpriority="low"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-RFRF1TVRMP" fetchpriority="low"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RFRF1TVRMP");
+    </script><!-- 百度统计（国内流量统计）。官方标准片段，is:inline 原样输出，
+         hm.js 动态插到首个 script 前，异步不阻塞首屏渲染。 --><script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?299e5b4e65b86ed16879bdcbe70531d6";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script><link rel="stylesheet" href="/assets/index.DQGt3qLZ.css">
+<style>.ad-slot[data-astro-cid-fgwukgf6]{margin:var(--s10) 0 0;padding-top:var(--s5);border-top:1px solid var(--line)}.ad-slot-label[data-astro-cid-fgwukgf6]{margin-bottom:var(--s3);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{display:block;min-height:100px}@media(min-width:640px){.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{min-height:250px}}
+</style></head> <body> <a class="skip" href="#main">Ir al contenido</a> <header class="hdr" data-header> <div class="wrap hdr-inner"> <a href="/es/" class="brand" aria-label="STAGS NextStack — Información de versiones open source"> <span class="brand-mark" aria-hidden="true">S</span> <span class="brand-main">STAGS</span> <span class="brand-sub" aria-hidden="true">NextStack</span> </a> <nav class="nav" aria-label="Primary"> <a href="/es/releases">Versiones</a><a href="/es/projects">Proyectos</a> </nav>  <details class="navmenu" data-navmenu> <summary class="navmenu-btn" aria-label="Open menu"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> </summary> <div class="navmenu-panel" role="group" aria-label="Primary"> <a href="/es/releases" class="navmenu-item">Versiones</a><a href="/es/projects" class="navmenu-item">Proyectos</a> </div> </details> <div class="hdr-tools"> <button class="searchbtn" type="button" data-search-open aria-label="Buscar versiones"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <span class="lbl">Buscar</span> <span class="kbd">⌘K</span> </button> <details class="langmenu" data-langmenu> <summary class="langmenu-btn" aria-label="Idioma"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"> <circle cx="12" cy="12" r="9"></circle> <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path> </svg> <span class="langmenu-cur">ES</span> <svg class="langmenu-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m2 4 4 4 4-4"></path></svg> </summary> <div class="langmenu-panel" role="group" aria-label="Idioma"> <p class="langmenu-head">Idioma</p> <a class="langmenu-item" href="/releases/sherpa-onnx/2.0.2/" hreflang="en" lang="en" data-on="false"> <span class="langmenu-label">English</span> <span class="langmenu-code">EN</span> </a><a class="langmenu-item" href="/zh/release_note/sherpa-onnx/sherpa-onnx_v2.0.2" hreflang="zh-Hans" lang="zh-CN" data-on="false"> <span class="langmenu-label">中文</span> <span class="langmenu-code">中</span> </a><a class="langmenu-item" href="/ja/releases/sherpa-onnx/2.0.2/" hreflang="ja" lang="ja" data-on="false"> <span class="langmenu-label">日本語</span> <span class="langmenu-code">日</span> </a><a class="langmenu-item" href="/de/releases/sherpa-onnx/2.0.2/" hreflang="de" lang="de" data-on="false"> <span class="langmenu-label">Deutsch</span> <span class="langmenu-code">DE</span> </a><a class="langmenu-item" href="/fr/releases/sherpa-onnx/2.0.2/" hreflang="fr" lang="fr" data-on="false"> <span class="langmenu-label">Français</span> <span class="langmenu-code">FR</span> </a><a class="langmenu-item" href="/es/releases/sherpa-onnx/2.0.2/" hreflang="es" lang="es" aria-current="true" data-on="true"> <span class="langmenu-label">Español</span> <span class="langmenu-code">ES</span> </a><a class="langmenu-item" href="/pt/releases/sherpa-onnx/2.0.2/" hreflang="pt-BR" lang="pt-BR" data-on="false"> <span class="langmenu-label">Português</span> <span class="langmenu-code">PT</span> </a><a class="langmenu-item" href="/ko/releases" hreflang="ko" lang="ko" data-on="false"> <span class="langmenu-label">한국어</span> <span class="langmenu-code">한</span> </a><a class="langmenu-item" href="/it/releases" hreflang="it" lang="it" data-on="false"> <span class="langmenu-label">Italiano</span> <span class="langmenu-code">IT</span> </a><a class="langmenu-item" href="/ru/releases" hreflang="ru" lang="ru" data-on="false"> <span class="langmenu-label">Русский</span> <span class="langmenu-code">RU</span> </a><a class="langmenu-item" href="/tr/releases" hreflang="tr" lang="tr" data-on="false"> <span class="langmenu-label">Türkçe</span> <span class="langmenu-code">TR</span> </a><a class="langmenu-item" href="/id/releases" hreflang="id" lang="id" data-on="false"> <span class="langmenu-label">Bahasa Indonesia</span> <span class="langmenu-code">ID</span> </a><a class="langmenu-item" href="/vi/releases" hreflang="vi" lang="vi" data-on="false"> <span class="langmenu-label">Tiếng Việt</span> <span class="langmenu-code">VI</span> </a><a class="langmenu-item" href="/ar/releases" hreflang="ar" lang="ar" data-on="false"> <span class="langmenu-label">العربية</span> <span class="langmenu-code">ع</span> </a><a class="langmenu-item" href="/sv/releases" hreflang="sv" lang="sv" data-on="false"> <span class="langmenu-label">Svenska</span> <span class="langmenu-code">SV</span> </a> </div> </details> <a class="iconlink" href="/releases.xml" aria-label="RSS"> <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"> <path d="M2 12.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM2 7.5a6.5 6.5 0 0 1 6.5 6.5h-2A4.5 4.5 0 0 0 2 9.5v-2ZM2 2.5A11.5 11.5 0 0 1 13.5 14h-2A9.5 9.5 0 0 0 2 4.5v-2Z"></path> </svg> </a> </div> </div> </header> <main id="main">  <div class="wrap"> <div class="detail"> <article> <header class="detail-hd"> <nav class="crumbs" aria-label="Breadcrumb"> <a href="/es/">Inicio</a> <span class="sep">/</span> <a href="/es/releases">Versiones</a> <span class="sep">/</span> <a href="/es/releases/sherpa-onnx">sherpa-onnx</a> </nav> <h1 class="detail-title"> <span class="p">sherpa-onnx</span> v2.0.2 </h1> <div class="detail-meta"> <span class="chip chip--patch">Parche</span> <span><span class="k">Publicado</span>19 nov 2026</span>  <span class="sep" aria-hidden="true"></span> <a href="https://github.com/k2-fsa/sherpa-onnx" target="_blank" rel="noopener"> <span class="k">Fuente</span>k2-fsa/sherpa-onnx </a>   <span class="sep" aria-hidden="true"></span> <a href="/releases/sherpa-onnx/2.0.2/"> original en inglés </a>  <span class="sep" aria-hidden="true"></span> <button class="btn btn--ghost btn--sm" type="button" data-copy="https://www.stags.cn/es/releases/sherpa-onnx/2.0.2/">Copiar enlace</button> </div> </header> <div class="prose" style="margin-top:var(--s8)"> <p class="mt-notice" role="note">Esta página está traducida automáticamente. El texto original en inglés es la referencia.</p>  <div><h1>sherpa-onnx v2.0.2</h1>
+<h2>¿Qué ha cambiado?</h2>
+<ul>
+<li>Se corrigió la pérdida de voz de Modified_beam_search para los modelos NeMo TDT por @Hugo0 en https://github.com/k2-fsa/sherpa-onnx/pull/4084</li>
+<li>Admite candidatos de idiomas por transmisión para Whisper de @Ngoroth en https://github.com/k2-fsa/sherpa-onnx/pull/4093</li>
+<li>Agregue un modo de rendimiento QNN HTP opcional por @matiaslin en https://github.com/k2-fsa/sherpa-onnx/pull/4117</li>
+<li>Admite modelos VoxLock 1.2 en los eliminadores de ruido de voz de @arbazsiddiqui en https://github.com/k2-fsa/sherpa-onnx/pull/4120</li>
+<li>Agregue Node.js separación de fuente API para Spleeter y UVR por @nexmoe en https://github.com/k2-fsa/sherpa-onnx/pull/4122</li>
+<li>Agregue IO de onda multicanal a los Node.js y HarmonyOS API de @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4124</li>
+<li>Pase sherpa-onnx-offline --length-reward a la transmisión sin cambios por @Hugo0 en https://github.com/k2-fsa/sherpa-onnx/pull/4123</li>
+<li>Mantenga sincronizados los tokens de resultados en línea cuando elimine la puntuación inicial de @JulianPscheid en https://github.com/k2-fsa/sherpa-onnx/pull/4121</li>
+<li>Exponer QnnConfig en enlaces Java/Kotlin para todos los modelos compatibles con QNN por @matiaslin en https://github.com/k2-fsa/sherpa-onnx/pull/4126</li>
+<li>Refactorización para obtener la longitud del elemento de matriz para el complemento de nodo por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4129</li>
+<li>Solucionar problemas reportados por clang-tidy y clang-format por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4130</li>
+<li>Evite eliminar espacios para los resultados ASR coreanos de @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4132</li>
+<li>Refactorizar la macro de análisis para el complemento de nodo. por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4134</li>
+<li>Corrección de pruebas de Python para Windows por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4135</li>
+<li>Reducir el tiempo de ejecución de la prueba de CI para xcframework. por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4137</li>
+<li>Refactorización de pruebas de Python para reducir el tiempo de ejecución de CI por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4136</li>
+<li>Agregue C-API SetVoiceSample para la inscripción VoxLock PCM por @XDcobra en https://github.com/k2-fsa/sherpa-onnx/pull/4151</li>
+<li>Agregue un ejemplo de transmisión de CTC T-one para Rust API de @Anmol2059 en https://github.com/k2-fsa/sherpa-onnx/pull/4156</li>
+<li>Ejecute el trabajo CI clang-tidy en ubuntu-24.04 por @zachsplat en https://github.com/k2-fsa/sherpa-onnx/pull/4158</li>
+<li>Agregue un ejemplo de Paraformer de transmisión para Rust API de @ Anmol2059 en https://github.com/k2-fsa/sherpa-onnx/pull/4155</li>
+<li>Se corrigió el punto final para la transmisión de T-one por @Anmol2059 en https://github.com/k2-fsa/sherpa-onnx/pull/4157</li>
+<li>Se corrigió la caída de muestras de VAD Flush que esperaban una ventana completa por @ANDROIDHASSAN en https://github.com/k2-fsa/sherpa-onnx/pull/4147</li>
+<li>Soluciona fallas en iOS debido a la resolución de los símbolos. por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4162</li>
+<li>Agregar scripts de exportación para Parakeet Ultra por @danielxxomg en https://github.com/k2-fsa/sherpa-onnx/pull/4163</li>
+<li>Agregue Outmake a 'Proyectos usando sherpa-onnx' por @DaneBentley en https://github.com/k2-fsa/sherpa-onnx/pull/4033
+*Añadir tarjetas modelo para los paquetes TDT de Perico por @danielxxomg en https://github.com/k2-fsa/sherpa-onnx/pull/4167</li>
+<li>Agregar scripts de exportación para Parakeet Redux por @danielxxomg en https://github.com/k2-fsa/sherpa-onnx/pull/4168</li>
+<li>Incluir modelos de separación de fuentes en el flujo de trabajo de suma de verificación de @XDcobra en https://github.com/k2-fsa/sherpa-onnx/pull/4180</li>
+<li>Arreglar Crear flujo de trabajo de suma de verificación: reemplazar la acción eliminada thewh1teagle/suma de verificación por @XDcobra en https://github.com/k2-fsa/sherpa-onnx/pull/4181</li>
+<li>Se corrigió la exportación de modelos NeMo. por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4188</li>
+<li>Agregar alineación forzada por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4190</li>
+<li>Agregue el canal de exportación AXERA AX650 para el transductor zipformer X-ASR (fuera de línea + transmisión) por @yuyun2000 en https://github.com/k2-fsa/sherpa-onnx/pull/4185</li>
+<li>Reemplace los enlaces espejo muertos de hf.qhduan.com con huggingface.co por @Hisernberg en https://github.com/k2-fsa/sherpa-onnx/pull/4183</li>
+<li>Mantenga las conversiones de profundidad y submuestreo de Parakeet Ultra en float32 al cuantificar a int8 por @ceoptrsltd en https://github.com/k2-fsa/sherpa-onnx/pull/4179</li>
+<li>Agregue BAXY a 'Proyectos usando sherpa-onnx' de @REDSOULTM en https://github.com/k2-fsa/sherpa-onnx/pull/4169</li>
+<li>Exponer la distribución de probabilidad de ID de Whisper Language en OfflineRecognitionResult por @matiaslin en https://github.com/k2-fsa/sherpa-onnx/pull/4143</li>
+<li>Corrección para MedASR por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4192</li>
+<li>Agregue un ejemplo de MedASR CTC para Rust API de @losewayy en https://github.com/k2-fsa/sherpa-onnx/pull/4194</li>
+<li>Sube modelos de alineación forzada para inglés por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4195</li>
+<li>Agregue Python API para alineación forzada por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4196</li>
+<li>Agregue un ejemplo de TeleSpeech CTC para Rust API de @losewayy en https://github.com/k2-fsa/sherpa-onnx/pull/4197</li>
+<li>Agregue 'idioma' como anulación por transmisión para Whisper OfflineRecognizer por @matiaslin en https://github.com/k2-fsa/sherpa-onnx/pull/4189</li>
+<li>Se corrigió la transmisión en búfer para NeMo Parakeet Unified por @JulianPscheid en https://github.com/k2-fsa/sherpa-onnx/pull/4133</li>
+<li>Agregue Java y Kotlin API para alineación forzada por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4199</li>
+<li>Agregue C API y CXX API para alineación forzada por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4207</li>
+<li>Hacer que el máximo de tokens por segundo para susurros sea configurable por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4211</li>
+<li>Agregue JavaScript (WebAssembly) API para alineación forzada por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4210</li>
+<li>Refactor C API por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4212</li>
+<li>Agregue una demostración de Android para alineación forzada por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4208</li>
+<li>Actualización README para incluir alineación forzada por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4213</li>
+<li>Actualización README por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4216</li>
+<li>Agregue Tomoru a 'Proyectos usando sherpa-onnx' por @ACAne0320 en https://github.com/k2-fsa/sherpa-onnx/pull/4217</li>
+<li>Refactor CI por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4218</li>
+<li>Agregue un ejemplo de ASR CTC omnilingüe para Rust API de @SayokoAkiike en https://github.com/k2-fsa/sherpa-onnx/pull/4215</li>
+<li>Agregue JavaScript (nodo-complemento) API para alineación forzada por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4214</li>
+<li>Agregar plantilla de solicitud de extracción de @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4220</li>
+<li>Resolver cada entrada del léxico con el directorio modelo. por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4222</li>
+<li>Agregue Pali (pi) a los APK de TTS: hi_IN-pratham-medium con un léxico (#4020) por @dhammagift en https://github.com/k2-fsa/sherpa-onnx/pull/4203</li>
+<li>Agregar demostración web para alineación forzada con React por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4221</li>
+<li>Mantenga las cachés CUDA de Whisper y FireRedASR cuando utilice archivos de configuración del proveedor de @Qing7364 en https://github.com/k2-fsa/sherpa-onnx/pull/4160</li>
+<li>Se corrigió la verificación del umbral acústico de palabras clave para usar los tokens coincidentes de @kyo-zzz en https://github.com/k2-fsa/sherpa-onnx/pull/3998</li>
+<li>Refactor Python API para resultado de alineación forzada por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4225</li>
+<li>Protege EncodeHotwords contra un bpe_encoder nulo por @paoloantinori en https://github.com/k2-fsa/sherpa-onnx/pull/4224</li>
+<li>Agregue Rust API para alineación forzada por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4226</li>
+<li>Agregue Swift API para alineación forzada por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4227</li>
+<li>Agregue hyprvoice a proyectos usando sherpa-onnx de @mainliufeng en https://github.com/k2-fsa/sherpa-onnx/pull/4236</li>
+<li>Agregue C# API para alineación forzada por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4229</li>
+<li>Agregue Pascal API para alineación forzada por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4231</li>
+<li>Agregue Go API para alineación forzada por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4228</li>
+<li>Agregue Dart API para alineación forzada por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4232</li>
+<li>Acepte palabras activas proporcionadas como tokens de tokens.txt por @Hugo0 en https://github.com/k2-fsa/sherpa-onnx/pull/4088</li>
+<li>3dspeaker: exporta agrupación de segmentos CAM++ con count_include_pad=False (corrige #4201) por @developper89 en https://github.com/k2-fsa/sherpa-onnx/pull/4237</li>
+<li>Se corrigió la exportación de altavoces 3D por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4239</li>
+<li>Lanzamiento v2.0.2 por @csukuangfj en https://github.com/k2-fsa/sherpa-onnx/pull/4238</li>
+</ul>
+<h2>Nuevos contribuyentes</h2>
+<ul>
+<li>@Hugo0 hizo su primera contribución en https://github.com/k2-fsa/sherpa-onnx/pull/4084</li>
+<li>@Ngoroth hizo su primera contribución en https://github.com/k2-fsa/sherpa-onnx/pull/4093</li>
+<li>@nexmoe hizo su primera contribución en https://github.com/k2-fsa/sherpa-onnx/pull/4122</li>
+<li>@Anmol2059 hizo su primera contribución en https://github.com/k2-fsa/sherpa-onnx/pull/4156</li>
+<li>@zachsplat hizo su primera contribución en https://github.com/k2-fsa/sherpa-onnx/pull/4158
+*@danielxxomg hizo su primera contribución en https://github.com/k2-fsa/sherpa-onnx/pull/4163</li>
+<li>@DaneBentley hizo su primera contribución en https://github.com/k2-fsa/sherpa-onnx/pull/4033</li>
+<li>@yuyun2000 hizo su primera contribución en https://github.com/k2-fsa/sherpa-onnx/pull/4185</li>
+<li>@Hisernberg hizo su primera contribución en https://github.com/k2-fsa/sherpa-onnx/pull/4183</li>
+<li>@ceoptrsltd hizo su primera contribución en https://github.com/k2-fsa/sherpa-onnx/pull/4179</li>
+<li>@REDSOULTM hizo su primera contribución en https://github.com/k2-fsa/sherpa-onnx/pull/4169</li>
+<li>@ACAne0320 hizo su primera contribución en https://github.com/k2-fsa/sherpa-onnx/pull/4217</li>
+<li>@SayokoAkiike hizo su primera contribución en https://github.com/k2-fsa/sherpa-onnx/pull/4215</li>
+<li>@dhammagift hizo su primera contribución en https://github.com/k2-fsa/sherpa-onnx/pull/4203</li>
+<li>@Qing7364 hizo su primera contribución en https://github.com/k2-fsa/sherpa-onnx/pull/4160</li>
+<li>@mainliufeng hizo su primera contribución en https://github.com/k2-fsa/sherpa-onnx/pull/4236</li>
+<li>@developper89 hizo su primera contribución en https://github.com/k2-fsa/sherpa-onnx/pull/4237
+<strong>Changelog completo</strong>: https://github.com/k2-fsa/sherpa-onnx/compare/v2.0.1...v2.0.2</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>Fuente</strong> <a href="https://github.com/k2-fsa/sherpa-onnx">k2-fsa/sherpa-onnx</a> · <code>v2.0.2</code> · 2026-11-19 · <a href="https://github.com/k2-fsa/sherpa-onnx/releases/tag/v2.0.2">versión ascendente</a>
+<em>Reflejado textualmente para indexación. Todos los derechos pertenecen al proyecto upstream.</em></p>
+</blockquote></div>  <details class="mt-original"> <summary>original en inglés / English original</summary> <div class="prose mt-original-body"><h1>sherpa-onnx v2.0.2</h1>
+<h2>What's Changed</h2>
+<ul>
+<li>Fix modified_beam_search dropping speech for NeMo TDT models by @Hugo0 in https://github.com/k2-fsa/sherpa-onnx/pull/4084</li>
+<li>Support per-stream language candidates for Whisper by @Ngoroth in https://github.com/k2-fsa/sherpa-onnx/pull/4093</li>
+<li>Add an optional QNN HTP performance mode by @matiaslin in https://github.com/k2-fsa/sherpa-onnx/pull/4117</li>
+<li>Support VoxLock 1.2 models in the speech denoisers by @arbazsiddiqui in https://github.com/k2-fsa/sherpa-onnx/pull/4120</li>
+<li>Add Node.js source separation APIs for Spleeter and UVR by @nexmoe in https://github.com/k2-fsa/sherpa-onnx/pull/4122</li>
+<li>Add multi-channel wave IO to the Node.js and HarmonyOS APIs by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4124</li>
+<li>Pass sherpa-onnx-offline --length-reward to the stream unchanged by @Hugo0 in https://github.com/k2-fsa/sherpa-onnx/pull/4123</li>
+<li>Keep online result tokens in sync when dropping leading punctuation by @JulianPscheid in https://github.com/k2-fsa/sherpa-onnx/pull/4121</li>
+<li>Expose QnnConfig in Java/Kotlin bindings for all QNN-capable models by @matiaslin in https://github.com/k2-fsa/sherpa-onnx/pull/4126</li>
+<li>Refactor getting array element length for node-addon by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4129</li>
+<li>Fix issues reported by clang-tidy and clang-format by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4130</li>
+<li>Avoid removing spaces for Korean ASR results by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4132</li>
+<li>Refactor the parsing macro for node-addon. by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4134</li>
+<li>Fix Python tests for Windows by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4135</li>
+<li>Reduce CI test runtime for the xcframework. by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4137</li>
+<li>Refactor Python tests to cut down CI runtime by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4136</li>
+<li>Add C-API SetVoiceSample for VoxLock PCM enroll by @XDcobra in https://github.com/k2-fsa/sherpa-onnx/pull/4151</li>
+<li>Add a streaming T-one CTC example for the Rust API by @Anmol2059 in https://github.com/k2-fsa/sherpa-onnx/pull/4156</li>
+<li>Run the clang-tidy CI job on ubuntu-24.04 by @zachsplat in https://github.com/k2-fsa/sherpa-onnx/pull/4158</li>
+<li>Add streaming Paraformer example for the Rust API by @Anmol2059 in https://github.com/k2-fsa/sherpa-onnx/pull/4155</li>
+<li>Fix endpointing for streaming T-one by @Anmol2059 in https://github.com/k2-fsa/sherpa-onnx/pull/4157</li>
+<li>Fix VAD Flush dropping samples that wait for a full window by @ANDROIDHASSAN in https://github.com/k2-fsa/sherpa-onnx/pull/4147</li>
+<li>Fix crash on iOS due to symbol resolution. by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4162</li>
+<li>Add export scripts for Parakeet Ultra by @danielxxomg in https://github.com/k2-fsa/sherpa-onnx/pull/4163</li>
+<li>Add Outmake to 'Projects using sherpa-onnx' by @DaneBentley in https://github.com/k2-fsa/sherpa-onnx/pull/4033</li>
+<li>Add model cards for the Parakeet TDT packages by @danielxxomg in https://github.com/k2-fsa/sherpa-onnx/pull/4167</li>
+<li>Add export scripts for Parakeet Redux by @danielxxomg in https://github.com/k2-fsa/sherpa-onnx/pull/4168</li>
+<li>Include source-separation-models in checksum workflow by @XDcobra in https://github.com/k2-fsa/sherpa-onnx/pull/4180</li>
+<li>Fix Create checksum workflow: replace deleted thewh1teagle/checksum action by @XDcobra in https://github.com/k2-fsa/sherpa-onnx/pull/4181</li>
+<li>Fix exporting NeMo models. by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4188</li>
+<li>Add forced alignment by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4190</li>
+<li>Add AXERA AX650 export pipeline for the X-ASR zipformer transducer (offline + streaming) by @yuyun2000 in https://github.com/k2-fsa/sherpa-onnx/pull/4185</li>
+<li>Replace dead hf.qhduan.com mirror links with huggingface.co by @Hisernberg in https://github.com/k2-fsa/sherpa-onnx/pull/4183</li>
+<li>Keep depthwise and subsampling convs of Parakeet Ultra in float32 when quantizing to int8 by @ceoptrsltd in https://github.com/k2-fsa/sherpa-onnx/pull/4179</li>
+<li>Add BAXY to 'Projects using sherpa-onnx' by @REDSOULTM in https://github.com/k2-fsa/sherpa-onnx/pull/4169</li>
+<li>Expose Whisper language ID probability distribution on OfflineRecognitionResult by @matiaslin in https://github.com/k2-fsa/sherpa-onnx/pull/4143</li>
+<li>Fix for MedASR by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4192</li>
+<li>Add a MedASR CTC example for the Rust API by @losewayy in https://github.com/k2-fsa/sherpa-onnx/pull/4194</li>
+<li>Upload forced alignment models for English by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4195</li>
+<li>Add Python API for forced alignment by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4196</li>
+<li>Add a TeleSpeech CTC example for the Rust API by @losewayy in https://github.com/k2-fsa/sherpa-onnx/pull/4197</li>
+<li>Add 'language' as a per-stream override for Whisper OfflineRecognizer by @matiaslin in https://github.com/k2-fsa/sherpa-onnx/pull/4189</li>
+<li>Fix buffered streaming for NeMo Parakeet Unified by @JulianPscheid in https://github.com/k2-fsa/sherpa-onnx/pull/4133</li>
+<li>Add Java and Kotlin API for forced alignment by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4199</li>
+<li>Add C API and CXX API for forced alignment by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4207</li>
+<li>Make max tokens per second for whisper configurable by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4211</li>
+<li>Add JavaScript (WebAssembly) API for forced alignment by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4210</li>
+<li>Refactor C API by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4212</li>
+<li>Add Android demo for forced alignment by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4208</li>
+<li>Update README to include forced alignment by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4213</li>
+<li>Update README by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4216</li>
+<li>Add Tomoru to 'Projects using sherpa-onnx' by @ACAne0320 in https://github.com/k2-fsa/sherpa-onnx/pull/4217</li>
+<li>Refactor CI by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4218</li>
+<li>Add an Omnilingual ASR CTC example for the Rust API by @SayokoAkiike in https://github.com/k2-fsa/sherpa-onnx/pull/4215</li>
+<li>Add JavaScript (node-addon) API for forced alignment by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4214</li>
+<li>Add pull request template by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4220</li>
+<li>Resolve each lexicon entry against the model directory. by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4222</li>
+<li>Add Pali (pi) to the TTS APKs: hi_IN-pratham-medium with a lexicon (#4020) by @dhammagift in https://github.com/k2-fsa/sherpa-onnx/pull/4203</li>
+<li>Add Web demo for forced alignment with React by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4221</li>
+<li>Keep Whisper and FireRedASR CUDA caches when using provider config files by @Qing7364 in https://github.com/k2-fsa/sherpa-onnx/pull/4160</li>
+<li>Fix keyword acoustic-threshold check to use the matched tokens by @kyo-zzz in https://github.com/k2-fsa/sherpa-onnx/pull/3998</li>
+<li>Refactor Python API for forced alignment result by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4225</li>
+<li>Guard EncodeHotwords against a null bpe_encoder by @paoloantinori in https://github.com/k2-fsa/sherpa-onnx/pull/4224</li>
+<li>Add Rust API for forced alignment by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4226</li>
+<li>Add Swift API for forced alignment by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4227</li>
+<li>Add hyprvoice to Projects using sherpa-onnx by @mainliufeng in https://github.com/k2-fsa/sherpa-onnx/pull/4236</li>
+<li>Add C# API for forced alignment by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4229</li>
+<li>Add Pascal API for forced alignment by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4231</li>
+<li>Add Go API for forced alignment by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4228</li>
+<li>Add Dart API for forced alignment by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4232</li>
+<li>Accept hotwords given as tokens from tokens.txt by @Hugo0 in https://github.com/k2-fsa/sherpa-onnx/pull/4088</li>
+<li>3dspeaker: export CAM++ segment pooling with count_include_pad=False (fixes #4201) by @developper89 in https://github.com/k2-fsa/sherpa-onnx/pull/4237</li>
+<li>Fix 3D-Speaker export by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4239</li>
+<li>Release v2.0.2 by @csukuangfj in https://github.com/k2-fsa/sherpa-onnx/pull/4238</li>
+</ul>
+<h2>New Contributors</h2>
+<ul>
+<li>@Hugo0 made their first contribution in https://github.com/k2-fsa/sherpa-onnx/pull/4084</li>
+<li>@Ngoroth made their first contribution in https://github.com/k2-fsa/sherpa-onnx/pull/4093</li>
+<li>@nexmoe made their first contribution in https://github.com/k2-fsa/sherpa-onnx/pull/4122</li>
+<li>@Anmol2059 made their first contribution in https://github.com/k2-fsa/sherpa-onnx/pull/4156</li>
+<li>@zachsplat made their first contribution in https://github.com/k2-fsa/sherpa-onnx/pull/4158</li>
+<li>@danielxxomg made their first contribution in https://github.com/k2-fsa/sherpa-onnx/pull/4163</li>
+<li>@DaneBentley made their first contribution in https://github.com/k2-fsa/sherpa-onnx/pull/4033</li>
+<li>@yuyun2000 made their first contribution in https://github.com/k2-fsa/sherpa-onnx/pull/4185</li>
+<li>@Hisernberg made their first contribution in https://github.com/k2-fsa/sherpa-onnx/pull/4183</li>
+<li>@ceoptrsltd made their first contribution in https://github.com/k2-fsa/sherpa-onnx/pull/4179</li>
+<li>@REDSOULTM made their first contribution in https://github.com/k2-fsa/sherpa-onnx/pull/4169</li>
+<li>@ACAne0320 made their first contribution in https://github.com/k2-fsa/sherpa-onnx/pull/4217</li>
+<li>@SayokoAkiike made their first contribution in https://github.com/k2-fsa/sherpa-onnx/pull/4215</li>
+<li>@dhammagift made their first contribution in https://github.com/k2-fsa/sherpa-onnx/pull/4203</li>
+<li>@Qing7364 made their first contribution in https://github.com/k2-fsa/sherpa-onnx/pull/4160</li>
+<li>@mainliufeng made their first contribution in https://github.com/k2-fsa/sherpa-onnx/pull/4236</li>
+<li>@developper89 made their first contribution in https://github.com/k2-fsa/sherpa-onnx/pull/4237</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/k2-fsa/sherpa-onnx/compare/v2.0.1...v2.0.2</p>
+<hr />
+<blockquote>
+<p><strong>Source</strong> <a href="https://github.com/k2-fsa/sherpa-onnx">k2-fsa/sherpa-onnx</a> · <code>v2.0.2</code> · 2026-11-19 · <a href="https://github.com/k2-fsa/sherpa-onnx/releases/tag/v2.0.2">upstream release</a></p>
+</blockquote>
+<p><em>Mirrored verbatim for indexing. All rights belong to the upstream project.</em></p></div> </details> </div> <p class="muted" style="margin-top:var(--s8);font-size:12.5px;border-top:1px solid var(--line);padding-top:var(--s4)"> Las notas de versión provienen del proyecto original. Las organizamos y conectamos para que puedas comparar versiones de un vistazo. Todos los derechos pertenecen a los autores originales. </p> <nav class="pager" aria-label="Release navigation"> <a href="/releases/sherpa-onnx/2.0.3"> <span class="k">← Siguiente</span> <span class="t">v2.0.3</span> </a> <a href="/releases/sherpa-onnx/2.0.1"> <span class="k">Anterior →</span> <span class="t">v2.0.1</span> </a> </nav> <aside class="ad-slot" aria-label="Advertisement" data-astro-cid-fgwukgf6><div class="ad-slot-label" data-astro-cid-fgwukgf6>Advertisement</div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4184355057086168" data-ad-slot="9133765584" data-ad-format="auto" data-full-width-responsive="true" data-astro-cid-fgwukgf6></ins><script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script></aside> </article> <aside class="rail"> <div class="rail-card"> <div class="rail-title">Source</div> <ul class="rail-list"> <li> <a href="https://github.com/k2-fsa/sherpa-onnx/releases/tag/v2.0.2" target="_blank" rel="noopener"> <span>Original en GitHub</span> <span class="d">↗</span> </a> </li> <li> <a href="https://github.com/k2-fsa/sherpa-onnx" target="_blank" rel="noopener"> <span>k2-fsa/sherpa-onnx</span> <span class="d">↗</span> </a> </li> </ul> </div>  <div class="rail-card"> <div class="rail-title">Historial de versiones</div> <ul class="rail-list"> <li> <a href="/releases/sherpa-onnx/2.0.3"> <span class="v">v2.0.3</span> <span class="d">26-11-22</span> </a> </li><li> <a href="/releases/sherpa-onnx/2.0.2" aria-current="true"> <span class="v">v2.0.2</span> <span class="d">26-11-19</span> </a> </li><li> <a href="/releases/sherpa-onnx/2.0.1"> <span class="v">v2.0.1</span> <span class="d">26-10-26</span> </a> </li><li> <a href="/releases/sherpa-onnx/2.0.0"> <span class="v">v2.0.0</span> <span class="d">26-10-23</span> </a> </li><li> <a href="/releases/sherpa-onnx/1.13.8"> <span class="v">v1.13.8</span> <span class="d">26-09-10</span> </a> </li><li> <a href="/releases/sherpa-onnx/1.13.7"> <span class="v">v1.13.7</span> <span class="d">26-09-01</span> </a> </li><li> <a href="/releases/sherpa-onnx/1.13.6"> <span class="v">v1.13.6</span> <span class="d">26-08-18</span> </a> </li><li> <a href="/releases/sherpa-onnx/1.13.5"> <span class="v">v1.13.5</span> <span class="d">26-08-11</span> </a> </li> </ul> <a href="/es/releases/sherpa-onnx" class="mono" style="display:inline-block;margin-top:var(--s3);font-size:11.5px;color:var(--ink-3)"> Ver todo 26 →
+</a> </div> </aside> </div> </div>  </main> <footer class="site-footer"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/es/" class="brand" aria-label="STAGS NextStack"><span class="brand-mark" aria-hidden="true">S</span><span class="brand-main">STAGS</span><span class="brand-sub" aria-hidden="true">NextStack</span></a> <p>Inteligencia de lanzamiento de código abierto, publicada diariamente.</p> </div> <div class="footer-col"> <h3>Seguimiento</h3> <ul> <li><a href="/es/releases">Versiones</a></li> <li><a href="/es/projects">Proyectos</a></li> <li><a href="/es/releases.xml">Feed RSS</a></li> </ul> </div> <div class="footer-col"> <h3>Archivo</h3> <ul> <li><a href="/zh/release_note" hreflang="zh-Hans">Archivo chino</a></li> <li><a href="/zh/chapters/" hreflang="zh-Hans">Notas técnicas</a></li> <li><a href="/zh/downloads/">Stags Tracker</a></li> </ul> </div> <div class="footer-col"> <h3>Información</h3> <ul> <li><a href="/privacy">Política de privacidad</a></li> <li><a href="/releases.xml">RSS</a></li> <li><a href="/sitemap-index.xml">Sitemap</a></li> </ul> </div> </div> <div class="footer-btm"> <span>© 2026 STAGS</span> <span>Los Release note pertenecen a sus proyectos upstream.</span> </div> </div> </footer> <!-- 搜索面板 --> <div class="palette-bg" data-palette-bg data-open="false"> <div class="palette" role="dialog" aria-modal="true" aria-label="Buscar versiones"> <div class="palette-in"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ink-4);flex:none"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <input type="search" data-palette-input placeholder="Busca lanzamientos, proyectos, versiones…" autocomplete="off" spellcheck="false"> <span class="kbd">esc</span> </div> <ul class="palette-res" data-palette-res></ul> <div class="palette-ft"> <span>↑↓ navigate</span> <span>↵ open</span> <span style="margin-left:auto" data-palette-count></span> </div> </div> </div> <script type="module" src="/assets/Shell.astro_astro_type_script_index_0_lang.0ZkKXV47.js"></script> </body> </html>

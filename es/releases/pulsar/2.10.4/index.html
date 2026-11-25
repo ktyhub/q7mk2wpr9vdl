@@ -1,0 +1,306 @@
+<!DOCTYPE html><html lang="es" dir="ltr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>pulsar v2.10.4 — STAGS NextStack</title><meta name="description" content="[improve][broker] Add ref count for sticky hash to optimize the performance of Key_Shared subscription (#19167) · [fix][broker] Pass subName for subscription operations in ServerCnx (#19184)"><meta name="keywords" content="release note de código abierto, rastreador de lanzamientos, agregador changelog, cambios importantes, rastreador de desuso, lanzamientos de Kafka, lanzamientos de Spring Boot, lanzamientos de Kubernetes"><meta name="generator" content="Astro v5.18.2"><link rel="canonical" href="https://www.stags.cn/es/releases/pulsar/2.10.4/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="STAGS NextStack — releases" href="/es/releases.xml"><link rel="alternate" hreflang="en" href="https://www.stags.cn/releases/pulsar/2.10.4/"><link rel="alternate" hreflang="zh-Hans" href="https://www.stags.cn/releases/pulsar/2.10.4/"><link rel="alternate" hreflang="x-default" href="https://www.stags.cn/releases/pulsar/2.10.4/"><meta property="og:site_name" content="STAGS"><meta property="og:type" content="article"><meta property="og:title" content="pulsar v2.10.4 — STAGS NextStack"><meta property="og:description" content="[improve][broker] Add ref count for sticky hash to optimize the performance of Key_Shared subscription (#19167) · [fix][broker] Pass subName for subscription operations in ServerCnx (#19184)"><meta property="og:url" content="https://www.stags.cn/es/releases/pulsar/2.10.4/"><meta property="og:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><meta property="og:locale" content="es_ES"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="ja_JP"><meta property="og:locale:alternate" content="de_DE"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:locale:alternate" content="pt_BR"><meta property="og:locale:alternate" content="ko_KR"><meta property="og:locale:alternate" content="it_IT"><meta property="og:locale:alternate" content="ru_RU"><meta property="og:locale:alternate" content="tr_TR"><meta property="og:locale:alternate" content="id_ID"><meta property="og:locale:alternate" content="vi_VN"><meta property="og:locale:alternate" content="ar_SA"><meta property="og:locale:alternate" content="sv_SE"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.stags.cn/#website","name":"STAGS","url":"https://www.stags.cn/","inLanguage":"es","description":"NextStack indexa las notas de versión de proyectos de infraestructura e IA – cambios incompatibles, obsolescencias y migraciones – en un único feed en inglés.","publisher":{"@id":"https://www.stags.cn/#org"}},{"@type":"Organization","@id":"https://www.stags.cn/#org","name":"STAGS","alternateName":"NextStack","url":"https://www.stags.cn/"},{"@type":"TechArticle","@id":"https://www.stags.cn/es/releases/pulsar/2.10.4/#article","headline":"pulsar v2.10.4 release notes","datePublished":"2023-04-19","inLanguage":"en","isPartOf":{"@id":"https://www.stags.cn/#website"},"about":{"@type":"SoftwareSourceCode","codeRepository":"https://github.com/apache/pulsar"}}]}</script><!-- 第三方脚本的连接预热：这两个域名几乎每页都要连，
+         提前建连能省掉 DNS + TCP + TLS 一个往返（移动网络 100~300ms）。
+         AdSense 只在开关打开时预热——关掉广告后连这个域名都没必要。 --><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://pagead2.googlesyndication.com"><!-- Google AdSense：站点所有权校验与广告投放共用同一段脚本，全站只加载一次。
+         未创建广告单元时页面上不渲染任何广告容器，站点保持干净。
+         fetchpriority=low：它不参与首屏渲染，不该跟正文抢带宽。 --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184355057086168" crossorigin="anonymous" fetchpriority="low"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-RFRF1TVRMP" fetchpriority="low"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RFRF1TVRMP");
+    </script><!-- 百度统计（国内流量统计）。官方标准片段，is:inline 原样输出，
+         hm.js 动态插到首个 script 前，异步不阻塞首屏渲染。 --><script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?299e5b4e65b86ed16879bdcbe70531d6";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script><link rel="stylesheet" href="/assets/index.DQGt3qLZ.css">
+<style>.ad-slot[data-astro-cid-fgwukgf6]{margin:var(--s10) 0 0;padding-top:var(--s5);border-top:1px solid var(--line)}.ad-slot-label[data-astro-cid-fgwukgf6]{margin-bottom:var(--s3);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{display:block;min-height:100px}@media(min-width:640px){.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{min-height:250px}}
+</style></head> <body> <a class="skip" href="#main">Ir al contenido</a> <header class="hdr" data-header> <div class="wrap hdr-inner"> <a href="/es/" class="brand" aria-label="STAGS NextStack — Información de versiones open source"> <span class="brand-mark" aria-hidden="true">S</span> <span class="brand-main">STAGS</span> <span class="brand-sub" aria-hidden="true">NextStack</span> </a> <nav class="nav" aria-label="Primary"> <a href="/es/releases">Versiones</a><a href="/es/projects">Proyectos</a> </nav>  <details class="navmenu" data-navmenu> <summary class="navmenu-btn" aria-label="Open menu"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> </summary> <div class="navmenu-panel" role="group" aria-label="Primary"> <a href="/es/releases" class="navmenu-item">Versiones</a><a href="/es/projects" class="navmenu-item">Proyectos</a> </div> </details> <div class="hdr-tools"> <button class="searchbtn" type="button" data-search-open aria-label="Buscar versiones"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <span class="lbl">Buscar</span> <span class="kbd">⌘K</span> </button> <details class="langmenu" data-langmenu> <summary class="langmenu-btn" aria-label="Idioma"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"> <circle cx="12" cy="12" r="9"></circle> <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path> </svg> <span class="langmenu-cur">ES</span> <svg class="langmenu-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m2 4 4 4 4-4"></path></svg> </summary> <div class="langmenu-panel" role="group" aria-label="Idioma"> <p class="langmenu-head">Idioma</p> <a class="langmenu-item" href="/releases/pulsar/2.10.4/" hreflang="en" lang="en" data-on="false"> <span class="langmenu-label">English</span> <span class="langmenu-code">EN</span> </a><a class="langmenu-item" href="/zh/release_note/pulsar/pulsar_v2.10.4" hreflang="zh-Hans" lang="zh-CN" data-on="false"> <span class="langmenu-label">中文</span> <span class="langmenu-code">中</span> </a><a class="langmenu-item" href="/ja/releases/pulsar/2.10.4/" hreflang="ja" lang="ja" data-on="false"> <span class="langmenu-label">日本語</span> <span class="langmenu-code">日</span> </a><a class="langmenu-item" href="/de/releases/pulsar/2.10.4/" hreflang="de" lang="de" data-on="false"> <span class="langmenu-label">Deutsch</span> <span class="langmenu-code">DE</span> </a><a class="langmenu-item" href="/fr/releases/pulsar/2.10.4/" hreflang="fr" lang="fr" data-on="false"> <span class="langmenu-label">Français</span> <span class="langmenu-code">FR</span> </a><a class="langmenu-item" href="/es/releases/pulsar/2.10.4/" hreflang="es" lang="es" aria-current="true" data-on="true"> <span class="langmenu-label">Español</span> <span class="langmenu-code">ES</span> </a><a class="langmenu-item" href="/pt/releases/pulsar/2.10.4/" hreflang="pt-BR" lang="pt-BR" data-on="false"> <span class="langmenu-label">Português</span> <span class="langmenu-code">PT</span> </a><a class="langmenu-item" href="/ko/releases" hreflang="ko" lang="ko" data-on="false"> <span class="langmenu-label">한국어</span> <span class="langmenu-code">한</span> </a><a class="langmenu-item" href="/it/releases" hreflang="it" lang="it" data-on="false"> <span class="langmenu-label">Italiano</span> <span class="langmenu-code">IT</span> </a><a class="langmenu-item" href="/ru/releases" hreflang="ru" lang="ru" data-on="false"> <span class="langmenu-label">Русский</span> <span class="langmenu-code">RU</span> </a><a class="langmenu-item" href="/tr/releases" hreflang="tr" lang="tr" data-on="false"> <span class="langmenu-label">Türkçe</span> <span class="langmenu-code">TR</span> </a><a class="langmenu-item" href="/id/releases" hreflang="id" lang="id" data-on="false"> <span class="langmenu-label">Bahasa Indonesia</span> <span class="langmenu-code">ID</span> </a><a class="langmenu-item" href="/vi/releases" hreflang="vi" lang="vi" data-on="false"> <span class="langmenu-label">Tiếng Việt</span> <span class="langmenu-code">VI</span> </a><a class="langmenu-item" href="/ar/releases" hreflang="ar" lang="ar" data-on="false"> <span class="langmenu-label">العربية</span> <span class="langmenu-code">ع</span> </a><a class="langmenu-item" href="/sv/releases" hreflang="sv" lang="sv" data-on="false"> <span class="langmenu-label">Svenska</span> <span class="langmenu-code">SV</span> </a> </div> </details> <a class="iconlink" href="/releases.xml" aria-label="RSS"> <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"> <path d="M2 12.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM2 7.5a6.5 6.5 0 0 1 6.5 6.5h-2A4.5 4.5 0 0 0 2 9.5v-2ZM2 2.5A11.5 11.5 0 0 1 13.5 14h-2A9.5 9.5 0 0 0 2 4.5v-2Z"></path> </svg> </a> </div> </div> </header> <main id="main">  <div class="wrap"> <div class="detail"> <article> <header class="detail-hd"> <nav class="crumbs" aria-label="Breadcrumb"> <a href="/es/">Inicio</a> <span class="sep">/</span> <a href="/es/releases">Versiones</a> <span class="sep">/</span> <a href="/es/releases/pulsar">pulsar</a> </nav> <h1 class="detail-title"> <span class="p">pulsar</span> v2.10.4 </h1> <div class="detail-meta"> <span class="chip chip--patch">Parche</span> <span><span class="k">Publicado</span>19 abr 2023</span>  <span class="sep" aria-hidden="true"></span> <a href="https://github.com/apache/pulsar" target="_blank" rel="noopener"> <span class="k">Fuente</span>apache/pulsar </a>   <span class="sep" aria-hidden="true"></span> <a href="/releases/pulsar/2.10.4/"> original en inglés </a>  <span class="sep" aria-hidden="true"></span> <button class="btn btn--ghost btn--sm" type="button" data-copy="https://www.stags.cn/es/releases/pulsar/2.10.4/">Copiar enlace</button> </div> </header> <div class="prose" style="margin-top:var(--s8)"> <p class="mt-notice" role="note">Esta página está traducida automáticamente. El texto original en inglés es la referencia.</p>  <div><h1>pulsar v2.10.4</h1>
+<h3>Corredor</h3>
+<ul>
+<li>[mejorar][corredor] Agregar recuento de referencias para hash adhesivo para optimizar el rendimiento de la suscripción Key_Shared (#19167)</li>
+<li>[arreglo][broker] Pase subNombre para operaciones de suscripción en ServerCnx (#19184)</li>
+<li>[solución] [corredor] AbstractBatchedMetadataStore - use YaClosedException en lugar de IllegalStateException (#19284)</li>
+<li>[fix][broker] Se corrige el cursor abierto con el resultado null-initialPosition con la posición más temprana (#18416)</li>
+<li>[fix] [ml] Las estadísticas de los temas muestran msgBacklog pero en realidad no hay retrasos (#19275)</li>
+<li>[mejorar][broker] Se agregó isActive en ManagedCursorImpl (#19341)</li>
+<li>[mejorar][corredor] Se reemplazó checkBackloggedCursors con checkBackloggedCursor (verificación de suscripción única) al momento de la suscripción (#19343)</li>
+<li>[fix][broker] corrigió el error de compilación para la variable de coincidencia de patrones en versiones inferiores de JVM (#19362)</li>
+<li>[arreglo][broker]optimiza la secuencia de apagado del servicio de broker cuando se cierra (#16756)</li>
+<li>[arreglo][corredor] Pasar nombre de suscripción al servicio de autenticación (#17123) (#19423)</li>
+<li>[arreglar][broker]arreglar la invocación múltiple para crear el libro mayor completo (#18975)</li>
+<li>[solución] [corredor] getLastMessageId devuelve un índice de lote incorrecto del último mensaje si se habilita la lectura compactada (#18877)</li>
+<li>[arreglo][broker] Admite la eliminación de temas particionados con la palabra clave <code>-partition-</code> (#19230)</li>
+<li>[fix] [ml] Corrija el tamaño total incorrecto si usa el interceptor ML (#19404)</li>
+<li>[mejorar][broker] Se agregó isActive en ManagedCursorImpl (#19341)</li>
+<li>[mejorar][broker] Se agregó isActive en ManagedCursorImpl (#19341)</li>
+<li>[mejorar][corredor] Copie las propiedades de la suscripción durante la actualización del número de partición del tema. (#19223)</li>
+<li>[solución] [corredor] Esperar mensajes después de que el servidor inicie CloseProducer (#19446)</li>
+<li>[solución] [corredor] Solucionar PulsarRegistrationClient y ZkRegistrationClient que no reconocen el problema de información del rack. (#18672)</li>
+<li>[fix][ml] Reparar la posible causa de NPE en el futuro nunca se completa. (#19415)</li>
+<li>[arreglo] [ml] La atomicidad de múltiples campos de ml está rota (#19346)</li>
+<li>[arreglar][corredor] Corregir la condición de carrera mientras se actualiza el número de partición (#19199)</li>
+<li>[Mejorar] [corredor] Admite borrar datos antiguos de casas de apuestas para BKCluster (#16744)</li>
+<li>[fix][ml] Restablecer individualDeletedMessagesSerializedSize después de confirmar todos los mensajes. (#19428)</li>
+<li>[arreglo][broker] Hacer que ServerCnx#originalAuthData sea volátil (#19507)</li>
+<li>[arreglo][corredor] ServerCnx se rompió después de selecciones recientes (#19521)</li>
+<li>[solución] [corredor] Soluciona el problema de cálculo de la puntuación del equilibrio de carga (#19420)</li>
+<li>[arreglo] [ml] mensajesConsumedCounter de NonDurableCursor se inicializó incorrectamente (#19355)</li>
+<li>[solución][broker][branch-2.10] Reemplazar la llamada al método de sincronización en la cadena de llamadas asíncronas para evitar el bloqueo del hilo del evento ZK (#19539)</li>
+<li>[mejorar][broker] Requerir authRole es proxyRole para establecer originalPrincipal (#19455)</li>
+<li>[mejorar][broker] ServerCnx: pasa al estado fallido cuando falla la autenticación (#19312)</li>
+<li>[hazaña][broker] Pruebas seleccionadas de (#19409)</li>
+<li>[mejorar][broker] Agregar prueba para verificar que authRole no pueda cambiar (#19430)</li>
+<li>[hazaña][broker] Estado de OneStageAuth: sacar la autenticación del constructor (#19295)</li>
+<li>[arreglo] [corredor] Implementación de prueba correcta de MockAlwaysExpiredAuthenticationState</li>
+<li>[limpieza][corredor] Validar originalPrincipal anteriormente en ServerCnx (#19270)</li>
+<li>[arreglo][corredor] ServerCnx se rompió después de selecciones recientes (#19521)</li>
+<li>[solución] [corredor] Soluciona el problema de cálculo de la puntuación del equilibrio de carga (#19420)</li>
+<li>[arreglo] [ml] mensajesConsumedCounter de NonDurableCursor se inicializó incorrectamente (#19355)</li>
+<li>[solución][broker][branch-2.10] Reemplazar la llamada al método de sincronización en la cadena de llamadas asíncronas para evitar el bloqueo del hilo del evento ZK (#19539)</li>
+<li>[mejorar][broker] Requerir authRole es proxyRole para establecer originalPrincipal (#19455)</li>
+<li>[mejorar][broker] ServerCnx: pasa al estado fallido cuando falla la autenticación (#19312）</li>
+<li>[hazaña][broker] Pruebas seleccionadas de (#19409)</li>
+<li>[mejorar][broker] Agregar prueba para verificar que authRole no pueda cambiar (#19430)</li>
+<li>[arreglo] [corredor] Llame a originalAuthState.authenticate en ServerCnx</li>
+<li>[arreglo] [corredor] Implementación de prueba correcta de MockAlwaysExpiredAuthenticationState</li>
+<li>[solución][corredor] Hacer que la actualización de autenticación sea segura para subprocesos (#19506)</li>
+<li>[solución][broker] Permitir que el proxy pase el mismo rol para authRole y originalRole (#19557)</li>
+<li>[arreglar][corredor] Copiar campos de comando y corregir posibles problemas de seguridad de subprocesos en ServerCnx (#19517)</li>
+<li>[fix][broker][branch-2.10] Fix administrador de replicación geográfica (#19608）</li>
+<li>[arreglo][broker] PulsarRegistrationClient - implementa getAllBookies y sigue las actualizaciones de BookieServiceInfo (#18133)</li>
+<li>[Mejorar][Broker]Reducir la llamada REST local GetReplicatedSubscriptionStatus (#16946)</li>
+<li>[solución] [corredor] Lógica de selección de nombre de servicio incorrecta (#19505)</li>
+<li>[mejorar][corredor] Usar mapa de reducción para trackerCache (#19534)</li>
+<li>[mejorar][corredor] Agregar UncaughtExceptionHandler para cada grupo de subprocesos (#18211)</li>
+<li>[limpieza][corredor] Simplificar la entrada de extractoCódigo de metadatos en filterEntriesForConsumer (#18729)</li>
+<li>[mejorar][corredor] Seguimiento #19230 para ajustar el alcance de la validación (#19234)</li>
+<li>[arreglo] [ml] falla en la carga del tema debido a la pérdida del libro mayor (#19444)</li>
+<li>[solución] [corredor] El error al cerrar el tema deja la suscripción en un estado de barrera permanente (#19692)</li>
+<li>[cherry-pick][branch-2.10] Arreglar el punto muerto hace que la notificación de sesión no funcione (#19754) (#19768)</li>
+<li>[arreglo][corredor] Se corrige una posible excepción que causa que el servicio de políticas falle en el inicio. (#19746)</li>
+<li>[mejorar][corredor] Autorizar originalPrincipal cuando se proporcione (#19830)</li>
+<li>[solución][broker] Solo valida el acceso de superusuario si la autenticación está habilitada (#19989)</li>
+<li>[solución][broker] Ignora y elimina el cursor del replicador cuando el clúster remoto está ausente (#19972)</li>
+<li>[solución] [corredor] La solución del generador de índices no se revierte después de que fallan las entradas agregadas (#19980)</li>
+<li>[fix] [proxy] Se utiliza en el archivo proxyConf cuando falta la configuración en la línea de comando (#15938)</li>
+<li>[solución][corredor] Eliminar la marca de tiempo de las métricas del corredor (#17419)</li>
+<li>[solución] [corredor] Contador de mensajes de envío pendientes en el Replicador incorrecto si el esquema futuro no está completo (#19242)</li>
+</ul>
+<h3>Transacción</h3>
+<ul>
+<li>[fix][txn] Corregir el mensaje de aviso (#17009)</li>
+<li>[fix][txn] Detectar y registrar excepciones de tiempo de ejecución en operaciones asíncronas (#19258)</li>
+<li>[fix][txn] corrige que el coordinador txn recupere el identificador que confirma y aborta la condición de carrera txn. (#19201)</li>
+<li>[improve][txn] Manejar correctamente el error changeToReadyState en TC client (#19308)</li>
+<li>[cherry-pick][branch-2.10] Permitir a los superusuarios cancelar transacciones (#1…9467) (#19473)</li>
+<li>[característica][txn] Corregir mensaje de lote de confirmación individual con transacción cancelada...</li>
+<li>Cerrar TransactionBuffer cuando falla MessageDeduplication#checkStatus (#19288)</li>
+<li>[mejorar][txn] Limpiar cómo los superusuarios abortan txns (#19976)</li>
+<li>[característica][txn] Corregir mensaje de lote de confirmación individual con mensajes duplicados de redistribuidor de cancelación de transacción (#14327)</li>
+</ul>
+<h3>Pulsar IO y funciones Pulsar</h3>
+<ul>
+<li>[solución][io] Actualizar el tiempo de espera de inactividad del cnx del disipador Elasticsearch a 30 segundos (#19377)</li>
+<li>[arreglar][fn] Arreglar el error de opciones de tiempo de ejecución de fusión de k8s (#19481)</li>
+<li>[refactor][fn] Use AuthorizationServer más en Function Worker API (#19975)</li>
+</ul>
+<h3>CLI</h3>
+<ul>
+<li>[solución] [cli] Fix Broker falló por el uso excesivo de memoria de las herramientas Pulsar (#20031)</li>
+</ul>
+<h3>Administrador</h3>
+<ul>
+<li>[fix][admin] Se corrige validarPersistencePolicies que las políticas persistentes de espacio de nombres/tema no pueden establecer en &lt; 0 (#18999)</li>
+<li>[improve][admin][branch-2.10] Desarmar la política de espacio de nombres para mejorar la eliminación del espacio de nombres (#17033) (#19865)</li>
+<li>[solución] [admin] soluciona la replicación de estado incorrecto. Conectado en la estadística de tema particionado API (#19942)</li>
+<li>[solución] [admin] Hacer que el código de respuesta sea 400 en lugar de 500 cuando falla la eliminación del tema debido a la replicación geográfica habilitada (#19879)</li>
+</ul>
+<h3>Seguridad</h3>
+<ul>
+<li>[arreglo][seg] Actualización de descarte a 1.5.3 (#19038)</li>
+<li>[arreglo][seg] Actualice woodstox a 5.4.0 (#19041)</li>
+<li>[mejorar][seg] Suprimir los informes OWASP falsos positivos (#19105)</li>
+<li>[corrección][misc] no requiere cifrado en temas del sistema (#18898)</li>
+<li>[arreglar][autorización] Corregir el valor de retorno de canConsumeAsync (#19412)</li>
+<li>[solución][seguridad] Soluciona el problema de seguridad CVE-2017-1000487 (#19479)</li>
+<li>[mejorar] Actualice wildfly-eytron (usado por debezium) para corregir CVE-2022-3143 (#19333)</li>
+<li>[mejorar][varios] Actualice Netty a 4.1.87.Final (#19417)</li>
+<li>[solución][broker] Ignora y elimina el cursor del replicador cuando el clúster remoto está ausente (#19972)</li>
+<li>[Autenticar] corrige el error de firma no válida cuando se usa la autenticación Kerberos (#15121)</li>
+<li>[arreglar][seg] Corregir CVE críticos transitivos en el almacenamiento por niveles del sistema de archivos (#19957)</li>
+<li>[arreglar][seg] Corregir CVE críticos transitivos en el almacenamiento por niveles del sistema de archivos (#19957)</li>
+</ul>
+<h3>CI y prueba</h3>
+<ul>
+<li>[solución][prueba] ProxyWithAuthorizationTest elimina SAN de los certificados de prueba (#19594)</li>
+<li>[branch-2.10][prueba]Ejecutar y corregir pruebas (#19636)</li>
+<li>[prueba] Se corrigió el error de ServerCnxTest después de la fusión de #19830</li>
+</ul>
+<h3>Otros</h3>
+<ul>
+<li>[arreglar][compilar] Resolver la dependencia de OWASP Verificar falsos positivos (#19120)</li>
+<li>Fuentes de Debezium: admite la carga de configuración desde secretos (#19163)</li>
+<li>[fix][proxy] Solo pasa al estado de conexión una vez (#19331)</li>
+<li>[arreglar][compilar] Actualizar el complemento dependency-check-maven para arreglar la verificación OWASP rota (#19170)</li>
+<li>[branch-2.10][fix][proxy] Se corrigió el uso de una versión incorrecta de client en el proxy pulsar (#19576)</li>
+<li>[branch-2.10][fix][proxy] Se corrigió el uso de una versión incorrecta de client en el proxy pulsar (#19576)</li>
+<li>[mejorar] Actualizar lombok a 1.8.26 (#19426)</li>
+<li>[mejorar] actualizar la versión contable a 4.14.7 (#19179)</li>
+<li>[branch-2.10][broker] Admite configuración de solo lectura zookeeper. (#19156) (#19637)</li>
+<li>[mejorar] Simplificar la habilitación de la verificación del nombre de host de Broker y WS Proxy (#19674)</li>
+<li>[cherry-pick][branch-2.10] KCA: seleccionar correcciones del maestro (#19788)</li>
+<li>[Compilación] Haga que la prueba JVM salga si ocurre OOME (#14509)</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>Fuente</strong> <a href="https://github.com/apache/pulsar">apache/pulsar</a> · <code>v2.10.4</code> · 2023-04-19 · <a href="https://github.com/apache/pulsar/releases/tag/v2.10.4">versión ascendente</a>
+<em>Reflejado textualmente para indexación. Todos los derechos pertenecen al proyecto upstream.</em></p>
+</blockquote></div>  <details class="mt-original"> <summary>original en inglés / English original</summary> <div class="prose mt-original-body"><h1>pulsar v2.10.4</h1>
+<h3>Broker</h3>
+<ul>
+<li>[improve][broker] Add ref count for sticky hash to optimize the performance of Key_Shared subscription (#19167)</li>
+<li>[fix][broker] Pass subName for subscription operations in ServerCnx (#19184)</li>
+<li>[fix][broker] AbstractBatchedMetadataStore - use AlreadyClosedException instead of IllegalStateException (#19284)</li>
+<li>[fix][broker] Fix open cursor with null-initialPosition result with earliest position (#18416)</li>
+<li>[fix] [ml] Topics stats shows msgBacklog but there reality no backlog (#19275)</li>
+<li>[improve][broker] Added isActive in ManagedCursorImpl (#19341)</li>
+<li>[improve][broker] Replaced checkBackloggedCursors with checkBackloggedCursor(single subscription check) upon subscription (#19343)</li>
+<li>[fix][broker] fixed the build error for pattern matching variable in lower JVM versions (#19362)</li>
+<li>[fix][broker]optimize the shutdown sequence of broker service when it close (#16756)</li>
+<li>[fix][broker] Pass subscriptionName to auth service (#17123) (#19423)</li>
+<li>[fix][broker]fix multi invocation for ledger createComplete (#18975)</li>
+<li>[fix] [broker] getLastMessageId returns a wrong batch index of last message if enabled read compacted (#18877)</li>
+<li>[fix][broker] Support deleting partitioned topics with the keyword <code>-partition-</code> (#19230)</li>
+<li>[fix] [ml] Fix the incorrect total size if use ML interceptor (#19404)</li>
+<li>[improve][broker] Added isActive in ManagedCursorImpl (#19341)</li>
+<li>[improve][broker] Added isActive in ManagedCursorImpl (#19341)</li>
+<li>[improve][broker] Copy subscription properties during updating the topic partition number. (#19223)</li>
+<li>[fix][broker] Expect msgs after server initiated CloseProducer (#19446)</li>
+<li>[fix][broker] Fix PulsarRegistrationClient and ZkRegistrationClient not aware rack info problem. (#18672)</li>
+<li>[fix][ml] Fix potential NPE cause future never complete. (#19415)</li>
+<li>[fix] [ml] The atomicity of multiple fields of ml is broken (#19346)</li>
+<li>[fix][broker] Fix race condition while updating partition number (#19199)</li>
+<li>[Improve][broker] Support clear old bookie data for BKCluster (#16744)</li>
+<li>[fix][ml] Reset individualDeletedMessagesSerializedSize after acked all messages. (#19428)</li>
+<li>[fix][broker] Make ServerCnx#originalAuthData volatile (#19507)</li>
+<li>[fix][broker] ServerCnx broken after recent cherry-picks (#19521)</li>
+<li>[fix][broker] Fix loadbalance score caculation problem (#19420)</li>
+<li>[fix] [ml] messagesConsumedCounter of NonDurableCursor was initialized incorrectly (#19355)</li>
+<li>[fix][broker][branch-2.10] Replace sync method call in async call chain to prevent ZK event thread deadlock (#19539)</li>
+<li>[improve][broker] Require authRole is proxyRole to set originalPrincipal (#19455)</li>
+<li>[improve][broker] ServerCnx: go to Failed state when auth fails (#19312)</li>
+<li>[feat][broker] Cherry-pick tests from (#19409)</li>
+<li>[improve][broker] Add test to verify authRole cannot change (#19430)</li>
+<li>[feat][broker] OneStageAuth State: move authn out of constructor (#19295)</li>
+<li>[fix][broker] Correct MockAlwaysExpiredAuthenticationState test impl</li>
+<li>[cleanup][broker] Validate originalPrincipal earlier in ServerCnx (#19270)</li>
+<li>[fix][broker] ServerCnx broken after recent cherry-picks (#19521)</li>
+<li>[fix][broker] Fix loadbalance score caculation problem (#19420)</li>
+<li>[fix] [ml] messagesConsumedCounter of NonDurableCursor was initialized incorrectly (#19355)</li>
+<li>[fix][broker][branch-2.10] Replace sync method call in async call chain to prevent ZK event thread deadlock (#19539)</li>
+<li>[improve][broker] Require authRole is proxyRole to set originalPrincipal (#19455)</li>
+<li>[improve][broker] ServerCnx: go to Failed state when auth fails (#19312）</li>
+<li>[feat][broker] Cherry-pick tests from (#19409)</li>
+<li>[improve][broker] Add test to verify authRole cannot change (#19430)</li>
+<li>[fix][broker] Call originalAuthState.authenticate in ServerCnx</li>
+<li>[fix][broker] Correct MockAlwaysExpiredAuthenticationState test impl</li>
+<li>[fix][broker] Make authentication refresh threadsafe (#19506)</li>
+<li>[fix][broker] Allow proxy to pass same role for authRole and originalRole (#19557)</li>
+<li>[fix][broker] Copy command fields and fix potential thread-safety in ServerCnx (#19517)</li>
+<li>[fix][broker][branch-2.10] Fix geo-replication admin (#19608）</li>
+<li>[fix][broker] PulsarRegistrationClient - implement getAllBookies and follow BookieServiceInfo updates (#18133)</li>
+<li>[Improve][Broker]Reduce GetReplicatedSubscriptionStatus local REST call (#16946)</li>
+<li>[fix] [broker] Incorrect service name selection logic (#19505)</li>
+<li>[improve][broker] Use shrink map for trackerCache (#19534)</li>
+<li>[improve][broker] Add UncaughtExceptionHandler for every thread pool (#18211)</li>
+<li>[cleanup][broker] Simplify extract entryMetadata code in filterEntriesForConsumer (#18729)</li>
+<li>[improve][broker] Follow up #19230 to tighten the validation scope (#19234)</li>
+<li>[fix] [ml] topic load fail by ledger lost (#19444)</li>
+<li>[fix] [broker] Topic close failure leaves subscription in a permanent fence state (#19692)</li>
+<li>[cherry-pick][branch-2.10] Fix deadlock causes session notification not to work (#19754) (#19768)</li>
+<li>[fix][broker] Fix potential exception cause the policy service init fail. (#19746)</li>
+<li>[improve][broker] Authorize originalPrincipal when provided (#19830)</li>
+<li>[fix][broker] Only validate superuser access if authz enabled (#19989)</li>
+<li>[fix][broker] Ignore and remove the replicator cursor when the remote cluster is absent (#19972)</li>
+<li>[fix][broker] Fix index generator is not rollback after entries are failed added (#19980)</li>
+<li>[fix] [proxy] Used in proxyConf file when configuration is missing in the command line (#15938)</li>
+<li>[fix][broker] Remove timestamp from broker metrics (#17419)</li>
+<li>[fix] [broker] Counter of pending send messages in Replicator incorrect if schema future not complete (#19242)</li>
+</ul>
+<h3>Transaction</h3>
+<ul>
+<li>[fix][txn] Correct the prompt message (#17009)</li>
+<li>[fix][txn] Catch and log runtime exceptions in async operations (#19258)</li>
+<li>[fix][txn] fix txn coordinator recover handle committing and aborting txn race condition. (#19201)</li>
+<li>[improve][txn] Handle changeToReadyState failure correctly in TC client (#19308)</li>
+<li>[cherry-pick][branch-2.10] Allow superusers to abort transactions (#1…9467) (#19473)</li>
+<li>[feature][txn] Fix individual ack batch message with transaction abor…</li>
+<li>Close TransactionBuffer when MessageDeduplication#checkStatus failed (#19288)</li>
+<li>[improve][txn] Cleanup how superusers abort txns (#19976)</li>
+<li>[feature][txn] Fix individual ack batch message with transaction abort redevlier duplicate messages (#14327)</li>
+</ul>
+<h3>Pulsar IO and Pulsar Functions</h3>
+<ul>
+<li>[fix][io] Update Elasticsearch sink idle cnx timeout to 30s (#19377)</li>
+<li>[fix][fn] Fix k8s merge runtime opts bug (#19481)</li>
+<li>[refactor][fn] Use AuthorizationServer more in Function Worker API (#19975)</li>
+</ul>
+<h3>CLI</h3>
+<ul>
+<li>[fix] [cli] Fix Broker crashed by too much memory usage of pulsar tools (#20031)</li>
+</ul>
+<h3>Admin</h3>
+<ul>
+<li>[fix][admin] Fix validatePersistencePolicies that Namespace/Topic persistent policies cannot set to &lt; 0 (#18999)</li>
+<li>[improve][admin][branch-2.10] Unset namespace policy to improve deleting namespace (#17033) (#19865)</li>
+<li>[fix] [admin] fix incorrect state replication.connected on API partitioned-topic stat (#19942)</li>
+<li>[fix] [admin] Make response code to 400 instead of 500 when delete topic fails due to enabled geo-replication (#19879)</li>
+</ul>
+<h3>Security</h3>
+<ul>
+<li>[fix][sec] Upgrade jettison to 1.5.3 (#19038)</li>
+<li>[fix][sec] Upgrade woodstox to 5.4.0 (#19041)</li>
+<li>[improve][sec] Suppress false positive OWASP reports (#19105)</li>
+<li>[fix][misc] do not require encryption on system topics (#18898)</li>
+<li>[fix][authorization] Fix the return value of canConsumeAsync (#19412)</li>
+<li>[fix][security] Fix secure problem CVE-2017-1000487 (#19479)</li>
+<li>[improve] Upgrade wildfly-eytron (used by debezium) to fix CVE-2022-3143 (#19333)</li>
+<li>[improve][misc] Upgrade Netty to 4.1.87.Final (#19417)</li>
+<li>[fix][broker] Ignore and remove the replicator cursor when the remote cluster is absent (#19972)</li>
+<li>[Authenticate] fix Invalid signature error when use Kerberos Authentication (#15121)</li>
+<li>[fix][sec] Fix transitive critical CVEs in file-system tiered storage (#19957)</li>
+<li>[fix][sec] Fix transitive critical CVEs in file-system tiered storage (#19957)</li>
+</ul>
+<h3>CI &amp; Test</h3>
+<ul>
+<li>[fix][test] ProxyWithAuthorizationTest remove SAN from test certs (#19594)</li>
+<li>[branch-2.10][test]Run and fix tests (#19636)</li>
+<li>[test] Fix ServerCnxTest failing after merge of #19830</li>
+</ul>
+<h3>Others</h3>
+<ul>
+<li>[fix][build] Resolve OWASP Dependency Check false positives (#19120)</li>
+<li>Debezium sources: Support loading config from secrets (#19163)</li>
+<li>[fix][proxy] Only go to connecting state once (#19331)</li>
+<li>[fix][build] Upgrade dependency-check-maven plugin to fix broken OWASP check (#19170)</li>
+<li>[branch-2.10][fix][proxy] Fix using wrong client version in pulsar proxy (#19576)</li>
+<li>[branch-2.10][fix][proxy] Fix using wrong client version in pulsar proxy (#19576)</li>
+<li>[improve] Upgrade lombok to 1.8.26 (#19426)</li>
+<li>[improve] upgrade the bookkeeper version to 4.14.7 (#19179)</li>
+<li>[branch-2.10][broker] Support zookeeper read-only config. (#19156) (#19637)</li>
+<li>[improve] Simplify enabling Broker, WS Proxy hostname verification (#19674)</li>
+<li>[cherry-pick][branch-2.10] KCA: picking fixes from master (#19788)</li>
+<li>[Build] Make the test JVM exit if OOME occurs (#14509)</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>Source</strong> <a href="https://github.com/apache/pulsar">apache/pulsar</a> · <code>v2.10.4</code> · 2023-04-19 · <a href="https://github.com/apache/pulsar/releases/tag/v2.10.4">upstream release</a></p>
+</blockquote>
+<p><em>Mirrored verbatim for indexing. All rights belong to the upstream project.</em></p></div> </details> </div> <p class="muted" style="margin-top:var(--s8);font-size:12.5px;border-top:1px solid var(--line);padding-top:var(--s4)"> Las notas de versión provienen del proyecto original. Las organizamos y conectamos para que puedas comparar versiones de un vistazo. Todos los derechos pertenecen a los autores originales. </p> <nav class="pager" aria-label="Release navigation"> <a href="/releases/pulsar/2.11.1"> <span class="k">← Siguiente</span> <span class="t">v2.11.1</span> </a> <a href="/releases/pulsar/2.11.0"> <span class="k">Anterior →</span> <span class="t">v2.11.0</span> </a> </nav> <aside class="ad-slot" aria-label="Advertisement" data-astro-cid-fgwukgf6><div class="ad-slot-label" data-astro-cid-fgwukgf6>Advertisement</div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4184355057086168" data-ad-slot="9133765584" data-ad-format="auto" data-full-width-responsive="true" data-astro-cid-fgwukgf6></ins><script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script></aside> </article> <aside class="rail"> <div class="rail-card"> <div class="rail-title">Source</div> <ul class="rail-list"> <li> <a href="https://github.com/apache/pulsar/releases/tag/v2.10.4" target="_blank" rel="noopener"> <span>Original en GitHub</span> <span class="d">↗</span> </a> </li> <li> <a href="https://github.com/apache/pulsar" target="_blank" rel="noopener"> <span>apache/pulsar</span> <span class="d">↗</span> </a> </li> </ul> </div> <div class="rail-card rail-toc"> <div class="rail-title">En esta página</div> <nav> <a href="#" class="lv3">Corredor</a><a href="#" class="lv3">Transacción</a><a href="#" class="lv3">Pulsar IO y funciones Pulsar</a><a href="#" class="lv3">CLI</a><a href="#" class="lv3">Administrador</a><a href="#" class="lv3">Seguridad</a><a href="#" class="lv3">CI y prueba</a><a href="#" class="lv3">Otros</a> </nav> </div> <div class="rail-card"> <div class="rail-title">Historial de versiones</div> <ul class="rail-list"> <li> <a href="/releases/pulsar/5.0.1"> <span class="v">v5.0.1</span> <span class="d">26-10-26</span> </a> </li><li> <a href="/releases/pulsar/5.0.0"> <span class="v">v5.0.0</span> <span class="d">26-10-05</span> </a> </li><li> <a href="/releases/pulsar/4.2.5"> <span class="v">v4.2.5</span> <span class="d">26-10-05</span> </a> </li><li> <a href="/releases/pulsar/4.0.14"> <span class="v">v4.0.14</span> <span class="d">26-10-05</span> </a> </li><li> <a href="/releases/pulsar/5.0.0-m2"> <span class="v">v5.0.0-M2</span> <span class="d">26-09-16</span> </a> </li><li> <a href="/releases/pulsar/4.2.4"> <span class="v">v4.2.4</span> <span class="d">26-08-03</span> </a> </li><li> <a href="/releases/pulsar/4.0.13"> <span class="v">v4.0.13</span> <span class="d">26-08-03</span> </a> </li><li> <a href="/releases/pulsar/4.2.3"> <span class="v">v4.2.3</span> <span class="d">26-07-06</span> </a> </li> </ul> <a href="/es/releases/pulsar" class="mono" style="display:inline-block;margin-top:var(--s3);font-size:11.5px;color:var(--ink-3)"> Ver todo 100 →
+</a> </div> </aside> </div> </div>  </main> <footer class="site-footer"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/es/" class="brand" aria-label="STAGS NextStack"><span class="brand-mark" aria-hidden="true">S</span><span class="brand-main">STAGS</span><span class="brand-sub" aria-hidden="true">NextStack</span></a> <p>Inteligencia de lanzamiento de código abierto, publicada diariamente.</p> </div> <div class="footer-col"> <h3>Seguimiento</h3> <ul> <li><a href="/es/releases">Versiones</a></li> <li><a href="/es/projects">Proyectos</a></li> <li><a href="/es/releases.xml">Feed RSS</a></li> </ul> </div> <div class="footer-col"> <h3>Archivo</h3> <ul> <li><a href="/zh/release_note" hreflang="zh-Hans">Archivo chino</a></li> <li><a href="/zh/chapters/" hreflang="zh-Hans">Notas técnicas</a></li> <li><a href="/zh/downloads/">Stags Tracker</a></li> </ul> </div> <div class="footer-col"> <h3>Información</h3> <ul> <li><a href="/privacy">Política de privacidad</a></li> <li><a href="/releases.xml">RSS</a></li> <li><a href="/sitemap-index.xml">Sitemap</a></li> </ul> </div> </div> <div class="footer-btm"> <span>© 2026 STAGS</span> <span>Los Release note pertenecen a sus proyectos upstream.</span> </div> </div> </footer> <!-- 搜索面板 --> <div class="palette-bg" data-palette-bg data-open="false"> <div class="palette" role="dialog" aria-modal="true" aria-label="Buscar versiones"> <div class="palette-in"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ink-4);flex:none"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <input type="search" data-palette-input placeholder="Busca lanzamientos, proyectos, versiones…" autocomplete="off" spellcheck="false"> <span class="kbd">esc</span> </div> <ul class="palette-res" data-palette-res></ul> <div class="palette-ft"> <span>↑↓ navigate</span> <span>↵ open</span> <span style="margin-left:auto" data-palette-count></span> </div> </div> </div> <script type="module" src="/assets/Shell.astro_astro_type_script_index_0_lang.0ZkKXV47.js"></script> </body> </html>

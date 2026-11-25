@@ -1,0 +1,516 @@
+<!DOCTYPE html><html lang="ja" dir="ltr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>trl v1.10.0 — STAGS NextStack</title><meta name="description" content="After a 30-PR refactor that reshaped its data contract, loss path, generation stack, config surface, and tests, DistillationTrainer and DistillationConfig graduate from trl.experimental.distillation to the top-level trl…"><meta name="keywords" content="オープンソース release note、リリース トラッカー、changelog アグリゲーター、重大な変更、非推奨トラッカー、Kafka リリース、Spring Boot リリース、Kubernetes リリース"><meta name="generator" content="Astro v5.18.2"><link rel="canonical" href="https://www.stags.cn/ja/releases/trl/1.10.0/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="STAGS NextStack — releases" href="/ja/releases.xml"><link rel="alternate" hreflang="en" href="https://www.stags.cn/releases/trl/1.10.0/"><link rel="alternate" hreflang="zh-Hans" href="https://www.stags.cn/releases/trl/1.10.0/"><link rel="alternate" hreflang="x-default" href="https://www.stags.cn/releases/trl/1.10.0/"><meta property="og:site_name" content="STAGS"><meta property="og:type" content="article"><meta property="og:title" content="trl v1.10.0 — STAGS NextStack"><meta property="og:description" content="After a 30-PR refactor that reshaped its data contract, loss path, generation stack, config surface, and tests, DistillationTrainer and DistillationConfig graduate from trl.experimental.distillation to the top-level trl…"><meta property="og:url" content="https://www.stags.cn/ja/releases/trl/1.10.0/"><meta property="og:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><meta property="og:locale" content="ja_JP"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="de_DE"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:locale:alternate" content="es_ES"><meta property="og:locale:alternate" content="pt_BR"><meta property="og:locale:alternate" content="ko_KR"><meta property="og:locale:alternate" content="it_IT"><meta property="og:locale:alternate" content="ru_RU"><meta property="og:locale:alternate" content="tr_TR"><meta property="og:locale:alternate" content="id_ID"><meta property="og:locale:alternate" content="vi_VN"><meta property="og:locale:alternate" content="ar_SA"><meta property="og:locale:alternate" content="sv_SE"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.stags.cn/#website","name":"STAGS","url":"https://www.stags.cn/","inLanguage":"ja","description":"NextStack はインフラストラクチャおよび AI プロジェクトのリリースノートを索引化し、破壊的変更・非推奨・移行情報を英語優先の単一フィードで提供します。","publisher":{"@id":"https://www.stags.cn/#org"}},{"@type":"Organization","@id":"https://www.stags.cn/#org","name":"STAGS","alternateName":"NextStack","url":"https://www.stags.cn/"},{"@type":"TechArticle","@id":"https://www.stags.cn/ja/releases/trl/1.10.0/#article","headline":"trl v1.10.0 release notes","datePublished":"2026-08-13","inLanguage":"en","isPartOf":{"@id":"https://www.stags.cn/#website"},"about":{"@type":"SoftwareSourceCode","codeRepository":"https://github.com/huggingface/trl"}}]}</script><!-- 第三方脚本的连接预热：这两个域名几乎每页都要连，
+         提前建连能省掉 DNS + TCP + TLS 一个往返（移动网络 100~300ms）。
+         AdSense 只在开关打开时预热——关掉广告后连这个域名都没必要。 --><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://pagead2.googlesyndication.com"><!-- Google AdSense：站点所有权校验与广告投放共用同一段脚本，全站只加载一次。
+         未创建广告单元时页面上不渲染任何广告容器，站点保持干净。
+         fetchpriority=low：它不参与首屏渲染，不该跟正文抢带宽。 --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184355057086168" crossorigin="anonymous" fetchpriority="low"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-RFRF1TVRMP" fetchpriority="low"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RFRF1TVRMP");
+    </script><!-- 百度统计（国内流量统计）。官方标准片段，is:inline 原样输出，
+         hm.js 动态插到首个 script 前，异步不阻塞首屏渲染。 --><script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?299e5b4e65b86ed16879bdcbe70531d6";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script><link rel="stylesheet" href="/assets/index.DQGt3qLZ.css">
+<style>.ad-slot[data-astro-cid-fgwukgf6]{margin:var(--s10) 0 0;padding-top:var(--s5);border-top:1px solid var(--line)}.ad-slot-label[data-astro-cid-fgwukgf6]{margin-bottom:var(--s3);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{display:block;min-height:100px}@media(min-width:640px){.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{min-height:250px}}
+</style></head> <body> <a class="skip" href="#main">本文へスキップ</a> <header class="hdr" data-header> <div class="wrap hdr-inner"> <a href="/ja/" class="brand" aria-label="STAGS NextStack — オープンソースのリリース情報"> <span class="brand-mark" aria-hidden="true">S</span> <span class="brand-main">STAGS</span> <span class="brand-sub" aria-hidden="true">NextStack</span> </a> <nav class="nav" aria-label="Primary"> <a href="/ja/releases">リリース</a><a href="/ja/projects">プロジェクト</a> </nav>  <details class="navmenu" data-navmenu> <summary class="navmenu-btn" aria-label="Open menu"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> </summary> <div class="navmenu-panel" role="group" aria-label="Primary"> <a href="/ja/releases" class="navmenu-item">リリース</a><a href="/ja/projects" class="navmenu-item">プロジェクト</a> </div> </details> <div class="hdr-tools"> <button class="searchbtn" type="button" data-search-open aria-label="リリースを検索"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <span class="lbl">検索</span> <span class="kbd">⌘K</span> </button> <details class="langmenu" data-langmenu> <summary class="langmenu-btn" aria-label="言語"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"> <circle cx="12" cy="12" r="9"></circle> <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path> </svg> <span class="langmenu-cur">日</span> <svg class="langmenu-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m2 4 4 4 4-4"></path></svg> </summary> <div class="langmenu-panel" role="group" aria-label="言語"> <p class="langmenu-head">言語</p> <a class="langmenu-item" href="/releases/trl/1.10.0/" hreflang="en" lang="en" data-on="false"> <span class="langmenu-label">English</span> <span class="langmenu-code">EN</span> </a><a class="langmenu-item" href="/zh/release_note/trl/trl_v1.10.0" hreflang="zh-Hans" lang="zh-CN" data-on="false"> <span class="langmenu-label">中文</span> <span class="langmenu-code">中</span> </a><a class="langmenu-item" href="/ja/releases/trl/1.10.0/" hreflang="ja" lang="ja" aria-current="true" data-on="true"> <span class="langmenu-label">日本語</span> <span class="langmenu-code">日</span> </a><a class="langmenu-item" href="/de/releases/trl/1.10.0/" hreflang="de" lang="de" data-on="false"> <span class="langmenu-label">Deutsch</span> <span class="langmenu-code">DE</span> </a><a class="langmenu-item" href="/fr/releases/trl/1.10.0/" hreflang="fr" lang="fr" data-on="false"> <span class="langmenu-label">Français</span> <span class="langmenu-code">FR</span> </a><a class="langmenu-item" href="/es/releases/trl/1.10.0/" hreflang="es" lang="es" data-on="false"> <span class="langmenu-label">Español</span> <span class="langmenu-code">ES</span> </a><a class="langmenu-item" href="/pt/releases/trl/1.10.0/" hreflang="pt-BR" lang="pt-BR" data-on="false"> <span class="langmenu-label">Português</span> <span class="langmenu-code">PT</span> </a><a class="langmenu-item" href="/ko/releases" hreflang="ko" lang="ko" data-on="false"> <span class="langmenu-label">한국어</span> <span class="langmenu-code">한</span> </a><a class="langmenu-item" href="/it/releases" hreflang="it" lang="it" data-on="false"> <span class="langmenu-label">Italiano</span> <span class="langmenu-code">IT</span> </a><a class="langmenu-item" href="/ru/releases" hreflang="ru" lang="ru" data-on="false"> <span class="langmenu-label">Русский</span> <span class="langmenu-code">RU</span> </a><a class="langmenu-item" href="/tr/releases" hreflang="tr" lang="tr" data-on="false"> <span class="langmenu-label">Türkçe</span> <span class="langmenu-code">TR</span> </a><a class="langmenu-item" href="/id/releases" hreflang="id" lang="id" data-on="false"> <span class="langmenu-label">Bahasa Indonesia</span> <span class="langmenu-code">ID</span> </a><a class="langmenu-item" href="/vi/releases" hreflang="vi" lang="vi" data-on="false"> <span class="langmenu-label">Tiếng Việt</span> <span class="langmenu-code">VI</span> </a><a class="langmenu-item" href="/ar/releases" hreflang="ar" lang="ar" data-on="false"> <span class="langmenu-label">العربية</span> <span class="langmenu-code">ع</span> </a><a class="langmenu-item" href="/sv/releases" hreflang="sv" lang="sv" data-on="false"> <span class="langmenu-label">Svenska</span> <span class="langmenu-code">SV</span> </a> </div> </details> <a class="iconlink" href="/releases.xml" aria-label="RSS"> <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"> <path d="M2 12.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM2 7.5a6.5 6.5 0 0 1 6.5 6.5h-2A4.5 4.5 0 0 0 2 9.5v-2ZM2 2.5A11.5 11.5 0 0 1 13.5 14h-2A9.5 9.5 0 0 0 2 4.5v-2Z"></path> </svg> </a> </div> </div> </header> <main id="main">  <div class="wrap"> <div class="detail"> <article> <header class="detail-hd"> <nav class="crumbs" aria-label="Breadcrumb"> <a href="/ja/">ホーム</a> <span class="sep">/</span> <a href="/ja/releases">リリース</a> <span class="sep">/</span> <a href="/ja/releases/trl">trl</a> </nav> <h1 class="detail-title"> <span class="p">trl</span> v1.10.0 </h1> <div class="detail-meta"> <span class="chip chip--minor">マイナー</span> <span><span class="k">公開日</span>2026年8月13日</span>  <span class="sep" aria-hidden="true"></span> <a href="https://github.com/huggingface/trl" target="_blank" rel="noopener"> <span class="k">出典</span>huggingface/trl </a>   <span class="sep" aria-hidden="true"></span> <a href="/releases/trl/1.10.0/"> English original </a>  <span class="sep" aria-hidden="true"></span> <button class="btn btn--ghost btn--sm" type="button" data-copy="https://www.stags.cn/ja/releases/trl/1.10.0/">リンクをコピー</button> </div> </header> <div class="prose" style="margin-top:var(--s8)"> <p class="mt-notice" role="note">このページは機械翻訳です。内容は必ず英文原文をご確認ください。</p>  <div><p>#trl v1.10.0</p>
+<h2>特徴</h2>
+<h3>🎓 <code>DistillationTrainer</code> は安定したトレーナーになりました</h3>
+<p>データ コントラクト、ロス パス、生成スタック、構成サーフェス、テストを再形成する約 30 PR のリファクタリングの後、<code>DistillationTrainer</code> と <code>DistillationConfig</code> は <code>trl.experimental.distillation</code> から最上位の <code>trl</code> パッケージに卒業します。 SFT / DPO / GRPO / KTO と同じ輸入面。古い実験的なパスはまだ機能しており、<code>FutureWarning</code> (v2.0.0 で削除) を発行します。</p>
+<pre><code class="language-python"># Before
+from trl.experimental.distillation import DistillationConfig, DistillationTrainer
+
+# Now
+from trl import DistillationConfig, DistillationTrainer
+</code></pre>
+<p>また、<code>trl distillation</code> CLI も着陸し、テストを <code>tests/</code> に移動します。完全なリファクタリング アーク: 署名列を <code>prompt</code> (非推奨の <code>messages</code> 形式) に切り替え、生成スタックを GRPO に固定し、チャンク化された JSD 損失を接続し、完全なロジット パスを削除し、ライガー パスをクリーンアップしてチャンク化されたパスと抽出を共有し、GRPO の <code>log()</code> / <code>training_step</code> タイミング / <code>_save_checkpoint</code> を採用し、テスト スイートを GRPO 形状に再構築しました。もっとずっと。
+約 30 個の PR にわたる @qgallouedec による (#6479、#6480、#6481、#6482、#6484、#6487、#6497、#6508、#6509、#6510、#6511、#6512、#6513、#6521、#6522、#6523、#6524、 #6525、#6526、#6530、#6537、#6604、#6605、#6606、#6607、#6609、#6610、#6611、#6612、#6613、#6614、#6629、#6630、#6632、#6633、#6634、 #6639、#6640、#6641、#6642、#6643、#6644、#6645、#6647、#6653)。</p>
+<h3><code>DistillationTrainer</code> は視覚言語モデルをサポートします</h3>
+<p>卒業と同時に、VLM は <code>DistillationTrainer</code> でエンドツーエンドで動作します。
+@qgallouedec 著、https://github.com/huggingface/trl/pull/6650</p>
+<h3>AsyncGRPO: ループ所有エージェントのトレーニング (OpenEnv ハーネス)</h3>
+<p><code>AsyncGRPOTrainer</code> の新しい実験的な <strong>ループ所有 (ブラック ボックス)</strong> パス - <code>environment_factory</code> ホワイト ボックス パスのように各ターンを駆動する TRL ではなく、独自のツール ループを実行する <a href="https://opencode.ai"><code>opencode</code></a> のような外部エージェントをトレーニングするためのものです。
+エージェントは、<code>transparent_proxy</code> モードの OpenEnv セッションで実行されます。サンドボックス内プロキシは、各ターンのトークン ID と logprob をキャプチャします。完了すると、TRL はトレースを読み取り、ターンごとのトレーニング行を再構築し、セッションの <code>verify()</code> でワークスペースにスコアを付けます。呼び出し元が提供する 3 つのポリシー フック (<code>rollout_reward_fn</code>、<code>train_turn_fn</code>、<code>agent_turn_fn</code>) が同梱されているため、フレームワークの補助呼び出し (タイトル ジェネレーター、コンテキスト サマライザー) を削除して、必要なターンのみを強化できます。
+Qwen3-4B でエンドツーエンドで検証された、自己完結型の <code>examples/scripts/openenv/opencode.py</code> (ローカル サブプロセス サンドボックス + DeepCoder が保持する stdin/stdout 検証器) が含まれています。
+@AmineDiro による https://github.com/huggingface/trl/pull/6420, と HF サンドボックスのバリアント、@sergiopaniego による https://github.com/huggingface/trl/pull/6565</p>
+<h3>AsyncGRPO: 可観測性 + サンプリング制御</h3>
+<ul>
+<li><strong>ロールアウト トレースを trackio に記録</strong> (https://github.com/huggingface/trl/pull/6491 の @AmineDiro)</li>
+<li><strong>ステップ時間メトリクス</strong> (https://github.com/huggingface/trl/pull/6490 の @AmineDiro による)</li>
+<li><strong>キュー待機時間のメトリックを修正</strong> (https://github.com/huggingface/trl/pull/6489 の @AmineDiro による)</li>
+<li><strong><code>top_p</code> / <code>top_k</code> / <code>min_p</code> / <code>repetition_penalty</code> (<code>AsyncGRPOConfig</code>)</strong> by @AmineDiro (https://github.com/huggingface/trl/pull/6608)</li>
+<li><strong>フォークに依存しないエポックカウント</strong> — v1.9 ウィンドウに表示されます</li>
+<li>https://github.com/huggingface/trl/pull/6564 の @sergiopaniego によるシャットダウン時に機内ハーネス セッションを同時に閉じる</li>
+</ul>
+<h3>DiffusionGemma ブロック拡散 SFT の例</h3>
+<p>参照レシピを実装する <a href="https://huggingface.co/google/diffusiongemma-26B-A4B-it"><code>google/diffusiongemma-26B-A4B-it</code></a> の新しい SFT 例: ステップごとに 1 つの応答ブロック、<code>t ~ U(eps, 1)</code> による均一なランダムなトークン破損、2 パスの自己調整、キャンバス全体にわたるフラットなクロスエントロピー、およびエンコーダー上の自己回帰共損失。 LoRA は、注意力と高密度の MLP リニアをターゲットとしています。 <code>transformers &gt;= 5.12.0</code>が必要です。
+<code>diffusion_gemma.jinja</code> / <code>diffusion_gemma_training.jinja</code> チャット テンプレート (<code>{% generation %}</code> マーカー付き) が同梱されているため、<code>assistant_only_loss=True</code> はそのまま使用できます。
+@kashif 著、https://github.com/huggingface/trl/pull/6003</p>
+<h3>モデルとテンプレートのサポートの追加</h3>
+<ul>
+<li><strong>LFM2 および LFM2.5</strong> — https://github.com/huggingface/trl/pull/6428 の @qgallouedec によるデイゼロ トレーニング サポート</li>
+<li><strong>Gemma 4 応答テンプレート</strong> (https://github.com/huggingface/trl/pull/6535 の @qgallouedec による)</li>
+</ul>
+<h3>デフォルトの変更</h3>
+<p>2 つのデフォルトはこのサイクルを反転します。古い動作が必要な場合は、それらを明示的に固定することをお勧めします。</p>
+<ul>
+<li><strong><code>SFTConfig.max_completion_length</code> / <code>GRPOConfig.max_completion_length</code></strong>: デフォルトは <code>256</code> から <code>512</code> に変更されました。 @dhruvnigam93 著、https://github.com/huggingface/trl/pull/6264</li>
+<li><strong><code>GRPOConfig.use_bias_correction_kl</code></strong> はデフォルトで <code>True</code> になりました。 @gowtham-sai-yadav 著、https://github.com/huggingface/trl/pull/6503</li>
+</ul>
+<h3>テキストのみのデータを含む VLM でのパッキングとパディングなしのパッキング</h3>
+<p>VLM 構成は、バッチがテキストのみである場合に、パッキング/パディングフリーを拒否しなくなりました。
+@cris96spa 著、https://github.com/huggingface/trl/pull/6547</p>
+<h3>その他</h3>
+<ul>
+<li>https://github.com/huggingface/trl/pull/6591 の @albertvillanova による <code>peft&gt;=0.20.0</code> で <code>target_parameters</code> の参照アダプターを使用します</li>
+<li>コア トレーナーでサポートされていない <code>train_dataset</code> タイプを @albertvillanova により https://github.com/huggingface/trl/pull/6493 および https://github.com/huggingface/trl/pull/6494 で拒否</li>
+<li>https://github.com/huggingface/trl/pull/6559 の @qgallouedec による DPO でサポートされていない <code>f_divergence_type</code> / 損失タイプの組み合わせを拒否</li>
+<li>https://github.com/huggingface/trl/pull/6534 の @gowtham-sai-yadav により、報酬関数が完了ごとに 1 つの報酬を返すことを検証します。</li>
+<li>https://github.com/huggingface/trl/pull/6656 の @RerankerGuo によって YAML 構成ルート タイプを検証します</li>
+<li>https://github.com/huggingface/trl/pull/6507 の @qgallouedec による DPO/KTO/BCO 参照ログ確率ループの <code>TQDM_DISABLE</code> を尊重します</li>
+<li>https://github.com/huggingface/trl/pull/6295 の @Strongich による <code>create_model_from_path</code> <code>device_map</code> のデフォルトの <code>use_cpu</code> を尊重します</li>
+<li>https://github.com/huggingface/trl/pull/6560 の @qgallouedec による <code>torch_dtype</code> (非推奨) の代わりに <code>dtype</code> を使用してください</li>
+<li>https://github.com/huggingface/trl/pull/6624 の @PoojanTa によって、欠落しているログに記録されたメトリクスを GRPO および RLOO ドキュメントに追加</li>
+<li>https://github.com/huggingface/trl/pull/6589 に @albertvillanova による KTO の <code>test_train_moe_peft_model</code> を追加</li>
+</ul>
+<h3>vLLM バージョン スイープ</h3>
+<ul>
+<li>https://github.com/huggingface/trl/pull/6569 に @qgallouedec による vLLM 0.26.0 のサポートを追加</li>
+</ul>
+<h2>修正</h2>
+<ul>
+<li><strong><code>steps_per_generation != gradient_accumulation_steps</code> の場合の DAPO / CISPO / VESPO 損失正規化を修正</strong> — 勾配が <code>gradient_accumulation_steps / steps_per_generation</code> によってサイレントにミススケールされていました (例: <strong>0.5×</strong> または <strong>4×</strong> は、一般的な構成で意図されたトークン平均です)。デフォルトと同等の構成は影響を受けません。 @0xadvait 著、https://github.com/huggingface/trl/pull/6024</li>
+<li><strong>プリアンペア GPU での Liger カーネル クラッシュを修正</strong> (@albertvillanova、https://github.com/huggingface/trl/pull/6518)</li>
+<li><strong>https://github.com/huggingface/trl/pull/5313 の @muupan による <code>vllm_enable_sleep_mode=True</code> 時の vLLM 重みの同期を修正</strong></li>
+<li><strong>https://github.com/huggingface/trl/pull/6417 の @sywangyi による現在のアクセラレータ デバイスを使用するように vLLM サーバー モード コミュニケータの初期化を修正</strong></li>
+<li><strong>FSDP2 vLLM 重み同期でハードコードされた <code>cuda</code> の代わりにアクセラレータ デバイスを使用します</strong> (https://github.com/huggingface/trl/pull/6592 の @verma8076 による)</li>
+<li><strong>CPU オフロード オプティマイザーによる <code>prepare_deepspeed</code> のクラッシュを修正</strong> (@roycho96 による https://github.com/huggingface/trl/pull/5916)</li>
+<li><strong><code>fix(ppo)</code>: エントロピー計算からパディング トークンを除外</strong> by @mukund1985 (https://github.com/huggingface/trl/pull/6121)</li>
+<li><strong><code>fix</code>: ポリシー ロジットをスケーリングするときは <code>CopySlices</code> を回避します</strong> by @DaoyuanLi2816 (https://github.com/huggingface/trl/pull/6554)</li>
+<li><strong>GRPO ツール呼び出しループのマルチモーダル フィールド処理を修正</strong> (https://github.com/huggingface/trl/pull/6286 の @HariomJangra による)</li>
+<li><strong><code>[GRPO]</code> LuSPO 損失集計に要素ごとに完了マスクを適用します</strong> (https://github.com/huggingface/trl/pull/6654 の @YaseenBashaT)</li>
+<li><strong><code>[GRPO]</code> 損失タイプ間でのエントロピー ボーナスの正規化の不一致を修正</strong> (https://github.com/huggingface/trl/pull/6648 の @YaseenBashaT)</li>
+<li>https://github.com/huggingface/trl/pull/6598 の @latent-9 によるオンライン DPO ドキュメントの誤ったサンプル スクリプト パスを修正</li>
+<li>https://github.com/huggingface/trl/pull/6529 の @sergiopaniego による <code>huggingface/OpenEnv</code> のオープンコード例を参照してください</li>
+<li>https://github.com/huggingface/trl/pull/6665 の @albertvillanova によるスキルのインストールからシンボリックリンクのサポートを削除</li>
+</ul>
+<h2>ドキュメントと例</h2>
+<ul>
+<li>ドキュメント: https://github.com/huggingface/trl/pull/6477 の @gowtham-sai-yadav による完全な <code>GRPOConfig</code> <code>loss_type</code> ヘルプ</li>
+<li>https://github.com/huggingface/trl/pull/6566 の @albertvillanova によるリリース手順の不正確さを修正</li>
+<li>パッチ リリース手順を修正: https://github.com/huggingface/trl/pull/6563 の @albertvillanova によるメインではなくプル リリース ブランチ</li>
+<li><code>opencode_hf_sandbox.py</code> を追加: https://github.com/huggingface/trl/pull/6565 の @sergiopaniego によるリモート HF サンドボックスでのループ所有トレーニング</li>
+</ul>
+<h2>CI</h2>
+<ul>
+<li><code>test</code>: https://github.com/huggingface/trl/pull/6036 の @behroozazarkhalili による bf16 サポートのないデバイスでは <code>bf16=True</code> をハードコーディングしないでください</li>
+<li>https://github.com/huggingface/trl/pull/5771 の @kaixuanliu による各テスト後の XPU キャッシュ メモリのクリーンアップ</li>
+<li>CUDA デバイスが利用できない場合にテストで <code>use_cpu</code> を強制する (https://github.com/huggingface/trl/pull/6504 の @albertvillanova による)</li>
+<li>https://github.com/huggingface/trl/pull/6502 の @albertvillanova によるテスト出力内のサイレント トランス <code>LOAD REPORT</code> テーブル</li>
+<li>https://github.com/huggingface/trl/pull/6602 の @albertvillanova による VLM 応答解析テストにはビジョンが必要です</li>
+<li>5.13.0 より下の変圧器でのみ <code>jmespath</code> が必要 (https://github.com/huggingface/trl/pull/6597 の @albertvillanova による)</li>
+<li>https://github.com/huggingface/trl/pull/6488 の @albertvillanova による、事前計算された参照ログ確率を使用したトレーニング後の初期評価データセットを評価するための回帰テストを追加</li>
+<li>https://github.com/huggingface/trl/pull/6492 の @albertvillanova によるコア トレーナー向けの <code>train_dataset=None</code> レイズをテストします</li>
+<li>https://github.com/huggingface/trl/pull/6501 の @albertvillanova による KTO 事前計算 ref log-probs テストで不要な <code>loss_type</code> を削除</li>
+<li>https://github.com/huggingface/trl/pull/6546 の @albertvillanova によるビットサンドバイト 0.50.0 の <code>test_peft_with_quantization</code> テストを修正</li>
+<li>https://github.com/huggingface/trl/pull/6582 の @albertvillanova による CI での良性のビットサンドバイト 4 ビット ブロックサイズ アラインメント警告を無視する</li>
+<li>https://github.com/huggingface/trl/pull/6556 の @albertvillanova による mamba-ssm カーネルからの非推奨の <code>torch.get_autocast_gpu_dtype()</code> 警告を抑制</li>
+<li>https://github.com/huggingface/trl/pull/6595 の @albertvillanova による pytest 警告フィルターの文書削除基準</li>
+<li>テストの修正: モデルが https://github.com/huggingface/trl/pull/6574 の @qgallouedec によって応答テンプレートをすでに出荷している場合は、<code>add_response_schema</code> を呼び出さない</li>
+<li>CI の品質を修正: https://github.com/huggingface/trl/pull/6531 の @albertvillanova による <code>openenv_harness.py</code> の著作権年を修正</li>
+<li>ホットフィックス CI: https://github.com/huggingface/trl/pull/6517 で @albertvillanova によって <code>liger-kernel &lt; 0.8.1</code> を一時的に固定します</li>
+<li>ホットフィックス CI: @albertvillanova による <code>bitsandbytes &lt; 0.50.0</code> を https://github.com/huggingface/trl/pull/6544 に一時的に固定</li>
+<li>ホットフィックス CI: xfail NemotronH GRPO/RLOO テストは、https://github.com/huggingface/trl/pull/6542 で @albertvillanova によってビルドされた壊れたトランスフォーマー開発に対して行われます (https://github.com/huggingface/trl/pull/6558 で元に戻されました)</li>
+<li><code>ci</code>: https://github.com/huggingface/trl/pull/6674 の @behroozazarkhalili によるバグのある TruffleHog LOB 検出器を除外します。</li>
+<li>https://github.com/huggingface/trl/pull/6540 の @dependabot[bot] による 3 つの更新でアクション グループを強化します</li>
+<li>https://github.com/huggingface/trl/pull/6596 の @albertvillanova による変圧器回転装置非推奨警告フィルターを元に戻す</li>
+</ul>
+<h2>新しい貢献者</h2>
+<ul>
+<li>@gowtham-sai-yadav が https://github.com/huggingface/trl/pull/6477 に初めて投稿しました</li>
+<li>@dhruvnigam93 が https://github.com/huggingface/trl/pull/6264 で最初の貢献をしました</li>
+<li>@cris96spa が https://github.com/huggingface/trl/pull/6547 に初めて貢献しました</li>
+<li>@mukund1985 が https://github.com/huggingface/trl/pull/6121 に初めて投稿しました</li>
+<li>@latent-9 が https://github.com/huggingface/trl/pull/6598 に初めて投稿しました</li>
+<li>@verma8076 が https://github.com/huggingface/trl/pull/6592 に初めて投稿しました</li>
+<li>@PoojanTa が https://github.com/huggingface/trl/pull/6624 で最初の投稿を行いました</li>
+<li>@YaseenBashaT が https://github.com/huggingface/trl/pull/6654 に初めて貢献しました</li>
+<li>@RerankerGuo が https://github.com/huggingface/trl/pull/6656 で最初の投稿を行いました</li>
+<li>@HariomJangra が https://github.com/huggingface/trl/pull/6286 で最初の貢献をしました</li>
+</ul>
+<h2>何が変わったのか</h2>
+<ul>
+<li>⬆️ @qgallouedec による開発バージョンのバンプ (https://github.com/huggingface/trl/pull/6496)</li>
+<li>https://github.com/huggingface/trl/pull/6492 の @albertvillanova によるテスト train_dataset=コア トレーナーのレイズはなし</li>
+<li>https://github.com/huggingface/trl/pull/6488 の @albertvillanova による、事前計算された参照ログ確率を使用したトレーニング後の初期評価データセットを評価するための回帰テストを追加</li>
+<li>ドキュメント: https://github.com/huggingface/trl/pull/6477 の @gowtham-sai-yadav による完全な GRPOConfig loss_type ヘルプ</li>
+<li>テスト: https://github.com/huggingface/trl/pull/6036 の @behroozazarkhalili による bf16 サポートがないデバイスでは bf16=True をハードコーディングしないでください</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6479 の @qgallouedec により、テスト、ドキュメント、サンプルをプロンプト専用データセットに切り替えます</li>
+<li>https://github.com/huggingface/trl/pull/5771 の @kaixuanliu による各テスト後に XPU キャッシュ メモリをクリーンアップ</li>
+<li>現在の A… を使用するように vLLM サーバー モード コミュニケータの初期化を修正 (https://github.com/huggingface/trl/pull/6417 の @sywangyi による)</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6480 の @qgallouedec によるメッセージ形式のサポートとプロンプトの長さの設定を削除</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6481 の @qgallouedec により署名列を <code>[&quot;prompt&quot;, &quot;image&quot;, &quot;images&quot;]</code> に固定</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6482 で @qgallouedec により <code>labels</code> と一緒に <code>completion_mask</code> を出力</li>
+<li>[DistillationTrainer リファクタリング] 損失により https://github.com/huggingface/trl/pull/6484 の @qgallouedec により <code>completion_mask</code> が消費されます</li>
+<li>修正: https://github.com/huggingface/trl/pull/6489 の @AmineDiro によるキュー待機時間メトリック AsyncGRPOTrainer</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6487 の @qgallouedec によるプロンプト ID/プロンプトマスク/complete_ids の出力</li>
+<li>https://github.com/huggingface/trl/pull/6501 の @albertvillanova による KTO 事前計算 ref log-probs テストで不要な loss_type を削除</li>
+<li>CUDA デバイスが利用できない場合にテストで use_cpu を強制する (https://github.com/huggingface/trl/pull/6504 の @albertvillanova による)</li>
+<li>ホットフィックス CI: https://github.com/huggingface/trl/pull/6517 で @albertvillanova により liger-kernel &lt; 0.8.1 を一時的に固定します</li>
+<li>https://github.com/huggingface/trl/pull/6502 の @albertvillanova によるテスト出力のトランスフォーマー LOAD REPORT テーブルを沈黙させます</li>
+<li>https://github.com/huggingface/trl/pull/6264 の @dhruvnigam93 によりデフォルトの <code>max_completion_length</code> を 256 から 512 に変更</li>
+<li>@kashif による DiffusionGemma ブロック拡散 SFT の例を https://github.com/huggingface/trl/pull/6003 に追加</li>
+<li>https://github.com/huggingface/trl/pull/6491 の @AmineDiro によってロールアウト トレースを trackio に記録します</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6497 の @qgallouedec により損失を GRPO のキーに切り替えます</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6508 の @qgallouedec による Freeze ServerDistillationTrainer の自己完結型</li>
+<li>LFM2 および LFM2.5 のサポートと @qgallouedec によるテストを https://github.com/huggingface/trl/pull/6428 に追加</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6509 内の @qgallouedec による <code>_compute_prompt_length</code> を削除</li>
+<li>https://github.com/huggingface/trl/pull/6420 の @AmineDiro による非同期 GRPO OpenEnv ハーネス ロールアウト</li>
+<li>[DistillationTrainer リファクタリング] @qgallouedec による <code>_tokenize_prompts</code> (配線なし) を https://github.com/huggingface/trl/pull/6510 に追加</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6511 の @qgallouedec による共有生成設定フィールド (追加専用) を追加します。</li>
+<li>https://github.com/huggingface/trl/pull/6518 の @albertvillanova によるプリアンペア GPU で Liger カーネルを使用してトレーニングするときのクラッシュを修正</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6512 に @qgallouedec による ctor 生成サポート ステート (追加専用) を追加</li>
+<li>https://github.com/huggingface/trl/pull/5916 の @roycho96 による CPU オフロード オプティマイザーによる prepare_deepspeed クラッシュを修正</li>
+<li>CI 品質の修正: https://github.com/huggingface/trl/pull/6531 の @albertvillanova による trl/experimental/async_grpo/openenv_harness.py の著作権年を修正</li>
+<li>コア トレーナーでサポートされていない train_dataset タイプを拒否 (https://github.com/huggingface/trl/pull/6493 の @albertvillanova による)</li>
+<li>[DistillationTrainer リファクタリング] @qgallouedec による <code>_generate_single_turn</code> (配線なし) を https://github.com/huggingface/trl/pull/6513 に追加</li>
+<li>[DistillationTrainer リファクタリング] @qgallouedec による <code>_generate</code> + <code>_generate_and_score_completions</code> (配線なし) を https://github.com/huggingface/trl/pull/6521 に追加</li>
+<li>コア トレーナーの init で train_dataset タイプをテスト (https://github.com/huggingface/trl/pull/6494 の @albertvillanova による)</li>
+<li>https://github.com/huggingface/trl/pull/6535 に @qgallouedec による Gemma4 応答テンプレートを追加</li>
+<li>https://github.com/huggingface/trl/pull/6534 の @gowtham-sai-yadav により、報酬関数が完了ごとに 1 つの報酬を返すことを検証します。</li>
+<li>fix(grpo): https://github.com/huggingface/trl/pull/6024 の @0xadvait による、steps_per_generation != gradient_accumulation_steps の場合の DAPO/CISPO/VESPO 損失正規化を修正</li>
+<li>ホットフィックス CI: https://github.com/huggingface/trl/pull/6544 で @albertvillanova により bitsandbytes &lt; 0.50.0 を一時的に固定します</li>
+<li>ホットフィックス CI: Xfail NemotronH GRPO/RLOO テストは、https://github.com/huggingface/trl/pull/6542 で @albertvillanova によってビルドされた壊れたトランスフォーマー開発に対してテストされます</li>
+<li>https://github.com/huggingface/trl/pull/6490 の @AmineDiro によって AsyncGRPOTrainer にステップ時間メトリクスが追加されました</li>
+<li>https://github.com/huggingface/trl/pull/6547 の @cris96spa により、テキストのみのデータを含む VLM でパッキングとパディングフリーを許可します</li>
+<li>fix(ppo): https://github.com/huggingface/trl/pull/6121 の @mukund1985 によるエントロピー計算からパディング トークンを除外</li>
+<li>https://github.com/huggingface/trl/pull/6507 の @qgallouedec による DPO/KTO/BCO 参照ログ確率ループの <code>TQDM_DISABLE</code> を尊重します。</li>
+<li>NemotronH GRPO/RLOO テストの xfail を元に戻す</li>
+<li>修正: https://github.com/huggingface/trl/pull/6554 の @DaoyuanLi2816 によるポリシー ロジットをスケーリングするときに CopySlices を回避する</li>
+<li>https://github.com/huggingface/trl/pull/5313 の @muupan による <code>vllm_enable_sleep_mode=True</code> 時の vLLM 重み同期のバグを修正</li>
+<li>https://github.com/huggingface/trl/pull/6529 の @sergiopaniego により、huggingface/OpenEnv でオープンコードの例を参照してください。</li>
+<li>https://github.com/huggingface/trl/pull/6540 の @dependabot[bot] による 3 つの更新でアクション グループを強化します</li>
+<li>https://github.com/huggingface/trl/pull/6556 の @albertvillanova による mamba-ssm カーネルからの非推奨の torch.get_autocast_gpu_dtype() 警告を抑制</li>
+<li>https://github.com/huggingface/trl/pull/6546 の @albertvillanova による bitsandbytes 0.50.0 の test_peft_with_quantization テストを修正</li>
+<li>パッチ リリース手順を修正: https://github.com/huggingface/trl/pull/6563 の @albertvillanova によるメインではなくリリース ブランチをプル</li>
+<li>https://github.com/huggingface/trl/pull/6566 の @albertvillanova によるリリース手順の不正確さを修正</li>
+<li>https://github.com/huggingface/trl/pull/6560 の @qgallouedec による <code>torch_dtype</code> (非推奨) の代わりに <code>dtype</code> を使用してください</li>
+<li>テストの修正: モデルが https://github.com/huggingface/trl/pull/6574 の @qgallouedec によって応答テンプレートを既に出荷している場合は、<code>add_response_schema</code> を呼び出さない</li>
+<li>[DistillationTrainer リファクタリング] 生成を GRPO のスタックに切り替えます。 https://github.com/huggingface/trl/pull/6522 の @qgallouedec によってバッファを削除します</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6523 の @qgallouedec により、generation_kwargs dict を GRPO と調整します</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6524 の @qgallouedec による vLLM ctor ブロックを GRPO と調整します</li>
+<li>[DistillationTrainer リファクタリング] @qgallouedec による <code>_get_last_hidden_state</code> (配線なし) を https://github.com/huggingface/trl/pull/6525 に追加</li>
+<li>https://github.com/huggingface/trl/pull/6503 の @gowtham-sai-yadav による GRPOConfig のデフォルト <code>use_bias_correction_kl=True</code></li>
+<li>https://github.com/huggingface/trl/pull/6582 の @albertvillanova による CI での良性のビットサンドバイト 4 ビット ブロックサイズ アラインメント警告を無視する</li>
+<li>https://github.com/huggingface/trl/pull/6295 の @Strongich による create_model_from_path device_map のデフォルトの use_cpu を尊重します</li>
+<li>https://github.com/huggingface/trl/pull/6585 の @albertvillanova による CI の変圧器ロータリー <code>device</code> 非推奨警告を無視します</li>
+<li>https://github.com/huggingface/trl/pull/6589 に @albertvillanova による KTO の <code>test_train_moe_peft_model</code> を追加</li>
+<li>https://github.com/huggingface/trl/pull/6596 の @albertvillanova による変圧器回転装置非推奨警告フィルターを元に戻す</li>
+<li>https://github.com/huggingface/trl/pull/6595 の @albertvillanova による pytest 警告フィルターの文書削除基準</li>
+<li>https://github.com/huggingface/trl/pull/6559 の @qgallouedec による DPO でサポートされていない <code>f_divergence_type</code> / 損失タイプの組み合わせを拒否</li>
+<li>https://github.com/huggingface/trl/pull/6569 に @qgallouedec による vLLM 0.26.0 のサポートを追加</li>
+<li>https://github.com/huggingface/trl/pull/6591 の @albertvillanova による <code>peft&gt;=0.20.0</code> で <code>target_parameters</code> の参照アダプターを使用します</li>
+<li>https://github.com/huggingface/trl/pull/6598 の @latent-9 によるオンライン DPO ドキュメントの誤ったサンプル スクリプト パスを修正</li>
+<li>https://github.com/huggingface/trl/pull/6608 の @AmineDiro により、top_p/top_k/min_p/repetition_penalty を AsyncGRPOConfig に追加</li>
+<li>FSDP2 vLLM 重み同期でハードコードされた cuda の代わりにアクセラレータ デバイスを使用 (https://github.com/huggingface/trl/pull/6592 の @verma8076 による)</li>
+<li>[DistillationTrainer リファクタリング] @qgallouedec によるチャンク化された JSD 損失 (配線されていない) を https://github.com/huggingface/trl/pull/6526 に追加</li>
+<li>[DistillationTrainer リファクタリング] compute_loss をチャンク化された JSD パスに接続します。 https://github.com/huggingface/trl/pull/6530 の @qgallouedec によるフルロジット損失を削除します</li>
+<li>[DistillationTrainer リファクタリング] Liger パスの強力なクリーンアップ: https://github.com/huggingface/trl/pull/6537 の @qgallouedec によるチャンク化されたパスと抽出を共有</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6604 の @qgallouedec によるデフォルトの <code>disable_dropout</code> から <code>False</code></li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6605 の @qgallouedec による構成の仕上げ</li>
+<li>[DistillationTrainer リファクタリング] コンストラクターのクリーンアップ: https://github.com/huggingface/trl/pull/6606 の @qgallouedec による安全な内部クリーンアップ</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6607 の @qgallouedec による構成の外観上のパリティ</li>
+<li>[DistillationTrainer リファクタリング] コンストラクターのクリーンアップ (40b): eval-metric パラメータを削除、https://github.com/huggingface/trl/pull/6609 の @qgallouedec による <code>model</code> が必要</li>
+<li>[DistillationTrainer リファクタリング] コンストラクターのクリーンアップ (40c): https://github.com/huggingface/trl/pull/6610 の @qgallouedec による量子化 + PEFT/QLoRA パリティ</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6611 の @qgallouedec により、<code>print_prompt_completions_sample</code> で <code>advantages</code> をオプションにします</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6612 で @qgallouedec によって共有された <code>print_prompt_completions_sample</code> を使用する</li>
+<li>[DistillationTrainer リファクタリング] GRPO の <code>log()</code> + https://github.com/huggingface/trl/pull/6613 の @qgallouedec による制限付き <code>_logs</code> デクを採用</li>
+<li>[DistillationTrainer リファクタリング] GRPO の <code>training_step</code> タイミング + @qgallouedec による <code>_save_checkpoint</code> を https://github.com/huggingface/trl/pull/6614 に採用</li>
+<li>https://github.com/huggingface/trl/pull/6602 の @albertvillanova による VLM 応答解析テストにはビジョンが必要です</li>
+<li>5.13.0 以下の変圧器でのみ jmespath が必要 (https://github.com/huggingface/trl/pull/6597 の @albertvillanova による)</li>
+<li>https://github.com/huggingface/trl/pull/6624 の @PoojanTa により、欠落しているログに記録されたメトリクスを GRPO および RLOO ドキュメントに追加</li>
+<li>https://github.com/huggingface/trl/pull/6564 の @sergiopaniego によるシャットダウン時に機内ハーネス セッションを同時に閉じる</li>
+<li>opencode_hf_sandbox.py を追加: https://github.com/huggingface/trl/pull/6565 の @sergiopaniego によるリモート HF サンドボックスでのループ所有トレーニング</li>
+<li>https://github.com/huggingface/trl/pull/6665 の @albertvillanova によるスキルのインストールからシンボリックリンクのサポートを削除</li>
+<li>ci: https://github.com/huggingface/trl/pull/6674 の @behroozazarkhalili によるバグのある TruffleHog lob 検出器を除外します。</li>
+<li>[GRPO] https://github.com/huggingface/trl/pull/6654 の @YaseenBashaT による luspo 損失集計に要素ごとに補完マスクを適用します</li>
+<li>[GRPO] https://github.com/huggingface/trl/pull/6648 の @YaseenBashaT による損失タイプ間のエントロピー ボーナス正規化の不一致を修正</li>
+<li>https://github.com/huggingface/trl/pull/6656 の @RerankerGuo によって YAML 構成ルート タイプを検証します</li>
+<li>https://github.com/huggingface/trl/pull/6286 の @HariomJangra による GRPO ツール呼び出しループのマルチモーダル フィールド処理を修正</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6629 の @qgallouedec による <code>logit_scale</code> / <code>final_logit_softcapping</code> で <code>use_liger_kernel</code> を拒否</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6630 の @qgallouedec による規約/装飾的なスイープ</li>
+<li>[DistillationTrainer リファクタリング] 構成: https://github.com/huggingface/trl/pull/6632 の @qgallouedec による GRPO パリティ ドリフトの修正</li>
+<li>[DistillationTrainer リファクタリング] @qgallouedec によるスチューデント エントロピー メトリクスを https://github.com/huggingface/trl/pull/6633 に記録します</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6634 の @qgallouedec によってテスト スイートを GRPO 形状に書き換えます</li>
+<li>[DistillationTrainer リファクタリング] ドキュメント: distillation_trainer.md を https://github.com/huggingface/trl/pull/6639 の @qgallouedec による安定したトレーナー規則に合わせます</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6640 の @qgallouedec により、DistillationTrainer を安定版 API に昇格させます</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6641 の @qgallouedec により、DistillationTrainer を Stable テレメトリ グループに移動します</li>
+<li>[DistillationTrainer リファクタリング] @qgallouedec による <code>trl distillation</code> CLI を https://github.com/huggingface/trl/pull/6642 に追加</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6647 の @qgallouedec により蒸留テストを <code>tests/</code> に移動</li>
+<li>[DistillationTrainer リファクタリング] ドキュメント: 安定版 API の名前空間 DistillationTrainer (https://github.com/huggingface/trl/pull/6643 の @qgallouedec による)</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6644 の @qgallouedec による安定版 API のサンプル スクリプトを更新</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6645 の @qgallouedec により安定したベースで ServerDistillationTrainer を再ポイントしました</li>
+<li>[DistillationTrainer リファクタリング] https://github.com/huggingface/trl/pull/6650 の @qgallouedec によるビジョン言語モデルのサポート</li>
+<li>[DistillationTrainer リファクタリング] ドキュメント: https://github.com/huggingface/trl/pull/6653 の @qgallouedec による What's New で DistillationTrainer プロモーションを発表します</li>
+<li>リリース: v1.10 (@qgallouedec による https://github.com/huggingface/trl/pull/6724)
+<strong>フル Changelog</strong>: https://github.com/huggingface/trl/compare/v1.9.0...v1.10.0</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>ソース</strong> <a href="https://github.com/huggingface/trl">huggingface/trl</a> · <code>v1.10.0</code> · 2026-08-13 · <a href="https://github.com/huggingface/trl/releases/tag/v1.10.0">アップストリーム リリース</a>
+<em>インデックス作成のためにそのままミラーリングされます。すべての権利は上流プロジェクトに帰属します。</em></p>
+</blockquote></div>  <details class="mt-original"> <summary>English original / English original</summary> <div class="prose mt-original-body"><h1>trl v1.10.0</h1>
+<h2>Features</h2>
+<h3>🎓 <code>DistillationTrainer</code> is now a stable trainer</h3>
+<p>After a ~30-PR refactor that reshaped its data contract, loss path, generation stack, config surface, and tests, <code>DistillationTrainer</code> and <code>DistillationConfig</code> graduate from <code>trl.experimental.distillation</code> to the top-level <code>trl</code> package. Same import surface as SFT / DPO / GRPO / KTO. The old experimental path still works and emits a <code>FutureWarning</code> (removal in v2.0.0).</p>
+<pre><code class="language-python"># Before
+from trl.experimental.distillation import DistillationConfig, DistillationTrainer
+
+# Now
+from trl import DistillationConfig, DistillationTrainer
+</code></pre>
+<p>Also lands a <code>trl distillation</code> CLI and moves the tests to <code>tests/</code>. The full refactor arc: switched signature columns to <code>prompt</code> (deprecated <code>messages</code>-format), pinned the generation stack to GRPO's, wired the chunked JSD loss and deleted the full-logit path, cleaned the Liger path to share extraction with the chunked path, adopted GRPO's <code>log()</code> / <code>training_step</code> timing / <code>_save_checkpoint</code>, rebuilt the test suite to GRPO shape, and much more.</p>
+<p>by @qgallouedec across ~30 PRs (#6479, #6480, #6481, #6482, #6484, #6487, #6497, #6508, #6509, #6510, #6511, #6512, #6513, #6521, #6522, #6523, #6524, #6525, #6526, #6530, #6537, #6604, #6605, #6606, #6607, #6609, #6610, #6611, #6612, #6613, #6614, #6629, #6630, #6632, #6633, #6634, #6639, #6640, #6641, #6642, #6643, #6644, #6645, #6647, #6653).</p>
+<h3><code>DistillationTrainer</code> supports Vision Language Models</h3>
+<p>Alongside the graduation, VLMs work end-to-end in <code>DistillationTrainer</code>.</p>
+<p>by @qgallouedec in https://github.com/huggingface/trl/pull/6650</p>
+<h3>AsyncGRPO: loop-owning agent training (OpenEnv harness)</h3>
+<p>New experimental <strong>loop-owning (black-box)</strong> path for <code>AsyncGRPOTrainer</code> — for training external agents like <a href="https://opencode.ai"><code>opencode</code></a> that run their own tool loop, rather than TRL driving each turn as in the <code>environment_factory</code> white-box path.</p>
+<p>The agent runs in an OpenEnv session in <code>transparent_proxy</code> mode; an in-sandbox proxy captures each turn's token ids and logprobs. On completion, TRL reads the trace, rebuilds per-turn training rows, and scores the workspace with the session's <code>verify()</code>. Ships with three caller-supplied policy hooks (<code>rollout_reward_fn</code>, <code>train_turn_fn</code>, <code>agent_turn_fn</code>) so you can drop framework aux calls (title generator, context summarizer) and reinforce only the turns you want.</p>
+<p>Includes a self-contained <code>examples/scripts/openenv/opencode.py</code> (local subprocess sandbox + DeepCoder held-out stdin/stdout verifier), validated end-to-end on Qwen3-4B.</p>
+<p>by @AmineDiro in https://github.com/huggingface/trl/pull/6420, plus HF-sandbox variant by @sergiopaniego in https://github.com/huggingface/trl/pull/6565</p>
+<h3>AsyncGRPO: observability + sampling controls</h3>
+<ul>
+<li><strong>Record rollout traces to trackio</strong> by @AmineDiro in https://github.com/huggingface/trl/pull/6491</li>
+<li><strong>Step-time metric</strong> by @AmineDiro in https://github.com/huggingface/trl/pull/6490</li>
+<li><strong>Fix queue wait time metric</strong> by @AmineDiro in https://github.com/huggingface/trl/pull/6489</li>
+<li><strong><code>top_p</code> / <code>top_k</code> / <code>min_p</code> / <code>repetition_penalty</code> in <code>AsyncGRPOConfig</code></strong> by @AmineDiro in https://github.com/huggingface/trl/pull/6608</li>
+<li><strong>Fork-independent epoch counting</strong> — landed in v1.9 window</li>
+<li>Close in-flight harness sessions concurrently on shutdown by @sergiopaniego in https://github.com/huggingface/trl/pull/6564</li>
+</ul>
+<h3>DiffusionGemma block-diffusion SFT example</h3>
+<p>A new SFT example for <a href="https://huggingface.co/google/diffusiongemma-26B-A4B-it"><code>google/diffusiongemma-26B-A4B-it</code></a> implementing the reference recipe: one response block per step, uniform random token corruption with <code>t ~ U(eps, 1)</code>, two-pass self-conditioning, flat cross-entropy over the whole canvas plus an autoregressive co-loss on the encoder. LoRA targets attention + dense MLP linears. Requires <code>transformers &gt;= 5.12.0</code>.</p>
+<p>Ships with <code>diffusion_gemma.jinja</code> / <code>diffusion_gemma_training.jinja</code> chat templates (with <code>{% generation %}</code> markers) so <code>assistant_only_loss=True</code> works out of the box.</p>
+<p>by @kashif in https://github.com/huggingface/trl/pull/6003</p>
+<h3>More model &amp; template support</h3>
+<ul>
+<li><strong>LFM2 and LFM2.5</strong> — day-zero training support by @qgallouedec in https://github.com/huggingface/trl/pull/6428</li>
+<li><strong>Gemma 4 response template</strong> by @qgallouedec in https://github.com/huggingface/trl/pull/6535</li>
+</ul>
+<h3>Default changes</h3>
+<p>Two default flips this cycle — pinning them explicitly is recommended if you want the old behavior.</p>
+<ul>
+<li><strong><code>SFTConfig.max_completion_length</code> / <code>GRPOConfig.max_completion_length</code></strong>: default bumped from <code>256</code> to <code>512</code>. By @dhruvnigam93 in https://github.com/huggingface/trl/pull/6264</li>
+<li><strong><code>GRPOConfig.use_bias_correction_kl</code></strong> now defaults to <code>True</code>. By @gowtham-sai-yadav in https://github.com/huggingface/trl/pull/6503</li>
+</ul>
+<h3>Packing and padding-free on VLMs with text-only data</h3>
+<p>VLM configurations no longer reject packing / padding-free when the batch happens to be text-only.</p>
+<p>by @cris96spa in https://github.com/huggingface/trl/pull/6547</p>
+<h3>Other</h3>
+<ul>
+<li>Use a reference adapter with <code>target_parameters</code> on <code>peft&gt;=0.20.0</code> by @albertvillanova in https://github.com/huggingface/trl/pull/6591</li>
+<li>Reject unsupported <code>train_dataset</code> types in core trainers by @albertvillanova in https://github.com/huggingface/trl/pull/6493 and https://github.com/huggingface/trl/pull/6494</li>
+<li>Reject unsupported <code>f_divergence_type</code> / loss type combinations in DPO by @qgallouedec in https://github.com/huggingface/trl/pull/6559</li>
+<li>Validate that reward functions return one reward per completion by @gowtham-sai-yadav in https://github.com/huggingface/trl/pull/6534</li>
+<li>Validate YAML config root type by @RerankerGuo in https://github.com/huggingface/trl/pull/6656</li>
+<li>Respect <code>TQDM_DISABLE</code> in DPO/KTO/BCO reference log-prob loops by @qgallouedec in https://github.com/huggingface/trl/pull/6507</li>
+<li>Respect <code>use_cpu</code> in <code>create_model_from_path</code> <code>device_map</code> default by @Strongich in https://github.com/huggingface/trl/pull/6295</li>
+<li>Use <code>dtype</code> instead of <code>torch_dtype</code> (deprecated) by @qgallouedec in https://github.com/huggingface/trl/pull/6560</li>
+<li>Add missing logged metrics to the GRPO and RLOO docs by @PoojanTa in https://github.com/huggingface/trl/pull/6624</li>
+<li>Add <code>test_train_moe_peft_model</code> for KTO by @albertvillanova in https://github.com/huggingface/trl/pull/6589</li>
+</ul>
+<h3>vLLM version sweep</h3>
+<ul>
+<li>Add support for vLLM 0.26.0 by @qgallouedec in https://github.com/huggingface/trl/pull/6569</li>
+</ul>
+<h2>Fixes</h2>
+<ul>
+<li><strong>Fix DAPO / CISPO / VESPO loss normalization</strong> when <code>steps_per_generation != gradient_accumulation_steps</code> — gradients were silently mis-scaled by <code>gradient_accumulation_steps / steps_per_generation</code> (e.g. <strong>0.5×</strong> or <strong>4×</strong> the intended token-mean in common configs). Default-equivalent configs are unaffected. By @0xadvait in https://github.com/huggingface/trl/pull/6024</li>
+<li><strong>Fix Liger kernel crash on pre-Ampere GPUs</strong> by @albertvillanova in https://github.com/huggingface/trl/pull/6518</li>
+<li><strong>Fix vLLM weight synchronization</strong> when <code>vllm_enable_sleep_mode=True</code> by @muupan in https://github.com/huggingface/trl/pull/5313</li>
+<li><strong>Fix vLLM server-mode communicator initialization</strong> to use the current accelerator device by @sywangyi in https://github.com/huggingface/trl/pull/6417</li>
+<li><strong>Use accelerator device instead of hardcoded <code>cuda</code></strong> in FSDP2 vLLM weight sync by @verma8076 in https://github.com/huggingface/trl/pull/6592</li>
+<li><strong>Fix <code>prepare_deepspeed</code> crash with CPU offload optimizer</strong> by @roycho96 in https://github.com/huggingface/trl/pull/5916</li>
+<li><strong><code>fix(ppo)</code>: exclude padding tokens from entropy calculation</strong> by @mukund1985 in https://github.com/huggingface/trl/pull/6121</li>
+<li><strong><code>fix</code>: avoid <code>CopySlices</code> when scaling policy logits</strong> by @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6554</li>
+<li><strong>Fix multimodal field handling in GRPO tool-call loop</strong> by @HariomJangra in https://github.com/huggingface/trl/pull/6286</li>
+<li><strong><code>[GRPO]</code> Apply the completion mask elementwise in the LuSPO loss aggregation</strong> by @YaseenBashaT in https://github.com/huggingface/trl/pull/6654</li>
+<li><strong><code>[GRPO]</code> Fix entropy bonus normalization inconsistency across loss types</strong> by @YaseenBashaT in https://github.com/huggingface/trl/pull/6648</li>
+<li>Fix incorrect example script path in Online DPO docs by @latent-9 in https://github.com/huggingface/trl/pull/6598</li>
+<li>Point the opencode example at <code>huggingface/OpenEnv</code> by @sergiopaniego in https://github.com/huggingface/trl/pull/6529</li>
+<li>Remove symlink support from skills installation by @albertvillanova in https://github.com/huggingface/trl/pull/6665</li>
+</ul>
+<h2>Documentation and Examples</h2>
+<ul>
+<li>docs: complete <code>GRPOConfig</code> <code>loss_type</code> help by @gowtham-sai-yadav in https://github.com/huggingface/trl/pull/6477</li>
+<li>Fix inaccuracies in the release instructions by @albertvillanova in https://github.com/huggingface/trl/pull/6566</li>
+<li>Fix patch release instructions: pull release branch instead of main by @albertvillanova in https://github.com/huggingface/trl/pull/6563</li>
+<li>Add <code>opencode_hf_sandbox.py</code>: loop-owning training in remote HF sandboxes by @sergiopaniego in https://github.com/huggingface/trl/pull/6565</li>
+</ul>
+<h2>CI</h2>
+<ul>
+<li><code>test</code>: don't hard-code <code>bf16=True</code> on devices that lack bf16 support by @behroozazarkhalili in https://github.com/huggingface/trl/pull/6036</li>
+<li>Cleanup xpu cache memory after each test by @kaixuanliu in https://github.com/huggingface/trl/pull/5771</li>
+<li>Force <code>use_cpu</code> in tests when no CUDA device is available by @albertvillanova in https://github.com/huggingface/trl/pull/6504</li>
+<li>Silence transformers <code>LOAD REPORT</code> tables in test output by @albertvillanova in https://github.com/huggingface/trl/pull/6502</li>
+<li>Require vision for VLM response parsing tests by @albertvillanova in https://github.com/huggingface/trl/pull/6602</li>
+<li>Require <code>jmespath</code> only on transformers below 5.13.0 by @albertvillanova in https://github.com/huggingface/trl/pull/6597</li>
+<li>Add regression tests for evaluating init-time eval datasets after training with precomputed reference log-probs by @albertvillanova in https://github.com/huggingface/trl/pull/6488</li>
+<li>Test <code>train_dataset=None</code> raises for core trainers by @albertvillanova in https://github.com/huggingface/trl/pull/6492</li>
+<li>Remove unnecessary <code>loss_type</code> in KTO precompute ref log-probs test by @albertvillanova in https://github.com/huggingface/trl/pull/6501</li>
+<li>Fix <code>test_peft_with_quantization</code> tests for bitsandbytes 0.50.0 by @albertvillanova in https://github.com/huggingface/trl/pull/6546</li>
+<li>Ignore benign bitsandbytes 4-bit blocksize alignment warning in CI by @albertvillanova in https://github.com/huggingface/trl/pull/6582</li>
+<li>Suppress deprecated <code>torch.get_autocast_gpu_dtype()</code> warning from mamba-ssm kernel by @albertvillanova in https://github.com/huggingface/trl/pull/6556</li>
+<li>Document removal criteria for pytest warning filters by @albertvillanova in https://github.com/huggingface/trl/pull/6595</li>
+<li>Fix test: don't call <code>add_response_schema</code> when the model already ships a response template by @qgallouedec in https://github.com/huggingface/trl/pull/6574</li>
+<li>Fix CI quality: fix copyright year in <code>openenv_harness.py</code> by @albertvillanova in https://github.com/huggingface/trl/pull/6531</li>
+<li>Hotfix CI: temporarily pin <code>liger-kernel &lt; 0.8.1</code> by @albertvillanova in https://github.com/huggingface/trl/pull/6517</li>
+<li>Hotfix CI: temporarily pin <code>bitsandbytes &lt; 0.50.0</code> by @albertvillanova in https://github.com/huggingface/trl/pull/6544</li>
+<li>Hotfix CI: xfail NemotronH GRPO/RLOO tests against a broken transformers dev build by @albertvillanova in https://github.com/huggingface/trl/pull/6542 (reverted in https://github.com/huggingface/trl/pull/6558)</li>
+<li><code>ci</code>: exclude the buggy TruffleHog LOB detector by @behroozazarkhalili in https://github.com/huggingface/trl/pull/6674</li>
+<li>Bump the actions group with 3 updates by @dependabot[bot] in https://github.com/huggingface/trl/pull/6540</li>
+<li>Revert transformers rotary device deprecation warning filter by @albertvillanova in https://github.com/huggingface/trl/pull/6596</li>
+</ul>
+<h2>New Contributors</h2>
+<ul>
+<li>@gowtham-sai-yadav made their first contribution in https://github.com/huggingface/trl/pull/6477</li>
+<li>@dhruvnigam93 made their first contribution in https://github.com/huggingface/trl/pull/6264</li>
+<li>@cris96spa made their first contribution in https://github.com/huggingface/trl/pull/6547</li>
+<li>@mukund1985 made their first contribution in https://github.com/huggingface/trl/pull/6121</li>
+<li>@latent-9 made their first contribution in https://github.com/huggingface/trl/pull/6598</li>
+<li>@verma8076 made their first contribution in https://github.com/huggingface/trl/pull/6592</li>
+<li>@PoojanTa made their first contribution in https://github.com/huggingface/trl/pull/6624</li>
+<li>@YaseenBashaT made their first contribution in https://github.com/huggingface/trl/pull/6654</li>
+<li>@RerankerGuo made their first contribution in https://github.com/huggingface/trl/pull/6656</li>
+<li>@HariomJangra made their first contribution in https://github.com/huggingface/trl/pull/6286</li>
+</ul>
+<h2>What's Changed</h2>
+<ul>
+<li>⬆️ Bump dev version by @qgallouedec in https://github.com/huggingface/trl/pull/6496</li>
+<li>Test train_dataset=None raises for core trainers by @albertvillanova in https://github.com/huggingface/trl/pull/6492</li>
+<li>Add regression tests for evaluating init-time eval datasets after training with precomputed reference log-probs by @albertvillanova in https://github.com/huggingface/trl/pull/6488</li>
+<li>docs: complete GRPOConfig loss_type help by @gowtham-sai-yadav in https://github.com/huggingface/trl/pull/6477</li>
+<li>test: don't hard-code bf16=True on devices that lack bf16 support by @behroozazarkhalili in https://github.com/huggingface/trl/pull/6036</li>
+<li>[DistillationTrainer refactor]  Switch tests, docs, and example to prompt-only datasets by @qgallouedec in https://github.com/huggingface/trl/pull/6479</li>
+<li>cleanup xpu cache memory after each test by @kaixuanliu in https://github.com/huggingface/trl/pull/5771</li>
+<li>Fix vLLM server-mode communicator initialization to use the current A… by @sywangyi in https://github.com/huggingface/trl/pull/6417</li>
+<li>[DistillationTrainer refactor] Remove messages-format support and prompt-length config by @qgallouedec in https://github.com/huggingface/trl/pull/6480</li>
+<li>[DistillationTrainer refactor] Pin signature columns to <code>[&quot;prompt&quot;, &quot;image&quot;, &quot;images&quot;]</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6481</li>
+<li>[DistillationTrainer refactor] Emit <code>completion_mask</code> alongside <code>labels</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6482</li>
+<li>[DistillationTrainer refactor] Loss consumes <code>completion_mask</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6484</li>
+<li>Fix : queue wait time metric AsyncGRPOTrainer by @AmineDiro in https://github.com/huggingface/trl/pull/6489</li>
+<li>[DistillationTrainer refactor] Emit prompt_ids / prompt_mask / completion_ids by @qgallouedec in https://github.com/huggingface/trl/pull/6487</li>
+<li>Remove unnecessary loss_type in KTO precompute ref log-probs test by @albertvillanova in https://github.com/huggingface/trl/pull/6501</li>
+<li>Force use_cpu in tests when no CUDA device is available by @albertvillanova in https://github.com/huggingface/trl/pull/6504</li>
+<li>Hotfix CI: Temporarily pin liger-kernel &lt; 0.8.1 by @albertvillanova in https://github.com/huggingface/trl/pull/6517</li>
+<li>Silence transformers LOAD REPORT tables in test output by @albertvillanova in https://github.com/huggingface/trl/pull/6502</li>
+<li>Change default <code>max_completion_length</code> from 256 to 512 by @dhruvnigam93 in https://github.com/huggingface/trl/pull/6264</li>
+<li>Add DiffusionGemma block-diffusion SFT example by @kashif in https://github.com/huggingface/trl/pull/6003</li>
+<li>Record rollout traces to trackio  by @AmineDiro in https://github.com/huggingface/trl/pull/6491</li>
+<li>[DistillationTrainer refactor] Switch the loss to GRPO's keys by @qgallouedec in https://github.com/huggingface/trl/pull/6497</li>
+<li>[DistillationTrainer refactor] Freeze ServerDistillationTrainer self-contained by @qgallouedec in https://github.com/huggingface/trl/pull/6508</li>
+<li>Add LFM2 and LFM2.5 support and testing by @qgallouedec in https://github.com/huggingface/trl/pull/6428</li>
+<li>[DistillationTrainer refactor] Delete <code>_compute_prompt_length</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6509</li>
+<li>Async grpo OpenEnv harness rollout by @AmineDiro in https://github.com/huggingface/trl/pull/6420</li>
+<li>[DistillationTrainer refactor] Add <code>_tokenize_prompts</code> (unwired) by @qgallouedec in https://github.com/huggingface/trl/pull/6510</li>
+<li>[DistillationTrainer refactor] Add the shared generation config fields (add-only) by @qgallouedec in https://github.com/huggingface/trl/pull/6511</li>
+<li>Fix crash when training with Liger kernel on pre-Ampere GPUs by @albertvillanova in https://github.com/huggingface/trl/pull/6518</li>
+<li>[DistillationTrainer refactor] Add the ctor generation-supporting state (add-only) by @qgallouedec in https://github.com/huggingface/trl/pull/6512</li>
+<li>Fix prepare_deepspeed crash with cpu offload optimizer by @roycho96 in https://github.com/huggingface/trl/pull/5916</li>
+<li>Fix CI quality: Fix copyright year in trl/experimental/async_grpo/openenv_harness.py by @albertvillanova in https://github.com/huggingface/trl/pull/6531</li>
+<li>Reject unsupported train_dataset types in core trainers by @albertvillanova in https://github.com/huggingface/trl/pull/6493</li>
+<li>[DistillationTrainer refactor] Add <code>_generate_single_turn</code> (unwired) by @qgallouedec in https://github.com/huggingface/trl/pull/6513</li>
+<li>[DistillationTrainer refactor] Add <code>_generate</code> + <code>_generate_and_score_completions</code> (unwired) by @qgallouedec in https://github.com/huggingface/trl/pull/6521</li>
+<li>Test train_dataset types at init for core trainers by @albertvillanova in https://github.com/huggingface/trl/pull/6494</li>
+<li>Add Gemma4 response template by @qgallouedec in https://github.com/huggingface/trl/pull/6535</li>
+<li>Validate that reward functions return one reward per completion by @gowtham-sai-yadav in https://github.com/huggingface/trl/pull/6534</li>
+<li>fix(grpo): correct DAPO/CISPO/VESPO loss normalization when steps_per_generation != gradient_accumulation_steps by @0xadvait in https://github.com/huggingface/trl/pull/6024</li>
+<li>Hotfix CI: Temporarily pin bitsandbytes &lt; 0.50.0 by @albertvillanova in https://github.com/huggingface/trl/pull/6544</li>
+<li>Hotfix CI: Xfail NemotronH GRPO/RLOO tests against a broken transformers dev build by @albertvillanova in https://github.com/huggingface/trl/pull/6542</li>
+<li>added step time metric to AsyncGRPOTrainer by @AmineDiro in https://github.com/huggingface/trl/pull/6490</li>
+<li>Allow packing and padding-free on VLMs with text-only data by @cris96spa in https://github.com/huggingface/trl/pull/6547</li>
+<li>fix(ppo): exclude padding tokens from entropy calculation by @mukund1985 in https://github.com/huggingface/trl/pull/6121</li>
+<li>Respect <code>TQDM_DISABLE</code> in DPO/KTO/BCO reference log-prob loops by @qgallouedec in https://github.com/huggingface/trl/pull/6507</li>
+<li>Revert xfail for NemotronH GRPO/RLOO tests now that transformers#47569 fixed the kernels bug by @albertvillanova in https://github.com/huggingface/trl/pull/6558</li>
+<li>fix: avoid CopySlices when scaling policy logits by @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6554</li>
+<li>Fix a bug in vLLM weight synchronization when <code>vllm_enable_sleep_mode=True</code> by @muupan in https://github.com/huggingface/trl/pull/5313</li>
+<li>Point the opencode example at huggingface/OpenEnv by @sergiopaniego in https://github.com/huggingface/trl/pull/6529</li>
+<li>Bump the actions group with 3 updates by @dependabot[bot] in https://github.com/huggingface/trl/pull/6540</li>
+<li>Suppress deprecated torch.get_autocast_gpu_dtype() warning from mamba-ssm kernel by @albertvillanova in https://github.com/huggingface/trl/pull/6556</li>
+<li>Fix test_peft_with_quantization tests for bitsandbytes 0.50.0 by @albertvillanova in https://github.com/huggingface/trl/pull/6546</li>
+<li>Fix patch release instructions: Pull release branch instead of main by @albertvillanova in https://github.com/huggingface/trl/pull/6563</li>
+<li>Fix inaccuracies in the release instructions by @albertvillanova in https://github.com/huggingface/trl/pull/6566</li>
+<li>Use <code>dtype</code> instead of <code>torch_dtype</code> (deprecated) by @qgallouedec in https://github.com/huggingface/trl/pull/6560</li>
+<li>Fix test: don't call <code>add_response_schema</code> when the model already ships a response template by @qgallouedec in https://github.com/huggingface/trl/pull/6574</li>
+<li>[DistillationTrainer refactor] Switch generation to GRPO's stack; delete the buffer by @qgallouedec in https://github.com/huggingface/trl/pull/6522</li>
+<li>[DistillationTrainer refactor] Align the generation_kwargs dict with GRPO by @qgallouedec in https://github.com/huggingface/trl/pull/6523</li>
+<li>[DistillationTrainer refactor] Align the vLLM ctor block with GRPO by @qgallouedec in https://github.com/huggingface/trl/pull/6524</li>
+<li>[DistillationTrainer refactor] Add <code>_get_last_hidden_state</code> (unwired) by @qgallouedec in https://github.com/huggingface/trl/pull/6525</li>
+<li>Default <code>use_bias_correction_kl=True</code> in GRPOConfig by @gowtham-sai-yadav in https://github.com/huggingface/trl/pull/6503</li>
+<li>Ignore benign bitsandbytes 4-bit blocksize alignment warning in CI by @albertvillanova in https://github.com/huggingface/trl/pull/6582</li>
+<li>Respect use_cpu in create_model_from_path device_map default by @Strongich in https://github.com/huggingface/trl/pull/6295</li>
+<li>Ignore transformers rotary <code>device</code> deprecation warning in CI by @albertvillanova in https://github.com/huggingface/trl/pull/6585</li>
+<li>Add <code>test_train_moe_peft_model</code> for KTO by @albertvillanova in https://github.com/huggingface/trl/pull/6589</li>
+<li>Revert transformers rotary device deprecation warning filter by @albertvillanova in https://github.com/huggingface/trl/pull/6596</li>
+<li>Document removal criteria for pytest warning filters by @albertvillanova in https://github.com/huggingface/trl/pull/6595</li>
+<li>Reject unsupported <code>f_divergence_type</code> / loss type combinations in DPO by @qgallouedec in https://github.com/huggingface/trl/pull/6559</li>
+<li>Add support for vLLM 0.26.0 by @qgallouedec in https://github.com/huggingface/trl/pull/6569</li>
+<li>Use a reference adapter with <code>target_parameters</code> on <code>peft&gt;=0.20.0</code> by @albertvillanova in https://github.com/huggingface/trl/pull/6591</li>
+<li>Fix incorrect example script path in Online DPO docs by @latent-9 in https://github.com/huggingface/trl/pull/6598</li>
+<li>Add top_p/top_k/min_p/repetition_penalty to AsyncGRPOConfig by @AmineDiro in https://github.com/huggingface/trl/pull/6608</li>
+<li>Use accelerator device instead of hardcoded cuda in FSDP2 vLLM weight sync by @verma8076 in https://github.com/huggingface/trl/pull/6592</li>
+<li>[DistillationTrainer refactor] Add the chunked JSD loss (unwired) by @qgallouedec in https://github.com/huggingface/trl/pull/6526</li>
+<li>[DistillationTrainer refactor] Wire compute_loss to the chunked JSD path; delete the full-logit loss by @qgallouedec in https://github.com/huggingface/trl/pull/6530</li>
+<li>[DistillationTrainer refactor] Heavy-clean the Liger path: share extraction with the chunked path by @qgallouedec in https://github.com/huggingface/trl/pull/6537</li>
+<li>[DistillationTrainer refactor] Default <code>disable_dropout</code> to <code>False</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6604</li>
+<li>[DistillationTrainer refactor] Config finish by @qgallouedec in https://github.com/huggingface/trl/pull/6605</li>
+<li>[DistillationTrainer refactor] Constructor cleanup: safe internal cleanups by @qgallouedec in https://github.com/huggingface/trl/pull/6606</li>
+<li>[DistillationTrainer refactor] Config cosmetic parity by @qgallouedec in https://github.com/huggingface/trl/pull/6607</li>
+<li>[DistillationTrainer refactor] Constructor cleanup (40b): drop eval-metric params, require <code>model</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6609</li>
+<li>[DistillationTrainer refactor] Constructor cleanup (40c): quantization + PEFT/QLoRA parity by @qgallouedec in https://github.com/huggingface/trl/pull/6610</li>
+<li>[DistillationTrainer refactor] Make <code>advantages</code> optional in <code>print_prompt_completions_sample</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6611</li>
+<li>[DistillationTrainer refactor] Use the shared <code>print_prompt_completions_sample</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6612</li>
+<li>[DistillationTrainer refactor] Adopt GRPO's <code>log()</code> + bounded <code>_logs</code> deques by @qgallouedec in https://github.com/huggingface/trl/pull/6613</li>
+<li>[DistillationTrainer refactor] Adopt GRPO's <code>training_step</code> timing + <code>_save_checkpoint</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6614</li>
+<li>Require vision for VLM response parsing tests by @albertvillanova in https://github.com/huggingface/trl/pull/6602</li>
+<li>Require jmespath only on transformers below 5.13.0 by @albertvillanova in https://github.com/huggingface/trl/pull/6597</li>
+<li>Add missing logged metrics to the GRPO and RLOO docs by @PoojanTa in https://github.com/huggingface/trl/pull/6624</li>
+<li>Close in-flight harness sessions concurrently on shutdown by @sergiopaniego in https://github.com/huggingface/trl/pull/6564</li>
+<li>Add opencode_hf_sandbox.py: loop-owning training in remote HF sandboxes by @sergiopaniego in https://github.com/huggingface/trl/pull/6565</li>
+<li>Remove symlink support from skills installation by @albertvillanova in https://github.com/huggingface/trl/pull/6665</li>
+<li>ci: exclude the buggy TruffleHog lob detector by @behroozazarkhalili in https://github.com/huggingface/trl/pull/6674</li>
+<li>[GRPO] Apply the completion mask elementwise in the luspo loss aggregation by @YaseenBashaT in https://github.com/huggingface/trl/pull/6654</li>
+<li>[GRPO] Fix entropy bonus normalization inconsistency across loss types by @YaseenBashaT in https://github.com/huggingface/trl/pull/6648</li>
+<li>Validate YAML config root type by @RerankerGuo in https://github.com/huggingface/trl/pull/6656</li>
+<li>Fix multimodal field handling in GRPO tool call loop by @HariomJangra in https://github.com/huggingface/trl/pull/6286</li>
+<li>[DistillationTrainer refactor] Reject <code>use_liger_kernel</code> with <code>logit_scale</code> / <code>final_logit_softcapping</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6629</li>
+<li>[DistillationTrainer refactor] Convention/cosmetic sweep by @qgallouedec in https://github.com/huggingface/trl/pull/6630</li>
+<li>[DistillationTrainer refactor] Config: GRPO parity drift fixes by @qgallouedec in https://github.com/huggingface/trl/pull/6632</li>
+<li>[DistillationTrainer refactor] Log the student entropy metric by @qgallouedec in https://github.com/huggingface/trl/pull/6633</li>
+<li>[DistillationTrainer refactor] Rewrite the test suite to GRPO shape by @qgallouedec in https://github.com/huggingface/trl/pull/6634</li>
+<li>[DistillationTrainer refactor] Docs: align distillation_trainer.md with stable-trainer conventions by @qgallouedec in https://github.com/huggingface/trl/pull/6639</li>
+<li>[DistillationTrainer refactor] Promote DistillationTrainer to the stable API by @qgallouedec in https://github.com/huggingface/trl/pull/6640</li>
+<li>[DistillationTrainer refactor] Move DistillationTrainer to the Stable telemetry group by @qgallouedec in https://github.com/huggingface/trl/pull/6641</li>
+<li>[DistillationTrainer refactor] Add the <code>trl distillation</code> CLI by @qgallouedec in https://github.com/huggingface/trl/pull/6642</li>
+<li>[DistillationTrainer refactor] Move the distillation tests to <code>tests/</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6647</li>
+<li>[DistillationTrainer refactor] Docs: de-namespace DistillationTrainer for the stable API by @qgallouedec in https://github.com/huggingface/trl/pull/6643</li>
+<li>[DistillationTrainer refactor] Update the example script for the stable API by @qgallouedec in https://github.com/huggingface/trl/pull/6644</li>
+<li>[DistillationTrainer refactor] Re-point ServerDistillationTrainer at the stable base by @qgallouedec in https://github.com/huggingface/trl/pull/6645</li>
+<li>[DistillationTrainer refactor] Support Vision Language Models by @qgallouedec in https://github.com/huggingface/trl/pull/6650</li>
+<li>[DistillationTrainer refactor] Docs: announce the DistillationTrainer promotion in What's New by @qgallouedec in https://github.com/huggingface/trl/pull/6653</li>
+<li>Release: v1.10 by @qgallouedec in https://github.com/huggingface/trl/pull/6724</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/huggingface/trl/compare/v1.9.0...v1.10.0</p>
+<hr />
+<blockquote>
+<p><strong>Source</strong> <a href="https://github.com/huggingface/trl">huggingface/trl</a> · <code>v1.10.0</code> · 2026-08-13 · <a href="https://github.com/huggingface/trl/releases/tag/v1.10.0">upstream release</a></p>
+</blockquote>
+<p><em>Mirrored verbatim for indexing. All rights belong to the upstream project.</em></p></div> </details> </div> <p class="muted" style="margin-top:var(--s8);font-size:12.5px;border-top:1px solid var(--line);padding-top:var(--s4)"> リリースノートは上流プロジェクトが公開したものです。私たちはそれらを整理し、関連付けて、バージョンを一眼で比較できるようにしています。コンテンツの権利はすべて原作者に属します。 </p> <nav class="pager" aria-label="Release navigation"> <a href="/releases/trl/1.11.0"> <span class="k">← 次へ</span> <span class="t">v1.11.0</span> </a> <a href="/releases/trl/1.9.2"> <span class="k">前へ →</span> <span class="t">v1.9.2</span> </a> </nav> <aside class="ad-slot" aria-label="Advertisement" data-astro-cid-fgwukgf6><div class="ad-slot-label" data-astro-cid-fgwukgf6>Advertisement</div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4184355057086168" data-ad-slot="9133765584" data-ad-format="auto" data-full-width-responsive="true" data-astro-cid-fgwukgf6></ins><script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script></aside> </article> <aside class="rail"> <div class="rail-card"> <div class="rail-title">Source</div> <ul class="rail-list"> <li> <a href="https://github.com/huggingface/trl/releases/tag/v1.10.0" target="_blank" rel="noopener"> <span>GitHub で見る</span> <span class="d">↗</span> </a> </li> <li> <a href="https://github.com/huggingface/trl" target="_blank" rel="noopener"> <span>huggingface/trl</span> <span class="d">↗</span> </a> </li> </ul> </div> <div class="rail-card rail-toc"> <div class="rail-title">このページの目次</div> <nav> <a href="#" class>特徴</a><a href="#" class="lv3">🎓 DistillationTrainer は安定したトレーナーになりました</a><a href="#" class="lv3">DistillationTrainer は視覚言語モデルをサポートします</a><a href="#" class="lv3">AsyncGRPO: ループ所有エージェントのトレーニング (OpenEnv ハーネス)</a><a href="#" class="lv3">AsyncGRPO: 可観測性 + サンプリング制御</a><a href="#" class="lv3">DiffusionGemma ブロック拡散 SFT の例</a><a href="#" class="lv3">モデルとテンプレートのサポートの追加</a><a href="#" class="lv3">デフォルトの変更</a><a href="#" class="lv3">テキストのみのデータを含む VLM でのパッキングとパディングなしのパッキング</a><a href="#" class="lv3">その他</a><a href="#" class="lv3">vLLM バージョン スイープ</a><a href="#" class>修正</a><a href="#" class>ドキュメントと例</a><a href="#" class>CI</a><a href="#" class>新しい貢献者</a><a href="#" class>何が変わったのか</a> </nav> </div> <div class="rail-card"> <div class="rail-title">バージョン履歴</div> <ul class="rail-list"> <li> <a href="/releases/trl/1.18.2"> <span class="v">v1.18.2</span> <span class="d">26-11-19</span> </a> </li><li> <a href="/releases/trl/1.18.1"> <span class="v">v1.18.1</span> <span class="d">26-11-17</span> </a> </li><li> <a href="/releases/trl/1.18.0"> <span class="v">v1.18.0</span> <span class="d">26-11-13</span> </a> </li><li> <a href="/releases/trl/1.17.1"> <span class="v">v1.17.1</span> <span class="d">26-10-30</span> </a> </li><li> <a href="/releases/trl/1.17.0"> <span class="v">v1.17.0</span> <span class="d">26-10-29</span> </a> </li><li> <a href="/releases/trl/1.16.0"> <span class="v">v1.16.0</span> <span class="d">26-10-15</span> </a> </li><li> <a href="/releases/trl/1.15.0"> <span class="v">v1.15.0</span> <span class="d">26-10-08</span> </a> </li><li> <a href="/releases/trl/1.14.2"> <span class="v">v1.14.2</span> <span class="d">26-10-06</span> </a> </li> </ul> <a href="/ja/releases/trl" class="mono" style="display:inline-block;margin-top:var(--s3);font-size:11.5px;color:var(--ink-3)"> すべての 20 件を見る →
+</a> </div> </aside> </div> </div>  </main> <footer class="site-footer"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/ja/" class="brand" aria-label="STAGS NextStack"><span class="brand-mark" aria-hidden="true">S</span><span class="brand-main">STAGS</span><span class="brand-sub" aria-hidden="true">NextStack</span></a> <p>オープンソースのリリース インテリジェンスが毎日公開されます。</p> </div> <div class="footer-col"> <h3>追跡</h3> <ul> <li><a href="/ja/releases">リリース</a></li> <li><a href="/ja/projects">プロジェクト</a></li> <li><a href="/ja/releases.xml">RSS フィード</a></li> </ul> </div> <div class="footer-col"> <h3>アーカイブ</h3> <ul> <li><a href="/zh/release_note" hreflang="zh-Hans">中文アーカイブ</a></li> <li><a href="/zh/chapters/" hreflang="zh-Hans">技術ノート</a></li> <li><a href="/zh/downloads/">Stags Tracker</a></li> </ul> </div> <div class="footer-col"> <h3>情報</h3> <ul> <li><a href="/privacy">プライバシーポリシー</a></li> <li><a href="/releases.xml">RSS</a></li> <li><a href="/sitemap-index.xml">Sitemap</a></li> </ul> </div> </div> <div class="footer-btm"> <span>© 2026 STAGS</span> <span>Release note は上流プロジェクトに属します。</span> </div> </div> </footer> <!-- 搜索面板 --> <div class="palette-bg" data-palette-bg data-open="false"> <div class="palette" role="dialog" aria-modal="true" aria-label="リリースを検索"> <div class="palette-in"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ink-4);flex:none"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <input type="search" data-palette-input placeholder="リリース、プロジェクト、バージョンを検索…" autocomplete="off" spellcheck="false"> <span class="kbd">esc</span> </div> <ul class="palette-res" data-palette-res></ul> <div class="palette-ft"> <span>↑↓ navigate</span> <span>↵ open</span> <span style="margin-left:auto" data-palette-count></span> </div> </div> </div> <script type="module" src="/assets/Shell.astro_astro_type_script_index_0_lang.0ZkKXV47.js"></script> </body> </html>

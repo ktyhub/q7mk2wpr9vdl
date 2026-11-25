@@ -1,0 +1,566 @@
+<!DOCTYPE html><html lang="de" dir="ltr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>trl v1.9.0 — STAGS NextStack</title><meta name="description" content="Long-standing request finally landed. GRPO and RLOO rely on RepeatSampler to repeat each prompt num_generations times and group them across processes — but samplers can't attach to iterable datasets (no length, no…"><meta name="keywords" content="Open-Source-release notes, Release-Tracker, changelog-Aggregator, Breaking Changes, Deprecation-Tracker, Kafka-Releases, Spring Boot-Releases, Kubernetes-Releases"><meta name="generator" content="Astro v5.18.2"><link rel="canonical" href="https://www.stags.cn/de/releases/trl/1.9.0/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="STAGS NextStack — releases" href="/de/releases.xml"><link rel="alternate" hreflang="en" href="https://www.stags.cn/releases/trl/1.9.0/"><link rel="alternate" hreflang="zh-Hans" href="https://www.stags.cn/releases/trl/1.9.0/"><link rel="alternate" hreflang="x-default" href="https://www.stags.cn/releases/trl/1.9.0/"><meta property="og:site_name" content="STAGS"><meta property="og:type" content="article"><meta property="og:title" content="trl v1.9.0 — STAGS NextStack"><meta property="og:description" content="Long-standing request finally landed. GRPO and RLOO rely on RepeatSampler to repeat each prompt num_generations times and group them across processes — but samplers can't attach to iterable datasets (no length, no…"><meta property="og:url" content="https://www.stags.cn/de/releases/trl/1.9.0/"><meta property="og:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><meta property="og:locale" content="de_DE"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="ja_JP"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:locale:alternate" content="es_ES"><meta property="og:locale:alternate" content="pt_BR"><meta property="og:locale:alternate" content="ko_KR"><meta property="og:locale:alternate" content="it_IT"><meta property="og:locale:alternate" content="ru_RU"><meta property="og:locale:alternate" content="tr_TR"><meta property="og:locale:alternate" content="id_ID"><meta property="og:locale:alternate" content="vi_VN"><meta property="og:locale:alternate" content="ar_SA"><meta property="og:locale:alternate" content="sv_SE"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.stags.cn/#website","name":"STAGS","url":"https://www.stags.cn/","inLanguage":"de","description":"NextStack indexiert Release Notes aus Infrastruktur- und KI-Projekten – Breaking Changes, Deprecations und Migrationen – in einem englischsprachigen Feed.","publisher":{"@id":"https://www.stags.cn/#org"}},{"@type":"Organization","@id":"https://www.stags.cn/#org","name":"STAGS","alternateName":"NextStack","url":"https://www.stags.cn/"},{"@type":"TechArticle","@id":"https://www.stags.cn/de/releases/trl/1.9.0/#article","headline":"trl v1.9.0 release notes","datePublished":"2026-07-21","inLanguage":"en","isPartOf":{"@id":"https://www.stags.cn/#website"},"about":{"@type":"SoftwareSourceCode","codeRepository":"https://github.com/huggingface/trl"}}]}</script><!-- 第三方脚本的连接预热：这两个域名几乎每页都要连，
+         提前建连能省掉 DNS + TCP + TLS 一个往返（移动网络 100~300ms）。
+         AdSense 只在开关打开时预热——关掉广告后连这个域名都没必要。 --><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://pagead2.googlesyndication.com"><!-- Google AdSense：站点所有权校验与广告投放共用同一段脚本，全站只加载一次。
+         未创建广告单元时页面上不渲染任何广告容器，站点保持干净。
+         fetchpriority=low：它不参与首屏渲染，不该跟正文抢带宽。 --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184355057086168" crossorigin="anonymous" fetchpriority="low"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-RFRF1TVRMP" fetchpriority="low"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RFRF1TVRMP");
+    </script><!-- 百度统计（国内流量统计）。官方标准片段，is:inline 原样输出，
+         hm.js 动态插到首个 script 前，异步不阻塞首屏渲染。 --><script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?299e5b4e65b86ed16879bdcbe70531d6";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script><link rel="stylesheet" href="/assets/index.DQGt3qLZ.css">
+<style>.ad-slot[data-astro-cid-fgwukgf6]{margin:var(--s10) 0 0;padding-top:var(--s5);border-top:1px solid var(--line)}.ad-slot-label[data-astro-cid-fgwukgf6]{margin-bottom:var(--s3);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{display:block;min-height:100px}@media(min-width:640px){.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{min-height:250px}}
+</style></head> <body> <a class="skip" href="#main">Zum Inhalt springen</a> <header class="hdr" data-header> <div class="wrap hdr-inner"> <a href="/de/" class="brand" aria-label="STAGS NextStack — Release-Informationen für Open Source"> <span class="brand-mark" aria-hidden="true">S</span> <span class="brand-main">STAGS</span> <span class="brand-sub" aria-hidden="true">NextStack</span> </a> <nav class="nav" aria-label="Primary"> <a href="/de/releases">Releases</a><a href="/de/projects">Projekte</a> </nav>  <details class="navmenu" data-navmenu> <summary class="navmenu-btn" aria-label="Open menu"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> </summary> <div class="navmenu-panel" role="group" aria-label="Primary"> <a href="/de/releases" class="navmenu-item">Releases</a><a href="/de/projects" class="navmenu-item">Projekte</a> </div> </details> <div class="hdr-tools"> <button class="searchbtn" type="button" data-search-open aria-label="Releases durchsuchen"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <span class="lbl">Suche</span> <span class="kbd">⌘K</span> </button> <details class="langmenu" data-langmenu> <summary class="langmenu-btn" aria-label="Sprache"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"> <circle cx="12" cy="12" r="9"></circle> <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path> </svg> <span class="langmenu-cur">DE</span> <svg class="langmenu-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m2 4 4 4 4-4"></path></svg> </summary> <div class="langmenu-panel" role="group" aria-label="Sprache"> <p class="langmenu-head">Sprache</p> <a class="langmenu-item" href="/releases/trl/1.9.0/" hreflang="en" lang="en" data-on="false"> <span class="langmenu-label">English</span> <span class="langmenu-code">EN</span> </a><a class="langmenu-item" href="/zh/release_note/trl/trl_v1.9.0" hreflang="zh-Hans" lang="zh-CN" data-on="false"> <span class="langmenu-label">中文</span> <span class="langmenu-code">中</span> </a><a class="langmenu-item" href="/ja/releases/trl/1.9.0/" hreflang="ja" lang="ja" data-on="false"> <span class="langmenu-label">日本語</span> <span class="langmenu-code">日</span> </a><a class="langmenu-item" href="/de/releases/trl/1.9.0/" hreflang="de" lang="de" aria-current="true" data-on="true"> <span class="langmenu-label">Deutsch</span> <span class="langmenu-code">DE</span> </a><a class="langmenu-item" href="/fr/releases/trl/1.9.0/" hreflang="fr" lang="fr" data-on="false"> <span class="langmenu-label">Français</span> <span class="langmenu-code">FR</span> </a><a class="langmenu-item" href="/es/releases/trl/1.9.0/" hreflang="es" lang="es" data-on="false"> <span class="langmenu-label">Español</span> <span class="langmenu-code">ES</span> </a><a class="langmenu-item" href="/pt/releases/trl/1.9.0/" hreflang="pt-BR" lang="pt-BR" data-on="false"> <span class="langmenu-label">Português</span> <span class="langmenu-code">PT</span> </a><a class="langmenu-item" href="/ko/releases" hreflang="ko" lang="ko" data-on="false"> <span class="langmenu-label">한국어</span> <span class="langmenu-code">한</span> </a><a class="langmenu-item" href="/it/releases" hreflang="it" lang="it" data-on="false"> <span class="langmenu-label">Italiano</span> <span class="langmenu-code">IT</span> </a><a class="langmenu-item" href="/ru/releases" hreflang="ru" lang="ru" data-on="false"> <span class="langmenu-label">Русский</span> <span class="langmenu-code">RU</span> </a><a class="langmenu-item" href="/tr/releases" hreflang="tr" lang="tr" data-on="false"> <span class="langmenu-label">Türkçe</span> <span class="langmenu-code">TR</span> </a><a class="langmenu-item" href="/id/releases" hreflang="id" lang="id" data-on="false"> <span class="langmenu-label">Bahasa Indonesia</span> <span class="langmenu-code">ID</span> </a><a class="langmenu-item" href="/vi/releases" hreflang="vi" lang="vi" data-on="false"> <span class="langmenu-label">Tiếng Việt</span> <span class="langmenu-code">VI</span> </a><a class="langmenu-item" href="/ar/releases" hreflang="ar" lang="ar" data-on="false"> <span class="langmenu-label">العربية</span> <span class="langmenu-code">ع</span> </a><a class="langmenu-item" href="/sv/releases" hreflang="sv" lang="sv" data-on="false"> <span class="langmenu-label">Svenska</span> <span class="langmenu-code">SV</span> </a> </div> </details> <a class="iconlink" href="/releases.xml" aria-label="RSS"> <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"> <path d="M2 12.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM2 7.5a6.5 6.5 0 0 1 6.5 6.5h-2A4.5 4.5 0 0 0 2 9.5v-2ZM2 2.5A11.5 11.5 0 0 1 13.5 14h-2A9.5 9.5 0 0 0 2 4.5v-2Z"></path> </svg> </a> </div> </div> </header> <main id="main">  <div class="wrap"> <div class="detail"> <article> <header class="detail-hd"> <nav class="crumbs" aria-label="Breadcrumb"> <a href="/de/">Startseite</a> <span class="sep">/</span> <a href="/de/releases">Releases</a> <span class="sep">/</span> <a href="/de/releases/trl">trl</a> </nav> <h1 class="detail-title"> <span class="p">trl</span> v1.9.0 </h1> <div class="detail-meta"> <span class="chip chip--minor">Minor</span> <span><span class="k">Veröffentlicht</span>21. Juli 2026</span>  <span class="sep" aria-hidden="true"></span> <a href="https://github.com/huggingface/trl" target="_blank" rel="noopener"> <span class="k">Quelle</span>huggingface/trl </a>   <span class="sep" aria-hidden="true"></span> <a href="/releases/trl/1.9.0/"> Englisches Original </a>  <span class="sep" aria-hidden="true"></span> <button class="btn btn--ghost btn--sm" type="button" data-copy="https://www.stags.cn/de/releases/trl/1.9.0/">Link kopieren</button> </div> </header> <div class="prose" style="margin-top:var(--s8)"> <p class="mt-notice" role="note">Diese Seite ist maschinell übersetzt. Maßgeblich ist der englische Originaltext.</p>  <div><h1>trl v1.9.0</h1>
+<h2>Funktionen</h2>
+<h3>Iterierbare/Streaming-Datensätze in GRPO und RLOO</h3>
+<p>Die lang gehegte Anfrage wurde endlich beantwortet. GRPO und RLOO verlassen sich darauf, dass <code>RepeatSampler</code> jede Eingabeaufforderung <code>num_generations</code>-mal wiederholt und prozessübergreifend gruppiert – Sampler können jedoch keine Verbindung zu iterierbaren Datensätzen herstellen (keine Länge, keine Indizierung), und das alte Verhalten hat den Sampler stillschweigend umgangen, wodurch die Vorteilsberechnung stillschweigend beschädigt wurde.
+Ein neuer <code>repeat_iterable_dataset</code>-Generator reproduziert die genaue Reihenfolge von <code>RepeatSampler</code>, indem er den Stream selbst transformiert, anstatt die Indizes neu anzuordnen. Trainer verpacken iterierbare Datensätze über <code>IterableDataset.from_generator</code>, erzwingen <code>dispatch_batches=False</code> und teilen den Stream pro Prozess auf, um Eingabeaufforderungsgruppen nach der prozessübergreifenden Erfassung beizubehalten.</p>
+<pre><code class="language-python">from datasets import load_dataset
+from trl import GRPOConfig, GRPOTrainer
+
+dataset = load_dataset(&quot;trl-lib/DeepMath-103K&quot;, split=&quot;train&quot;, streaming=True)
+
+trainer = GRPOTrainer(
+    model=&quot;Qwen/Qwen3-4B&quot;,
+    args=GRPOConfig(max_steps=1000),  # required for iterable datasets
+    train_dataset=dataset,
+    reward_funcs=accuracy_reward,
+)
+</code></pre>
+<p><code>max_steps</code> ist für iterierbare Datensätze erforderlich (keine Länge). Ein eindeutiger Fehler wird auch ausgelöst, wenn <code>dispatch_batches=True</code> mit einem iterierbaren Datensatz kombiniert wird.
+von @albertvillanova in https://github.com/huggingface/trl/pull/6351</p>
+<h3>Datensätze im Besitz der Umgebung</h3>
+<p>Wenn ein <code>environment_factory</code> bereitgestellt wird, kann die Umgebung nun Eigentümer der Daten sein. <code>train_dataset</code> wird optional: <code>reset()</code> gibt die Eingabeaufforderung zurück. Sie müssen keinen Dummy-Datensatz mehr erstellen, nur um die Schleife anzutreiben.</p>
+<pre><code class="language-python">class WordleEnv:
+    def reset(self, **kwargs) -&gt; str:      # returns the prompt
+        self._target = sample(words)
+        return f&quot;Guess a {len(self._target)}-letter word.&quot;
+    def get_reward(self) -&gt; float:
+        return 1.0 if self._solved else 0.0
+    def guess(self, word: str) -&gt; str:     # exposed tool
+        self._solved = word == self._target
+        return _feedback(word, self._target)
+
+trainer = GRPOTrainer(
+    model=&quot;Qwen/Qwen3-4B&quot;,
+    args=GRPOConfig(max_steps=1000),
+    environment_factory=WordleEnv,          # no train_dataset needed
+)
+</code></pre>
+<p>Gilt sowohl für <code>GRPOTrainer</code> als auch für <code>AsyncGRPOTrainer</code>. Ein mitgelieferter <code>train_dataset</code> funktioniert immer noch genau wie zuvor; Routing-Datensätze für mehrere Umgebungen können jetzt <strong>nur <code>environment</code></strong> sein (keine <code>prompt</code>-Spalte erforderlich).
+von @qgallouedec in https://github.com/huggingface/trl/pull/6349</p>
+<h3>Rollouts auf Nachrichtenebene in AsyncGRPO</h3>
+<p>Eine optionale Möglichkeit, Trainingszeilen aus einem Gespräch mit mehreren Runden aufzubauen. Der Nachrichtenmodus behält die Konversation als Nachrichten bei und <strong>tokenisiert das Ganze jede Runde neu</strong> und prüft dann, ob die neuen Token noch mit den bisher gehaltenen Token beginnen. Wenn ja → den neuen Teil anhängen (wie im Token-Modus). Wenn nein → wurde ein Umschreiben durchgeführt → die Zeile schließen und eine neue öffnen, die mit dem übereinstimmt, was das Modell tatsächlich gelesen hat.</p>
+<pre><code class="language-python">AsyncGRPOConfig(
+    rollout_protocol=&quot;message&quot;,   # &quot;token&quot; (default) | &quot;message&quot;
+    fork_threshold_tokens=1024,   # message-mode only
+)
+</code></pre>
+<p>Die Drift pro Runde wird klassifiziert als <strong>CLEAN</strong> (anhängen), <strong>REALIGN</strong> (Schwanzwackeln bei der letzten Antwort → dieselbe Zeile überschreiben) oder <strong>FORK</strong> (echte Neuschreibung → neue Zeile). Ein Vorteil pro Gespräch, eingeprägt in jede Zeile, die es hervorbrachte; Unter Token-Mean-Loss ist eine Abzweigung unsichtbar. Richtet die Installation für die zukünftige Unterstützung der Baumtrajektorie ein – die Bewertung ist bereits verzweigungsunabhängig (Gruppen nach <code>rollout_id</code>).
+von @AmineDiro in https://github.com/huggingface/trl/pull/6250</p>
+<h3>AsyncGRPO: <code>VLLMClient</code> und entkoppelte Gewichtssynchronisierung</h3>
+<p>Eine Fortsetzung der Rollout-Worker-Aufteilung von v1.8. Ein kleiner <code>VLLMClient</code> wird zum einzigen Ort, der HTTP mit dem vLLM-Server kommuniziert (benannte Methoden für <code>wait_for_server_ready</code>, <code>get_max_model_len</code>, <code>pause</code>/<code>resume</code>, Gewichtungsaktualisierungs-Endpunkte – zustandslos, daher auswählbar). Die Generierung bleibt bewusst in ihrer eigenen asynchronen <code>aiohttp</code>-Sitzung im untergeordneten Rollout.
+Die Gewichtssynchronisierung wird jetzt unabhängig von <code>rollout_worker</code> aus der Konfiguration erstellt (zuvor wurde sie von einem benutzerdefinierten Rollout-Worker zwangsweise auf <code>None</code> festgelegt) und kann über ein neues <code>WeightTransferProtocol</code> injiziert werden. <code>token_budget</code> wartet nun auf <code>/health</code>, bevor es standardmäßig zu <code>get_max_model_len()</code> wechselt, sodass ein langsam startendes vLLM wartet, anstatt die Ausführung fehlzuschlagen.
+von @AmineDiro in https://github.com/huggingface/trl/pull/6269</p>
+<h3><code>DistillationTrainer</code>-Refaktor</h3>
+<p>Ein ~13-PR-Sweep, der den experimentellen <code>DistillationTrainer</code> für zukünftige Stabilität umgestaltet:</p>
+<ul>
+<li><strong><code>ServerDistillationTrainer</code></strong> für den Lehrer-Server-Pfad extrahieren (#6454)</li>
+<li><strong>IW-OPD</strong> zu einem dedizierten experimentellen Trainer verschieben (#6453)
+– <strong>Entfernen Sie den lokalen Sparse-Top-1-Verlustpfad</strong> aus dem Basistrainer (#6455)
+– <strong>Top-K-Unterstützung entfernen</strong> aus dem grundlegenden generalisierten JSD-Verlust (#6456)</li>
+<li><strong>Validierung des Lehrers anhand der Vokabelgröße</strong> anstelle der Tokenizer-Identität (#6457)</li>
+<li><strong>ZPH37ZZ</strong>-On/Off-Policy-Mixing und den Off-Policy-Schulungszweig verwerfen und entfernen (#6458, #6460); GKD-Papierreproduktion zeigt jetzt auf <code>GKDTrainer</code> (#6459)</li>
+<li><strong>Akzeptieren Sie eine <code>prompt</code>-Spalte</strong> neben <code>messages</code> (#6461); <strong>Datensätze im Nachrichtenformat werden abgelehnt</strong> (#6474)</li>
+<li>⚠️ <strong>Fix <code>num_items_in_batch</code></strong>, um generierte Abschluss-Tokens zu zählen – der Verlustnenner war für richtlinienkonformes Training falsch (gezählte Datensatzabschlüsse, nicht generierte) und <strong>NaN'd für Nur-Prompt-Datensätze</strong>. Dadurch ändern sich die Verlustwerte für alle auf dem alten Pfad (#6478)</li>
+<li>Vorbereitende Pins zum Ziel und zum On/Off-Policy-Verhalten durchgängig (#6450, #6451, #6452)
+Alles von @qgallouedec.</li>
+</ul>
+<h3>Neues IW-OPD-Destillationsobjektiv</h3>
+<p>Wichtigkeitsgewichtete On-Policy-Destillation landet als optionales Ziel auf dem experimentellen <code>DistillationTrainer</code> – getrennte IW-OPD-Vorteile, die aus abgetasteten Token-Lehrern und Rollout-Logprobs aufgebaut sind (mit zwischengespeicherten vLLM-Rollout-Logprobs bei <code>use_vllm=True</code>).</p>
+<pre><code class="language-python">DistillationConfig(
+    distillation_objective=&quot;iw_opd&quot;,
+    iw_opd_gamma=1.0,
+    iw_opd_epsilon=0.2,
+    lmbda=1.0, reverse_kl_top_1_mode=&quot;sampled&quot;,  # required
+)
+</code></pre>
+<p>Jetzt im Rahmen der oben genannten Umgestaltung in einen eigenen experimentellen Trainer aufgeteilt.
+von @kashif in https://github.com/huggingface/trl/pull/6191</p>
+<h3><code>log_multimodal</code> für GRPO / RLOO</h3>
+<p>Neuer Konfigurationsschalter, um zu steuern, ob Bilder von multimodalen Vervollständigungen in Trackern protokolliert werden. Gilt auch für experimentelles DPPO und GRPO mit Wiedergabepuffer.
+von @apardyl in https://github.com/huggingface/trl/pull/5408 und von @albertvillanova in https://github.com/huggingface/trl/pull/6352</p>
+<h3>vLLM-Versions-Sweep</h3>
+<ul>
+<li>Unterstützen Sie vLLM 0.24.0 von @qgallouedec in https://github.com/huggingface/trl/pull/6355</li>
+<li>Unterstützt vLLM 0.25.0 und 0.25.1 von @qgallouedec in https://github.com/huggingface/trl/pull/6406</li>
+<li>Legen Sie vLLM 0.16 von @qgallouedec in https://github.com/huggingface/trl/pull/6404 ab</li>
+</ul>
+<h3>Sonstiges</h3>
+<ul>
+<li>Vereinfachen Sie die KTO KL-Fertigstellungskonstruktion in einer einzigen Stapelkarte von @albertvillanova in https://github.com/huggingface/trl/pull/6335</li>
+<li>Sicherheitsrichtlinie zum Repo von @albertvillanova in https://github.com/huggingface/trl/pull/6362 hinzufügen</li>
+<li><code>generate_rollout_completions</code> von @sergiopaniego in https://github.com/huggingface/trl/pull/5870 entfernt</li>
+<li>Legen Sie in der GKD-Richtliniengenerierung von @sergiopaniego in https://github.com/huggingface/trl/pull/6337 den expliziten neutralen Wert <code>top_p</code> fest</li>
+<li>Unterstützen Sie <code>DatasetDict</code> und <code>IterableDatasetDict</code> als <code>eval_dataset</code> in <code>evaluate</code> von @albertvillanova in https://github.com/huggingface/trl/pull/6326</li>
+<li>AsyncGRPO-Fork-unabhängige Epochenzählung von @AmineDiro in https://github.com/huggingface/trl/pull/6385</li>
+<li>Passen Sie die Handhabung der <code>AsyncGRPOTrainer</code>-Argumente an stabile Trainer von @qgallouedec in https://github.com/huggingface/trl/pull/6377 an</li>
+<li><code>auto_find_batch_size</code> in GRPO und RLOO von @qgallouedec in https://github.com/huggingface/trl/pull/6411 ablehnen</li>
+<li>Löschen Sie vollständig maskierte Beispiele nach der Kürzung in SFT durch @qgallouedec in https://github.com/huggingface/trl/pull/6320</li>
+<li>Löschen Sie Beispiele ohne Vervollständigung nach der Kürzung in DPO und KTO durch @qgallouedec in https://github.com/huggingface/trl/pull/6321</li>
+<li>Fügen Sie <code>GMPOTrainer</code> zur Telemetrie-Zulassungsliste von @qgallouedec in https://github.com/huggingface/trl/pull/6410 hinzu</li>
+<li><code>[GRPO]</code> Behandeln Sie explizites <code>max_tool_calling_iterations=0</code> als Null, nicht unbegrenzt von @Strongich in https://github.com/huggingface/trl/pull/6423</li>
+<li>Fügen Sie dem Paper Index einen Tipp zum Lesen von Aufsätzen mit dem <code>hf</code> CLI von @davanstrien in https://github.com/huggingface/trl/pull/6422 hinzu</li>
+</ul>
+<h2>Abschreibungen und Entfernungen</h2>
+<ul>
+<li><strong>Entfernen Sie den experimentellen DPPO-Trainer</strong> von @qgallouedec in https://github.com/huggingface/trl/pull/6402</li>
+<li><strong>Veraltete Datensätze im <code>messages</code>-Format in <code>DistillationTrainer</code></strong> – verwenden Sie stattdessen die Spalte <code>prompt</code> – von @qgallouedec in https://github.com/huggingface/trl/pull/6474</li>
+<li><strong>ZPH60ZZ On/Off-Policy-Mischung wird nicht mehr unterstützt</strong> in <code>DistillationTrainer</code> – Off-Policy-Pfad vollständig von @qgallouedec in https://github.com/huggingface/trl/pull/6458 und https://github.com/huggingface/trl/pull/6460 entfernt</li>
+</ul>
+<h2>Korrekturen</h2>
+<ul>
+<li><strong>Verzerrte rangübergreifende Aggregation tokengewichteter Metriken behoben</strong> in GRPO/RLOO – der Mittelwert war verzerrt, wenn die Anzahl der Token pro Rang unterschiedlich war; Reduziert jetzt Zähler + Anzahl gemeinsam, um einen echten globalen Mittelwert zu erhalten. Behebt außerdem, dass <code>clip_ratio/low_min</code> / <code>high_max</code> pro Vervollständigung statt pro Rang-Batch-Mittelwert (DP-Layout-unabhängig) erfolgt. Nur Protokollierung, keine Verluständerung. Von @qgallouedec in https://github.com/huggingface/trl/pull/6380</li>
+<li><strong>DPO/KTO <code>use_liger_kernel</code> unter DeepSpeed ZeRO-3 beheben</strong> von @qgallouedec in https://github.com/huggingface/trl/pull/6372</li>
+<li><strong>Erzwinge <code>use_reentrant=True</code> für PEFT + ZeRO-3 + Gradienten-Checkpointing</strong> für alle Trainer von @qgallouedec in https://github.com/huggingface/trl/pull/6356</li>
+<li><strong>Behebung von <code>precompute_ref_log_probs=True</code> mit DeepSpeed in DPO und KTO</strong> von @qgallouedec in https://github.com/huggingface/trl/pull/6403</li>
+<li><strong>Behebung von <code>cast_lm_head_to_fp32</code> unter FSDP2 / DeepSpeed ZeRO-3</strong> von @qgallouedec in https://github.com/huggingface/trl/pull/6330</li>
+<li><strong>Beschädigte Argumentationsblöcke in Trainings-Chat-Vorlagen der Qwen3-Familie beheben</strong> – der Schutz beider Tags hat die Wiedergabe selbst generierter Denkspuren unterbrochen (SFT / Destillation auf Modellausgaben); zur ursprünglichen Nur-<code>&lt;/think&gt;</code>-Prüfung zurückgekehrt. Von @qgallouedec in https://github.com/huggingface/trl/pull/6363</li>
+<li><strong>Fix EOS wird maskiert, wenn <code>pad_token_id == eos_token_id</code> in GKD und GOLD</strong> von @roycho96 in https://github.com/huggingface/trl/pull/6357</li>
+<li><strong>Behebung der GRPO-Verlustnormalisierung durch verkürzte Vervollständigung</strong> durch @Functionhx in https://github.com/huggingface/trl/pull/6439</li>
+<li><strong>Behebung, dass <code>apply_chat_template</code> führende Token von <code>chosen</code></strong> entfernt, wenn das gemeinsame Präfix der Eingabeaufforderung gegenüber <code>rejected</code> durch @sohumt123 in https://github.com/huggingface/trl/pull/6433 verkleinert wird</li>
+<li>Absturz behoben, wenn die Belohnungsfunktion eine <code>functools.partial</code> oder eine aufrufbare Instanz von @qgallouedec in https://github.com/huggingface/trl/pull/6313 ist</li>
+<li>QLoRA + FSDP1 Mixed-D-Type-Absturz in <code>prepare_peft_model</code> von @sergiopaniego in https://github.com/huggingface/trl/pull/6343 behoben</li>
+<li>GOLD-konforme Eingabeaufforderungen vor der Generierung kürzen, wobei das Eingabeaufforderungsende durch @roycho96 in https://github.com/huggingface/trl/pull/6359 beibehalten wird</li>
+<li><code>FileNotFoundError</code> in DPO/KTO <code>precompute_ref_log_probs</code> von @Functionhx in https://github.com/huggingface/trl/pull/6348 behoben</li>
+<li><code>GeometricMixtureWrapper.generate()</code>-Absturz nach Änderung der MoE-Dekodierungsoptimierung der Transformatoren durch @albertvillanova in https://github.com/huggingface/trl/pull/6413 behoben</li>
+<li>Korrektur der GKD <code>vocab_size</code>-Prüfung für multimodale Modellkonfigurationen von @sergiopaniego in https://github.com/huggingface/trl/pull/6340</li>
+<li>OpenEnv docker-Image-Beispiel-Bootstrap von @sergiopaniego in https://github.com/huggingface/trl/pull/6329 behoben</li>
+<li>Fehlertyp für <code>IterableDataset</code> in GRPO und RLOO von @albertvillanova in https://github.com/huggingface/trl/pull/6324 behoben</li>
+<li>Behebung des Absturzes der KTO-Auswertung bei Streaming-Datensätzen mit ungepaarten Präferenzdaten von @albertvillanova in https://github.com/huggingface/trl/pull/6325</li>
+<li>Absturz der DPO/KTO-Auswertung mit einem Diktat <code>eval_dataset</code> und <code>precompute_ref_log_probs</code> von @albertvillanova in https://github.com/huggingface/trl/pull/6370 behoben</li>
+<li>Behebung des DPO/KTO-Diktats <code>eval_dataset</code> mit doppelter Vorverarbeitung, das von @albertvillanova in https://github.com/huggingface/trl/pull/6434 an <code>evaluate()</code> übergeben wurde</li>
+<li>Wird erhöht, wenn DPO/KTO zum Zeitpunkt der Evaluierung durch @albertvillanova in https://github.com/huggingface/trl/pull/6443 keine korrekten Referenz-Log-Probs vorab berechnen kann</li>
+<li>Vermeiden Sie die direkte Mutation von Eingabeaufforderungen in GRPO- und DPPO-Umgebungsschleifen von @albertvillanova in https://github.com/huggingface/trl/pull/6364 und https://github.com/huggingface/trl/pull/6366</li>
+<li>KTO mit DPO ausrichten: <code>hasattr</code>-Wächter auf <code>lm_head.bias</code> im Liger-Pfad von @qgallouedec in https://github.com/huggingface/trl/pull/6425 ablegen</li>
+<li>KTO mit DPO ausrichten: <code>logits/chosen</code>- und <code>logits/rejected</code>-Metriken von @qgallouedec in https://github.com/huggingface/trl/pull/6424 korrigieren</li>
+<li>Fehlendes <code>eos_token_id</code> in Nicht-vLLM-konformen GOLD-Test-Stubs von @kashif in https://github.com/huggingface/trl/pull/6394 behoben</li>
+<li>Korrigieren Sie die Dokumentzeichenfolge <code>BEMACallback</code> <code>bias_power</code> von @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6390</li>
+</ul>
+<h2>Dokumentation und Beispiele</h2>
+<ul>
+<li>Dokumentieren Sie die <code>max_steps</code>-Anforderung für iterierbare Datensätze in GRPO und RLOO von @albertvillanova in https://github.com/huggingface/trl/pull/6432</li>
+<li>Richten Sie die Beschreibung von <code>AsyncGRPOConfig.max_completion_length</code> an <code>GRPOConfig</code> von @qgallouedec in https://github.com/huggingface/trl/pull/6374 aus</li>
+<li>Richten Sie die Dokumentzeichenfolge <code>AsyncGRPOTrainer.processing_class</code> an <code>GRPOTrainer</code> von @qgallouedec in https://github.com/huggingface/trl/pull/6375 aus</li>
+<li><code>AsyncGRPOTrainer</code> clip-ratio-Kommentar mit <code>GRPOTrainer</code> von @qgallouedec in https://github.com/huggingface/trl/pull/6376 ausrichten</li>
+<li>Formatierung der Fehlermeldung für <code>loss_type</code> von @qgallouedec in https://github.com/huggingface/trl/pull/6373 korrigiert</li>
+<li>Der irreführende Name des <code>BEMACallback</code> <code>bias_power=0.0</code>-Tests von @albertvillanova in https://github.com/huggingface/trl/pull/6464 wurde behoben</li>
+</ul>
+<h2>CI</h2>
+<ul>
+<li>Zerstöre die vLLM-Colocate-Modus-Prozessgruppe nach jedem CI-Test durch @albertvillanova in https://github.com/huggingface/trl/pull/6353</li>
+<li>Testen Sie das KTO-Training an iterierbaren Datensätzen mit dem KL-Verlust von @albertvillanova in https://github.com/huggingface/trl/pull/6338</li>
+<li>Testen Sie alle unterstützten <code>eval_dataset</code>-Eingabetypen in den Core Trainer <code>init</code> / <code>evaluate()</code>-Tests von @albertvillanova in https://github.com/huggingface/trl/pull/6336 und https://github.com/huggingface/trl/pull/6371</li>
+<li>Fügen Sie <code>eval_dataset</code>-Init-Tests für experimentelle GRPO-/Online-DPO-/SFT- und Destillations-/Präferenz-/BCO+CPO+ORPO+PRM-Trainer von @albertvillanova in https://github.com/huggingface/trl/pull/6395, https://github.com/huggingface/trl/pull/6396, https://github.com/huggingface/trl/pull/6397, https://github.com/huggingface/trl/pull/6398 und https://github.com/huggingface/trl/pull/6399 hinzu</li>
+<li>Experimentelle <code>environment_factory</code>-Warnung in GRPO-Tests von @albertvillanova in https://github.com/huggingface/trl/pull/6445 stummschalten</li>
+<li>Stummschalten der PEFT <code>ensure_weight_tying</code>-Warnung zu neueren PEFT in GRPO-Tests / DPO+KTO-Liger-Tests von @albertvillanova in https://github.com/huggingface/trl/pull/6446 und https://github.com/huggingface/trl/pull/6463</li>
+<li>Ignorieren Sie gutartiges <code>bitsandbytes</code> <code>_check_is_size</code> <code>FutureWarning</code> in CI von @albertvillanova in https://github.com/huggingface/trl/pull/6448</li>
+<li>Ignorieren Sie die harmlose <code>IndexPutBackward0</code>-Warnung vor dem Liger-SAPO-Verlust von @albertvillanova in https://github.com/huggingface/trl/pull/6436</li>
+<li>Filter umformulierte <code>torch.jit.script_method</code>-Warnung auf Python 3.14 von @albertvillanova in https://github.com/huggingface/trl/pull/6465</li>
+<li>Filtern Sie Triton <code>AnnAssign</code> <code>DeprecationWarning</code> auf Python 3.14 von @albertvillanova in https://github.com/huggingface/trl/pull/6467</li>
+<li>Die veraltete Warnung <code>create_reference_model</code> von @albertvillanova in https://github.com/huggingface/trl/pull/6418 behoben</li>
+<li>Nicht erfasste architekturübergreifende VLM-Warnung in GOLD-Trainer-CI-Tests von @albertvillanova in https://github.com/huggingface/trl/pull/6419 behoben</li>
+<li>Zeichnen Sie die invariante Referenz <code>dpo</code> nach #6321 von @qgallouedec in https://github.com/huggingface/trl/pull/6421 neu auf</li>
+<li>Überflüssiges <code>torch.tensor</code>-Umwickeln von Chargenetiketten in KTO von @albertvillanova in https://github.com/huggingface/trl/pull/6431 entfernen</li>
+<li>Verteilen Sie die Aktionsgruppe auf ein Verzeichnis mit 10 Updates von @dependabot[bot] in https://github.com/huggingface/trl/pull/6442</li>
+</ul>
+<h2>Neue Mitwirkende</h2>
+<ul>
+<li>@Functionhx hat seinen ersten Beitrag in https://github.com/huggingface/trl/pull/6348 geleistet</li>
+<li>@sohumt123 hat seinen ersten Beitrag in https://github.com/huggingface/trl/pull/6433 geleistet</li>
+</ul>
+<h2>Was hat sich geändert?</h2>
+<ul>
+<li>⬆️ Bump-Entwicklerversion von @qgallouedec in https://github.com/huggingface/trl/pull/6347</li>
+<li>FileNotFoundError in DPO/KTO precompute_ref_log_probs von @Functionhx in https://github.com/huggingface/trl/pull/6348 behoben</li>
+<li>Fügen Sie den Parameter <code>log_multimodal</code> zu GRPOConfig und RLOOConfig hinzu, um die Bildprotokollierung durch @apardyl in https://github.com/huggingface/trl/pull/5408 zu steuern</li>
+<li>Legen Sie in der GKD-Richtliniengenerierung von @sergiopaniego in https://github.com/huggingface/trl/pull/6337 ein explizites neutrales top_p fest</li>
+<li>Korrektur der GKD-Vocab_Size-Prüfung für multimodale Modellkonfigurationen durch @sergiopaniego in https://github.com/huggingface/trl/pull/6340</li>
+<li>OpenEnv docker-Image-Beispiel-Bootstrap von @sergiopaniego in https://github.com/huggingface/trl/pull/6329 behoben</li>
+<li>Richten Sie log_multimodal in den experimentellen Trainern DPPO und GRPO-with-replay-buffer von @albertvillanova in https://github.com/huggingface/trl/pull/6352 aus</li>
+<li>QLoRA + FSDP1 Mixed-Dtype-Absturz in Prepare_peft_model von @sergiopaniego in https://github.com/huggingface/trl/pull/6343 behoben</li>
+<li>Zerstöre die vLLM-Colocate-Modus-Prozessgruppe nach jedem CI-Test durch @albertvillanova in https://github.com/huggingface/trl/pull/6353</li>
+<li>Fehlertyp für IterableDataset in GRPO und RLOO von @albertvillanova in https://github.com/huggingface/trl/pull/6324 behoben</li>
+<li>Behebung des Absturzes der KTO-Auswertung bei Streaming-Datensätzen mit ungepaarten Präferenzdaten von @albertvillanova in https://github.com/huggingface/trl/pull/6325</li>
+<li>Unterstützt DatasetDict und IterableDatasetDict als eval_dataset in „evaluieren“ von @albertvillanova in https://github.com/huggingface/trl/pull/6326</li>
+<li>Vereinfachen Sie die KTO KL-Fertigstellungskonstruktion in einer einzigen Stapelkarte von @albertvillanova in https://github.com/huggingface/trl/pull/6335</li>
+<li>Rollout auf Nachrichtenebene mit linearen Trajektorien von @AmineDiro in https://github.com/huggingface/trl/pull/6250 implementieren</li>
+<li>Sicherheitsrichtlinie zum Repo von @albertvillanova in https://github.com/huggingface/trl/pull/6362 hinzufügen</li>
+<li><code>generate_rollout_completions</code> von @sergiopaniego in https://github.com/huggingface/trl/pull/5870 entfernt</li>
+<li>Absturz behoben, wenn die Belohnungsfunktion eine <code>functools.partial</code> oder eine aufrufbare Instanz von @qgallouedec in https://github.com/huggingface/trl/pull/6313 ist</li>
+<li>Löschen Sie vollständig maskierte Beispiele nach der Kürzung in SFT durch @qgallouedec in https://github.com/huggingface/trl/pull/6320</li>
+<li><code>cast_lm_head_to_fp32</code> unter FSDP2 / DeepSpeed ZeRO-3 von @qgallouedec in https://github.com/huggingface/trl/pull/6330 behoben</li>
+<li>Unterstützung für vLLM 0.24.0 von @qgallouedec in https://github.com/huggingface/trl/pull/6355 hinzugefügt</li>
+<li>DPO/KTO <code>use_liger_kernel</code> unter DeepSpeed ZeRO-3 von @qgallouedec in https://github.com/huggingface/trl/pull/6372 behoben</li>
+<li>Testen Sie das KTO-Training an iterierbaren Datensätzen mit dem KL-Verlust von @albertvillanova in https://github.com/huggingface/trl/pull/6338</li>
+<li>Vermeiden Sie direkte Mutationen von Eingabeaufforderungen in der GRPO-Umgebungsschleife von @albertvillanova in https://github.com/huggingface/trl/pull/6364</li>
+<li>Vermeiden Sie direkte Mutationen von Eingabeaufforderungen in der DPPO-Umgebungsschleife von @albertvillanova in https://github.com/huggingface/trl/pull/6366</li>
+<li>Behebung des Absturzes der DPO/KTO-Auswertung mit einem dict eval_dataset und precompute_ref_log_probs von @albertvillanova in https://github.com/huggingface/trl/pull/6370</li>
+<li>Testen Sie alle unterstützten eval_dataset-Eingabetypen in Core-Trainer-Init-Tests von @albertvillanova in https://github.com/huggingface/trl/pull/6336</li>
+<li>Testen Sie alle unterstützten eval_dataset-Eingabetypen in den Core-Trainer-Evaluate()-Tests von @albertvillanova in https://github.com/huggingface/trl/pull/6371</li>
+<li>Löschen Sie Beispiele ohne Vervollständigung nach der Kürzung in DPO und KTO durch @qgallouedec in https://github.com/huggingface/trl/pull/6321</li>
+<li>Behebung der Maskierung von EOS, wenn pad_token_id gleich eos_token_id in GKD und GOLD von @roycho96 in https://github.com/huggingface/trl/pull/6357 ist</li>
+<li>GOLD-konforme Eingabeaufforderungen vor der Generierung kürzen, wobei das Eingabeaufforderungsende durch @roycho96 in https://github.com/huggingface/trl/pull/6359 beibehalten wird</li>
+<li>Fehlende eos_token_id in Nicht-vLLM-konformen GOLD-Test-Stubs von @kashif in https://github.com/huggingface/trl/pull/6394 behoben</li>
+<li>iw-opd-Destillation von @kashif in https://github.com/huggingface/trl/pull/6191 hinzufügen</li>
+<li>Erzwinge <code>use_reentrant=True</code> für PEFT + ZeRO-3 + Gradienten-Checkpointing in allen Trainern von @qgallouedec in https://github.com/huggingface/trl/pull/6356</li>
+<li>Behebung des Absturzes von GeometricMixtureWrapper.generate() nach Änderung der MoE-Dekodierungsoptimierung von Transformers durch @albertvillanova in https://github.com/huggingface/trl/pull/6413</li>
+<li>eval_dataset-Init-Tests für experimentelle GRPO-Familientrainer von @albertvillanova in https://github.com/huggingface/trl/pull/6395 hinzugefügt</li>
+<li>eval_dataset-Init-Tests für experimentelle Online-DPO-Familientrainer von @albertvillanova in https://github.com/huggingface/trl/pull/6396 hinzugefügt</li>
+<li>eval_dataset-Init-Tests für experimentelle SFT- und Destillationstrainer von @albertvillanova in https://github.com/huggingface/trl/pull/6397 hinzugefügt</li>
+<li>eval_dataset-Init-Tests für experimentelle Präferenztrainer von @albertvillanova in https://github.com/huggingface/trl/pull/6398 hinzugefügt</li>
+<li>eval_dataset-Init-Tests für experimentelle BCO-, CPO-, ORPO- und PRM-Trainer von @albertvillanova in https://github.com/huggingface/trl/pull/6399 hinzugefügt</li>
+<li>Korrigieren Sie beschädigte Argumentationsblöcke in den Trainings-Chat-Vorlagen der Qwen3-Familie von @qgallouedec in https://github.com/huggingface/trl/pull/6363</li>
+<li>Nicht erfasste architekturübergreifende VLM-Warnung in GOLD-Trainer-CI-Tests von @albertvillanova in https://github.com/huggingface/trl/pull/6419 behoben</li>
+<li>Die Warnung zur veralteten Funktion „create_reference_model“ von @albertvillanova in https://github.com/huggingface/trl/pull/6418 wurde behoben</li>
+<li>Fügen Sie <code>GMPOTrainer</code> zur Telemetrie-Zulassungsliste von @qgallouedec in https://github.com/huggingface/trl/pull/6410 hinzu</li>
+<li>Async grpo vllm client von @AmineDiro in https://github.com/huggingface/trl/pull/6269</li>
+<li>Zeichnen Sie die invariante Referenz <code>dpo</code> nach #6321 von @qgallouedec in https://github.com/huggingface/trl/pull/6421 neu auf</li>
+<li>Fügen Sie dem Paper Index einen Tipp zum Lesen von Aufsätzen mit der HF CLI von @davanstrien in https://github.com/huggingface/trl/pull/6422 hinzu</li>
+<li>[GRPO] Behandle explizite max_tool_calling_iterations=0 als Null, nicht unbegrenzt von @Strongich in https://github.com/huggingface/trl/pull/6423</li>
+<li>KTO mit DPO ausrichten: Platzieren Sie <code>hasattr</code>-Wächter auf <code>lm_head.bias</code> im Liger-Pfad von @qgallouedec in https://github.com/huggingface/trl/pull/6425</li>
+<li>KTO mit DPO ausrichten: Korrigieren Sie die Metriken <code>logits/chosen</code> und <code>logits/rejected</code> von @qgallouedec in https://github.com/huggingface/trl/pull/6424</li>
+<li>Unterstützt iterierbare Datensätze in GRPO und RLOO von @albertvillanova in https://github.com/huggingface/trl/pull/6351</li>
+<li>Richten Sie den Kommentar „<code>AsyncGRPOTrainer</code> clip-ratio“ mit <code>GRPOTrainer</code> von @qgallouedec in https://github.com/huggingface/trl/pull/6376 aus</li>
+<li>Ignorieren Sie die harmlose IndexPutBackward0-Warnung vom Liger SAPO-Verlust von @albertvillanova in https://github.com/huggingface/trl/pull/6436</li>
+<li>Richten Sie die Beschreibung von <code>AsyncGRPOConfig.max_completion_length</code> mit <code>GRPOConfig</code> von @qgallouedec in https://github.com/huggingface/trl/pull/6374 aus</li>
+<li>Formatierung der Fehlermeldung für loss_type von @qgallouedec in https://github.com/huggingface/trl/pull/6373 korrigiert</li>
+<li>Richten Sie die Dokumentzeichenfolge <code>AsyncGRPOTrainer.processing_class</code> an <code>GRPOTrainer</code> von @qgallouedec in https://github.com/huggingface/trl/pull/6375 aus</li>
+<li>Überflüssiges Torch.tensor-Umwickeln von Chargenetiketten in KTO von @albertvillanova in https://github.com/huggingface/trl/pull/6431 entfernen</li>
+<li>Dokumentieren Sie die max_steps-Anforderung für iterierbare Datensätze in GRPO und RLOO von @albertvillanova in https://github.com/huggingface/trl/pull/6432</li>
+<li>Korrigiert das DPO/KTO-Diktat „eval_dataset“ mit doppelter Vorverarbeitung, das von @albertvillanova in https://github.com/huggingface/trl/pull/6434 an „evaluate()“ übergeben wurde</li>
+<li>Verteilen Sie die Aktionsgruppe auf ein Verzeichnis mit 10 Updates von @dependabot[bot] in https://github.com/huggingface/trl/pull/6442</li>
+<li>Korrektur der GRPO-Verlustnormalisierung durch verkürzte Vervollständigung durch @Functionhx in https://github.com/huggingface/trl/pull/6439</li>
+<li>Umgebungseigener Datensatz: Machen Sie <code>train_dataset</code> optional von @qgallouedec in https://github.com/huggingface/trl/pull/6349</li>
+<li>Passen Sie die Handhabung der <code>AsyncGRPOTrainer</code>-Argumente an stabile Trainer von @qgallouedec in https://github.com/huggingface/trl/pull/6377 an</li>
+<li>Korrektur der voreingenommenen rangübergreifenden Aggregation tokengewichteter Metriken (GRPO, RLOO) durch @qgallouedec in https://github.com/huggingface/trl/pull/6380</li>
+<li>Experimentelle Warnung „environment_factory“ in GRPO-Tests von @albertvillanova in https://github.com/huggingface/trl/pull/6445 stummschalten</li>
+<li>Ignorieren Sie harmlose Bitsandbytes _check_is_size FutureWarning in CI von @albertvillanova in https://github.com/huggingface/trl/pull/6448</li>
+<li>PEFT-Warnung „sure_weight_tying“ bei neueren PEFT-in-GRPO-Tests von @albertvillanova in https://github.com/huggingface/trl/pull/6446 stummschalten</li>
+<li>Korrektur des BEMACallback-Bias_power-Dokumentstrings, der das Gegenteil des tatsächlichen Verhaltens von @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6390 beschreibt</li>
+<li>AsyncGRPO-Fork-unabhängige Epochenzählung von @AmineDiro in https://github.com/huggingface/trl/pull/6385</li>
+<li>Unterstützung für vLLM 0.25.0 und 0.25.1 von @qgallouedec in https://github.com/huggingface/trl/pull/6406 hinzugefügt</li>
+<li>Entfernen Sie die vLLM 0.16-Unterstützung von @qgallouedec in https://github.com/huggingface/trl/pull/6404</li>
+<li>Entfernen Sie den experimentellen DPPO-Trainer von @qgallouedec in https://github.com/huggingface/trl/pull/6402</li>
+<li><code>auto_find_batch_size</code> in GRPO und RLOO von @qgallouedec in https://github.com/huggingface/trl/pull/6411 ablehnen</li>
+<li><code>precompute_ref_log_probs=True</code> mit DeepSpeed in DPO und KTO von @qgallouedec in https://github.com/huggingface/trl/pull/6403 behoben</li>
+<li>[DistillationTrainer Refactor] Fixieren Sie das Destillationsziel vor dem Refactoring durch @qgallouedec in https://github.com/huggingface/trl/pull/6450</li>
+<li>[DistillationTrainer Refactor] Pinnwand für richtlinien- und richtlinienfremde Schulungen durchgehend von @qgallouedec in https://github.com/huggingface/trl/pull/6451</li>
+<li>[DistillationTrainer Refactor] Dokumentieren Sie den num_items_in_batch Nennerfehler von @qgallouedec in https://github.com/huggingface/trl/pull/6452</li>
+<li>Behebung des Problems, dass <code>apply_chat_template</code> führende Token von <code>chosen</code> entfernt, wenn das gemeinsame Präfix der Eingabeaufforderung gegenüber <code>rejected</code> durch @sohumt123 in https://github.com/huggingface/trl/pull/6433 verkleinert wird</li>
+<li>[DistillationTrainer Refactor] Verschieben Sie IW-OPD zu einem speziellen experimentellen Trainer von @qgallouedec in https://github.com/huggingface/trl/pull/6453</li>
+<li>[DistillationTrainer-Refaktor] Extrahieren Sie den Lehrer-Server-Pfad in ServerDistillationTrainer von @qgallouedec in https://github.com/huggingface/trl/pull/6454</li>
+<li>[DistillationTrainer-Refaktor] Entfernen Sie den lokalen Sparse-Top-1-Verlustpfad aus dem Basistrainer von @qgallouedec in https://github.com/huggingface/trl/pull/6455</li>
+<li>[DistillationTrainer-Refaktor] Top-K-Unterstützung aus dem grundlegenden generalisierten JSD-Verlust von @qgallouedec in https://github.com/huggingface/trl/pull/6456 entfernen</li>
+<li>[DistillationTrainer Refactor] Validieren Sie den Lehrer anhand der Vokabelgröße anstelle der Tokenizer-Identität von @qgallouedec in https://github.com/huggingface/trl/pull/6457</li>
+<li>[DistillationTrainer Refactor] <code>lmbda</code> On/Off-Policy-Mischung durch @qgallouedec in https://github.com/huggingface/trl/pull/6458 veraltet</li>
+<li>[DistillationTrainer Refactor] Richten Sie die GKD-Papierreproduktion auf <code>GKDTrainer</code> von @qgallouedec in https://github.com/huggingface/trl/pull/6459</li>
+<li>[DistillationTrainer Refactor] Entfernen Sie <code>lmbda</code> und den Off-Policy-Trainingszweig von @qgallouedec in https://github.com/huggingface/trl/pull/6460</li>
+<li>Wird erhöht, wenn DPO/KTO zum Zeitpunkt der Evaluierung durch @albertvillanova in https://github.com/huggingface/trl/pull/6443 keine korrekten Referenz-Log-Probs vorab berechnen kann</li>
+<li>PEFT-Warnung „sure_weight_tying“ in DPO- und KTO-Liger-Tests von @albertvillanova in https://github.com/huggingface/trl/pull/6463 stummschalten</li>
+<li>Korrigieren Sie den irreführenden Namen des BEMACallback-Tests Bias_power=0.0 von @albertvillanova in https://github.com/huggingface/trl/pull/6464</li>
+<li>Filter umformulierte Torch.jit.script_method-Warnung auf Python 3.14 von @albertvillanova in https://github.com/huggingface/trl/pull/6465</li>
+<li>Filter triton AnnAssign DeprecationWarning auf Python 3.14 von @albertvillanova in https://github.com/huggingface/trl/pull/6467</li>
+<li>[DistillationTrainer Refactor] Akzeptieren Sie eine <code>prompt</code>-Spalte neben <code>messages</code> von @qgallouedec in https://github.com/huggingface/trl/pull/6461</li>
+<li>[DistillationTrainer-Refaktor] Datensätze im <code>messages</code>-Format von @qgallouedec in https://github.com/huggingface/trl/pull/6474 veraltet</li>
+<li>[DistillationTrainer-Refaktor] <code>num_items_in_batch</code> korrigiert, um generierte Abschlusstoken zu zählen ⚠️ ändert Verlustwerte von @qgallouedec in https://github.com/huggingface/trl/pull/6478</li>
+<li>Veröffentlichung: v1.9 von @qgallouedec in https://github.com/huggingface/trl/pull/6495
+<strong>Vollständig Changelog</strong>: https://github.com/huggingface/trl/compare/v1.8.0...v1.9.0</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>Quelle</strong> <a href="https://github.com/huggingface/trl">huggingface/trl</a> · <code>v1.9.0</code> · 21.07.2026 · <a href="https://github.com/huggingface/trl/releases/tag/v1.9.0">Upstream-Veröffentlichung</a>
+<em>Zum Indexieren wörtlich gespiegelt. Alle Rechte liegen beim Upstream-Projekt.</em></p>
+</blockquote></div>  <details class="mt-original"> <summary>Englisches Original / English original</summary> <div class="prose mt-original-body"><h1>trl v1.9.0</h1>
+<h2>Features</h2>
+<h3>Iterable / streaming datasets in GRPO and RLOO</h3>
+<p>Long-standing request finally landed. GRPO and RLOO rely on <code>RepeatSampler</code> to repeat each prompt <code>num_generations</code> times and group them across processes — but samplers can't attach to iterable datasets (no length, no indexing), and the old behavior silently bypassed the sampler, quietly corrupting advantage computation.</p>
+<p>A new <code>repeat_iterable_dataset</code> generator reproduces <code>RepeatSampler</code>'s exact ordering by transforming the stream itself instead of reordering indices. Trainers wrap iterable datasets via <code>IterableDataset.from_generator</code>, force <code>dispatch_batches=False</code>, and shard the stream per-process to preserve prompt groups after cross-process gathering.</p>
+<pre><code class="language-python">from datasets import load_dataset
+from trl import GRPOConfig, GRPOTrainer
+
+dataset = load_dataset(&quot;trl-lib/DeepMath-103K&quot;, split=&quot;train&quot;, streaming=True)
+
+trainer = GRPOTrainer(
+    model=&quot;Qwen/Qwen3-4B&quot;,
+    args=GRPOConfig(max_steps=1000),  # required for iterable datasets
+    train_dataset=dataset,
+    reward_funcs=accuracy_reward,
+)
+</code></pre>
+<p><code>max_steps</code> is required for iterable datasets (no length). A clear error also fires if <code>dispatch_batches=True</code> is combined with an iterable dataset.</p>
+<p>by @albertvillanova in https://github.com/huggingface/trl/pull/6351</p>
+<h3>Environment-owned datasets</h3>
+<p>When an <code>environment_factory</code> is provided, the environment can now own the data. <code>train_dataset</code> becomes optional: <code>reset()</code> returns the prompt. No more fabricating a dummy dataset just to drive the loop.</p>
+<pre><code class="language-python">class WordleEnv:
+    def reset(self, **kwargs) -&gt; str:      # returns the prompt
+        self._target = sample(words)
+        return f&quot;Guess a {len(self._target)}-letter word.&quot;
+    def get_reward(self) -&gt; float:
+        return 1.0 if self._solved else 0.0
+    def guess(self, word: str) -&gt; str:     # exposed tool
+        self._solved = word == self._target
+        return _feedback(word, self._target)
+
+trainer = GRPOTrainer(
+    model=&quot;Qwen/Qwen3-4B&quot;,
+    args=GRPOConfig(max_steps=1000),
+    environment_factory=WordleEnv,          # no train_dataset needed
+)
+</code></pre>
+<p>Applies to both <code>GRPOTrainer</code> and <code>AsyncGRPOTrainer</code>. A provided <code>train_dataset</code> still works exactly as before; multi-environment routing datasets can now be <strong><code>environment</code>-only</strong> (no <code>prompt</code> column required).</p>
+<p>by @qgallouedec in https://github.com/huggingface/trl/pull/6349</p>
+<h3>Message-level rollouts in AsyncGRPO</h3>
+<p>An opt-in way to build training rows from a multi-turn conversation. Message mode keeps the conversation as messages and <strong>re-tokenizes the whole thing each turn</strong>, then checks whether the fresh tokens still start with the tokens held so far. If yes → append the new part (same as token mode). If no → a rewrite happened → close the row and open a new one that matches what the model actually read.</p>
+<pre><code class="language-python">AsyncGRPOConfig(
+    rollout_protocol=&quot;message&quot;,   # &quot;token&quot; (default) | &quot;message&quot;
+    fork_threshold_tokens=1024,   # message-mode only
+)
+</code></pre>
+<p>Per-turn drift is classified as <strong>CLEAN</strong> (append), <strong>REALIGN</strong> (last-answer tail wobble → overwrite same row), or <strong>FORK</strong> (real rewrite → new row). One advantage per conversation, stamped on every row it produced; under token-mean loss a fork is invisible. Sets up the plumbing for future tree-trajectory support — scoring is already branch-agnostic (groups by <code>rollout_id</code>).</p>
+<p>by @AmineDiro in https://github.com/huggingface/trl/pull/6250</p>
+<h3>AsyncGRPO: <code>VLLMClient</code> and decoupled weight sync</h3>
+<p>A follow-up to v1.8's rollout worker split. A small <code>VLLMClient</code> becomes the single place that speaks HTTP to the vLLM server (named methods for <code>wait_for_server_ready</code>, <code>get_max_model_len</code>, <code>pause</code>/<code>resume</code>, weight-update endpoints — stateless, so picklable). Generation deliberately stays on its own async <code>aiohttp</code> session in the rollout child.</p>
+<p>Weight sync is now built from config independent of <code>rollout_worker</code> (previously a custom rollout worker force-set it to <code>None</code>), and is injectable via a new <code>WeightTransferProtocol</code>. <code>token_budget</code> now waits for <code>/health</code> before defaulting to <code>get_max_model_len()</code>, so a slow-starting vLLM waits instead of failing the run.</p>
+<p>by @AmineDiro in https://github.com/huggingface/trl/pull/6269</p>
+<h3><code>DistillationTrainer</code> refactor</h3>
+<p>A ~13-PR sweep that reshapes the experimental <code>DistillationTrainer</code> for future stability:</p>
+<ul>
+<li><strong>Extract <code>ServerDistillationTrainer</code></strong> for the teacher-server path (#6454)</li>
+<li><strong>Move IW-OPD</strong> to a dedicated experimental trainer (#6453)</li>
+<li><strong>Remove the local sparse top-1 loss path</strong> from the base trainer (#6455)</li>
+<li><strong>Remove top-k support</strong> from the base generalized JSD loss (#6456)</li>
+<li><strong>Validate the teacher by vocab size</strong> instead of tokenizer identity (#6457)</li>
+<li><strong>Deprecate &amp; remove <code>lmbda</code></strong> on/off-policy mixing and the off-policy training branch (#6458, #6460); GKD paper reproduction now points at <code>GKDTrainer</code> (#6459)</li>
+<li><strong>Accept a <code>prompt</code> column</strong> alongside <code>messages</code> (#6461); <strong>deprecate messages-format datasets</strong> (#6474)</li>
+<li>⚠️ <strong>Fix <code>num_items_in_batch</code></strong> to count generated completion tokens — the loss denominator was wrong for on-policy training (counted dataset completions, not generated ones) and <strong>NaN'd on prompt-only datasets</strong>. This changes loss values for anyone on the old path (#6478)</li>
+<li>Preparatory pins on the objective and on/off-policy behavior end to end (#6450, #6451, #6452)</li>
+</ul>
+<p>All by @qgallouedec.</p>
+<h3>New IW-OPD distillation objective</h3>
+<p>Importance-Weighted On-Policy Distillation lands as an optional objective on the experimental <code>DistillationTrainer</code> — detached IW-OPD advantages built from sampled-token teacher and rollout logprobs (with cached vLLM rollout logprobs when <code>use_vllm=True</code>).</p>
+<pre><code class="language-python">DistillationConfig(
+    distillation_objective=&quot;iw_opd&quot;,
+    iw_opd_gamma=1.0,
+    iw_opd_epsilon=0.2,
+    lmbda=1.0, reverse_kl_top_1_mode=&quot;sampled&quot;,  # required
+)
+</code></pre>
+<p>Now split into its own experimental trainer as part of the refactor above.</p>
+<p>by @kashif in https://github.com/huggingface/trl/pull/6191</p>
+<h3><code>log_multimodal</code> for GRPO / RLOO</h3>
+<p>New config toggle to control whether images from multimodal completions are logged to trackers. Also applied to experimental DPPO and GRPO-with-replay-buffer.</p>
+<p>by @apardyl in https://github.com/huggingface/trl/pull/5408 and by @albertvillanova in https://github.com/huggingface/trl/pull/6352</p>
+<h3>vLLM version sweep</h3>
+<ul>
+<li>Support vLLM 0.24.0 by @qgallouedec in https://github.com/huggingface/trl/pull/6355</li>
+<li>Support vLLM 0.25.0 and 0.25.1 by @qgallouedec in https://github.com/huggingface/trl/pull/6406</li>
+<li>Drop vLLM 0.16 by @qgallouedec in https://github.com/huggingface/trl/pull/6404</li>
+</ul>
+<h3>Other</h3>
+<ul>
+<li>Simplify KTO KL completion construction into a single batched map by @albertvillanova in https://github.com/huggingface/trl/pull/6335</li>
+<li>Add security policy to the repo by @albertvillanova in https://github.com/huggingface/trl/pull/6362</li>
+<li>Removed <code>generate_rollout_completions</code> by @sergiopaniego in https://github.com/huggingface/trl/pull/5870</li>
+<li>Set explicit neutral <code>top_p</code> in GKD on-policy generation by @sergiopaniego in https://github.com/huggingface/trl/pull/6337</li>
+<li>Support <code>DatasetDict</code> and <code>IterableDatasetDict</code> as <code>eval_dataset</code> in <code>evaluate</code> by @albertvillanova in https://github.com/huggingface/trl/pull/6326</li>
+<li>AsyncGRPO fork-independent epoch counting by @AmineDiro in https://github.com/huggingface/trl/pull/6385</li>
+<li>Align <code>AsyncGRPOTrainer</code> args handling with stable trainers by @qgallouedec in https://github.com/huggingface/trl/pull/6377</li>
+<li>Reject <code>auto_find_batch_size</code> in GRPO and RLOO by @qgallouedec in https://github.com/huggingface/trl/pull/6411</li>
+<li>Drop fully-masked examples after truncation in SFT by @qgallouedec in https://github.com/huggingface/trl/pull/6320</li>
+<li>Drop examples with no completion left after truncation in DPO and KTO by @qgallouedec in https://github.com/huggingface/trl/pull/6321</li>
+<li>Add <code>GMPOTrainer</code> to the telemetry allowlist by @qgallouedec in https://github.com/huggingface/trl/pull/6410</li>
+<li><code>[GRPO]</code> Treat explicit <code>max_tool_calling_iterations=0</code> as zero, not unlimited by @Strongich in https://github.com/huggingface/trl/pull/6423</li>
+<li>Add a tip to the Paper Index on reading papers with the <code>hf</code> CLI by @davanstrien in https://github.com/huggingface/trl/pull/6422</li>
+</ul>
+<h2>Deprecations and removals</h2>
+<ul>
+<li><strong>Remove the experimental DPPO trainer</strong> by @qgallouedec in https://github.com/huggingface/trl/pull/6402</li>
+<li><strong>Deprecate <code>messages</code>-format datasets in <code>DistillationTrainer</code></strong> — use <code>prompt</code> column instead — by @qgallouedec in https://github.com/huggingface/trl/pull/6474</li>
+<li><strong>Deprecate <code>lmbda</code> on/off-policy mixing</strong> in <code>DistillationTrainer</code> — off-policy path fully removed by @qgallouedec in https://github.com/huggingface/trl/pull/6458 and https://github.com/huggingface/trl/pull/6460</li>
+</ul>
+<h2>Fixes</h2>
+<ul>
+<li><strong>Fix biased cross-rank aggregation of token-weighted metrics</strong> in GRPO / RLOO — mean-of-means was biased when per-rank token counts differ; now reduces numerator + count jointly for a true global mean. Also fixes <code>clip_ratio/low_min</code> / <code>high_max</code> to be per-completion instead of per-rank-batch-mean (DP-layout-independent). Logging-only, no loss change. By @qgallouedec in https://github.com/huggingface/trl/pull/6380</li>
+<li><strong>Fix DPO/KTO <code>use_liger_kernel</code> under DeepSpeed ZeRO-3</strong> by @qgallouedec in https://github.com/huggingface/trl/pull/6372</li>
+<li><strong>Force <code>use_reentrant=True</code> for PEFT + ZeRO-3 + gradient checkpointing</strong> across all trainers by @qgallouedec in https://github.com/huggingface/trl/pull/6356</li>
+<li><strong>Fix <code>precompute_ref_log_probs=True</code> with DeepSpeed in DPO and KTO</strong> by @qgallouedec in https://github.com/huggingface/trl/pull/6403</li>
+<li><strong>Fix <code>cast_lm_head_to_fp32</code> under FSDP2 / DeepSpeed ZeRO-3</strong> by @qgallouedec in https://github.com/huggingface/trl/pull/6330</li>
+<li><strong>Fix corrupted reasoning blocks in Qwen3-family training chat templates</strong> — the both-tags guard broke replay of self-generated thinking traces (SFT / distillation on model outputs); reverted to the original <code>&lt;/think&gt;</code>-only check. By @qgallouedec in https://github.com/huggingface/trl/pull/6363</li>
+<li><strong>Fix EOS being masked when <code>pad_token_id == eos_token_id</code> in GKD and GOLD</strong> by @roycho96 in https://github.com/huggingface/trl/pull/6357</li>
+<li><strong>Fix GRPO truncated-completion loss normalization</strong> by @Functionhx in https://github.com/huggingface/trl/pull/6439</li>
+<li><strong>Fix <code>apply_chat_template</code> dropping leading tokens from <code>chosen</code></strong> when the prompt common prefix shrinks against <code>rejected</code> by @sohumt123 in https://github.com/huggingface/trl/pull/6433</li>
+<li>Fix crash when reward function is a <code>functools.partial</code> or callable instance by @qgallouedec in https://github.com/huggingface/trl/pull/6313</li>
+<li>Fix QLoRA + FSDP1 mixed-dtype crash in <code>prepare_peft_model</code> by @sergiopaniego in https://github.com/huggingface/trl/pull/6343</li>
+<li>Truncate GOLD on-policy prompts before generation, keeping the prompt end by @roycho96 in https://github.com/huggingface/trl/pull/6359</li>
+<li>Fix <code>FileNotFoundError</code> in DPO/KTO <code>precompute_ref_log_probs</code> by @Functionhx in https://github.com/huggingface/trl/pull/6348</li>
+<li>Fix <code>GeometricMixtureWrapper.generate()</code> crash after transformers' MoE decode optimization change by @albertvillanova in https://github.com/huggingface/trl/pull/6413</li>
+<li>Fix GKD <code>vocab_size</code> check for multimodal model configs by @sergiopaniego in https://github.com/huggingface/trl/pull/6340</li>
+<li>Fix OpenEnv docker-image example bootstrap by @sergiopaniego in https://github.com/huggingface/trl/pull/6329</li>
+<li>Fix error type for <code>IterableDataset</code> in GRPO and RLOO by @albertvillanova in https://github.com/huggingface/trl/pull/6324</li>
+<li>Fix KTO evaluate crash on streaming datasets with unpaired-preference data by @albertvillanova in https://github.com/huggingface/trl/pull/6325</li>
+<li>Fix DPO/KTO evaluate crash with a dict <code>eval_dataset</code> and <code>precompute_ref_log_probs</code> by @albertvillanova in https://github.com/huggingface/trl/pull/6370</li>
+<li>Fix DPO/KTO double-preprocessing <code>eval_dataset</code> dict passed to <code>evaluate()</code> by @albertvillanova in https://github.com/huggingface/trl/pull/6434</li>
+<li>Raise when DPO/KTO cannot precompute correct reference log-probs at eval time by @albertvillanova in https://github.com/huggingface/trl/pull/6443</li>
+<li>Avoid in-place mutation of input prompts in GRPO and DPPO environment loops by @albertvillanova in https://github.com/huggingface/trl/pull/6364 and https://github.com/huggingface/trl/pull/6366</li>
+<li>Align KTO with DPO: drop <code>hasattr</code> guards on <code>lm_head.bias</code> in the Liger path by @qgallouedec in https://github.com/huggingface/trl/pull/6425</li>
+<li>Align KTO with DPO: fix <code>logits/chosen</code> and <code>logits/rejected</code> metrics by @qgallouedec in https://github.com/huggingface/trl/pull/6424</li>
+<li>Fix missing <code>eos_token_id</code> in non-vLLM on-policy GOLD test stubs by @kashif in https://github.com/huggingface/trl/pull/6394</li>
+<li>Fix <code>BEMACallback</code> <code>bias_power</code> docstring by @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6390</li>
+</ul>
+<h2>Documentation and Examples</h2>
+<ul>
+<li>Document <code>max_steps</code> requirement for iterable datasets in GRPO and RLOO by @albertvillanova in https://github.com/huggingface/trl/pull/6432</li>
+<li>Align <code>AsyncGRPOConfig.max_completion_length</code> description with <code>GRPOConfig</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6374</li>
+<li>Align <code>AsyncGRPOTrainer.processing_class</code> docstring with <code>GRPOTrainer</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6375</li>
+<li>Align <code>AsyncGRPOTrainer</code> clip-ratio comment with <code>GRPOTrainer</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6376</li>
+<li>Fix formatting of error message for <code>loss_type</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6373</li>
+<li>Fix misleading name of <code>BEMACallback</code> <code>bias_power=0.0</code> test by @albertvillanova in https://github.com/huggingface/trl/pull/6464</li>
+</ul>
+<h2>CI</h2>
+<ul>
+<li>Destroy vLLM colocate mode process group after each CI test by @albertvillanova in https://github.com/huggingface/trl/pull/6353</li>
+<li>Test KTO training on iterable datasets with the KL loss by @albertvillanova in https://github.com/huggingface/trl/pull/6338</li>
+<li>Test all supported <code>eval_dataset</code> input types in core trainer <code>init</code> / <code>evaluate()</code> tests by @albertvillanova in https://github.com/huggingface/trl/pull/6336 and https://github.com/huggingface/trl/pull/6371</li>
+<li>Add <code>eval_dataset</code> init tests for experimental GRPO / Online-DPO / SFT &amp; distillation / preference / BCO+CPO+ORPO+PRM trainers by @albertvillanova in https://github.com/huggingface/trl/pull/6395, https://github.com/huggingface/trl/pull/6396, https://github.com/huggingface/trl/pull/6397, https://github.com/huggingface/trl/pull/6398 and https://github.com/huggingface/trl/pull/6399</li>
+<li>Silence experimental <code>environment_factory</code> warning in GRPO tests by @albertvillanova in https://github.com/huggingface/trl/pull/6445</li>
+<li>Silence PEFT <code>ensure_weight_tying</code> warning on newer PEFT in GRPO tests / DPO+KTO liger tests by @albertvillanova in https://github.com/huggingface/trl/pull/6446 and https://github.com/huggingface/trl/pull/6463</li>
+<li>Ignore benign <code>bitsandbytes</code> <code>_check_is_size</code> <code>FutureWarning</code> in CI by @albertvillanova in https://github.com/huggingface/trl/pull/6448</li>
+<li>Ignore benign <code>IndexPutBackward0</code> warning from Liger SAPO loss by @albertvillanova in https://github.com/huggingface/trl/pull/6436</li>
+<li>Filter reworded <code>torch.jit.script_method</code> warning on Python 3.14 by @albertvillanova in https://github.com/huggingface/trl/pull/6465</li>
+<li>Filter triton <code>AnnAssign</code> <code>DeprecationWarning</code> on Python 3.14 by @albertvillanova in https://github.com/huggingface/trl/pull/6467</li>
+<li>Fix <code>create_reference_model</code> deprecation warning by @albertvillanova in https://github.com/huggingface/trl/pull/6418</li>
+<li>Fix uncaptured cross-architecture VLM warning in GOLD trainer CI tests by @albertvillanova in https://github.com/huggingface/trl/pull/6419</li>
+<li>Re-record the <code>dpo</code> invariant reference after #6321 by @qgallouedec in https://github.com/huggingface/trl/pull/6421</li>
+<li>Remove redundant <code>torch.tensor</code> re-wrapping of batch labels in KTO by @albertvillanova in https://github.com/huggingface/trl/pull/6431</li>
+<li>Bump the actions group across 1 directory with 10 updates by @dependabot[bot] in https://github.com/huggingface/trl/pull/6442</li>
+</ul>
+<h2>New Contributors</h2>
+<ul>
+<li>@Functionhx made their first contribution in https://github.com/huggingface/trl/pull/6348</li>
+<li>@sohumt123 made their first contribution in https://github.com/huggingface/trl/pull/6433</li>
+</ul>
+<h2>What's Changed</h2>
+<ul>
+<li>⬆️ Bump dev version by @qgallouedec in https://github.com/huggingface/trl/pull/6347</li>
+<li>Fix FileNotFoundError in DPO/KTO precompute_ref_log_probs by @Functionhx in https://github.com/huggingface/trl/pull/6348</li>
+<li>Add <code>log_multimodal</code> param to GRPOConfig and RLOOConfig to control image logging by @apardyl in https://github.com/huggingface/trl/pull/5408</li>
+<li>Set explicit neutral top_p in GKD on-policy generation by @sergiopaniego in https://github.com/huggingface/trl/pull/6337</li>
+<li>Fix GKD vocab_size check for multimodal model configs by @sergiopaniego in https://github.com/huggingface/trl/pull/6340</li>
+<li>Fix OpenEnv docker-image example bootstrap by @sergiopaniego in https://github.com/huggingface/trl/pull/6329</li>
+<li>Align log_multimodal in the DPPO and GRPO-with-replay-buffer experimental trainers by @albertvillanova in https://github.com/huggingface/trl/pull/6352</li>
+<li>Fix QLoRA + FSDP1 mixed-dtype crash in prepare_peft_model by @sergiopaniego in https://github.com/huggingface/trl/pull/6343</li>
+<li>Destroy vLLM colocate mode process group after each CI test by @albertvillanova in https://github.com/huggingface/trl/pull/6353</li>
+<li>Fix error type for IterableDataset in GRPO and RLOO by @albertvillanova in https://github.com/huggingface/trl/pull/6324</li>
+<li>Fix KTO evaluate crash on streaming datasets with unpaired-preference data by @albertvillanova in https://github.com/huggingface/trl/pull/6325</li>
+<li>Support DatasetDict and IterableDatasetDict as eval_dataset in evaluate by @albertvillanova in https://github.com/huggingface/trl/pull/6326</li>
+<li>Simplify KTO KL completion construction into a single batched map by @albertvillanova in https://github.com/huggingface/trl/pull/6335</li>
+<li>implement message level rollout with linear trajectories by @AmineDiro in https://github.com/huggingface/trl/pull/6250</li>
+<li>Add security policy to the repo by @albertvillanova in https://github.com/huggingface/trl/pull/6362</li>
+<li>Removed <code>generate_rollout_completions</code> by @sergiopaniego in https://github.com/huggingface/trl/pull/5870</li>
+<li>Fix crash when reward function is a <code>functools.partial</code> or callable instance by @qgallouedec in https://github.com/huggingface/trl/pull/6313</li>
+<li>Drop fully-masked examples after truncation in SFT by @qgallouedec in https://github.com/huggingface/trl/pull/6320</li>
+<li>Fix <code>cast_lm_head_to_fp32</code> under FSDP2 / DeepSpeed ZeRO-3 by @qgallouedec in https://github.com/huggingface/trl/pull/6330</li>
+<li>Add support for vLLM 0.24.0 by @qgallouedec in https://github.com/huggingface/trl/pull/6355</li>
+<li>Fix DPO/KTO <code>use_liger_kernel</code> under DeepSpeed ZeRO-3 by @qgallouedec in https://github.com/huggingface/trl/pull/6372</li>
+<li>Test KTO training on iterable datasets with the KL loss by @albertvillanova in https://github.com/huggingface/trl/pull/6338</li>
+<li>Avoid in-place mutation of input prompts in GRPO environments loop by @albertvillanova in https://github.com/huggingface/trl/pull/6364</li>
+<li>Avoid in-place mutation of input prompts in DPPO environments loop by @albertvillanova in https://github.com/huggingface/trl/pull/6366</li>
+<li>Fix DPO/KTO evaluate crash with a dict eval_dataset and precompute_ref_log_probs by @albertvillanova in https://github.com/huggingface/trl/pull/6370</li>
+<li>Test all supported eval_dataset input types in core trainer init tests by @albertvillanova in https://github.com/huggingface/trl/pull/6336</li>
+<li>Test all supported eval_dataset input types in core trainer evaluate() tests by @albertvillanova in https://github.com/huggingface/trl/pull/6371</li>
+<li>Drop examples with no completion left after truncation in DPO and KTO by @qgallouedec in https://github.com/huggingface/trl/pull/6321</li>
+<li>Fix EOS being masked when pad_token_id equals eos_token_id in GKD and GOLD by @roycho96 in https://github.com/huggingface/trl/pull/6357</li>
+<li>Truncate GOLD on-policy prompts before generation, keeping the prompt end by @roycho96 in https://github.com/huggingface/trl/pull/6359</li>
+<li>Fix missing eos_token_id in non-vLLM on-policy GOLD test stubs by @kashif in https://github.com/huggingface/trl/pull/6394</li>
+<li>add iw-opd distillation by @kashif in https://github.com/huggingface/trl/pull/6191</li>
+<li>Force <code>use_reentrant=True</code> for PEFT + ZeRO-3 + gradient checkpointing in all trainers by @qgallouedec in https://github.com/huggingface/trl/pull/6356</li>
+<li>Fix GeometricMixtureWrapper.generate() crash after transformers' MoE decode optimization change by @albertvillanova in https://github.com/huggingface/trl/pull/6413</li>
+<li>Add eval_dataset init tests for experimental GRPO-family trainers by @albertvillanova in https://github.com/huggingface/trl/pull/6395</li>
+<li>Add eval_dataset init tests for experimental Online-DPO-family trainers by @albertvillanova in https://github.com/huggingface/trl/pull/6396</li>
+<li>Add eval_dataset init tests for experimental SFT and distillation trainers by @albertvillanova in https://github.com/huggingface/trl/pull/6397</li>
+<li>Add eval_dataset init tests for experimental preference trainers by @albertvillanova in https://github.com/huggingface/trl/pull/6398</li>
+<li>Add eval_dataset init tests for experimental BCO, CPO, ORPO and PRM trainers by @albertvillanova in https://github.com/huggingface/trl/pull/6399</li>
+<li>Fix corrupted reasoning blocks in Qwen3-family training chat templates by @qgallouedec in https://github.com/huggingface/trl/pull/6363</li>
+<li>Fix uncaptured cross-architecture VLM warning in GOLD trainer CI tests by @albertvillanova in https://github.com/huggingface/trl/pull/6419</li>
+<li>Fix create_reference_model deprecation warning by @albertvillanova in https://github.com/huggingface/trl/pull/6418</li>
+<li>Add <code>GMPOTrainer</code> to the telemetry allowlist by @qgallouedec in https://github.com/huggingface/trl/pull/6410</li>
+<li>Async grpo vllm client by @AmineDiro in https://github.com/huggingface/trl/pull/6269</li>
+<li>Re-record the <code>dpo</code> invariant reference after #6321 by @qgallouedec in https://github.com/huggingface/trl/pull/6421</li>
+<li>Add a tip to the Paper Index on reading papers with the hf CLI by @davanstrien in https://github.com/huggingface/trl/pull/6422</li>
+<li>[GRPO] Treat explicit max_tool_calling_iterations=0 as zero, not unlimited  by @Strongich in https://github.com/huggingface/trl/pull/6423</li>
+<li>Align KTO with DPO: Drop <code>hasattr</code> guards on <code>lm_head.bias</code> in the Liger path by @qgallouedec in https://github.com/huggingface/trl/pull/6425</li>
+<li>Align KTO with DPO: Fix <code>logits/chosen</code> and <code>logits/rejected</code> metrics by @qgallouedec in https://github.com/huggingface/trl/pull/6424</li>
+<li>Support iterable datasets in GRPO and RLOO by @albertvillanova in https://github.com/huggingface/trl/pull/6351</li>
+<li>Align <code>AsyncGRPOTrainer</code> clip-ratio comment with <code>GRPOTrainer</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6376</li>
+<li>Ignore benign IndexPutBackward0 warning from Liger SAPO loss by @albertvillanova in https://github.com/huggingface/trl/pull/6436</li>
+<li>Align <code>AsyncGRPOConfig.max_completion_length</code> description with <code>GRPOConfig</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6374</li>
+<li>Fix formatting of error message for loss_type by @qgallouedec in https://github.com/huggingface/trl/pull/6373</li>
+<li>Align <code>AsyncGRPOTrainer.processing_class</code> docstring with <code>GRPOTrainer</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6375</li>
+<li>Remove redundant torch.tensor re-wrapping of batch labels in KTO by @albertvillanova in https://github.com/huggingface/trl/pull/6431</li>
+<li>Document max_steps requirement for iterable datasets in GRPO and RLOO by @albertvillanova in https://github.com/huggingface/trl/pull/6432</li>
+<li>Fix DPO/KTO double-preprocessing eval_dataset dict passed to evaluate() by @albertvillanova in https://github.com/huggingface/trl/pull/6434</li>
+<li>Bump the actions group across 1 directory with 10 updates by @dependabot[bot] in https://github.com/huggingface/trl/pull/6442</li>
+<li>Fix GRPO truncated-completion loss normalization by @Functionhx in https://github.com/huggingface/trl/pull/6439</li>
+<li>Environment-owned dataset: make <code>train_dataset</code> optional by @qgallouedec in https://github.com/huggingface/trl/pull/6349</li>
+<li>Align <code>AsyncGRPOTrainer</code> args handling with stable trainers by @qgallouedec in https://github.com/huggingface/trl/pull/6377</li>
+<li>Fix biased cross-rank aggregation of token-weighted metrics (GRPO, RLOO) by @qgallouedec in https://github.com/huggingface/trl/pull/6380</li>
+<li>Silence experimental environment_factory warning in GRPO tests by @albertvillanova in https://github.com/huggingface/trl/pull/6445</li>
+<li>Ignore benign bitsandbytes _check_is_size FutureWarning in CI by @albertvillanova in https://github.com/huggingface/trl/pull/6448</li>
+<li>Silence PEFT ensure_weight_tying warning on newer PEFT in GRPO tests by @albertvillanova in https://github.com/huggingface/trl/pull/6446</li>
+<li>Fix BEMACallback bias_power docstring, which described the opposite of the actual behavior by @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6390</li>
+<li>AsyncGRPO fork-independent epoch counting by @AmineDiro in https://github.com/huggingface/trl/pull/6385</li>
+<li>Add support for vLLM 0.25.0 and 0.25.1 by @qgallouedec in https://github.com/huggingface/trl/pull/6406</li>
+<li>Drop vLLM 0.16 support by @qgallouedec in https://github.com/huggingface/trl/pull/6404</li>
+<li>Remove the experimental DPPO trainer by @qgallouedec in https://github.com/huggingface/trl/pull/6402</li>
+<li>Reject <code>auto_find_batch_size</code> in GRPO and RLOO by @qgallouedec in https://github.com/huggingface/trl/pull/6411</li>
+<li>Fix <code>precompute_ref_log_probs=True</code> with DeepSpeed in DPO and KTO by @qgallouedec in https://github.com/huggingface/trl/pull/6403</li>
+<li>[DistillationTrainer refactor] Pin the distillation objective before refactoring by @qgallouedec in https://github.com/huggingface/trl/pull/6450</li>
+<li>[DistillationTrainer refactor] Pin on-policy and off-policy training end to end by @qgallouedec in https://github.com/huggingface/trl/pull/6451</li>
+<li>[DistillationTrainer refactor] Document the num_items_in_batch denominator bug by @qgallouedec in https://github.com/huggingface/trl/pull/6452</li>
+<li>Fix <code>apply_chat_template</code> dropping leading tokens from <code>chosen</code> when the prompt common prefix shrinks against <code>rejected</code> by @sohumt123 in https://github.com/huggingface/trl/pull/6433</li>
+<li>[DistillationTrainer refactor] Move IW-OPD to a dedicated experimental trainer by @qgallouedec in https://github.com/huggingface/trl/pull/6453</li>
+<li>[DistillationTrainer refactor] Extract the teacher-server path into ServerDistillationTrainer by @qgallouedec in https://github.com/huggingface/trl/pull/6454</li>
+<li>[DistillationTrainer refactor] Remove the local sparse top-1 loss path from the base trainer by @qgallouedec in https://github.com/huggingface/trl/pull/6455</li>
+<li>[DistillationTrainer refactor] Remove top-k support from the base generalized JSD loss by @qgallouedec in https://github.com/huggingface/trl/pull/6456</li>
+<li>[DistillationTrainer refactor] Validate the teacher by vocab size instead of tokenizer identity by @qgallouedec in https://github.com/huggingface/trl/pull/6457</li>
+<li>[DistillationTrainer refactor] Deprecate <code>lmbda</code> on/off-policy mixing by @qgallouedec in https://github.com/huggingface/trl/pull/6458</li>
+<li>[DistillationTrainer refactor] Point the GKD paper reproduction at <code>GKDTrainer</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6459</li>
+<li>[DistillationTrainer refactor] Remove <code>lmbda</code> and the off-policy training branch by @qgallouedec in https://github.com/huggingface/trl/pull/6460</li>
+<li>Raise when DPO/KTO cannot precompute correct reference log-probs at eval time by @albertvillanova in https://github.com/huggingface/trl/pull/6443</li>
+<li>Silence PEFT ensure_weight_tying warning in DPO and KTO liger tests by @albertvillanova in https://github.com/huggingface/trl/pull/6463</li>
+<li>Fix misleading name of BEMACallback bias_power=0.0 test by @albertvillanova in https://github.com/huggingface/trl/pull/6464</li>
+<li>Filter reworded torch.jit.script_method warning on Python 3.14 by @albertvillanova in https://github.com/huggingface/trl/pull/6465</li>
+<li>Filter triton AnnAssign DeprecationWarning on Python 3.14 by @albertvillanova in https://github.com/huggingface/trl/pull/6467</li>
+<li>[DistillationTrainer refactor] Accept a <code>prompt</code> column alongside <code>messages</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6461</li>
+<li>[DistillationTrainer refactor] Deprecate <code>messages</code>-format datasets by @qgallouedec in https://github.com/huggingface/trl/pull/6474</li>
+<li>[DistillationTrainer refactor] Fix <code>num_items_in_batch</code> to count generated completion tokens ⚠️ changes loss values by @qgallouedec in https://github.com/huggingface/trl/pull/6478</li>
+<li>Release: v1.9 by @qgallouedec in https://github.com/huggingface/trl/pull/6495</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/huggingface/trl/compare/v1.8.0...v1.9.0</p>
+<hr />
+<blockquote>
+<p><strong>Source</strong> <a href="https://github.com/huggingface/trl">huggingface/trl</a> · <code>v1.9.0</code> · 2026-07-21 · <a href="https://github.com/huggingface/trl/releases/tag/v1.9.0">upstream release</a></p>
+</blockquote>
+<p><em>Mirrored verbatim for indexing. All rights belong to the upstream project.</em></p></div> </details> </div> <p class="muted" style="margin-top:var(--s8);font-size:12.5px;border-top:1px solid var(--line);padding-top:var(--s4)"> Versionshinweise stammen aus dem Upstream-Projekt. Wir ordnen und verknüpfen sie, damit du Versionen auf einen Blick vergleichen kannst. Alle Rechte liegen bei den ursprünglichen Autoren. </p> <nav class="pager" aria-label="Release navigation"> <a href="/releases/trl/1.9.1"> <span class="k">← Weiter</span> <span class="t">v1.9.1</span> </a> <a href="/releases/trl/1.8.0"> <span class="k">Zurück →</span> <span class="t">v1.8.0</span> </a> </nav> <aside class="ad-slot" aria-label="Advertisement" data-astro-cid-fgwukgf6><div class="ad-slot-label" data-astro-cid-fgwukgf6>Advertisement</div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4184355057086168" data-ad-slot="9133765584" data-ad-format="auto" data-full-width-responsive="true" data-astro-cid-fgwukgf6></ins><script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script></aside> </article> <aside class="rail"> <div class="rail-card"> <div class="rail-title">Source</div> <ul class="rail-list"> <li> <a href="https://github.com/huggingface/trl/releases/tag/v1.9.0" target="_blank" rel="noopener"> <span>Original auf GitHub</span> <span class="d">↗</span> </a> </li> <li> <a href="https://github.com/huggingface/trl" target="_blank" rel="noopener"> <span>huggingface/trl</span> <span class="d">↗</span> </a> </li> </ul> </div> <div class="rail-card rail-toc"> <div class="rail-title">Auf dieser Seite</div> <nav> <a href="#" class>Funktionen</a><a href="#" class="lv3">Iterierbare/Streaming-Datensätze in GRPO und RLOO</a><a href="#" class="lv3">Datensätze im Besitz der Umgebung</a><a href="#" class="lv3">Rollouts auf Nachrichtenebene in AsyncGRPO</a><a href="#" class="lv3">AsyncGRPO: VLLMClient und entkoppelte Gewichtssynchronisierung</a><a href="#" class="lv3">DistillationTrainer-Refaktor</a><a href="#" class="lv3">Neues IW-OPD-Destillationsobjektiv</a><a href="#" class="lv3">logmultimodal für GRPO / RLOO</a><a href="#" class="lv3">vLLM-Versions-Sweep</a><a href="#" class="lv3">Sonstiges</a><a href="#" class>Abschreibungen und Entfernungen</a><a href="#" class>Korrekturen</a><a href="#" class>Dokumentation und Beispiele</a><a href="#" class>CI</a><a href="#" class>Neue Mitwirkende</a><a href="#" class>Was hat sich geändert?</a> </nav> </div> <div class="rail-card"> <div class="rail-title">Versionsverlauf</div> <ul class="rail-list"> <li> <a href="/releases/trl/1.18.2"> <span class="v">v1.18.2</span> <span class="d">26-11-19</span> </a> </li><li> <a href="/releases/trl/1.18.1"> <span class="v">v1.18.1</span> <span class="d">26-11-17</span> </a> </li><li> <a href="/releases/trl/1.18.0"> <span class="v">v1.18.0</span> <span class="d">26-11-13</span> </a> </li><li> <a href="/releases/trl/1.17.1"> <span class="v">v1.17.1</span> <span class="d">26-10-30</span> </a> </li><li> <a href="/releases/trl/1.17.0"> <span class="v">v1.17.0</span> <span class="d">26-10-29</span> </a> </li><li> <a href="/releases/trl/1.16.0"> <span class="v">v1.16.0</span> <span class="d">26-10-15</span> </a> </li><li> <a href="/releases/trl/1.15.0"> <span class="v">v1.15.0</span> <span class="d">26-10-08</span> </a> </li><li> <a href="/releases/trl/1.14.2"> <span class="v">v1.14.2</span> <span class="d">26-10-06</span> </a> </li> </ul> <a href="/de/releases/trl" class="mono" style="display:inline-block;margin-top:var(--s3);font-size:11.5px;color:var(--ink-3)"> Alle anzeigen 20 →
+</a> </div> </aside> </div> </div>  </main> <footer class="site-footer"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/de/" class="brand" aria-label="STAGS NextStack"><span class="brand-mark" aria-hidden="true">S</span><span class="brand-main">STAGS</span><span class="brand-sub" aria-hidden="true">NextStack</span></a> <p>Open-Source-Release-Informationen, täglich veröffentlicht.</p> </div> <div class="footer-col"> <h3>Verfolgen</h3> <ul> <li><a href="/de/releases">Releases</a></li> <li><a href="/de/projects">Projekte</a></li> <li><a href="/de/releases.xml">RSS-Feed</a></li> </ul> </div> <div class="footer-col"> <h3>Archiv</h3> <ul> <li><a href="/zh/release_note" hreflang="zh-Hans">Chinesisches Archiv</a></li> <li><a href="/zh/chapters/" hreflang="zh-Hans">Technische Notizen</a></li> <li><a href="/zh/downloads/">Stags Tracker</a></li> </ul> </div> <div class="footer-col"> <h3>Info</h3> <ul> <li><a href="/privacy">Datenschutzrichtlinie</a></li> <li><a href="/releases.xml">RSS</a></li> <li><a href="/sitemap-index.xml">Sitemap</a></li> </ul> </div> </div> <div class="footer-btm"> <span>© 2026 STAGS</span> <span>Release notes gehören zu ihren Upstream-Projekten.</span> </div> </div> </footer> <!-- 搜索面板 --> <div class="palette-bg" data-palette-bg data-open="false"> <div class="palette" role="dialog" aria-modal="true" aria-label="Releases durchsuchen"> <div class="palette-in"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ink-4);flex:none"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <input type="search" data-palette-input placeholder="Suchen Sie nach Releases, Projekten, Versionen ..." autocomplete="off" spellcheck="false"> <span class="kbd">esc</span> </div> <ul class="palette-res" data-palette-res></ul> <div class="palette-ft"> <span>↑↓ navigate</span> <span>↵ open</span> <span style="margin-left:auto" data-palette-count></span> </div> </div> </div> <script type="module" src="/assets/Shell.astro_astro_type_script_index_0_lang.0ZkKXV47.js"></script> </body> </html>

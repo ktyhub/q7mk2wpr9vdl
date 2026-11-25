@@ -1,0 +1,256 @@
+<!DOCTYPE html><html lang="ja" dir="ltr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>gstack v1.103.0.0 — STAGS NextStack</title><meta name="description" content="This release closes gaps in two of gstack's safety checks and its merge tool, fixes the /ship failures that were stopping pull requests from finishing, and renames /verify to /build-check so Claude Code's own /verify…"><meta name="keywords" content="オープンソース release note、リリース トラッカー、changelog アグリゲーター、重大な変更、非推奨トラッカー、Kafka リリース、Spring Boot リリース、Kubernetes リリース"><meta name="generator" content="Astro v5.18.2"><link rel="canonical" href="https://www.stags.cn/ja/releases/gstack/1.103.0.0/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="STAGS NextStack — releases" href="/ja/releases.xml"><link rel="alternate" hreflang="en" href="https://www.stags.cn/releases/gstack/1.103.0.0/"><link rel="alternate" hreflang="zh-Hans" href="https://www.stags.cn/releases/gstack/1.103.0.0/"><link rel="alternate" hreflang="x-default" href="https://www.stags.cn/releases/gstack/1.103.0.0/"><meta property="og:site_name" content="STAGS"><meta property="og:type" content="article"><meta property="og:title" content="gstack v1.103.0.0 — STAGS NextStack"><meta property="og:description" content="This release closes gaps in two of gstack's safety checks and its merge tool, fixes the /ship failures that were stopping pull requests from finishing, and renames /verify to /build-check so Claude Code's own /verify…"><meta property="og:url" content="https://www.stags.cn/ja/releases/gstack/1.103.0.0/"><meta property="og:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><meta property="og:locale" content="ja_JP"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="de_DE"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:locale:alternate" content="es_ES"><meta property="og:locale:alternate" content="pt_BR"><meta property="og:locale:alternate" content="ko_KR"><meta property="og:locale:alternate" content="it_IT"><meta property="og:locale:alternate" content="ru_RU"><meta property="og:locale:alternate" content="tr_TR"><meta property="og:locale:alternate" content="id_ID"><meta property="og:locale:alternate" content="vi_VN"><meta property="og:locale:alternate" content="ar_SA"><meta property="og:locale:alternate" content="sv_SE"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.stags.cn/#website","name":"STAGS","url":"https://www.stags.cn/","inLanguage":"ja","description":"NextStack はインフラストラクチャおよび AI プロジェクトのリリースノートを索引化し、破壊的変更・非推奨・移行情報を英語優先の単一フィードで提供します。","publisher":{"@id":"https://www.stags.cn/#org"}},{"@type":"Organization","@id":"https://www.stags.cn/#org","name":"STAGS","alternateName":"NextStack","url":"https://www.stags.cn/"},{"@type":"TechArticle","@id":"https://www.stags.cn/ja/releases/gstack/1.103.0.0/#article","headline":"gstack v1.103.0.0 release notes","datePublished":"2026-11-23","inLanguage":"en","isPartOf":{"@id":"https://www.stags.cn/#website"},"about":{"@type":"SoftwareSourceCode","codeRepository":"https://github.com/garrytan/gstack"}}]}</script><!-- 第三方脚本的连接预热：这两个域名几乎每页都要连，
+         提前建连能省掉 DNS + TCP + TLS 一个往返（移动网络 100~300ms）。
+         AdSense 只在开关打开时预热——关掉广告后连这个域名都没必要。 --><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://pagead2.googlesyndication.com"><!-- Google AdSense：站点所有权校验与广告投放共用同一段脚本，全站只加载一次。
+         未创建广告单元时页面上不渲染任何广告容器，站点保持干净。
+         fetchpriority=low：它不参与首屏渲染，不该跟正文抢带宽。 --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184355057086168" crossorigin="anonymous" fetchpriority="low"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-RFRF1TVRMP" fetchpriority="low"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RFRF1TVRMP");
+    </script><!-- 百度统计（国内流量统计）。官方标准片段，is:inline 原样输出，
+         hm.js 动态插到首个 script 前，异步不阻塞首屏渲染。 --><script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?299e5b4e65b86ed16879bdcbe70531d6";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script><link rel="stylesheet" href="/assets/index.DQGt3qLZ.css">
+<style>.ad-slot[data-astro-cid-fgwukgf6]{margin:var(--s10) 0 0;padding-top:var(--s5);border-top:1px solid var(--line)}.ad-slot-label[data-astro-cid-fgwukgf6]{margin-bottom:var(--s3);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{display:block;min-height:100px}@media(min-width:640px){.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{min-height:250px}}
+</style></head> <body> <a class="skip" href="#main">本文へスキップ</a> <header class="hdr" data-header> <div class="wrap hdr-inner"> <a href="/ja/" class="brand" aria-label="STAGS NextStack — オープンソースのリリース情報"> <span class="brand-mark" aria-hidden="true">S</span> <span class="brand-main">STAGS</span> <span class="brand-sub" aria-hidden="true">NextStack</span> </a> <nav class="nav" aria-label="Primary"> <a href="/ja/releases">リリース</a><a href="/ja/projects">プロジェクト</a> </nav>  <details class="navmenu" data-navmenu> <summary class="navmenu-btn" aria-label="Open menu"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> </summary> <div class="navmenu-panel" role="group" aria-label="Primary"> <a href="/ja/releases" class="navmenu-item">リリース</a><a href="/ja/projects" class="navmenu-item">プロジェクト</a> </div> </details> <div class="hdr-tools"> <button class="searchbtn" type="button" data-search-open aria-label="リリースを検索"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <span class="lbl">検索</span> <span class="kbd">⌘K</span> </button> <details class="langmenu" data-langmenu> <summary class="langmenu-btn" aria-label="言語"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"> <circle cx="12" cy="12" r="9"></circle> <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path> </svg> <span class="langmenu-cur">日</span> <svg class="langmenu-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m2 4 4 4 4-4"></path></svg> </summary> <div class="langmenu-panel" role="group" aria-label="言語"> <p class="langmenu-head">言語</p> <a class="langmenu-item" href="/releases/gstack/1.103.0.0/" hreflang="en" lang="en" data-on="false"> <span class="langmenu-label">English</span> <span class="langmenu-code">EN</span> </a><a class="langmenu-item" href="/zh/release_note/gstack/gstack_v1.103.0.0" hreflang="zh-Hans" lang="zh-CN" data-on="false"> <span class="langmenu-label">中文</span> <span class="langmenu-code">中</span> </a><a class="langmenu-item" href="/ja/releases/gstack/1.103.0.0/" hreflang="ja" lang="ja" aria-current="true" data-on="true"> <span class="langmenu-label">日本語</span> <span class="langmenu-code">日</span> </a><a class="langmenu-item" href="/de/releases/gstack/1.103.0.0/" hreflang="de" lang="de" data-on="false"> <span class="langmenu-label">Deutsch</span> <span class="langmenu-code">DE</span> </a><a class="langmenu-item" href="/fr/releases/gstack/1.103.0.0/" hreflang="fr" lang="fr" data-on="false"> <span class="langmenu-label">Français</span> <span class="langmenu-code">FR</span> </a><a class="langmenu-item" href="/es/releases/gstack/1.103.0.0/" hreflang="es" lang="es" data-on="false"> <span class="langmenu-label">Español</span> <span class="langmenu-code">ES</span> </a><a class="langmenu-item" href="/pt/releases/gstack/1.103.0.0/" hreflang="pt-BR" lang="pt-BR" data-on="false"> <span class="langmenu-label">Português</span> <span class="langmenu-code">PT</span> </a><a class="langmenu-item" href="/ko/releases" hreflang="ko" lang="ko" data-on="false"> <span class="langmenu-label">한국어</span> <span class="langmenu-code">한</span> </a><a class="langmenu-item" href="/it/releases" hreflang="it" lang="it" data-on="false"> <span class="langmenu-label">Italiano</span> <span class="langmenu-code">IT</span> </a><a class="langmenu-item" href="/ru/releases" hreflang="ru" lang="ru" data-on="false"> <span class="langmenu-label">Русский</span> <span class="langmenu-code">RU</span> </a><a class="langmenu-item" href="/tr/releases" hreflang="tr" lang="tr" data-on="false"> <span class="langmenu-label">Türkçe</span> <span class="langmenu-code">TR</span> </a><a class="langmenu-item" href="/id/releases" hreflang="id" lang="id" data-on="false"> <span class="langmenu-label">Bahasa Indonesia</span> <span class="langmenu-code">ID</span> </a><a class="langmenu-item" href="/vi/releases" hreflang="vi" lang="vi" data-on="false"> <span class="langmenu-label">Tiếng Việt</span> <span class="langmenu-code">VI</span> </a><a class="langmenu-item" href="/ar/releases" hreflang="ar" lang="ar" data-on="false"> <span class="langmenu-label">العربية</span> <span class="langmenu-code">ع</span> </a><a class="langmenu-item" href="/sv/releases" hreflang="sv" lang="sv" data-on="false"> <span class="langmenu-label">Svenska</span> <span class="langmenu-code">SV</span> </a> </div> </details> <a class="iconlink" href="/releases.xml" aria-label="RSS"> <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"> <path d="M2 12.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM2 7.5a6.5 6.5 0 0 1 6.5 6.5h-2A4.5 4.5 0 0 0 2 9.5v-2ZM2 2.5A11.5 11.5 0 0 1 13.5 14h-2A9.5 9.5 0 0 0 2 4.5v-2Z"></path> </svg> </a> </div> </div> </header> <main id="main">  <div class="wrap"> <div class="detail"> <article> <header class="detail-hd"> <nav class="crumbs" aria-label="Breadcrumb"> <a href="/ja/">ホーム</a> <span class="sep">/</span> <a href="/ja/releases">リリース</a> <span class="sep">/</span> <a href="/ja/releases/gstack">gstack</a> </nav> <h1 class="detail-title"> <span class="p">gstack</span> v1.103.0.0 </h1> <div class="detail-meta"> <span class="chip chip--minor">マイナー</span> <span><span class="k">公開日</span>2026年11月23日</span>  <span class="sep" aria-hidden="true"></span> <a href="https://github.com/garrytan/gstack" target="_blank" rel="noopener"> <span class="k">出典</span>garrytan/gstack </a>   <span class="sep" aria-hidden="true"></span> <a href="/releases/gstack/1.103.0.0/"> English original </a>  <span class="sep" aria-hidden="true"></span> <button class="btn btn--ghost btn--sm" type="button" data-copy="https://www.stags.cn/ja/releases/gstack/1.103.0.0/">リンクをコピー</button> </div> </header> <div class="prose" style="margin-top:var(--s8)"> <p class="mt-notice" role="note">このページは機械翻訳です。内容は必ず英文原文をご確認ください。</p>  <div><p>#gスタックv1.103.0.0
+#gスタックv1.103.0.0
+このリリースでは、gstack の 2 つの安全性チェックとそのマージ ツールのギャップが埋められ、プル リクエストの終了を妨げていた /ship の障害が修正され、<code>/verify</code> の名前が <code>/build-check</code> に変更され、Claude Code 自体の <code>/verify</code> が再び機能するようになりました。 <code>/gstack-upgrade</code> でアップグレードします。</p>
+<h2>アクションが必要です: <code>/verify</code> は <code>/build-check</code> になりました</h2>
+<ul>
+<li><code>/verify</code> は <code>/build-check</code> になったので、<code>/verify</code> と入力すると、Claude Code の組み込み <code>/verify</code> が再び開きます。 gstack のビルドとチェックのループには <code>/build-check</code> を使用し、チェックのみのパスには <code>/build-check quick</code> を使用します。 (#4714)</li>
+<li><code>disabled_skills: verify</code> でスキルをオフにした場合は、そのエントリを <code>build-check</code> に変更します。そうするまで、gstack は <code>verify</code> を <code>build-check</code> として読み取るため、アップグレード後もスキルはオフのままになります。 (#4719)</li>
+<li>gstack は各コミットの前にチェック パスを独自に実行しなくなりました。そのため、<code>verify_before_commit</code> 設定は廃止されました。これを設定してもメモが出力されるだけで何も変更されず、それが含まれている設定ファイルは動作し続けます。 (#4714)</li>
+<li>変更の検証に関するプロンプトは、Claude Code 自身のスキルに送られるようになりました。gstack のプロンプト ルーターと <code>/build-check</code> の説明は、プロンプトを要求しなくなりました。 (#4719)</li>
+<li>アップグレードすると、gstack の古い <code>verify</code> スキル エントリ (および他のホストまたは <code>--prefix</code> の <code>gstack-verify</code>) は削除されますが、独自の <code>verify</code> スキルは削除されません。 (#4714)</li>
+</ul>
+<h2>セキュリティ</h2>
+<ul>
+<li><code>/careful</code> および <code>/guard</code> の背後にある破壊的コマンド チェックは、短縮形の <code>--no-dry-run</code>、実際にはプッシュ オプション値である <code>-n</code>、または数字を含むフラグ グループ (<code>-f4</code>) の背後に隠れているメインへの強制プッシュをブロックし、システム フォルダーへの <code>cd</code> 後の相対削除または <code>/dev</code> 下のデバイスの削除の前に確認を求めます。 (#4604)</li>
+<li>同じチェックでは、引用符を付けなくても安全な引用符付きパスや、<code>gh issue</code> または <code>gh pr</code> コマンドの引用符で囲まれたタイトルや本文については質問されなくなりました。 (#4604)</li>
+<li><code>gstack-ship-queue land</code> は、使い捨てクローンでリポジトリのマージ ツリー チェックを実行し、チェックによって後の git および gh 呼び出しで使用される git または gh 設定、フック、またはバイナリが変更された場合、続行を拒否するようになりました。すべての git 呼び出しはフックをオフにして実行されます。 (#4649)</li>
+<li>シークレット チェックでは、Rust、<code>let</code>、<code>const</code>、および <code>static</code> バインディングとして書き込まれたキーにフラグを立てるようになり、Rust タイプの注釈と一致アームにフラグを立てるのを停止します。 (#4675)</li>
+<li>シークレット チェックでは、名前にスペース、アクセント、または別の文字が含まれるファイルを読み取るようになりました。 <code>src/clé.rs</code> のキーが渡されていました。 (#4701)</li>
+<li>gstack のシークレット チェックとブラウズの Cookie マスキングは、Google AI Studio が発行する、<code>AQ.</code> で始まる Gemini キーを認識します。 (#4684)</li>
+<li>新しい gstack インストールには、実際の SWE-rebench ベンチマーク タスクからコピーされた 63 プロンプトが含まれなくなりました。ルーター テストでは合成プロンプトが使用され、ベンチマーク タスク ID が再び表示されるとテストは失敗します。古いコミットにはまだプロンプトが保持されているため、完全な git 履歴を含むインストールでは、<code>git log</code> を介してプロンプトに到達できます。 (#4642)</li>
+<li>ファイル名のみを指定するセキュリティ コードに関するレビューの結果は、ファイルが自動的に閉じられないため、その場所がパブリック プル リクエスト本文に到達できません。 (#4700)</li>
+</ul>
+<h2>/ship とマージの修正</h2>
+<ul>
+<li>2 ラウンド制限後の承認された追加レビュー チェックは 1 回のみ使用できます。 2 番目の請求は <code>GRANT_SPENT</code> で拒否されます。 (#4722)</li>
+<li>/ship の仕上げは、クリーンなフォローアップ チェックで読み込まれ、その後何も変更されていないファイルについて、ドキュメント監査が古いことを報告しなくなりました。 (#4722)</li>
+<li>プル リクエストの 2 回目のレビュー ラウンド後にもう 1 回のチェックを行うオーナーの承認により、どのコマンドが記録したかに関係なく、/ship が終了できるようになりました。 (#4717)</li>
+<li>stale-test-value チェックでは、変更されたファイル名を共有する別のファイルのテストにフラグが立てられなくなりました。テストは、インポートの 1 つがそのファイルに解決される場合にのみカウントされます。 (#4723)</li>
+<li>別のブランチにスタックされたブランチ上の /ship は、グリーン CI 実行からリモート テスト ゲートをクリアできます。 (#4689)</li>
+<li>/ship の最終 CI チェックは、メインが行またはその隣の行を変更しなかった場合に、新しいメインにマージされたブランチをテストするグリーン実行を受け入れるため、ビジーなリポジトリは CI の再実行を停止します。 (#4728)</li>
+<li>クラッシュした <code>gstack-ship-queue land --pin</code> は、その後のマージをブロックしなくなりました。そのロックは最後のステップから 90 分後に期限切れになり、プロセスがなくなったロックが引き継がれます。 (#4712)</li>
+<li>停止または停止した /ship 実行は次の /ship をブロックしなくなり、新しい <code>gstack-ship-run</code> コマンドは実行の状態を表示し、動作を停止したものを終了します。 (#4654)</li>
+<li><code>review_exclude_paths</code> リストがポリシー スキーマを破るベース ブランチは、/ship: レビューごとに停止しなくなり、すべてのファイルを対象にして警告を出力するため、修正プル リクエストが到達できるようになります。 (#4637)</li>
+<li>スキップされた CI 実行またはニュートラル CI 実行により、同じコミットでの通過した実行の再利用がブロックされなくなりました。 (#4695、#4713)</li>
+<li>再利用可能なワークフローを通じてのみ実行される CI ジョブは、正確なコミットをテストした呼び出し側の実行からのみカウントされるようになりました。 (#4713)</li>
+<li>ローカル テスト ゲートは、最初にチェックするものだけでなく、正確なコードで実行されるすべてのグリーン CI を再利用します。 (#4671)</li>
+<li>/ship は、別のベース ブランチに対して取得されたテストゲート レコードを受け入れなくなりました。 (#4706)</li>
+<li><code>gstack-ship-queue ready</code> は、リポジトリのデフォルト ブランチではなく、対象のブランチに対してプル リクエストをチェックします。 (#4663)</li>
+<li><code>gstack-ship-queue ready</code> は、不足しているプル リクエスト ヘッドを一度に取得し、進行状況を出力し、数分間沈黙するのではなく 60 秒後に停止します。 (#4668)</li>
+<li>/ship は、最後のレビューラウンド後にドキュメント監査がレビューされたドキュメントを修正すると終了できます。 (#4708)</li>
+<li>/ship は、スナップショットを保存する前に停止したドキュメント監査の後に終了できます。 (#4693)</li>
+<li>/ship は、ベース ブランチからのマージ前にドキュメント監査が実行されたときに終了できます。 (#4648)</li>
+<li>/ship は、共有ハーネス ピンのみを再記録するベース マージ後にプル リクエストの完了レビューを保持し、レビュアーがレビューを記録せずに実行した場合に警告します。 (#4669)</li>
+<li>ブロッカーが修正されたことを確認したフォローアップ チェックは、残りの所見が判明した時点でカウントされるようになりました。 (#4691)</li>
+<li>承認済みの修正ラウンドクリーンを読み取るフォローアップチェックでは、ラウンド修正された結果がクローズされるようになりました。 (#4664)</li>
+<li>承認された修正の完全な再チェックは、レビューが開始される直前に概要が作成された場合でもカウントされます。 (#4698)</li>
+<li>修正コミットの <code>Review-Finding:</code> トレーラーは、その範囲内の修正を完了した完全なレビューの後にのみ検出結果を終了します。 (#4700)</li>
+<li>/ship の簿記は、さらに 3 つのケースで有効です。シンボリックリンクに変換されたハーネス ピンには新たなレビューが必要であり、保存できなかったクレームにはその旨が記載されており、以前の実行は新しい記述の後もカウントされたままになります。 (#4703)</li>
+<li>/ship のレビュー計画は、非常に大きなデータまたはトライアル ファイルを含むリポジトリで終了し、<code>GSTACK_REVIEW_CONSUMER_SCAN_CAP</code> によりデータ ファイルのスキャン制限が引き上げられます。 (#4651、#4643)</li>
+<li><code>GSTACK_REVIEW_PLAN_TIMEOUT_MS</code> は、/ship の各ステップでレビュー計画の時間制限を引き上げるので、大規模なリポジトリを完了できるようになります。 (#4632)</li>
+<li>リポジトリ独自の <code>review_exclude_paths</code> テストでは、除外されたファイルがレビューに戻されなくなりました。 (#4699)</li>
+<li>コード レビューでは、フロントエンドの変更の設計チェックリストが読み取られるようになり (以前は欠落しているファイルが指摘されていました)、2 番目のモデル レビューでは、リポジトリ独自の <code>agents/</code> フォルダー内のコードが読み取られるようになりました。 (#4711)</li>
+<li>/ship のレビューでは、「HIGH ブランチ」のようなコード名が HIGH 所見として読み取られなくなりました。 (#4678)</li>
+<li>番号付きの見出しとして書かれたコーデックス レビューの結果は、その重要度を維持します。 (#4681)</li>
+<li>/ship のヘルパー ツールに対する 7 つの小さな修正。これには、<code>Review-Finding:</code> トレーラーを <code>Refs</code> ラインに変換しない問題リンクが含まれます。 (#4672)</li>
+</ul>
+<h2>その他の修正</h2>
+<ul>
+<li>/cso は、送信が拒否された後も監査を開いたままにするため、修正された再送信が受け入れられます。 (#4692)</li>
+<li><code>.env.example</code> などのシークレットのようなファイルを読み取れない場合でも、/cso は中止されなくなりました。ファイルが未読としてリストされ、続行されます。 (#4688)</li>
+<li>デフォルトの gstack は、設計プロトタイプ スクリプト内の現在のモデル、Gemini コスト ラベル、および <code>gstack-context-bill --exact</code> に名前を付けるようになりました。 (#4678)</li>
+<li><code>browse --session &lt;name&gt; &lt;command&gt;</code> はコマンドの前のフラグで動作します。 (#4684)</li>
+<li><code>browse handoff</code> ウィンドウが空白のタブで開かれることはなくなりました。 (#4684)</li>
+<li><code>$D setup</code> は、<code>AQ.</code> で始まる Gemini キーを受け入れます。 (#4684)</li>
+<li><code>/build-check</code> trust はリポジトリのすべての git ワークツリーをチェックするため、新しいワークツリーで各セッションを開始するエージェント アプリは再度要求しなくなります。 (#4684)</li>
+<li><code>/context-restore</code> は、<code>CLAUDE_CONFIG_DIR</code> でクロード コードのトランスクリプトを検索し、<code>CODEX_HOME</code> でコーデックス セッションを検索します。 (#4684)</li>
+<li>アポストロフィの付いたホーム フォルダーなど、Git Bash がパスを変換しないままにすると、Windows で TypeScript フックが開始されます。 (#4682)</li>
+<li><code>./setup --status</code> は、<code>--prefix</code> インストールを渡し、報告する各行をクリアするコマンドに名前を付けます。 (#4682)</li>
+<li><code>./setup</code> は、Bun の共有パッケージ キャッシュに所有者専用ファイルを残さなくなりました。 (#4682)</li>
+<li><code>/open-gstack-browser</code> を無効にすると、<code>/connect-chrome</code> エイリアスも削除されます。 (#4682)</li>
+<li><code>gstack-doctor</code> は、貼り付けられたスキル リストとして gstack 独自の CLAUDE.md にフラグを立てなくなりました。 (#4682)</li>
+<li>OpenClaw、Hermes、Dots の登録では、<code>disabled_skills</code> でオフになったスキルが除外されます。 (#4682)</li>
+<li>/autoplan のフェーズ レポート チェックは、リモート コントロールが最初からオンになっていたセッションで機能します。 (#4681)</li>
+<li>/ship はバージョンを選択するときにリポジトリのすべての git ワークツリーを参照するため、2 つのワークツリーが同じものを取ることはできません。 (#4681)</li>
+<li><code>origin/HEAD</code> がフィーチャー ブランチを指している場合、<code>gstack-pr-shots --path</code> は実際のベース ブランチと比較します。 (#4681)</li>
+<li>レビュー担当者の差分が大きすぎる場合、推奨される修正では、レビュー担当者が実際に除外できるフォルダーのみが名前として付けられます。 (#4681)</li>
+<li>ドキュメントのリンク チェックと散文チェックでは、コード ブロックの先頭としてインライン コードで始まる行が読み取られなくなりました。 (#4677)</li>
+<li>/learn prune は、最初の 100 件だけでなく、すべての学習をチェックします。 (#4677)</li>
+<li>/retro は、テスト スタイル名のない <code>tests/</code> のテスト ランナーをカウントし、Godot および Unity サイドカー ファイルをテストとしてカウントすることを停止します。 (#4677)</li>
+<li>テストを削除または名前変更すると、別のテストがテストをカバーしている場合でも、そのテストがまだリストされているファイルがチェックされるようになりました。 (#4702)</li>
+<li>ローカル フィクスチャ ファイルから <code>test</code> を取得する Playwright 仕様は、<code>playwright test</code> で実行されます。 (#4702)</li>
+<li>変更された定数チェックで 1 桁および 2 桁の数値がフラッディングされなくなりました。 (#4683)</li>
+<li><code>gstack-gbrain-mcp-verify</code> は、サーバー送信イベントの大きな応答または遅い応答を壊れていると誤って読み取ることがなくなりました。 (#4710)</li>
+<li>gbrain メモリ ルックアップによりページが検索されます。二重インポートはなくなり、クローンされた Brain ホスト上で「メモリからの関連」ヒットが機能し、大きすぎるログでも最新の行が保持されます。 (#4685)</li>
+<li>ユーザーから報告された 8 つのスキル修正。これには、Aside を開くように求める Aside チェック、eng-review テスト計画を見つける <code>/test-audit</code>、および各選択の理由を渡す <code>/design-shotgun</code> が含まれます。 (#4686)</li>
+</ul>
+<h2>新機能</h2>
+<ul>
+<li>プロンプト ルーティング フックは、バグ レポートでバグ修正スキルの名前を指定しなくなりました。183 個の実際の Python バグに対する事前登録テストでは、スキルの手順に従いましたが、それ以上のバグは修正されませんでした。それでも /review と /qa をルーティングしますが、別の Claude Code セッションやバックグラウンド エージェントのハンドバックからのメッセージをルーティングすることはありません。 (#4707、#4674、#4694)</li>
+<li>レビューでは、<code>gstack-vendored-verify</code> がピン留めされたアップストリーム コミットとバイト単位で等しいことが証明された、コピーされたオープンソース ファイルを除外することができます。 <code>review_vendored</code> にアップストリームをリストします。 (#4646、#4665、#4690)</li>
+<li><code>gstack-ship-queue land</code> は、ベースが移動したプル リクエスト (<code>land.merged_ci</code>) を送信する前に、マージされたツリーで完全な CI を実行でき、メインのプッシュ実行では、再度テストする代わりにその結果が再利用されます。 (#4649、#4655)</li>
+<li><code>gstack-ship-queue count</code> は、マージを待機している完了したプル リクエストの数を出力します。 (#4712)</li>
+<li>Capy では、<code>/ship</code> および <code>/review</code> の 2 番目のモデルのレビューはデフォルトで GPT-6.2 Sol になります。 (#4636)</li>
+<li>Capy では、<code>/ship</code> はプル リクエスト独自のスレッドで実行され、個別のヘルパー エージェントなしでレビューアーをサブエージェントとして開始します。 (#4670)</li>
+<li><code>/eval-plan</code> は、プランが選択するすべての役割において gpt-4o および旧世代モデルを拒否し、2026 年 11 月 22 日以降に凍結されたプランは、100 人のハンドラベルに対してモデルジャッジをチェックします。 (#4630)</li>
+<li><code>/eval-plan</code> の予行演習は、計画自体の日付と宣言されたベンダー モデルに従い、新しい計画では、グレーダーがエージェントのリポジトリをどのように扱うかが指定されます。 (#4673)</li>
+<li><code>/plan-ceo-review</code> は、そのレビュー モードの推奨事項を、次に近いモードでは実行されないそのモードの機能によって説明します。 (#4730)</li>
+<li>gbrain コンテキスト クエリを宣言するスキルは、開始時にそれらをロードします。 <code>gstack-config set gbrain_context_load off</code> はオフになります。 (#4687)</li>
+<li><code>gstack-harness status</code> は、ハーネスのスキル リストが失敗すると、すべてのスキルが欠落しているものとしてリストされるのではなく、エラーとともに <code>unknown</code> を報告します。 (#4687)</li>
+<li>テストの選択は TypeScript に従います NodeNext <code>.js</code> は <code>.ts</code> ソースにインポートし、Rails <code>app/</code> および <code>lib/</code> ファイルを仕様にマップします。 (#4679)</li>
+<li>/ship の 2 つのテストの結果を公開しました。プル リクエスト自体のスレッドで実行しても、コストや捕捉されたバグに明らかな違いはありませんでした (#4680)。レビュー パネルは 2 つの単純なレビュー読み取りを上回ったため、そのまま残ります (#4676、#4732)。</li>
+</ul>
+<h2>メンテナ向けの変更</h2>
+<ul>
+<li>すべての gstack プル リクエストは、プル リクエストが決して失敗しない 2 週間のトライアルとして、削除またはスキップされたテスト、制限の緩和、独自のチェックの編集に関するテスト変更の概要を取得します。 (#4645)</li>
+<li>毎週の Mutation レポートには、gstack のテストが検出できなかった小さな間違った編集がリストされています。 (#4652)</li>
+<li>不安定で遅いテストの修正: 無料のテスト シャードはクリーンアップ中にブラウザが終了しても存続し (#4666)、毎晩の Windows シャードは制限時間内に留まり (#4661)、毎週のテストの健全性は再び合格し (#4633)、2 つの git ワークツリー レースは互いに失敗しなくなりました (#4710)。</li>
+<li>リリースチェックの修正: 推奨審査員のキャリブレーションには 2 つの実際の質問が含まれ (#4705)、/autoplan ガード テストはその Claude Haiku 4.5 アクターを維持し (#4639)、docs-audit テストは停止された監査に対する /ship のステップを受け入れます (#4731)。</li>
+<li>ブートストラップ保持テストでは、スイートが root として実行されている場合には発生しない 5 つのケースがスキップされます。 (#4677)</li>
+<li>元に戻すドリルが独自のドキュメントに追加した文を削除しました。 (#4716)
+<strong>完全な changelog:</strong> https://github.com/garrytan/gstack/blob/v1.103.0.0/CHANGELOG.md · <strong>比較:</strong> https://github.com/garrytan/gstack/compare/v1.102.2.0...v1.103.0.0</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>ソース</strong> <a href="https://github.com/garrytan/gstack">garrytan/gstack</a> · <code>v1.103.0.0</code> · 2026-11-23 · <a href="https://github.com/garrytan/gstack/releases/tag/v1.103.0.0">アップストリーム リリース</a>
+<em>インデックス作成のためにそのままミラーリングされます。すべての権利は上流プロジェクトに帰属します。</em></p>
+</blockquote></div>  <details class="mt-original"> <summary>English original / English original</summary> <div class="prose mt-original-body"><h1>gstack v1.103.0.0</h1>
+<h1>gstack v1.103.0.0</h1>
+<p>This release closes gaps in two of gstack's safety checks and its merge tool, fixes the /ship failures that were stopping pull requests from finishing, and renames <code>/verify</code> to <code>/build-check</code> so Claude Code's own <code>/verify</code> works again. Upgrade with <code>/gstack-upgrade</code>.</p>
+<h2>Action needed: <code>/verify</code> is now <code>/build-check</code></h2>
+<ul>
+<li><code>/verify</code> is now <code>/build-check</code>, so typing <code>/verify</code> opens Claude Code's built-in <code>/verify</code> again. Use <code>/build-check</code> for gstack's build-and-check loop and <code>/build-check quick</code> for the check-only pass. (#4714)</li>
+<li>If you turned the skill off with <code>disabled_skills: verify</code>, change that entry to <code>build-check</code>. Until you do, gstack reads <code>verify</code> as <code>build-check</code>, so the skill stays off after you upgrade. (#4719)</li>
+<li>gstack no longer runs the check pass before every commit on its own, so the <code>verify_before_commit</code> setting is retired. Setting it prints a note and changes nothing, and a config file that still has it keeps working. (#4714)</li>
+<li>Prompts about verifying a change now go to Claude Code's own skill: gstack's prompt router and <code>/build-check</code>'s description no longer claim them. (#4719)</li>
+<li>Upgrading removes gstack's old <code>verify</code> skill entry (and <code>gstack-verify</code> on other hosts or with <code>--prefix</code>), but never a <code>verify</code> skill of your own. (#4714)</li>
+</ul>
+<h2>Security</h2>
+<ul>
+<li>The destructive-command check behind <code>/careful</code> and <code>/guard</code> now blocks force pushes to main hidden behind an abbreviated <code>--no-dry-run</code>, a <code>-n</code> that is really a push-option value, or a flag group with a digit (<code>-f4</code>), and asks before a relative delete after <code>cd</code> into a system folder or a delete of a device under <code>/dev</code>. (#4604)</li>
+<li>The same check no longer asks about a quoted path that is safe unquoted, or about the quoted title or body of a <code>gh issue</code> or <code>gh pr</code> command. (#4604)</li>
+<li><code>gstack-ship-queue land</code> now runs a repository's merged-tree checks in a throwaway clone, and refuses to go on if a check changed the git or gh configuration, hooks or binaries its later git and gh calls would use. Every git call it makes runs with hooks turned off. (#4649)</li>
+<li>The secrets check now flags keys written as Rust <code>let</code>, <code>const</code> and <code>static</code> bindings, and stops flagging Rust type annotations and match arms. (#4675)</li>
+<li>The secrets check now reads files whose names hold a space, an accent or another character git quotes; a key in <code>src/clé.rs</code> used to pass. (#4701)</li>
+<li>gstack's secrets check and browse's cookie masking recognize the Gemini keys Google AI Studio now issues, which start with <code>AQ.</code>. (#4684)</li>
+<li>New gstack installs no longer contain 63 prompts copied from real SWE-rebench benchmark tasks: the router tests use synthetic prompts, and a test fails if a benchmark task id appears again. Older commits still hold the prompts, so an install with full git history can still reach them through <code>git log</code>. (#4642)</li>
+<li>A review finding on security code that names only a file never closes automatically, so its location can't reach the public pull request body. (#4700)</li>
+</ul>
+<h2>Fixes for /ship and merging</h2>
+<ul>
+<li>An approved extra review check after the two-round limit can be used once; a second claim is refused with <code>GRANT_SPENT</code>. (#4722)</li>
+<li>/ship's finish no longer reports the docs audit stale for a file that a clean follow-up check read and nothing changed since. (#4722)</li>
+<li>An owner's approval for one more check after a pull request's second review round now lets /ship finish, whichever command recorded it. (#4717)</li>
+<li>The stale-test-value check no longer flags tests of a different file that shares the changed file's name; a test counts only when one of its imports resolves to that file. (#4723)</li>
+<li>/ship on a branch stacked on another branch can clear its remote test gate from a green CI run. (#4689)</li>
+<li>/ship's final CI check accepts a green run that tested your branch merged onto a newer main when main changed none of your lines or the lines next to them, so busy repositories stop rerunning CI. (#4728)</li>
+<li>A crashed <code>gstack-ship-queue land --pin</code> no longer blocks every later merge: its lock expires 90 minutes after its last step, and a lock whose process is gone is taken over. (#4712)</li>
+<li>A /ship run that stopped or died no longer blocks the next /ship, and the new <code>gstack-ship-run</code> command shows a run's state and ends one that stopped working. (#4654)</li>
+<li>A base branch whose <code>review_exclude_paths</code> list breaks the policy schema no longer stops every /ship: review covers every file and prints a warning, so the fixing pull request can land. (#4637)</li>
+<li>A skipped or neutral CI run no longer blocks reuse of a passing run on the same commit. (#4695, #4713)</li>
+<li>A CI job that runs only through a reusable workflow now counts only from a caller run that tested your exact commit. (#4713)</li>
+<li>The local test gate reuses every green CI run at your exact code, not only the first one it checks. (#4671)</li>
+<li>/ship no longer accepts a test-gate record taken against a different base branch. (#4706)</li>
+<li><code>gstack-ship-queue ready</code> checks a pull request against the branch it targets, not the repository's default branch. (#4663)</li>
+<li><code>gstack-ship-queue ready</code> fetches missing pull request heads in one go, prints progress and stops after 60 seconds instead of going silent for minutes. (#4668)</li>
+<li>/ship can finish when its docs audit corrects a reviewed doc after the last review round. (#4708)</li>
+<li>/ship can finish after a docs audit that stopped before saving its snapshot. (#4693)</li>
+<li>/ship can finish when the docs audit ran before a merge from the base branch. (#4648)</li>
+<li>/ship keeps a pull request's finished review after a base merge that only re-records a shared harness pin, and /ship warns when its reviewers ran without a logged review. (#4669)</li>
+<li>A follow-up check that confirmed its blockers fixed now counts once the remaining findings are ruled. (#4691)</li>
+<li>A follow-up check that reads an approved fix round clean now closes the findings that round fixed. (#4664)</li>
+<li>A clean recheck of approved fixes counts even when its brief was written just before the review started. (#4698)</li>
+<li>A fix commit's <code>Review-Finding:</code> trailer closes its finding only after a full review that finished with the fix in its range. (#4700)</li>
+<li>/ship's bookkeeping holds up in three more cases: a harness pin turned into a symlink needs a fresh review, a claim that could not be saved says so, and earlier runs stay counted after a new description. (#4703)</li>
+<li>/ship's review plan finishes on repositories with very large data or trial files, and <code>GSTACK_REVIEW_CONSUMER_SCAN_CAP</code> raises the data-file scan limit. (#4651, #4643)</li>
+<li><code>GSTACK_REVIEW_PLAN_TIMEOUT_MS</code> now raises the review-plan time limit at every step of /ship, so large repositories can finish. (#4632)</li>
+<li>A repository's own test for <code>review_exclude_paths</code> no longer pulls excluded files back into review. (#4699)</li>
+<li>Code review now reads the design checklist for frontend changes (it pointed at a missing file before), and the second-model review now reads code in your repository's own <code>agents/</code> folder. (#4711)</li>
+<li>/ship's review no longer reads a code name like &quot;the HIGH branch&quot; as a HIGH finding. (#4678)</li>
+<li>Codex review findings written as numbered headings keep their severity. (#4681)</li>
+<li>Seven small fixes to /ship's helper tools, including issue links that no longer turn <code>Review-Finding:</code> trailers into <code>Refs</code> lines. (#4672)</li>
+</ul>
+<h2>Other fixes</h2>
+<ul>
+<li>/cso keeps an audit open after a refused submit, so a corrected resubmit is accepted. (#4692)</li>
+<li>/cso no longer aborts when a secret-like file such as <code>.env.example</code> can't be read; it lists the file as unread and goes on. (#4688)</li>
+<li>Defaults gstack picks for you now name current models in the design prototype script, Gemini cost labels and <code>gstack-context-bill --exact</code>. (#4678)</li>
+<li><code>browse --session &lt;name&gt; &lt;command&gt;</code> works with the flag before the command. (#4684)</li>
+<li>The <code>browse handoff</code> window no longer opens with a stray blank tab. (#4684)</li>
+<li><code>$D setup</code> accepts Gemini keys that start with <code>AQ.</code>. (#4684)</li>
+<li><code>/build-check</code> trusts a repository's checks in every git worktree of it, so agent apps that start each session in a fresh worktree stop asking again. (#4684)</li>
+<li><code>/context-restore</code> finds Claude Code transcripts under <code>CLAUDE_CONFIG_DIR</code> and Codex sessions under <code>CODEX_HOME</code>. (#4684)</li>
+<li>TypeScript hooks start on Windows when Git Bash leaves a path unconverted, such as a home folder with an apostrophe. (#4682)</li>
+<li><code>./setup --status</code> passes on a <code>--prefix</code> install and names the command that clears each row it reports. (#4682)</li>
+<li><code>./setup</code> no longer leaves owner-only files in Bun's shared package cache. (#4682)</li>
+<li>Disabling <code>/open-gstack-browser</code> also removes its <code>/connect-chrome</code> alias. (#4682)</li>
+<li><code>gstack-doctor</code> no longer flags gstack's own CLAUDE.md as a pasted skill list. (#4682)</li>
+<li>OpenClaw, Hermes and Dots registrations leave out skills turned off with <code>disabled_skills</code>. (#4682)</li>
+<li>/autoplan's phase-report check works in sessions where Remote Control was on from the start. (#4681)</li>
+<li>/ship sees every git worktree of a repository when it picks a version, so two worktrees can't take the same one. (#4681)</li>
+<li><code>gstack-pr-shots --path</code> compares against the real base branch when <code>origin/HEAD</code> points at the feature branch. (#4681)</li>
+<li>When a reviewer's diff is too large, the suggested fix names only folders that review can actually leave out. (#4681)</li>
+<li>The docs link check and prose check no longer read a line that starts with inline code as the start of a code block. (#4677)</li>
+<li>/learn prune checks every learning, not just the first 100. (#4677)</li>
+<li>/retro counts a test runner in <code>tests/</code> with no test-style name and stops counting Godot and Unity sidecar files as tests. (#4677)</li>
+<li>Deleting or renaming a test now checks the files that still list it, even when another test covers it. (#4702)</li>
+<li>Playwright specs that take <code>test</code> from a local fixtures file run under <code>playwright test</code>. (#4702)</li>
+<li>The changed-constant check no longer floods on one- and two-digit numbers. (#4683)</li>
+<li><code>gstack-gbrain-mcp-verify</code> no longer misreads a large or slow server-sent-events reply as broken. (#4710)</li>
+<li>gbrain memory lookups find their pages: no more double imports, &quot;Related from memory&quot; hits work on a cloned brain host, and oversized logs keep their newest rows. (#4685)</li>
+<li>Eight skill fixes reported by users, including the Aside check asking you to open Aside, <code>/test-audit</code> finding the eng-review test plan, and <code>/design-shotgun</code> passing the reason for each pick. (#4686)</li>
+</ul>
+<h2>What's new</h2>
+<ul>
+<li>The prompt-routing hook no longer names your bug-fix skill on bug reports: in a preregistered test on 183 real Python bugs it got the skill's steps followed but fixed no more bugs. It still routes /review and /qa, and never routes a message from another Claude Code session or a background agent's hand-back. (#4707, #4674, #4694)</li>
+<li>Review can leave out copied open-source files that <code>gstack-vendored-verify</code> proves byte-for-byte equal to a pinned upstream commit; list the upstreams in <code>review_vendored</code>. (#4646, #4665, #4690)</li>
+<li><code>gstack-ship-queue land</code> can run full CI on the merged tree before it lands a pull request whose base moved (<code>land.merged_ci</code>), and main's push run reuses that result instead of testing again. (#4649, #4655)</li>
+<li><code>gstack-ship-queue count</code> prints how many finished pull requests are waiting to merge. (#4712)</li>
+<li>On Capy, the second-model review in <code>/ship</code> and <code>/review</code> defaults to GPT-6.2 Sol. (#4636)</li>
+<li>On Capy, <code>/ship</code> runs in the pull request's own thread and starts its reviewers as subagents, with no separate helper agent. (#4670)</li>
+<li><code>/eval-plan</code> refuses gpt-4o and older-generation models in every role a plan chooses, and plans frozen on or after 2026-11-22 check a model judge against 100 hand labels. (#4630)</li>
+<li><code>/eval-plan</code>'s dry run follows the plan's own dates and declared vendor models, and new plans name how their grader treats the agent's repository. (#4673)</li>
+<li><code>/plan-ceo-review</code> explains its review-mode recommendation by what that mode does that the next-closest mode wouldn't. (#4730)</li>
+<li>Skills that declare gbrain context queries load them at start; <code>gstack-config set gbrain_context_load off</code> turns it off. (#4687)</li>
+<li><code>gstack-harness status</code> reports <code>unknown</code> with the error when a harness's skill list fails, instead of listing every skill as missing. (#4687)</li>
+<li>Test selection follows TypeScript NodeNext <code>.js</code> imports to their <code>.ts</code> source and maps Rails <code>app/</code> and <code>lib/</code> files to their specs. (#4679)</li>
+<li>Published the results of two tests of /ship: running it in the pull request's own thread made no clear difference in cost or bugs caught (#4680), and its review panel beat two plain review reads, so it stays (#4676, #4732).</li>
+</ul>
+<h2>Changes for maintainers</h2>
+<ul>
+<li>Every gstack pull request gets a Test changes summary of deleted or skipped tests, loosened limits and edits to its own checks, as a two-week trial that never fails a pull request. (#4645)</li>
+<li>A weekly Mutation report lists small wrong edits gstack's tests fail to catch. (#4652)</li>
+<li>Flaky and slow test fixes: free test shards survive a browser that exits during cleanup (#4666), nightly Windows shards stay under their time limit (#4661), weekly test health passes again (#4633), and two git worktree races no longer fail each other (#4710).</li>
+<li>Release-check fixes: the recommendation judge's calibration includes two real questions (#4705), the /autoplan guard test keeps its Claude Haiku 4.5 actor (#4639), and the docs-audit tests accept /ship's step for a stopped audit (#4731).</li>
+<li>The bootstrap retention tests skip five cases that can't happen when the suite runs as root. (#4677)</li>
+<li>Removed a sentence the revert drill added to its own docs. (#4716)</li>
+</ul>
+<p><strong>Full changelog:</strong> https://github.com/garrytan/gstack/blob/v1.103.0.0/CHANGELOG.md · <strong>Compare:</strong> https://github.com/garrytan/gstack/compare/v1.102.2.0...v1.103.0.0</p>
+<hr />
+<blockquote>
+<p><strong>Source</strong> <a href="https://github.com/garrytan/gstack">garrytan/gstack</a> · <code>v1.103.0.0</code> · 2026-11-23 · <a href="https://github.com/garrytan/gstack/releases/tag/v1.103.0.0">upstream release</a></p>
+</blockquote>
+<p><em>Mirrored verbatim for indexing. All rights belong to the upstream project.</em></p></div> </details> </div> <p class="muted" style="margin-top:var(--s8);font-size:12.5px;border-top:1px solid var(--line);padding-top:var(--s4)"> リリースノートは上流プロジェクトが公開したものです。私たちはそれらを整理し、関連付けて、バージョンを一眼で比較できるようにしています。コンテンツの権利はすべて原作者に属します。 </p> <nav class="pager" aria-label="Release navigation"> <span></span> <a href="/releases/gstack/1.102.2.0"> <span class="k">前へ →</span> <span class="t">v1.102.2.0</span> </a> </nav> <aside class="ad-slot" aria-label="Advertisement" data-astro-cid-fgwukgf6><div class="ad-slot-label" data-astro-cid-fgwukgf6>Advertisement</div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4184355057086168" data-ad-slot="9133765584" data-ad-format="auto" data-full-width-responsive="true" data-astro-cid-fgwukgf6></ins><script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script></aside> </article> <aside class="rail"> <div class="rail-card"> <div class="rail-title">Source</div> <ul class="rail-list"> <li> <a href="https://github.com/garrytan/gstack/releases/tag/v1.103.0.0" target="_blank" rel="noopener"> <span>GitHub で見る</span> <span class="d">↗</span> </a> </li> <li> <a href="https://github.com/garrytan/gstack" target="_blank" rel="noopener"> <span>garrytan/gstack</span> <span class="d">↗</span> </a> </li> </ul> </div> <div class="rail-card rail-toc"> <div class="rail-title">このページの目次</div> <nav> <a href="#" class>アクションが必要です: /verify は /build-check になりました</a><a href="#" class>セキュリティ</a><a href="#" class>/ship とマージの修正</a><a href="#" class>その他の修正</a><a href="#" class>新機能</a><a href="#" class>メンテナ向けの変更</a> </nav> </div> <div class="rail-card"> <div class="rail-title">バージョン履歴</div> <ul class="rail-list"> <li> <a href="/releases/gstack/1.103.0.0" aria-current="true"> <span class="v">v1.103.0.0</span> <span class="d">26-11-23</span> </a> </li><li> <a href="/releases/gstack/1.102.2.0"> <span class="v">v1.102.2.0</span> <span class="d">26-11-21</span> </a> </li><li> <a href="/releases/gstack/1.102.1.0"> <span class="v">v1.102.1.0</span> <span class="d">26-11-20</span> </a> </li><li> <a href="/releases/gstack/1.102.0.0"> <span class="v">v1.102.0.0</span> <span class="d">26-11-19</span> </a> </li><li> <a href="/releases/gstack/1.101.0.0"> <span class="v">v1.101.0.0</span> <span class="d">26-11-18</span> </a> </li><li> <a href="/releases/gstack/1.100.0.0"> <span class="v">v1.100.0.0</span> <span class="d">26-11-17</span> </a> </li><li> <a href="/releases/gstack/1.99.5.0"> <span class="v">v1.99.5.0</span> <span class="d">26-11-16</span> </a> </li><li> <a href="/releases/gstack/1.99.4.0"> <span class="v">v1.99.4.0</span> <span class="d">26-11-15</span> </a> </li> </ul> <a href="/ja/releases/gstack" class="mono" style="display:inline-block;margin-top:var(--s3);font-size:11.5px;color:var(--ink-3)"> すべての 18 件を見る →
+</a> </div> </aside> </div> </div>  </main> <footer class="site-footer"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/ja/" class="brand" aria-label="STAGS NextStack"><span class="brand-mark" aria-hidden="true">S</span><span class="brand-main">STAGS</span><span class="brand-sub" aria-hidden="true">NextStack</span></a> <p>オープンソースのリリース インテリジェンスが毎日公開されます。</p> </div> <div class="footer-col"> <h3>追跡</h3> <ul> <li><a href="/ja/releases">リリース</a></li> <li><a href="/ja/projects">プロジェクト</a></li> <li><a href="/ja/releases.xml">RSS フィード</a></li> </ul> </div> <div class="footer-col"> <h3>アーカイブ</h3> <ul> <li><a href="/zh/release_note" hreflang="zh-Hans">中文アーカイブ</a></li> <li><a href="/zh/chapters/" hreflang="zh-Hans">技術ノート</a></li> <li><a href="/zh/downloads/">Stags Tracker</a></li> </ul> </div> <div class="footer-col"> <h3>情報</h3> <ul> <li><a href="/privacy">プライバシーポリシー</a></li> <li><a href="/releases.xml">RSS</a></li> <li><a href="/sitemap-index.xml">Sitemap</a></li> </ul> </div> </div> <div class="footer-btm"> <span>© 2026 STAGS</span> <span>Release note は上流プロジェクトに属します。</span> </div> </div> </footer> <!-- 搜索面板 --> <div class="palette-bg" data-palette-bg data-open="false"> <div class="palette" role="dialog" aria-modal="true" aria-label="リリースを検索"> <div class="palette-in"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ink-4);flex:none"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <input type="search" data-palette-input placeholder="リリース、プロジェクト、バージョンを検索…" autocomplete="off" spellcheck="false"> <span class="kbd">esc</span> </div> <ul class="palette-res" data-palette-res></ul> <div class="palette-ft"> <span>↑↓ navigate</span> <span>↵ open</span> <span style="margin-left:auto" data-palette-count></span> </div> </div> </div> <script type="module" src="/assets/Shell.astro_astro_type_script_index_0_lang.0ZkKXV47.js"></script> </body> </html>

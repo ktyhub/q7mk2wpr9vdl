@@ -1,0 +1,562 @@
+<!DOCTYPE html><html lang="es" dir="ltr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>peft v0.20.0 — STAGS NextStack</title><meta name="description" content="This release adds no less than nine new PEFT methods and puts a lot of work into the surrounding infrastructure, for example adding a new image generation benchmark for the method comparison suite and greatly improving…"><meta name="keywords" content="release note de código abierto, rastreador de lanzamientos, agregador changelog, cambios importantes, rastreador de desuso, lanzamientos de Kafka, lanzamientos de Spring Boot, lanzamientos de Kubernetes"><meta name="generator" content="Astro v5.18.2"><link rel="canonical" href="https://www.stags.cn/es/releases/peft/0.20.0/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="STAGS NextStack — releases" href="/es/releases.xml"><link rel="alternate" hreflang="en" href="https://www.stags.cn/releases/peft/0.20.0/"><link rel="alternate" hreflang="zh-Hans" href="https://www.stags.cn/releases/peft/0.20.0/"><link rel="alternate" hreflang="x-default" href="https://www.stags.cn/releases/peft/0.20.0/"><meta property="og:site_name" content="STAGS"><meta property="og:type" content="article"><meta property="og:title" content="peft v0.20.0 — STAGS NextStack"><meta property="og:description" content="This release adds no less than nine new PEFT methods and puts a lot of work into the surrounding infrastructure, for example adding a new image generation benchmark for the method comparison suite and greatly improving…"><meta property="og:url" content="https://www.stags.cn/es/releases/peft/0.20.0/"><meta property="og:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><meta property="og:locale" content="es_ES"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="ja_JP"><meta property="og:locale:alternate" content="de_DE"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:locale:alternate" content="pt_BR"><meta property="og:locale:alternate" content="ko_KR"><meta property="og:locale:alternate" content="it_IT"><meta property="og:locale:alternate" content="ru_RU"><meta property="og:locale:alternate" content="tr_TR"><meta property="og:locale:alternate" content="id_ID"><meta property="og:locale:alternate" content="vi_VN"><meta property="og:locale:alternate" content="ar_SA"><meta property="og:locale:alternate" content="sv_SE"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.stags.cn/#website","name":"STAGS","url":"https://www.stags.cn/","inLanguage":"es","description":"NextStack indexa las notas de versión de proyectos de infraestructura e IA – cambios incompatibles, obsolescencias y migraciones – en un único feed en inglés.","publisher":{"@id":"https://www.stags.cn/#org"}},{"@type":"Organization","@id":"https://www.stags.cn/#org","name":"STAGS","alternateName":"NextStack","url":"https://www.stags.cn/"},{"@type":"TechArticle","@id":"https://www.stags.cn/es/releases/peft/0.20.0/#article","headline":"peft v0.20.0 release notes","datePublished":"2026-07-28","inLanguage":"en","isPartOf":{"@id":"https://www.stags.cn/#website"},"about":{"@type":"SoftwareSourceCode","codeRepository":"https://github.com/huggingface/peft"}}]}</script><!-- 第三方脚本的连接预热：这两个域名几乎每页都要连，
+         提前建连能省掉 DNS + TCP + TLS 一个往返（移动网络 100~300ms）。
+         AdSense 只在开关打开时预热——关掉广告后连这个域名都没必要。 --><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://pagead2.googlesyndication.com"><!-- Google AdSense：站点所有权校验与广告投放共用同一段脚本，全站只加载一次。
+         未创建广告单元时页面上不渲染任何广告容器，站点保持干净。
+         fetchpriority=low：它不参与首屏渲染，不该跟正文抢带宽。 --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184355057086168" crossorigin="anonymous" fetchpriority="low"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-RFRF1TVRMP" fetchpriority="low"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RFRF1TVRMP");
+    </script><!-- 百度统计（国内流量统计）。官方标准片段，is:inline 原样输出，
+         hm.js 动态插到首个 script 前，异步不阻塞首屏渲染。 --><script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?299e5b4e65b86ed16879bdcbe70531d6";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script><link rel="stylesheet" href="/assets/index.DQGt3qLZ.css">
+<style>.ad-slot[data-astro-cid-fgwukgf6]{margin:var(--s10) 0 0;padding-top:var(--s5);border-top:1px solid var(--line)}.ad-slot-label[data-astro-cid-fgwukgf6]{margin-bottom:var(--s3);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{display:block;min-height:100px}@media(min-width:640px){.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{min-height:250px}}
+</style></head> <body> <a class="skip" href="#main">Ir al contenido</a> <header class="hdr" data-header> <div class="wrap hdr-inner"> <a href="/es/" class="brand" aria-label="STAGS NextStack — Información de versiones open source"> <span class="brand-mark" aria-hidden="true">S</span> <span class="brand-main">STAGS</span> <span class="brand-sub" aria-hidden="true">NextStack</span> </a> <nav class="nav" aria-label="Primary"> <a href="/es/releases">Versiones</a><a href="/es/projects">Proyectos</a> </nav>  <details class="navmenu" data-navmenu> <summary class="navmenu-btn" aria-label="Open menu"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> </summary> <div class="navmenu-panel" role="group" aria-label="Primary"> <a href="/es/releases" class="navmenu-item">Versiones</a><a href="/es/projects" class="navmenu-item">Proyectos</a> </div> </details> <div class="hdr-tools"> <button class="searchbtn" type="button" data-search-open aria-label="Buscar versiones"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <span class="lbl">Buscar</span> <span class="kbd">⌘K</span> </button> <details class="langmenu" data-langmenu> <summary class="langmenu-btn" aria-label="Idioma"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"> <circle cx="12" cy="12" r="9"></circle> <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path> </svg> <span class="langmenu-cur">ES</span> <svg class="langmenu-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m2 4 4 4 4-4"></path></svg> </summary> <div class="langmenu-panel" role="group" aria-label="Idioma"> <p class="langmenu-head">Idioma</p> <a class="langmenu-item" href="/releases/peft/0.20.0/" hreflang="en" lang="en" data-on="false"> <span class="langmenu-label">English</span> <span class="langmenu-code">EN</span> </a><a class="langmenu-item" href="/zh/release_note/peft/peft_v0.20.0" hreflang="zh-Hans" lang="zh-CN" data-on="false"> <span class="langmenu-label">中文</span> <span class="langmenu-code">中</span> </a><a class="langmenu-item" href="/ja/releases/peft/0.20.0/" hreflang="ja" lang="ja" data-on="false"> <span class="langmenu-label">日本語</span> <span class="langmenu-code">日</span> </a><a class="langmenu-item" href="/de/releases/peft/0.20.0/" hreflang="de" lang="de" data-on="false"> <span class="langmenu-label">Deutsch</span> <span class="langmenu-code">DE</span> </a><a class="langmenu-item" href="/fr/releases/peft/0.20.0/" hreflang="fr" lang="fr" data-on="false"> <span class="langmenu-label">Français</span> <span class="langmenu-code">FR</span> </a><a class="langmenu-item" href="/es/releases/peft/0.20.0/" hreflang="es" lang="es" aria-current="true" data-on="true"> <span class="langmenu-label">Español</span> <span class="langmenu-code">ES</span> </a><a class="langmenu-item" href="/pt/releases/peft/0.20.0/" hreflang="pt-BR" lang="pt-BR" data-on="false"> <span class="langmenu-label">Português</span> <span class="langmenu-code">PT</span> </a><a class="langmenu-item" href="/ko/releases" hreflang="ko" lang="ko" data-on="false"> <span class="langmenu-label">한국어</span> <span class="langmenu-code">한</span> </a><a class="langmenu-item" href="/it/releases" hreflang="it" lang="it" data-on="false"> <span class="langmenu-label">Italiano</span> <span class="langmenu-code">IT</span> </a><a class="langmenu-item" href="/ru/releases" hreflang="ru" lang="ru" data-on="false"> <span class="langmenu-label">Русский</span> <span class="langmenu-code">RU</span> </a><a class="langmenu-item" href="/tr/releases" hreflang="tr" lang="tr" data-on="false"> <span class="langmenu-label">Türkçe</span> <span class="langmenu-code">TR</span> </a><a class="langmenu-item" href="/id/releases" hreflang="id" lang="id" data-on="false"> <span class="langmenu-label">Bahasa Indonesia</span> <span class="langmenu-code">ID</span> </a><a class="langmenu-item" href="/vi/releases" hreflang="vi" lang="vi" data-on="false"> <span class="langmenu-label">Tiếng Việt</span> <span class="langmenu-code">VI</span> </a><a class="langmenu-item" href="/ar/releases" hreflang="ar" lang="ar" data-on="false"> <span class="langmenu-label">العربية</span> <span class="langmenu-code">ع</span> </a><a class="langmenu-item" href="/sv/releases" hreflang="sv" lang="sv" data-on="false"> <span class="langmenu-label">Svenska</span> <span class="langmenu-code">SV</span> </a> </div> </details> <a class="iconlink" href="/releases.xml" aria-label="RSS"> <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"> <path d="M2 12.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM2 7.5a6.5 6.5 0 0 1 6.5 6.5h-2A4.5 4.5 0 0 0 2 9.5v-2ZM2 2.5A11.5 11.5 0 0 1 13.5 14h-2A9.5 9.5 0 0 0 2 4.5v-2Z"></path> </svg> </a> </div> </div> </header> <main id="main">  <div class="wrap"> <div class="detail"> <article> <header class="detail-hd"> <nav class="crumbs" aria-label="Breadcrumb"> <a href="/es/">Inicio</a> <span class="sep">/</span> <a href="/es/releases">Versiones</a> <span class="sep">/</span> <a href="/es/releases/peft">peft</a> </nav> <h1 class="detail-title"> <span class="p">peft</span> v0.20.0 </h1> <div class="detail-meta"> <span class="chip chip--minor">Menor</span> <span><span class="k">Publicado</span>28 jul 2026</span>  <span class="sep" aria-hidden="true"></span> <a href="https://github.com/huggingface/peft" target="_blank" rel="noopener"> <span class="k">Fuente</span>huggingface/peft </a>   <span class="sep" aria-hidden="true"></span> <a href="/releases/peft/0.20.0/"> original en inglés </a>  <span class="sep" aria-hidden="true"></span> <button class="btn btn--ghost btn--sm" type="button" data-copy="https://www.stags.cn/es/releases/peft/0.20.0/">Copiar enlace</button> </div> </header> <div class="prose" style="margin-top:var(--s8)"> <p class="mt-notice" role="note">Esta página está traducida automáticamente. El texto original en inglés es la referencia.</p>  <div><h1>peft v0.20.0</h1>
+<h1>Destacados</h1>
+&lt;img width=&quot;1250&quot; height=&quot;560&quot; alt=&quot;peft-v0 20 0&quot; src=&quot;https://github.com/user-attachments/assets/6194fae9-f3c3-48ca-b43b-40c774bfe6eb&quot; /&gt;
+<p>Esta versión agrega nada menos que nueve nuevos métodos PEFT y pone mucho trabajo en la infraestructura circundante, por ejemplo, agregando un nuevo punto de referencia de generación de imágenes para el conjunto de comparación de métodos y mejorando en gran medida la estructura de la documentación.</p>
+<h2>Nuevos métodos</h2>
+<h3>Hola</h3>
+<p>@hqsiswiliam agregó <a href="https://openreview.net/forum?id=TwJrTz9cRS">&quot;HiRA: Adaptación de alto rango de Hadamard con parámetros eficientes para modelos de lenguaje grandes&quot;</a> a PEFT (#2668). En lugar de agregar el producto de bajo rango <code>BA</code> al peso base, HiRA lo multiplica por elementos (producto Hadamard) con el peso base congelado. Debido a que el peso base en sí es de rango completo, la actualización resultante ya no está limitada a ser de rango bajo, mientras que el recuento de parámetros entrenables sigue siendo el mismo que el de LoRA.</p>
+<h3>GLoRA</h3>
+<p>@not-lain contribuyó con GLoRA: <a href="https://arxiv.org/abs/2306.07967">&quot;Uno para todos: LoRA generalizado para un ajuste fino de parámetros eficiente&quot;</a> en el n.º 3098. Es un método PEFT flexible que amplía LoRA con peso, activación y adaptación de sesgo configurables, lo que ofrece un ajuste más rico sin costos de inferencia adicionales. Úselo cuando necesite flexibilidad por capa o una adaptación más fuerte que Vanilla LoRA. Omítalo para capas no lineales (por ejemplo, Conv/Incrustación) o cuando LoRA estándar ya sea suficiente y la simplicidad sea importante.</p>
+<h3>BEFT</h3>
+<p>@whubaichuan agregó <a href="https://arxiv.org/abs/2509.15974v2">&quot;BEFT: Ajuste fino de modelos de lenguaje con eficiencia de sesgo&quot;</a> en el n.° 3195. BEFT se basa en la observación de que ajustar los términos de sesgo por sí solos puede ser competitivo en regímenes con pocos datos, pero va más allá: en lugar de entrenar <em>todos</em> los sesgos, apunta a la proyección de valor de forma predeterminada, ya que los autores encontraron que esto es más eficiente. Esto reduce la cuenta de parámetros entrenables a aproximadamente 0.01% del total de parámetros.</p>
+<p>###MonteCLoRA</p>
+<p>@victor7246 integró MonteCLoRA, [&quot;Ajuste robusto y eficiente de LLM con reparametrización bayesiana de adaptación de bajo rango&quot;] (https://openreview.net/forum?id=2HFmicB8kh) en #2943. Se sabe que LoRA es sensible a hiperparámetros como la tasa de aprendizaje y el tamaño del lote. Esta nueva variante de LoRA aborda esto tratando los parámetros de rango bajo como una distribución en lugar de una estimación puntual, utilizando la estimación de Monte Carlo para obtener una estimación posterior de baja varianza. Esto debería hacer que el entrenamiento sea notablemente más sólido, a costa de solo <em>O(rango)</em> parámetros adicionales.</p>
+<h3>VeLoRA</h3>
+<p>@roymiles agregó VeLoRA: <a href="https://arxiv.org/abs/2405.17991">&quot;Entrenamiento eficiente de la memoria utilizando proyecciones de subtokens de rango 1&quot;</a> en el n.° 3159. A diferencia de la mayoría de los métodos PEFT, esta variante de LoRA apunta a la memoria de activación en lugar del recuento de parámetros: las activaciones intermedias se dividen en subtokens y se comprimen con una proyección fija de rango 1 antes de almacenarse en caché para el paso hacia atrás y luego se reconstruyen durante la retropropagación. Conceptualmente, es similar al punto de control de gradiente, con un menor ahorro de memoria pero funcionando más rápido.</p>
+<h3>Uni-LoRA</h3>
+<p>@KaiyangLi1992 contribuyó con Uni-LoRA: <a href="https://arxiv.org/abs/2506.00799">&quot;Un vector es todo lo que necesitas&quot;</a> en el n.° 3257. El artículo muestra que las variantes de LoRA con parámetros eficientes, como VeRA y VB-LoRA, pueden describirse como proyectando todo el espacio de parámetros de LoRA hacia un subespacio mucho más pequeño, diferenciándose solo en la elección de la proyección. Uni-LoRA utiliza una única proyección global en todo el modelo en lugar de proyecciones por capas, lo que permite compartir parámetros entre capas y, por lo tanto, recuentos de parámetros muy bajos.</p>
+<h3>FROD</h3>
+<p>@Bane-Elvin agregó FRoD, <a href="https://arxiv.org/abs/2512.23485">&quot;Ajuste fino eficiente de rango completo con grados de rotación para una convergencia rápida&quot;</a>, en el n.° 3270. En lugar de agregar deltas de bajo rango como LoRA, reconstruye pesos seleccionados con subespacios rotacionales compartidos y coeficientes escasos entrenables. Es especialmente útil cuando son importantes una convergencia rápida y un techo de capacidad de rango completo más alto, y su gran subespacio rotacional disperso también puede ser prometedor para la fusión de modelos. Las principales desventajas son la costosa inicialización de la descomposición conjunta y los pases hacia adelante y hacia atrás ligeramente más lentos que LoRA, por lo que puede ser menos atractivo para un ajuste fino de una sola tarea.</p>
+<h3>MiCA</h3>
+<p>@sr-networks contribuyó con MiCA, <a href="https://arxiv.org/abs/2604.01694">&quot;MiCA aprende más conocimientos que LoRA y realiza un ajuste completo&quot;</a>, en el n.º 3260. MiCA es una variante de LoRA que inicializa <code>B</code> a partir del SVD del peso base, tomando los vectores singulares izquierdos que pertenecen a los valores singulares <em>más pequeños</em> y luego entrena solo <code>A</code>. La idea es que adaptar estas direcciones infrautilizadas integra nuevos conocimientos de manera más efectiva que adaptar el subespacio dominante, con menos interferencia con las capacidades existentes.</p>
+<h3>HÁBIL</h3>
+<p>@MAXNORM8650 agregó DEFT, <a href="https://arxiv.org/abs/2509.22793">&quot;Ajuste fino eficiente descomposicional para modelos de texto a imagen&quot;</a>, en el n.º 3342. Este método PEFT divide una actualización de peso en dos partes aprendidas de bajo rango: una proyección que elimina un subespacio del peso congelado y una actualización de bajo rango que inyecta contenido nuevo en su lugar. Utilice DEFT para personalizar un modelo de texto a imagen a partir de unas pocas imágenes manteniendo al mismo tiempo el seguimiento de instrucciones y la editabilidad del modelo base con un mínimo de olvido. Es menos adecuado si no necesita preservar las otras capacidades del modelo base (un adaptador aditivo simple es más simple) o para capas más allá de Linear/Conv1D. El <a href="https://arxiv.org/abs/2406.05641">método PaRa</a> también se admite como caso especial de DEFT.</p>
+<h2>Mejoras</h2>
+<h3>Selección automática de objetivos LoRA</h3>
+<p>@oswaldoludwig agregó <code>KappaTuneSelector</code> en el n.° 3106 basado en <a href="https://arxiv.org/abs/2506.16289">&quot;El número de condición como proxy invariante de escala para la codificación de información en unidades neuronales&quot;</a>. El PR agrega una nueva función, <code>find_kappa_target_modules</code>, que identifica automáticamente a qué módulos es mejor apuntar en función del número de condición de las matrices de peso base. Esto elimina algunas de las conjeturas al elegir <code>target_modules</code> al configurar LoRA u otros métodos PEFT.</p>
+<h3>Soporte de cuantificación más amplio</h3>
+<p>#3117 agrega soporte de cuantificación genérico a BOFT, MiSS y VeRA, y #3321 hace lo mismo para SHiRA. Anteriormente, el soporte de cuantificación debía implementarse por método y por backend; Más métodos ahora funcionan con los backends de cuantificación comunes listos para usar. Tenga en cuenta que, como consecuencia, VeRA ahora utiliza el backend de cuantificación genérico en lugar de su backend de cuantificación de bits y bytes anterior. Si tiene problemas debido a esto, háganoslo saber.</p>
+<h3>Múltiples adaptadores con <code>target_parameters</code></h3>
+<p><code>target_parameters</code>, que permite apuntar a <code>nn.Parameter</code> directamente (útil para modelos MoE que agrupan expertos en un solo parámetro), ahora admite agregar y cargar múltiples adaptadores (#3350).</p>
+<h3>AdaLoRA para Conv2d</h3>
+<p>@ Anai-Guo agregó <code>SVDConv2d</code> en el n.° 3196, por lo que AdaLoRA ahora puede apuntar a capas <code>torch.nn.Conv2d</code>.</p>
+<h3>Reestructuración de la documentación</h3>
+<p>La <a href="https://huggingface.co/docs/peft/index">documentación PEFT</a> se reorganizó en los números 3300 y 3325, lo que debería hacer que sea considerablemente más fácil de navegar ahora que PEFT admite tantos métodos. Cada método PEFT también proporciona una descripción general de su desempeño en los puntos de referencia PEFT. También hay una larga lista de mejoras en la documentación de muchos contribuyentes en esta versión, gracias a todos los que trabajaron en ellas.</p>
+<h2>Cambios</h2>
+<h3>AutoGPTQ en desuso</h3>
+<p>Tras el cambio a <a href="https://github.com/ModelCloud/GPTQModel">GPT-QModel</a> como backend en la versión anterior, AutoGPTQ ahora está formalmente obsoleto (#3190) gracias a @Qubitium.</p>
+<h2>Puntos de referencia</h2>
+<h3>Punto de referencia de generación de imágenes</h3>
+<p>El conjunto de comparación de métodos ahora tiene un punto de referencia de generación de imágenes (#3082). Esto complementa el punto de referencia MetaMathQA existente y permite comparar métodos PEFT en una tarea completamente diferente. Esto nos brinda una imagen más completa de las capacidades de los diferentes métodos PEFT. Para comprobar los resultados, visita el <a href="https://huggingface.co/spaces/peft-internal-testing/PEFT-method-comparison">Espacio Gradio</a> y en la parte superior izquierda, selecciona la tarea &quot;image-gen&quot;.</p>
+&lt;img width=&quot;925&quot; height=&quot;631&quot; alt=&quot;Captura de pantalla del 28-07-2026 15-48-53&quot; src=&quot;https://github.com/user-attachments/assets/e6260b44-9b83-45b7-bd6c-d15bd429e006&quot; /&gt;
+<p><em>Una mirada a los resultados del benchmark de generación de imágenes</em></p>
+<h3>MetaMathQA</h3>
+<p>Desde la última versión, también realizamos varias mejoras en el [punto de referencia MetaMathQA] (https://github.com/huggingface/peft/method_comparison/MetaMathQA). Debes comprobar los resultados actualizados en el <a href="https://huggingface.co/spaces/peft-internal-testing/PEFT-method-comparison">Espacio Gradio</a>. Con la ayuda de la comunidad, ahora cubrimos una gama mucho más amplia de experimentos. Además, descubrimos un error en la métrica de olvido: los nuevos números ahora reflejan con precisión cuánto ajuste se conserva del conocimiento original del modelo base.</p>
+<h3>Tienda PEFT</h3>
+<p>#3317 agrega un nuevo <a href="https://huggingface.co/spaces/peft-internal-testing/PEFT-shop">Gradio Space</a> con el objetivo de hacer muy fácil comparar diferentes métodos PEFT no solo con respecto al rendimiento sino también a las capacidades (por ejemplo, si se admite la cuantificación). Visite este espacio para descubrir qué método PEFT es el más adecuado para su caso de uso.</p>
+&lt;img width=&quot;1013&quot; height=&quot;697&quot; alt=&quot;Captura de pantalla del 28-07-2026 30-15-21&quot; src=&quot;https://github.com/user-attachments/assets/bd9ad132-a44f-4a2f-b28d-e499c9a5eaea&quot; /&gt;
+<p><em>Busque en la tienda PEFT el mejor método PEFT para su caso de uso</em></p>
+<h2>Todos los cambios</h2>
+<ul>
+<li>tarea: aumentar el SHA del generador de documentos para el flujo de trabajo de carga de relaciones públicas por @rtrompier en https://github.com/huggingface/peft/pull/3162</li>
+<li>Resultados comparativos para nuevos métodos de @githubnemo en https://github.com/huggingface/peft/pull/3160</li>
+<li>corrección: protege la búsqueda de UPCAST_DTYPES con hasattr para admitir PyTorch anterior por @Anai-Guo en https://github.com/huggingface/peft/pull/3161</li>
+<li>Versión mejorada a 0.19.1.dev0 después del lanzamiento por @BenjaminBossan en https://github.com/huggingface/peft/pull/3156</li>
+<li>ENH: Opción para puntos de control de gradiente en MetaMath por @BenjaminBossan en https://github.com/huggingface/peft/pull/3157</li>
+<li>MetaMathQA: sube el punto de control al depósito después del entrenamiento por @githubnemo en https://github.com/huggingface/peft/pull/3163</li>
+<li>CORREGIR Cómo intercambiar funciones de entrada/salida para su transposición por @BenjaminBossan en https://github.com/huggingface/peft/pull/3165</li>
+<li>Implementar lista de importación permitida en AutoPeftModel, limitar el acceso en megatron por @githubnemo en https://github.com/huggingface/peft/pull/3090</li>
+<li>Inicialización de la capa de refactorización: PR 2960 continuado por @BenjaminBossan en https://github.com/huggingface/peft/pull/3047</li>
+<li>Se corrigió SVDQuantLinear <strong>repr</strong> anidado dentro hacia adelante en lugar de en la clase por @Chessing234 en https://github.com/huggingface/peft/pull/3174</li>
+<li>Resolución #2944: sure_weight_tying respeta la configuración + pruebas mejoradas por @Adya-Prasad en https://github.com/huggingface/peft/pull/3171</li>
+<li>FIX estructura del módulo Clip desde transformadores &gt; 5.5 por @BenjaminBossan en https://github.com/huggingface/peft/pull/3179</li>
+<li>Versión mejorada a 0.19.2.dev0 después del lanzamiento por @BenjaminBossan en https://github.com/huggingface/peft/pull/3178</li>
+<li>CORREGIR el no determinismo de TinyLoRA por @BenjaminBossan en https://github.com/huggingface/peft/pull/3180</li>
+<li>CORREGIDO error de VeRA y OFT después de la refactorización de inicio de capa por @BenjaminBossan en https://github.com/huggingface/peft/pull/3187</li>
+<li>soluciona el caso test_hotswapping_compiled_model_xxx de falla de los difusores… por @sywangyi en https://github.com/huggingface/peft/pull/3183</li>
+<li>Instalación de CI Fix GPTQmodel en Docker compilado por @BenjaminBossan en https://github.com/huggingface/peft/pull/3188</li>
+<li>corrige módulos aux4 solo kwargs en module_to_save por @ved1beta en https://github.com/huggingface/peft/pull/3199</li>
+<li>tarea: aumentar el SHA del generador de documentos para el flujo de trabajo de compilación del documento principal por @rtrompier en https://github.com/huggingface/peft/pull/3198</li>
+<li>FIX implementación directa de PVeRA para bitsandbytes por @BenjaminBossan en https://github.com/huggingface/peft/pull/3189</li>
+<li>Actualizar las referencias de GPT-QModel y desaprobar AutoGPTQ por @Qubitium en https://github.com/huggingface/peft/pull/3190</li>
+<li>FIX Regresión de conversión de peso de Transformers por @BenjaminBossan en https://github.com/huggingface/peft/pull/3197</li>
+<li>Agregar un generador a la función de reparametrización de PVeRA. por @leofillioux en https://github.com/huggingface/peft/pull/3200</li>
+<li>Agregue BEFT como un nuevo método PEFT por @whubaichuan en https://github.com/huggingface/peft/pull/3195</li>
+<li>hazaña (adalora): agregue SVDConv2d para admitir módulos de destino torch.nn.Conv2d por @Anai-Guo en https://github.com/huggingface/peft/pull/3196</li>
+<li>Actualización de MiSS por @Joluck en https://github.com/huggingface/peft/pull/3194</li>
+<li>Mejora de acciones/caché de 5.0.4 a 5.0.5 en el grupo ci-actions de @dependabot[bot] en https://github.com/huggingface/peft/pull/3206</li>
+<li>Mejora el grupo de acciones de terceros con 7 actualizaciones de @dependabot[bot] en https://github.com/huggingface/peft/pull/3207</li>
+<li>CORREGIDO Error al ajustar el prefijo Gemma 4 por @BenjaminBossan en https://github.com/huggingface/peft/pull/3205</li>
+<li>FIX Use el pequeño modelo Gemma 4 para pruebas más rápidas por @BenjaminBossan en https://github.com/huggingface/peft/pull/3215</li>
+<li>FIX Inyección de dictado de estado con conversión de peso por @BenjaminBossan en https://github.com/huggingface/peft/pull/3212</li>
+<li>corrección: use torch.div en _ConvNd.unmerge para sesgo (era torch.mul) por @Chessing234 en https://github.com/huggingface/peft/pull/3216</li>
+<li>Solicitud de extracción: Agregar integración HiRA a la biblioteca PEFT por @hqsiswiliam en https://github.com/huggingface/peft/pull/2668</li>
+<li>Agregue KappaTuneSelector: selección automática de objetivos LoRA basada en números de condición por @oswaldoludwig en https://github.com/huggingface/peft/pull/3106</li>
+<li>Implementar VeLoRA y agregar pruebas. por @roymiles en https://github.com/huggingface/peft/pull/3159</li>
+<li>Agregue sugerencias de tipo a funciones de utilidad en merge_utils y otros módulos de @RudrenduPaul en https://github.com/huggingface/peft/pull/3144</li>
+<li>soluciona el problema de compatibilidad con la versión de los conjuntos de datos, como ejemplo de @kaixuanliu en https://github.com/huggingface/peft/pull/3218</li>
+<li>refinar el caso de prueba para <code>test_lora_seq2seq_lm_multi_gpu_inference</code> por @kaixuanliu en https://github.com/huggingface/peft/pull/3226</li>
+<li>Corrige el error de CI para la escena multidispositivo por @kaixuanliu en https://github.com/huggingface/peft/pull/3228</li>
+<li>refinar el caso de prueba test_causal_lm_training_multi_accelerator por @kaixuanliu en https://github.com/huggingface/peft/pull/3225</li>
+<li>TAREA: Actualizar ruff 0.15.12 por @BenjaminBossan en https://github.com/huggingface/peft/pull/3202</li>
+<li>DOC Mejore los documentos de LoHa con descripción general, cuándo usarlos y un examen de inicio rápido... por @ Dhruv-1710 en https://github.com/huggingface/peft/pull/3224</li>
+<li>corrección (xlora): duplicado &quot;for&quot; en el mensaje de advertencia de los adaptadores por @vip892766gma en https://github.com/huggingface/peft/pull/3235</li>
+<li>documentos: mejore la documentación de MiSS con orientación práctica y ejemplo de LLM de @vedantnavle13 en https://github.com/huggingface/peft/pull/3231</li>
+<li>CI elimina Transformer Engine del archivo Docker por @BenjaminBossan en https://github.com/huggingface/peft/pull/3248</li>
+<li>Integrar MonteCLoRA (se acepta TMLR 2025) en PEFT por @victor7246 en https://github.com/huggingface/peft/pull/2943</li>
+<li>Difusores de impacto de 0.34.0 a 0.38.0 en /examples/hra_dreambooth por @dependabot[bot] en https://github.com/huggingface/peft/pull/3250</li>
+<li>tarea: agregar anotaciones de tipo de retorno que faltan en import_utils y otras de @lphuc2250gma en https://github.com/huggingface/peft/pull/3245</li>
+<li>TST Elimina el uso innecesario de trust_remote_code por @BenjaminBossan en https://github.com/huggingface/peft/pull/3242</li>
+<li>Reparar el modelo de preparación para hotswap compilado requiere la graduación de @BenjaminBossan en https://github.com/huggingface/peft/pull/3241</li>
+<li>DOC Corrige importaciones incorrectas en ejemplos de cadenas de documentación de helpers.py por @blipbyte en https://github.com/huggingface/peft/pull/3249</li>
+<li>CORREGIR la conversión de peso de Transformers deshacer el cambio de nombre de clave incorrecto por @BenjaminBossan en https://github.com/huggingface/peft/pull/3262</li>
+<li>[SOLUCIÓN DE ERROR] sintonizadores/lora/eva: corrigió el protector de la máscara de etiqueta usando 'in' en lugar de hasattr para dict por @Dev-X25874 en https://github.com/huggingface/peft/pull/3247</li>
+<li>tarea: agregar anotaciones de tipo de retorno que faltan por @lphuc2250gma en https://github.com/huggingface/peft/pull/3272</li>
+<li>TST Resuelve correctamente el conjunto de datos GLUE de @BenjaminBossan en https://github.com/huggingface/peft/pull/3263</li>
+<li>SEC Agrega un tiempo de reutilización de 7 días al Dependabot por @BenjaminBossan en https://github.com/huggingface/peft/pull/3273</li>
+<li>DOC Corrige ejemplos de cadenas de documentos rotas en archivos tuner model.py de @blipbyte en https://github.com/huggingface/peft/pull/3254</li>
+<li>Mejora el grupo de acciones de terceros con 4 actualizaciones de @dependabot[bot] en https://github.com/huggingface/peft/pull/3276</li>
+<li>corrección (tuners/lora/torchao): hacer que get_apply_tensor_subclass sea opcional (#3223) por @Anai-Guo en https://github.com/huggingface/peft/pull/3234</li>
+<li>Prefijo de modelo PEFT de conversión de peso de transformadores FIX por @BenjaminBossan en https://github.com/huggingface/peft/pull/3230</li>
+<li>CORREGIR el nombre del argumento de Transformers en rename_source_key por @BenjaminBossan en https://github.com/huggingface/peft/pull/3284</li>
+<li>DOC Corrige referencias de clases incorrectas en las cadenas de documentación de configuración del sintonizador por @javierdejesusda en https://github.com/huggingface/peft/pull/3286</li>
+<li>Evite las importaciones de ayuda de TP para cargas LoRA distribuidas no TP por @jiqing-feng en https://github.com/huggingface/peft/pull/3261</li>
+<li>Agregar resultados BEFT y HiRA de @githubnemo en https://github.com/huggingface/peft/pull/3277</li>
+<li>Agregue experimentos comparativos de ablación de rango PVeRA realizados por @anrohanro en https://github.com/huggingface/peft/pull/3256</li>
+<li>comparación de métodos de experimento #2310: adapt_prompt por @Adya-Prasad en https://github.com/huggingface/peft/pull/3301</li>
+<li>Agregue la prueba de actualización en un solo paso de caída de peso desacoplada realizada por @eSVeeF en https://github.com/huggingface/peft/pull/3296</li>
+<li>Comparativa de generación de imágenes realizada por @BenjaminBossan en https://github.com/huggingface/peft/pull/3082</li>
+<li>Soporte de cuantificación genérico para BOFT, MiSS, VeRA por @BenjaminBossan en https://github.com/huggingface/peft/pull/3117</li>
+<li>Ejecución de GPU CI: elimine gptmodel del archivo Docker debido a pcre de @BenjaminBossan en https://github.com/huggingface/peft/pull/3253</li>
+<li>DOC Corrige el nombre de función incorrecto en la cadena de documentación por @BenjaminBossan en https://github.com/huggingface/peft/pull/3281</li>
+<li>CORREGIR Guardar adaptador cuando otros adaptadores coinciden parcialmente con el nombre de @BenjaminBossan en https://github.com/huggingface/peft/pull/3282</li>
+<li>Las pruebas de regresión TST descargan artefactos de regresión con pereza por @BenjaminBossan en https://github.com/huggingface/peft/pull/3285</li>
+<li>TAREA Agregar instrucciones para agentes de codificación por @BenjaminBossan en https://github.com/huggingface/peft/pull/3288</li>
+<li>FIX TST que falla en las pruebas de GPU HiRA y EETQ. por @BenjaminBossan en https://github.com/huggingface/peft/pull/3287</li>
+<li>Espacio de comparación de métodos independiente e integrable de @githubnemo en https://github.com/huggingface/peft/pull/3303</li>
+<li>FIX Conjunto de datos de referencia de imágenes orden de aviso incorrecto por @BenjaminBossan en https://github.com/huggingface/peft/pull/3308</li>
+<li>Se solucionó el problema de CI de implementación de aplicaciones realizado por @githubnemo en https://github.com/huggingface/peft/pull/3312</li>
+<li>Comparación de métodos: resultados de generación de imágenes por @BenjaminBossan en https://github.com/huggingface/peft/pull/3313</li>
+<li>Comparación de métodos: script de evaluación para benchmark de generación de imágenes realizado por @BenjaminBossan en https://github.com/huggingface/peft/pull/3314</li>
+<li>Se solucionó el problema de CI de implementación de aplicaciones realizado por @githubnemo en https://github.com/huggingface/peft/pull/3316</li>
+<li>Comparación de métodos: el punto de referencia de imágenes muestra imágenes de muestra de @BenjaminBossan en https://github.com/huggingface/peft/pull/3309</li>
+<li>CORREGIR capas_to_transform que coinciden con el índice incorrecto en modelos MoE por @MichalMraz en https://github.com/huggingface/peft/pull/3318</li>
+<li>Reestructuración de la documentación por @githubnemo en https://github.com/huggingface/peft/pull/3300</li>
+<li>documentos: corregir errores tipográficos en la cadena de documentos OFTConfig (parámetros, especificación) por @DaoyuanLi2816 en https://github.com/huggingface/peft/pull/3326</li>
+<li>CORREGIR la reproducción de guardado/carga de AdaMSS haciendo que slice_pca SVD sea determinista por @AshNicolus en https://github.com/huggingface/peft/pull/3310</li>
+<li>Documentos: haga la referencia de API ordenada y contraída por @githubnemo en https://github.com/huggingface/peft/pull/3325</li>
+<li>FEAT Agregar espacio Gradio de la tienda PEFT por @BenjaminBossan en https://github.com/huggingface/peft/pull/3317</li>
+<li>CORREGIR el error de flujo de trabajo de implementación de PEFT Shop por parte de @BenjaminBossan en https://github.com/huggingface/peft/pull/3332</li>
+<li>CORREGIR el error 2 del flujo de trabajo de implementación de PEFT Shop por @BenjaminBossan en https://github.com/huggingface/peft/pull/3334</li>
+<li>FIX PEFT extracción de la descripción de la aplicación de la tienda por @BenjaminBossan en https://github.com/huggingface/peft/pull/3335</li>
+<li>documentos: sincronizar cadenas de documentos de configuración PEFT con sus campos por @DaoyuanLi2816 en https://github.com/huggingface/peft/pull/3319</li>
+<li>MetaMathQA: Configuraciones optimizadas para IA3 por @githubnemo en https://github.com/huggingface/peft/pull/3337</li>
+<li>Corrige errores tipográficos en cadenas de documentos, comentarios y documentos de @DaoyuanLi2816 en https://github.com/huggingface/peft/pull/3328</li>
+<li>Característica/añadir frod por @Bane-Elvin en https://github.com/huggingface/peft/pull/3270</li>
+<li>refactor: deduplica ajustes de kwarg de aprendizaje rápido en peft_model por @eSVeeF en https://github.com/huggingface/peft/pull/3336</li>
+<li>documentos: aclarar subtract_mutated_init por @githubnemo en https://github.com/huggingface/peft/pull/3343</li>
+<li>DOC Corrige referencias incorrectas de LoRA en hira y ln_tuning model docstrings por @javierdejesusda en https://github.com/huggingface/peft/pull/3291</li>
+<li>CORREGIDO Error al apuntar a un nn.Parameter en el módulo raíz por @BenjaminBossan en https://github.com/huggingface/peft/pull/3302</li>
+<li>DOC: corrige el nombre del parámetro adaptor_names en set_requires_grad docstrings por @kratos0718 en https://github.com/huggingface/peft/pull/3271</li>
+<li>TST Agregar pruebas para el intercambio en caliente de parámetros LoRA específicos por @BenjaminBossan en https://github.com/huggingface/peft/pull/3304</li>
+<li>Mica de @sr-networks en https://github.com/huggingface/peft/pull/3260</li>
+<li>TST Ampliar múltiples pruebas de adaptadores activos por @BenjaminBossan en https://github.com/huggingface/peft/pull/3361</li>
+<li>corrección: aumentar FRoD init_weights=False std para evitar pruebas inestables realizadas por @peft-jambot en https://github.com/huggingface/peft/pull/3353</li>
+<li>Pruebas de CI: Ampliar rutas ignoradas por @BenjaminBossan en https://github.com/huggingface/peft/pull/3339</li>
+<li>CI Omita la prueba EETQ si @BenjaminBossan no encuentra el kernel en https://github.com/huggingface/peft/pull/3351</li>
+<li>Agregue el experimento DoRA para comparar la generación de imágenes por @spideyashith en https://github.com/huggingface/peft/pull/3341</li>
+<li>CORREGIDO adaptadores Upcast bf16 a fp32 en CPU en MultiheadAttention y peso delta VBLoRA por @DaoyuanLi2816 en https://github.com/huggingface/peft/pull/3364</li>
+<li>FIX Mixed: honor sesgo='&lt;prefix&gt;_only' para todos los sintonizadores compatibles (no solo lora_only) por @DaoyuanLi2816 en https://github.com/huggingface/peft/pull/3366</li>
+<li>Sincronizar cadenas de documentos con sus firmas por @DaoyuanLi2816 en https://github.com/huggingface/peft/pull/3329</li>
+<li>TST Agregue un conjunto de pruebas de corrección matemática BD-LoRA dedicado (seguimiento del n.° 2895) por @eSVeeF en https://github.com/huggingface/peft/pull/3362</li>
+<li>FIX Llamada super().<strong>post_init</strong>() en CPTConfig y RandLoraConfig por @DaoyuanLi2816 en https://github.com/huggingface/peft/pull/3365
+*añadir gloria por @not-lain en https://github.com/huggingface/peft/pull/3098</li>
+<li>Agregue el sintonizador UniLora a PEFT por @ KaiyangLi1992 en https://github.com/huggingface/peft/pull/3257</li>
+<li>REVISIÓN Eliminar entrada VBLoRAConfig duplicada de peft.<strong>all</strong> por @SHAI-Akshay-Tripathi en https://github.com/huggingface/peft/pull/3279</li>
+<li>Mejora el grupo de acciones ci con 4 actualizaciones de @dependabot[bot] en https://github.com/huggingface/peft/pull/3374</li>
+<li>Subsección DOC Fix LoRA-GA 'Consejos de uso' por @BenjaminBossan en https://github.com/huggingface/peft/pull/3331</li>
+<li>FEAT Add DEFT (Ajuste fino eficiente descomposicional (NeurIPS'25) por @MAXNORM8650 en https://github.com/huggingface/peft/pull/3342</li>
+<li>ENH Permitir múltiples adaptadores cuando se usan target_parameters por @BenjaminBossan en https://github.com/huggingface/peft/pull/3350</li>
+<li>Documentos: Mejorar la explicación conceptual de VeRA y el escalado de parámetros por @SanjayMuthuswamy en https://github.com/huggingface/peft/pull/3386</li>
+<li>documentos: corrige la importación de antorcha y el nombre de variable que faltan en los ejemplos README de @lxcxjxhx en https://github.com/huggingface/peft/pull/3392</li>
+<li>Versión de kernels CI Pin por @BenjaminBossan en https://github.com/huggingface/peft/pull/3377</li>
+<li>FIX Resolver expresiones regulares target_modules en la conversión de configuración de MoE por @1fanwang en https://github.com/huggingface/peft/pull/3232</li>
+<li>Haga que las compilaciones de documentos sean más rápidas por @mishig25 en https://github.com/huggingface/peft/pull/3393</li>
+<li>TST Saltar pruebas de Difusores fallidas hasta v0.40.0 por @BenjaminBossan en https://github.com/huggingface/peft/pull/3394</li>
+<li>corrección (utils): llame a vacío_cache() después de fp16 → fp32 en prepare_model_for_kbit_training por @umutonuryasar en https://github.com/huggingface/peft/pull/3293</li>
+<li>Agregue target_modules predeterminados para los modelos híbridos Mamba-MoE nemotron_h por @A1c0r-Z en https://github.com/huggingface/peft/pull/3289</li>
+<li>Corrección de error de CI con Windows cargando modelos de difusión estables por @BenjaminBossan en https://github.com/huggingface/peft/pull/3399</li>
+<li>hazaña: envío basado en registro para resolve_lora_variant en capa lineal por @isha822 en https://github.com/huggingface/peft/pull/3219</li>
+<li>solución: elimine el código inactivo en LoRA get_delta_weight y corrija la inconsistencia de tipo de combinación insegura por @lxcxjxhx en https://github.com/huggingface/peft/pull/3396</li>
+<li>Corrige errores tipográficos en ejemplos, pruebas y documentos de @DaoyuanLi2816 en https://github.com/huggingface/peft/pull/3398</li>
+<li>Guía de instalación de contribución de DOC Expand con bifurcación y pasos de configuración de @Strongich en https://github.com/huggingface/peft/pull/3406</li>
+<li>FIX Registra contenedores por adaptador para que delete_adapter los elimine (unilora, fourierft, psoft) por @DaoyuanLi2816 en https://github.com/huggingface/peft/pull/3376</li>
+<li>FIX Crash en reduce_intruder_dimension en adaptadores fp16/bf16 con autocast_adapter_dtype=False por @DaoyuanLi2816 en https://github.com/huggingface/peft/pull/3410</li>
+<li>FIX GLoRA safe_merge mutando la capa base antes de la verificación isfinita por @DaoyuanLi2816 en https://github.com/huggingface/peft/pull/3411</li>
+<li>corrige la discrepancia del dispositivo para la descuantificación de bnb por @kaixuanliu en https://github.com/huggingface/peft/pull/3418</li>
+<li>Mejoras menores en la incorporación de aplicaciones realizadas por @githubnemo en https://github.com/huggingface/peft/pull/3322</li>
+<li>Mejore la documentación de IA3: agregue guía de uso, consejos para la selección de módulos y comparación de LoRA por @DresdenGman en https://github.com/huggingface/peft/pull/3417</li>
+<li>CORREGIDO Error al olvidar métrica en MetaMathQA por @BenjaminBossan en https://github.com/huggingface/peft/pull/3419</li>
+<li>Crear SECURITY.md por @githubnemo en https://github.com/huggingface/peft/pull/3432</li>
+<li>Actualización de resultados de MetaMAthQA por @githubnemo en https://github.com/huggingface/peft/pull/3445</li>
+<li>corrección: actualice http:// a https:// en README por @hanu-14 en https://github.com/huggingface/peft/pull/3454</li>
+<li>CI: ubique el grupo de acciones de terceros en 1 directorio con 7 actualizaciones realizadas por @dependabot[bot] en https://github.com/huggingface/peft/pull/3375</li>
+<li>Devuelve Falso de is_gptqmodel_available cuando @c-tonneslan no instala gptqmodel en https://github.com/huggingface/peft/pull/3255</li>
+<li>Comparación de métodos: corrige el experimento de solicitud de adaptación realizado por @BenjaminBossan en https://github.com/huggingface/peft/pull/3463</li>
+<li>corrección: reemplace bare except con except Exception por @lxcxjxhx en https://github.com/huggingface/peft/pull/3462</li>
+<li>Se corrigió que el valor predeterminado de BdLoraConfig.nblocks fuera una tupla en lugar de un int por @Osamaali313 en https://github.com/huggingface/peft/pull/3456</li>
+<li>ENH: Advierte en get_peft_model cuando los parámetros del modelo base están en el metadispositivo por @immu4989 en https://github.com/huggingface/peft/pull/3415</li>
+<li>Realice un seguimiento del estado sucio de git en los resultados comparativos de Method_comparison (#3384) por @eduanmoldeep en https://github.com/huggingface/peft/pull/3464</li>
+<li>CORREGIDO el fallo de DeLoRA con UnboundLocalError en capas no compatibles por @DaoyuanLi2816 en https://github.com/huggingface/peft/pull/3434</li>
+<li>CORREGIR capas HiRA ConvNd con grupos &gt; 1 fallan en avance, no solo fusionadas por @DaoyuanLi2816 en https://github.com/huggingface/peft/pull/3430</li>
+<li>CORREGIR la corrupción de TinyLoRA en el peso_atado al agregar adaptadores superpuestos por @DaoyuanLi2816 en https://github.com/huggingface/peft/pull/3422</li>
+<li>CORREGIR el factor de fusión en caché de DEFT: pérdida de precisión y obsolescencia del dispositivo por @DaoyuanLi2816 en https://github.com/huggingface/peft/pull/3412</li>
+<li>CORREGIDO MiSS con error de inicio de bat con algunos backends de cuantificación por @BenjaminBossan en https://github.com/huggingface/peft/pull/3381</li>
+<li>Lanzamiento 0.20.0 por @BenjaminBossan en https://github.com/huggingface/peft/pull/3388</li>
+<li>Actualización de resultados de AdaptionPrompt por @githubnemo en https://github.com/huggingface/peft/pull/3466</li>
+<li>Agregue soporte de cuantización para SHiRA por @githubnemo en https://github.com/huggingface/peft/pull/3321</li>
+<li>Se corrigieron convoluciones agrupadas en LoHa y LoKr por @DaoyuanLi2816 en https://github.com/huggingface/peft/pull/3440</li>
+<li>corrección: respetar el escalado LoRA-FA específico de la capa en el optimizador por @eSVeeF en https://github.com/huggingface/peft/pull/3315</li>
+<li>FIX agrupado relleno de rango Conv2d LoRA para hotswapping (#3416) por @eSVeeF en https://github.com/huggingface/peft/pull/3427</li>
+<li>Se corrigió el ajuste del prefijo Gemma4 con per_layer_config por @peft-jambot en https://github.com/huggingface/peft/pull/3471</li>
+<li>AI: Actualización de la guía de contribución basada en la experiencia reciente de @BenjaminBossan en https://github.com/huggingface/peft/pull/3459</li>
+<li>CI Habilite la cobertura de prueba solo en una de las ejecuciones de @BenjaminBossan en https://github.com/huggingface/peft/pull/3469</li>
+<li>Validar las configuraciones de GraLoRA, AdaLoRA, WaveFT y AdaMSS por @DaoyuanLi2816 en https://github.com/huggingface/peft/pull/3438</li>
+<li>Revisión directa y token en AutoPeftModel cargando por @DaoyuanLi2816 en https://github.com/huggingface/peft/pull/3442</li>
+<li>Agregar obtener dictado del estado del modelo base por @ Isalia20 en https://github.com/huggingface/peft/pull/3000</li>
+<li>Resultados de Imagegen para nuevos métodos PEFT de @githubnemo en https://github.com/huggingface/peft/pull/3483</li>
+</ul>
+<h2>Nuevos contribuyentes</h2>
+<ul>
+<li>@rtrompier hizo su primera contribución en https://github.com/huggingface/peft/pull/3162</li>
+<li>@Anai-Guo hizo su primera contribución en https://github.com/huggingface/peft/pull/3161</li>
+<li>@Adya-Prasad hizo su primera contribución en https://github.com/huggingface/peft/pull/3171</li>
+<li>@whubaichuan hizo su primera contribución en https://github.com/huggingface/peft/pull/3195</li>
+<li>@hqsiswiliam hizo su primera contribución en https://github.com/huggingface/peft/pull/2668</li>
+<li>@oswaldoludwig hizo su primera contribución en https://github.com/huggingface/peft/pull/3106</li>
+<li>@roymiles hizo su primera contribución en https://github.com/huggingface/peft/pull/3159</li>
+<li>@RudrenduPaul hizo su primera contribución en https://github.com/huggingface/peft/pull/3144</li>
+<li>@Dhruv-1710 hizo su primera contribución en https://github.com/huggingface/peft/pull/3224</li>
+<li>@vip892766gma hizo su primera contribución en https://github.com/huggingface/peft/pull/3235</li>
+<li>@vedantnavle13 hizo su primera contribución en https://github.com/huggingface/peft/pull/3231</li>
+<li>@victor7246 hizo su primera contribución en https://github.com/huggingface/peft/pull/2943</li>
+<li>@lphuc2250gma hizo su primera contribución en https://github.com/huggingface/peft/pull/3245</li>
+<li>@blipbyte hizo su primera contribución en https://github.com/huggingface/peft/pull/3249</li>
+<li>@Dev-X25874 hizo su primera contribución en https://github.com/huggingface/peft/pull/3247
+*@javierdejesusda hizo su primera aportación en https://github.com/huggingface/peft/pull/3286</li>
+<li>@anrohanro hizo su primera contribución en https://github.com/huggingface/peft/pull/3256</li>
+<li>@eSVeeF hizo su primera contribución en https://github.com/huggingface/peft/pull/3296</li>
+<li>@MichalMraz hizo su primera contribución en https://github.com/huggingface/peft/pull/3318</li>
+<li>@DaoyuanLi2816 hizo su primera contribución en https://github.com/huggingface/peft/pull/3326</li>
+<li>@AshNicolus hizo su primera contribución en https://github.com/huggingface/peft/pull/3310</li>
+<li>@Bane-Elvin hizo su primera contribución en https://github.com/huggingface/peft/pull/3270</li>
+<li>@kratos0718 hizo su primera contribución en https://github.com/huggingface/peft/pull/3271</li>
+<li>@sr-networks hizo su primera contribución en https://github.com/huggingface/peft/pull/3260</li>
+<li>@peft-jambot hizo su primera contribución en https://github.com/huggingface/peft/pull/3353</li>
+<li>@spideyashith hizo su primera contribución en https://github.com/huggingface/peft/pull/3341</li>
+<li>@not-lain hizo su primera contribución en https://github.com/huggingface/peft/pull/3098</li>
+<li>@KaiyangLi1992 hizo su primera contribución en https://github.com/huggingface/peft/pull/3257</li>
+<li>@SHAI-Akshay-Tripathi hizo su primera contribución en https://github.com/huggingface/peft/pull/3279</li>
+<li>@MAXNORM8650 hizo su primera contribución en https://github.com/huggingface/peft/pull/3342</li>
+<li>@SanjayMuthuswamy hizo su primera contribución en https://github.com/huggingface/peft/pull/3386</li>
+<li>@lxcxjxhx hizo su primera contribución en https://github.com/huggingface/peft/pull/3392</li>
+<li>@1fanwang hizo su primera contribución en https://github.com/huggingface/peft/pull/3232</li>
+<li>@umutonuryasar hizo su primera contribución en https://github.com/huggingface/peft/pull/3293</li>
+<li>@A1c0r-Z hizo su primera contribución en https://github.com/huggingface/peft/pull/3289</li>
+<li>@isha822 hizo su primera contribución en https://github.com/huggingface/peft/pull/3219</li>
+<li>@Strongich hizo su primera contribución en https://github.com/huggingface/peft/pull/3406</li>
+<li>@DresdenGman hizo su primera contribución en https://github.com/huggingface/peft/pull/3417</li>
+<li>@hanu-14 hizo su primera contribución en https://github.com/huggingface/peft/pull/3454</li>
+<li>@c-tonneslan hizo su primera contribución en https://github.com/huggingface/peft/pull/3255</li>
+<li>@Osamaali313 hizo su primera contribución en https://github.com/huggingface/peft/pull/3456</li>
+<li>@immu4989 hizo su primera contribución en https://github.com/huggingface/peft/pull/3415</li>
+<li>@eduanmoldeep hizo su primera contribución en https://github.com/huggingface/peft/pull/3464</li>
+</ul>
+<p><strong>Changelog completo</strong>: https://github.com/huggingface/peft/compare/v0.19.0...v0.20.0</p>
+<hr />
+<blockquote>
+<p><strong>Fuente</strong> <a href="https://github.com/huggingface/peft">huggingface/peft</a> · <code>v0.20.0</code> · 2026-07-28 · <a href="https://github.com/huggingface/peft/releases/tag/v0.20.0">versión ascendente</a></p>
+</blockquote>
+<p><em>Reflejado textualmente para indexación. Todos los derechos pertenecen al proyecto upstream.</em></p></div>  <details class="mt-original"> <summary>original en inglés / English original</summary> <div class="prose mt-original-body"><h1>peft v0.20.0</h1>
+<h1>Highlights</h1>
+&lt;img width=&quot;1250&quot; height=&quot;560&quot; alt=&quot;peft-v0 20 0&quot; src=&quot;https://github.com/user-attachments/assets/6194fae9-f3c3-48ca-b43b-40c774bfe6eb&quot; /&gt;
+<p>This release adds no less than nine new PEFT methods and puts a lot of work into the surrounding infrastructure, for example adding a new image generation benchmark for the method comparison suite and greatly improving the documentation structure.</p>
+<h2>New Methods</h2>
+<h3>HiRA</h3>
+<p>@hqsiswiliam added <a href="https://openreview.net/forum?id=TwJrTz9cRS">&quot;HiRA: Parameter-Efficient Hadamard High-Rank Adaptation for Large Language Models&quot;</a> to PEFT (#2668). Instead of adding the low-rank product <code>BA</code> to the base weight, HiRA multiplies it elementwise (Hadamard product) with the frozen base weight. Because the base weight itself is full rank, the resulting update is no longer constrained to be low rank, while the trainable parameter count stays the same as LoRA's.</p>
+<h3>GLoRA</h3>
+<p>@not-lain contributed GLoRA: <a href="https://arxiv.org/abs/2306.07967">&quot;One-for-All: Generalized LoRA for Parameter-Efficient Fine-Tuning&quot;</a> in #3098. It is a flexible PEFT method that extends LoRA with configurable weight, activation, and bias adaptation, delivering richer fine-tuning with no extra inference cost. Use it when you need per-layer flexibility or stronger adaptation than vanilla LoRA. Skip it for non-Linear layers (e.g. Conv/Embedding) or when standard LoRA is already sufficient and simplicity matters.</p>
+<h3>BEFT</h3>
+<p>@whubaichuan added <a href="https://arxiv.org/abs/2509.15974v2">&quot;BEFT: Bias-Efficient Fine-Tuning of Language Models&quot;</a> in #3195. BEFT builds on the observation that fine-tuning bias terms alone can be competitive in low-data regimes, but goes further: rather than training <em>all</em> biases, it targets the value projection by default, as the authors found this to be most efficient. This brings the trainable parameter count down to roughly 0.01% of the total parameters.</p>
+<h3>MonteCLoRA</h3>
+<p>@victor7246 integrated MonteCLoRA, <a href="https://openreview.net/forum?id=2HFmicB8kh">&quot;Robust and Efficient Fine-tuning of LLMs with Bayesian Reparameterization of Low-Rank Adaptation&quot;</a> in #2943. LoRA is known to be sensitive to hyperparameters like learning rate and batch size. This new LoRA variant addresses this by treating the low-rank parameters as a distribution rather than a point estimate, using Monte Carlo estimation to obtain a low-variance posterior estimate. This should make training noticeably more robust, at the cost of only <em>O(rank)</em> additional parameters.</p>
+<h3>VeLoRA</h3>
+<p>@roymiles added VeLoRA: <a href="https://arxiv.org/abs/2405.17991">&quot;Memory Efficient Training using Rank-1 Sub-Token Projections&quot;</a> in #3159. Unlike most PEFT methods, this LoRA variant targets activation memory rather than parameter count: intermediate activations are split into sub-tokens and compressed with a fixed rank-1 projection before being cached for the backward pass, then reconstructed during backpropagation. Conceptually, it is similar to gradient checkpointing, with a lower memory saving but running faster.</p>
+<h3>Uni-LoRA</h3>
+<p>@KaiyangLi1992 contributed Uni-LoRA: <a href="https://arxiv.org/abs/2506.00799">&quot;One Vector is All You Need&quot;</a> in #3257. The paper shows that parameter-efficient LoRA variants like VeRA and VB-LoRA can all be described as projecting the full LoRA parameter space down to a much smaller subspace, differing only in the choice of projection. Uni-LoRA uses a single global projection across the whole model instead of layer-wise ones, which allows cross-layer parameter sharing and thus very low parameter counts.</p>
+<h3>FRoD</h3>
+<p>@Bane-Elvin added FRoD, <a href="https://arxiv.org/abs/2512.23485">&quot;Full-Rank Efficient Fine-Tuning with Rotational Degrees for Fast Convergence&quot;</a>, in #3270. Instead of adding low-rank deltas like LoRA, it reconstructs selected weights with shared rotational subspaces and sparse trainable coefficients. It is especially useful when fast convergence and a higher full-rank capacity ceiling are important, and its large sparse rotational subspace may also be promising for model merging. The main tradeoffs are the costly joint-decomposition initialization and slightly slower forward/backward passes than LoRA, so it may be less attractive for a one-off single-task fine-tune.</p>
+<h3>MiCA</h3>
+<p>@sr-networks contributed MiCA, <a href="https://arxiv.org/abs/2604.01694">&quot;MiCA Learns More Knowledge Than LoRA and Full Fine-Tuning&quot;</a>, in #3260. MiCA is a LoRA variant that initializes <code>B</code> from the SVD of the base weight, taking the left singular vectors belonging to the <em>smallest</em> singular values, and then trains only <code>A</code>. The idea is that adapting these underused directions integrates new knowledge more effectively than adapting the dominant subspace, with less interference with existing capabilities.</p>
+<h3>DEFT</h3>
+<p>@MAXNORM8650 added DEFT, <a href="https://arxiv.org/abs/2509.22793">&quot;Decompositional Efficient Fine-Tuning for Text-to-Image Models&quot;</a>, in #3342. This PEFT method splits a weight update into two learned low-rank parts: a projection that removes a sub-space of the frozen weight, and a low-rank update that injects new content in its place. Use DEFT for personalizing a text-to-image model from a few images while retaining the base model's instruction-following/editability with minimal forgetting. It is less of a fit if you don't need to preserve the base model's other capabilities (a plain additive adapter is simpler) or for layers beyond Linear/Conv1D. The <a href="https://arxiv.org/abs/2406.05641">PaRa method</a> is also supported as a special case of DEFT.</p>
+<h2>Enhancements</h2>
+<h3>Automatic LoRA target selection</h3>
+<p>@oswaldoludwig added <code>KappaTuneSelector</code> in #3106 based on <a href="https://arxiv.org/abs/2506.16289">&quot;The Condition Number as a Scale-Invariant Proxy for Information Encoding in Neural Units&quot;</a>. The PR adds a new function, <code>find_kappa_target_modules</code>, which automatically identifies which modules best to target based on the condition number of the base weight matrices. This removes some of the guesswork from choosing <code>target_modules</code> when configuring LoRA or other PEFT methods.</p>
+<h3>Broader quantization support</h3>
+<p>#3117 adds generic quantization support to BOFT, MiSS, and VeRA, and #3321 does the same for SHiRA. Previously, quantization support had to be implemented per method and per backend; more methods now work with the common quantization backends out of the box. Note that as a consequence, VeRA now uses the generic quantization backend instead of its previous bitsandbytes quantization backend. If you encounter issues because of that, please let us know.</p>
+<h3>Multiple adapters with <code>target_parameters</code></h3>
+<p><code>target_parameters</code>, which allows targeting <code>nn.Parameter</code>s directly (useful for MoE models that pack experts into a single parameter), now supports adding and loading multiple adapters (#3350).</p>
+<h3>AdaLoRA for Conv2d</h3>
+<p>@Anai-Guo added <code>SVDConv2d</code> in #3196, so AdaLoRA can now target <code>torch.nn.Conv2d</code> layers.</p>
+<h3>Documentation restructure</h3>
+<p>The <a href="https://huggingface.co/docs/peft/index">PEFT documentation</a> was reorganized in #3300 and #3325, which should make it considerably easier to navigate now that PEFT supports so many methods. Each PEFT method also provides an overview of how well it fares in the PEFT benchmarks. There is also a long tail of documentation improvements from many contributors this release, thanks to everyone who worked on those.</p>
+<h2>Changes</h2>
+<h3>AutoGPTQ deprecation</h3>
+<p>Following the switch to <a href="https://github.com/ModelCloud/GPTQModel">GPT-QModel</a> as the backend in the previous release, AutoGPTQ is now formally deprecated (#3190) thanks to @Qubitium.</p>
+<h2>Benchmarks</h2>
+<h3>Image generation benchmark</h3>
+<p>The method comparison suite now has an image generation benchmark (#3082). This complements the existing MetaMathQA benchmark and allows to compare PEFT methods on a completely different task. This gives us a more complete picture of the capabilities of different PEFT methods. To check the results, visit the <a href="https://huggingface.co/spaces/peft-internal-testing/PEFT-method-comparison">Gradio Space</a> and on the top left, select the task &quot;image-gen&quot;.</p>
+&lt;img width=&quot;925&quot; height=&quot;631&quot; alt=&quot;Screenshot from 2026-07-28 15-48-53&quot; src=&quot;https://github.com/user-attachments/assets/e6260b44-9b83-45b7-bd6c-d15bd429e006&quot; /&gt;
+<p><em>A look at the results from the image generation benchmark</em></p>
+<h3>MetaMathQA</h3>
+<p>Since the last release, we also made several improvements to the <a href="https://github.com/huggingface/peft/method_comparison/MetaMathQA">MetaMathQA benchmark</a>. You should check the updated results in the <a href="https://huggingface.co/spaces/peft-internal-testing/PEFT-method-comparison">Gradio Space</a>. With the help of the community, we now cover a much broader range of experiments. Moreover, we discovered a bug in the forgetting metric -- the new numbers now accurately reflect how much fine-tuning retains of the original knowledge of the base model.</p>
+<h3>PEFT Shop</h3>
+<p>#3317 adds a new <a href="https://huggingface.co/spaces/peft-internal-testing/PEFT-shop">Gradio Space</a> with the goal of making it very easy to compare different PEFT methods not only with regard to performance but also capabilities (e.g. if quantization is supported). Give this Space a visit to find out which PEFT method is the best fit for your use case.</p>
+&lt;img width=&quot;1013&quot; height=&quot;697&quot; alt=&quot;Screenshot from 2026-07-28 15-30-21&quot; src=&quot;https://github.com/user-attachments/assets/bd9ad132-a44f-4a2f-b28d-e499c9a5eaea&quot; /&gt;
+<p><em>Browse the PEFT shop for the best PEFT method for your use case</em></p>
+<h2>All Changes</h2>
+<ul>
+<li>chore: bump doc-builder SHA for PR upload workflow by @rtrompier in https://github.com/huggingface/peft/pull/3162</li>
+<li>Benchmark results for new methods by @githubnemo in https://github.com/huggingface/peft/pull/3160</li>
+<li>fix: guard UPCAST_DTYPES lookup with hasattr to support older PyTorch by @Anai-Guo in https://github.com/huggingface/peft/pull/3161</li>
+<li>Bump version to 0.19.1.dev0 after release by @BenjaminBossan in https://github.com/huggingface/peft/pull/3156</li>
+<li>ENH: Option for gradient checkpointing in MetaMath by @BenjaminBossan in https://github.com/huggingface/peft/pull/3157</li>
+<li>MetaMathQA: upload checkpoint to bucket after training by @githubnemo in https://github.com/huggingface/peft/pull/3163</li>
+<li>FIX How to swapped in/out features for transposed by @BenjaminBossan in https://github.com/huggingface/peft/pull/3165</li>
+<li>Implement import allowlist in AutoPeftModel, limit access in megatron by @githubnemo in https://github.com/huggingface/peft/pull/3090</li>
+<li>Refactor layer initialization: PR 2960 continued by @BenjaminBossan in https://github.com/huggingface/peft/pull/3047</li>
+<li>Fix SVDQuantLinear <strong>repr</strong> nested inside forward instead of on the class by @Chessing234 in https://github.com/huggingface/peft/pull/3174</li>
+<li>Resolve #2944: ensure_weight_tying respects config + improved tests by @Adya-Prasad in https://github.com/huggingface/peft/pull/3171</li>
+<li>FIX Clip module structure since transformers &gt; 5.5 by @BenjaminBossan in https://github.com/huggingface/peft/pull/3179</li>
+<li>Bump version to 0.19.2.dev0 after release by @BenjaminBossan in https://github.com/huggingface/peft/pull/3178</li>
+<li>FIX TinyLoRA non-determinism by @BenjaminBossan in https://github.com/huggingface/peft/pull/3180</li>
+<li>FIX VeRA and OFT error after layer init refactor by @BenjaminBossan in https://github.com/huggingface/peft/pull/3187</li>
+<li>fix the test_hotswapping_compiled_model_xxx case of diffusers failure… by @sywangyi in https://github.com/huggingface/peft/pull/3183</li>
+<li>CI Fix GPTQmodel install in Docker build by @BenjaminBossan in https://github.com/huggingface/peft/pull/3188</li>
+<li>fix aux4 kwargs-only modules in modules_to_save by @ved1beta in https://github.com/huggingface/peft/pull/3199</li>
+<li>chore: bump doc-builder SHA for main doc build workflow by @rtrompier in https://github.com/huggingface/peft/pull/3198</li>
+<li>FIX PVeRA forward implementation for bitsandbytes by @BenjaminBossan in https://github.com/huggingface/peft/pull/3189</li>
+<li>Update GPT-QModel references and deprecate AutoGPTQ by @Qubitium in https://github.com/huggingface/peft/pull/3190</li>
+<li>FIX Transformers weight conversion regression by @BenjaminBossan in https://github.com/huggingface/peft/pull/3197</li>
+<li>Add a generator to the PVeRA reparameterization function. by @leofillioux in https://github.com/huggingface/peft/pull/3200</li>
+<li>Add BEFT as a new PEFT method by @whubaichuan in https://github.com/huggingface/peft/pull/3195</li>
+<li>feat(adalora): add SVDConv2d to support torch.nn.Conv2d target modules by @Anai-Guo in https://github.com/huggingface/peft/pull/3196</li>
+<li>MiSS update by @Joluck in https://github.com/huggingface/peft/pull/3194</li>
+<li>Bump actions/cache from 5.0.4 to 5.0.5 in the ci-actions group by @dependabot[bot] in https://github.com/huggingface/peft/pull/3206</li>
+<li>Bump the third-party-actions group with 7 updates by @dependabot[bot] in https://github.com/huggingface/peft/pull/3207</li>
+<li>FIX Error when prefix tuning Gemma 4 by @BenjaminBossan in https://github.com/huggingface/peft/pull/3205</li>
+<li>FIX Use tiny Gemma 4 model for faster tests by @BenjaminBossan in https://github.com/huggingface/peft/pull/3215</li>
+<li>FIX State dict injection with weight conversion by @BenjaminBossan in https://github.com/huggingface/peft/pull/3212</li>
+<li>fix: use torch.div in _ConvNd.unmerge for bias (was torch.mul) by @Chessing234 in https://github.com/huggingface/peft/pull/3216</li>
+<li>Pull Request: Adding HiRA integration into PEFT library by @hqsiswiliam in https://github.com/huggingface/peft/pull/2668</li>
+<li>Add KappaTuneSelector: condition-number-based automatic LoRA target selection by @oswaldoludwig in https://github.com/huggingface/peft/pull/3106</li>
+<li>Implement VeLoRA and add tests. by @roymiles in https://github.com/huggingface/peft/pull/3159</li>
+<li>Add type hints to utility functions in merge_utils and other modules by @RudrenduPaul in https://github.com/huggingface/peft/pull/3144</li>
+<li>fix compatible issue with datasets version for beft example by @kaixuanliu in https://github.com/huggingface/peft/pull/3218</li>
+<li>refine test case for <code>test_lora_seq2seq_lm_multi_gpu_inference</code> by @kaixuanliu in https://github.com/huggingface/peft/pull/3226</li>
+<li>fix CI bug for multi-device scene by @kaixuanliu in https://github.com/huggingface/peft/pull/3228</li>
+<li>refine test_causal_lm_training_multi_accelerator test case by @kaixuanliu in https://github.com/huggingface/peft/pull/3225</li>
+<li>CHORE: Upgrade ruff 0.15.12 by @BenjaminBossan in https://github.com/huggingface/peft/pull/3202</li>
+<li>DOC Improve LoHa docs with overview, when-to-use, and quick start exa… by @Dhruv-1710 in https://github.com/huggingface/peft/pull/3224</li>
+<li>fix(xlora): duplicated &quot;for&quot; in adapters warning message by @vip892766gma in https://github.com/huggingface/peft/pull/3235</li>
+<li>docs: improve MiSS documentation with practical guidance and LLM example by @vedantnavle13 in https://github.com/huggingface/peft/pull/3231</li>
+<li>CI Remove Transformer Engine from Dockerfile by @BenjaminBossan in https://github.com/huggingface/peft/pull/3248</li>
+<li>Intergrate MonteCLoRA (TMLR 2025 accepted) into PEFT by @victor7246 in https://github.com/huggingface/peft/pull/2943</li>
+<li>Bump diffusers from 0.34.0 to 0.38.0 in /examples/hra_dreambooth by @dependabot[bot] in https://github.com/huggingface/peft/pull/3250</li>
+<li>chore: add missing return type annotations in import_utils and other by @lphuc2250gma in https://github.com/huggingface/peft/pull/3245</li>
+<li>TST Remove unnecessary use of trust_remote_code by @BenjaminBossan in https://github.com/huggingface/peft/pull/3242</li>
+<li>Fix prepare model for compiled hotswap requires grad by @BenjaminBossan in https://github.com/huggingface/peft/pull/3241</li>
+<li>DOC Fix incorrect imports in helpers.py docstring examples by @blipbyte in https://github.com/huggingface/peft/pull/3249</li>
+<li>FIX Transformers weight conversion undo incorrect key renaming by @BenjaminBossan in https://github.com/huggingface/peft/pull/3262</li>
+<li>[BUG FIX] tuners/lora/eva: fix label mask guard using 'in' instead of hasattr for dict by @Dev-X25874 in https://github.com/huggingface/peft/pull/3247</li>
+<li>chore: add missing return type annotations by @lphuc2250gma in https://github.com/huggingface/peft/pull/3272</li>
+<li>TST Correctly resolve GLUE dataset by @BenjaminBossan in https://github.com/huggingface/peft/pull/3263</li>
+<li>SEC Add 7 day cooldown to Dependabot by @BenjaminBossan in https://github.com/huggingface/peft/pull/3273</li>
+<li>DOC Fix broken docstring examples in tuner model.py files by @blipbyte in https://github.com/huggingface/peft/pull/3254</li>
+<li>Bump the third-party-actions group with 4 updates by @dependabot[bot] in https://github.com/huggingface/peft/pull/3276</li>
+<li>fix(tuners/lora/torchao): make get_apply_tensor_subclass optional (#3223) by @Anai-Guo in https://github.com/huggingface/peft/pull/3234</li>
+<li>FIX Transformers weight conversion PEFT model prefix by @BenjaminBossan in https://github.com/huggingface/peft/pull/3230</li>
+<li>FIX Transformers argument name in rename_source_key by @BenjaminBossan in https://github.com/huggingface/peft/pull/3284</li>
+<li>DOC Fix incorrect class references in tuner config docstrings by @javierdejesusda in https://github.com/huggingface/peft/pull/3286</li>
+<li>Avoid TP helper imports for non-TP distributed LoRA loads by @jiqing-feng in https://github.com/huggingface/peft/pull/3261</li>
+<li>Add BEFT and HiRA results by @githubnemo in https://github.com/huggingface/peft/pull/3277</li>
+<li>Add PVeRA rank ablation benchmark experiments by @anrohanro in https://github.com/huggingface/peft/pull/3256</li>
+<li>experiment method comparison #2310 : adaptation_prompt by @Adya-Prasad in https://github.com/huggingface/peft/pull/3301</li>
+<li>Add decoupled weight-decay one-step update test by @eSVeeF in https://github.com/huggingface/peft/pull/3296</li>
+<li>Image generation benchmark by @BenjaminBossan in https://github.com/huggingface/peft/pull/3082</li>
+<li>Generic quantization support for BOFT, MiSS, VeRA by @BenjaminBossan in https://github.com/huggingface/peft/pull/3117</li>
+<li>CI GPU run: Remove gptmodel from Dockerfile because of pcre by @BenjaminBossan in https://github.com/huggingface/peft/pull/3253</li>
+<li>DOC Fix wrong function name in docstring by @BenjaminBossan in https://github.com/huggingface/peft/pull/3281</li>
+<li>FIX Saving adapter when other adapters partially match name by @BenjaminBossan in https://github.com/huggingface/peft/pull/3282</li>
+<li>TST Regression tests download regression artifacts lazily by @BenjaminBossan in https://github.com/huggingface/peft/pull/3285</li>
+<li>CHORE Add instructions for coding agents by @BenjaminBossan in https://github.com/huggingface/peft/pull/3288</li>
+<li>FIX TST Failing HiRA and EETQ GPU tests. by @BenjaminBossan in https://github.com/huggingface/peft/pull/3287</li>
+<li>Separate, embeddable method comparison space by @githubnemo in https://github.com/huggingface/peft/pull/3303</li>
+<li>FIX Image benchmark dataset wrong prompt order by @BenjaminBossan in https://github.com/huggingface/peft/pull/3308</li>
+<li>Fix app deployment CI issue by @githubnemo in https://github.com/huggingface/peft/pull/3312</li>
+<li>Method comparison: Image generation results by @BenjaminBossan in https://github.com/huggingface/peft/pull/3313</li>
+<li>Method comparison: Evaluation script for image gen benchmark by @BenjaminBossan in https://github.com/huggingface/peft/pull/3314</li>
+<li>Fix app deployment CI issue by @githubnemo in https://github.com/huggingface/peft/pull/3316</li>
+<li>Method comparison: Image benchmark shows sample images by @BenjaminBossan in https://github.com/huggingface/peft/pull/3309</li>
+<li>FIX layers_to_transform matching wrong index in MoE models by @MichalMraz in https://github.com/huggingface/peft/pull/3318</li>
+<li>Documentation re-structure by @githubnemo in https://github.com/huggingface/peft/pull/3300</li>
+<li>docs: fix typos in OFTConfig docstring (paramters, speficy) by @DaoyuanLi2816 in https://github.com/huggingface/peft/pull/3326</li>
+<li>FIX AdaMSS save/load reproduction by making slice_pca SVD deterministic by @AshNicolus in https://github.com/huggingface/peft/pull/3310</li>
+<li>Docs: Make API reference sorted and collapsed by @githubnemo in https://github.com/huggingface/peft/pull/3325</li>
+<li>FEAT Add PEFT shop Gradio space by @BenjaminBossan in https://github.com/huggingface/peft/pull/3317</li>
+<li>FIX PEFT Shop deployment workflow error by @BenjaminBossan in https://github.com/huggingface/peft/pull/3332</li>
+<li>FIX PEFT Shop deployment workflow error 2 by @BenjaminBossan in https://github.com/huggingface/peft/pull/3334</li>
+<li>FIX PEFT shop app description extraction by @BenjaminBossan in https://github.com/huggingface/peft/pull/3335</li>
+<li>docs: sync PEFT config docstrings with their fields by @DaoyuanLi2816 in https://github.com/huggingface/peft/pull/3319</li>
+<li>MetaMathQA: Optimized configs for IA3 by @githubnemo in https://github.com/huggingface/peft/pull/3337</li>
+<li>Fix typos in docstrings, comments, and docs by @DaoyuanLi2816 in https://github.com/huggingface/peft/pull/3328</li>
+<li>Feature/add frod by @Bane-Elvin in https://github.com/huggingface/peft/pull/3270</li>
+<li>refactor: dedupe prompt-learning kwarg adjustments in peft_model by @eSVeeF in https://github.com/huggingface/peft/pull/3336</li>
+<li>docs: clarify subtract_mutated_init by @githubnemo in https://github.com/huggingface/peft/pull/3343</li>
+<li>DOC Fix incorrect LoRA references in hira and ln_tuning model docstrings by @javierdejesusda in https://github.com/huggingface/peft/pull/3291</li>
+<li>FIX Bug when targeting an nn.Parameter on the root module by @BenjaminBossan in https://github.com/huggingface/peft/pull/3302</li>
+<li>DOC: fix adapter_names parameter name in set_requires_grad docstrings by @kratos0718 in https://github.com/huggingface/peft/pull/3271</li>
+<li>TST Add tests for hotswapping targeted LoRA parameters by @BenjaminBossan in https://github.com/huggingface/peft/pull/3304</li>
+<li>Mica by @sr-networks in https://github.com/huggingface/peft/pull/3260</li>
+<li>TST Extend multiple active adapter tests by @BenjaminBossan in https://github.com/huggingface/peft/pull/3361</li>
+<li>fix: increase FRoD init_weights=False std to prevent flaky test by @peft-jambot in https://github.com/huggingface/peft/pull/3353</li>
+<li>CI Tests: Extend ignored paths by @BenjaminBossan in https://github.com/huggingface/peft/pull/3339</li>
+<li>CI Skip EETQ test if kernel not found by @BenjaminBossan in https://github.com/huggingface/peft/pull/3351</li>
+<li>Add DoRA experiment for image-gen benchmark by @spideyashith in https://github.com/huggingface/peft/pull/3341</li>
+<li>FIX Upcast bf16 adapters to fp32 on CPU in MultiheadAttention and VBLoRA delta weight by @DaoyuanLi2816 in https://github.com/huggingface/peft/pull/3364</li>
+<li>FIX Mixed: honor bias='&lt;prefix&gt;_only' for all compatible tuners (not just lora_only) by @DaoyuanLi2816 in https://github.com/huggingface/peft/pull/3366</li>
+<li>Sync function docstrings with their signatures by @DaoyuanLi2816 in https://github.com/huggingface/peft/pull/3329</li>
+<li>TST Add dedicated BD-LoRA math-correctness test suite (follow-up to #2895) by @eSVeeF in https://github.com/huggingface/peft/pull/3362</li>
+<li>FIX Call super().<strong>post_init</strong>() in CPTConfig and RandLoraConfig by @DaoyuanLi2816 in https://github.com/huggingface/peft/pull/3365</li>
+<li>add glora by @not-lain in https://github.com/huggingface/peft/pull/3098</li>
+<li>Add UniLora tuner to PEFT by @KaiyangLi1992 in https://github.com/huggingface/peft/pull/3257</li>
+<li>FIX Remove duplicate VBLoRAConfig entry from peft.<strong>all</strong> by @SHAI-Akshay-Tripathi in https://github.com/huggingface/peft/pull/3279</li>
+<li>Bump the ci-actions group with 4 updates by @dependabot[bot] in https://github.com/huggingface/peft/pull/3374</li>
+<li>DOC Fix LoRA-GA 'Usage Tips' subsection by @BenjaminBossan in https://github.com/huggingface/peft/pull/3331</li>
+<li>FEAT Add DEFT (Decompositional Efficient Fine-Tuning (NeurIPS'25) by @MAXNORM8650 in https://github.com/huggingface/peft/pull/3342</li>
+<li>ENH Allow multiple adapters when using target_parameters by @BenjaminBossan in https://github.com/huggingface/peft/pull/3350</li>
+<li>Docs: Improve VeRA conceptual explanation and parameter scaling by @SanjayMuthuswamy in https://github.com/huggingface/peft/pull/3386</li>
+<li>docs: fix missing torch import and variable name in README examples by @lxcxjxhx in https://github.com/huggingface/peft/pull/3392</li>
+<li>CI Pin kernels version by @BenjaminBossan in https://github.com/huggingface/peft/pull/3377</li>
+<li>FIX Resolve regex target_modules in MoE config conversion by @1fanwang in https://github.com/huggingface/peft/pull/3232</li>
+<li>Make doc builds faster by @mishig25 in https://github.com/huggingface/peft/pull/3393</li>
+<li>TST Skip failing Diffusers tests until v0.40.0 by @BenjaminBossan in https://github.com/huggingface/peft/pull/3394</li>
+<li>fix(utils): call empty_cache() after fp16→fp32 casts in prepare_model_for_kbit_training by @umutonuryasar in https://github.com/huggingface/peft/pull/3293</li>
+<li>Add default target_modules for nemotron_h hybrid Mamba-MoE models by @A1c0r-Z in https://github.com/huggingface/peft/pull/3289</li>
+<li>CI Fix error with Windows loading stable diffusion models by @BenjaminBossan in https://github.com/huggingface/peft/pull/3399</li>
+<li>feat: registry-based dispatch for resolve_lora_variant in Linear layer by @isha822 in https://github.com/huggingface/peft/pull/3219</li>
+<li>fix: remove dead code in LoRA get_delta_weight and fix unsafe merge dtype inconsistency by @lxcxjxhx in https://github.com/huggingface/peft/pull/3396</li>
+<li>Fix typos in examples, tests, and docs by @DaoyuanLi2816 in https://github.com/huggingface/peft/pull/3398</li>
+<li>DOC Expand contributing installation guide with fork and setup steps by @Strongich in https://github.com/huggingface/peft/pull/3406</li>
+<li>FIX Register per-adapter containers so delete_adapter removes them (unilora, fourierft, psoft) by @DaoyuanLi2816 in https://github.com/huggingface/peft/pull/3376</li>
+<li>FIX Crash in reduce_intruder_dimension on fp16/bf16 adapters with autocast_adapter_dtype=False by @DaoyuanLi2816 in https://github.com/huggingface/peft/pull/3410</li>
+<li>FIX GLoRA safe_merge mutating the base layer before the isfinite check by @DaoyuanLi2816 in https://github.com/huggingface/peft/pull/3411</li>
+<li>fix device mismatch for bnb dequantization by @kaixuanliu in https://github.com/huggingface/peft/pull/3418</li>
+<li>Minor app embed improvements by @githubnemo in https://github.com/huggingface/peft/pull/3322</li>
+<li>Improve IA3 documentation: add usage guidance, module selection tips, and LoRA comparison by @DresdenGman in https://github.com/huggingface/peft/pull/3417</li>
+<li>FIX Bug in forgetting metric in MetaMathQA by @BenjaminBossan in https://github.com/huggingface/peft/pull/3419</li>
+<li>Create SECURITY.md by @githubnemo in https://github.com/huggingface/peft/pull/3432</li>
+<li>Update MetaMAthQA results by @githubnemo in https://github.com/huggingface/peft/pull/3445</li>
+<li>fix: upgrade http:// to https:// in README by @hanu-14 in https://github.com/huggingface/peft/pull/3454</li>
+<li>CI: Bump the third-party-actions group across 1 directory with 7 updates by @dependabot[bot] in https://github.com/huggingface/peft/pull/3375</li>
+<li>Return False from is_gptqmodel_available when gptqmodel isn't installed by @c-tonneslan in https://github.com/huggingface/peft/pull/3255</li>
+<li>Method comparison: Fix adaption prompt experiment by @BenjaminBossan in https://github.com/huggingface/peft/pull/3463</li>
+<li>fix: replace bare except with except Exception by @lxcxjxhx in https://github.com/huggingface/peft/pull/3462</li>
+<li>Fix BdLoraConfig.nblocks default being a tuple instead of an int by @Osamaali313 in https://github.com/huggingface/peft/pull/3456</li>
+<li>ENH: Warn in get_peft_model when base model parameters are on the meta device by @immu4989 in https://github.com/huggingface/peft/pull/3415</li>
+<li>Track git dirty state in method_comparison benchmark results (#3384) by @eduanmoldeep in https://github.com/huggingface/peft/pull/3464</li>
+<li>FIX DeLoRA crash with UnboundLocalError on unsupported layers by @DaoyuanLi2816 in https://github.com/huggingface/peft/pull/3434</li>
+<li>FIX HiRA ConvNd layers with groups &gt; 1 crash on forward, not just merge by @DaoyuanLi2816 in https://github.com/huggingface/peft/pull/3430</li>
+<li>FIX TinyLoRA weight_tying corruption when adding overlapping adapters by @DaoyuanLi2816 in https://github.com/huggingface/peft/pull/3422</li>
+<li>FIX DEFT's cached merge factor: precision loss and device staleness by @DaoyuanLi2816 in https://github.com/huggingface/peft/pull/3412</li>
+<li>FIX MiSS with bat init error with some quantization backends by @BenjaminBossan in https://github.com/huggingface/peft/pull/3381</li>
+<li>Release 0.20.0 by @BenjaminBossan in https://github.com/huggingface/peft/pull/3388</li>
+<li>Update AdaptionPrompt results by @githubnemo in https://github.com/huggingface/peft/pull/3466</li>
+<li>Add quantization support for SHiRA by @githubnemo in https://github.com/huggingface/peft/pull/3321</li>
+<li>Fix grouped convolutions in LoHa and LoKr by @DaoyuanLi2816 in https://github.com/huggingface/peft/pull/3440</li>
+<li>fix: respect layer-specific LoRA-FA scaling in optimizer by @eSVeeF in https://github.com/huggingface/peft/pull/3315</li>
+<li>FIX grouped Conv2d LoRA rank padding for hotswapping (#3416) by @eSVeeF in https://github.com/huggingface/peft/pull/3427</li>
+<li>Fix Gemma4 prefix tuning with per_layer_config by @peft-jambot in https://github.com/huggingface/peft/pull/3471</li>
+<li>AI: Update contribution guide based on recent experience by @BenjaminBossan in https://github.com/huggingface/peft/pull/3459</li>
+<li>CI Enable test coverage only on one of the runs by @BenjaminBossan in https://github.com/huggingface/peft/pull/3469</li>
+<li>Validate GraLoRA, AdaLoRA, WaveFT, and AdaMSS configs by @DaoyuanLi2816 in https://github.com/huggingface/peft/pull/3438</li>
+<li>Forward revision and token in AutoPeftModel loading by @DaoyuanLi2816 in https://github.com/huggingface/peft/pull/3442</li>
+<li>Add get base model state dict by @Isalia20 in https://github.com/huggingface/peft/pull/3000</li>
+<li>Imagegen results for new PEFT methods by @githubnemo in https://github.com/huggingface/peft/pull/3483</li>
+</ul>
+<h2>New Contributors</h2>
+<ul>
+<li>@rtrompier made their first contribution in https://github.com/huggingface/peft/pull/3162</li>
+<li>@Anai-Guo made their first contribution in https://github.com/huggingface/peft/pull/3161</li>
+<li>@Adya-Prasad made their first contribution in https://github.com/huggingface/peft/pull/3171</li>
+<li>@whubaichuan made their first contribution in https://github.com/huggingface/peft/pull/3195</li>
+<li>@hqsiswiliam made their first contribution in https://github.com/huggingface/peft/pull/2668</li>
+<li>@oswaldoludwig made their first contribution in https://github.com/huggingface/peft/pull/3106</li>
+<li>@roymiles made their first contribution in https://github.com/huggingface/peft/pull/3159</li>
+<li>@RudrenduPaul made their first contribution in https://github.com/huggingface/peft/pull/3144</li>
+<li>@Dhruv-1710 made their first contribution in https://github.com/huggingface/peft/pull/3224</li>
+<li>@vip892766gma made their first contribution in https://github.com/huggingface/peft/pull/3235</li>
+<li>@vedantnavle13 made their first contribution in https://github.com/huggingface/peft/pull/3231</li>
+<li>@victor7246 made their first contribution in https://github.com/huggingface/peft/pull/2943</li>
+<li>@lphuc2250gma made their first contribution in https://github.com/huggingface/peft/pull/3245</li>
+<li>@blipbyte made their first contribution in https://github.com/huggingface/peft/pull/3249</li>
+<li>@Dev-X25874 made their first contribution in https://github.com/huggingface/peft/pull/3247</li>
+<li>@javierdejesusda made their first contribution in https://github.com/huggingface/peft/pull/3286</li>
+<li>@anrohanro made their first contribution in https://github.com/huggingface/peft/pull/3256</li>
+<li>@eSVeeF made their first contribution in https://github.com/huggingface/peft/pull/3296</li>
+<li>@MichalMraz made their first contribution in https://github.com/huggingface/peft/pull/3318</li>
+<li>@DaoyuanLi2816 made their first contribution in https://github.com/huggingface/peft/pull/3326</li>
+<li>@AshNicolus made their first contribution in https://github.com/huggingface/peft/pull/3310</li>
+<li>@Bane-Elvin made their first contribution in https://github.com/huggingface/peft/pull/3270</li>
+<li>@kratos0718 made their first contribution in https://github.com/huggingface/peft/pull/3271</li>
+<li>@sr-networks made their first contribution in https://github.com/huggingface/peft/pull/3260</li>
+<li>@peft-jambot made their first contribution in https://github.com/huggingface/peft/pull/3353</li>
+<li>@spideyashith made their first contribution in https://github.com/huggingface/peft/pull/3341</li>
+<li>@not-lain made their first contribution in https://github.com/huggingface/peft/pull/3098</li>
+<li>@KaiyangLi1992 made their first contribution in https://github.com/huggingface/peft/pull/3257</li>
+<li>@SHAI-Akshay-Tripathi made their first contribution in https://github.com/huggingface/peft/pull/3279</li>
+<li>@MAXNORM8650 made their first contribution in https://github.com/huggingface/peft/pull/3342</li>
+<li>@SanjayMuthuswamy made their first contribution in https://github.com/huggingface/peft/pull/3386</li>
+<li>@lxcxjxhx made their first contribution in https://github.com/huggingface/peft/pull/3392</li>
+<li>@1fanwang made their first contribution in https://github.com/huggingface/peft/pull/3232</li>
+<li>@umutonuryasar made their first contribution in https://github.com/huggingface/peft/pull/3293</li>
+<li>@A1c0r-Z made their first contribution in https://github.com/huggingface/peft/pull/3289</li>
+<li>@isha822 made their first contribution in https://github.com/huggingface/peft/pull/3219</li>
+<li>@Strongich made their first contribution in https://github.com/huggingface/peft/pull/3406</li>
+<li>@DresdenGman made their first contribution in https://github.com/huggingface/peft/pull/3417</li>
+<li>@hanu-14 made their first contribution in https://github.com/huggingface/peft/pull/3454</li>
+<li>@c-tonneslan made their first contribution in https://github.com/huggingface/peft/pull/3255</li>
+<li>@Osamaali313 made their first contribution in https://github.com/huggingface/peft/pull/3456</li>
+<li>@immu4989 made their first contribution in https://github.com/huggingface/peft/pull/3415</li>
+<li>@eduanmoldeep made their first contribution in https://github.com/huggingface/peft/pull/3464</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/huggingface/peft/compare/v0.19.0...v0.20.0</p>
+<hr />
+<blockquote>
+<p><strong>Source</strong> <a href="https://github.com/huggingface/peft">huggingface/peft</a> · <code>v0.20.0</code> · 2026-07-28 · <a href="https://github.com/huggingface/peft/releases/tag/v0.20.0">upstream release</a></p>
+</blockquote>
+<p><em>Mirrored verbatim for indexing. All rights belong to the upstream project.</em></p></div> </details> </div> <p class="muted" style="margin-top:var(--s8);font-size:12.5px;border-top:1px solid var(--line);padding-top:var(--s4)"> Las notas de versión provienen del proyecto original. Las organizamos y conectamos para que puedas comparar versiones de un vistazo. Todos los derechos pertenecen a los autores originales. </p> <nav class="pager" aria-label="Release navigation"> <a href="/releases/peft/0.21.0"> <span class="k">← Siguiente</span> <span class="t">v0.21.0</span> </a> <a href="/releases/peft/0.19.1"> <span class="k">Anterior →</span> <span class="t">v0.19.1</span> </a> </nav> <aside class="ad-slot" aria-label="Advertisement" data-astro-cid-fgwukgf6><div class="ad-slot-label" data-astro-cid-fgwukgf6>Advertisement</div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4184355057086168" data-ad-slot="9133765584" data-ad-format="auto" data-full-width-responsive="true" data-astro-cid-fgwukgf6></ins><script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script></aside> </article> <aside class="rail"> <div class="rail-card"> <div class="rail-title">Source</div> <ul class="rail-list"> <li> <a href="https://github.com/huggingface/peft/releases/tag/v0.20.0" target="_blank" rel="noopener"> <span>Original en GitHub</span> <span class="d">↗</span> </a> </li> <li> <a href="https://github.com/huggingface/peft" target="_blank" rel="noopener"> <span>huggingface/peft</span> <span class="d">↗</span> </a> </li> </ul> </div> <div class="rail-card rail-toc"> <div class="rail-title">En esta página</div> <nav> <a href="#" class>Nuevos métodos</a><a href="#" class="lv3">Hola</a><a href="#" class="lv3">GLoRA</a><a href="#" class="lv3">BEFT</a><a href="#" class="lv3">VeLoRA</a><a href="#" class="lv3">Uni-LoRA</a><a href="#" class="lv3">FROD</a><a href="#" class="lv3">MiCA</a><a href="#" class="lv3">HÁBIL</a><a href="#" class>Mejoras</a><a href="#" class="lv3">Selección automática de objetivos LoRA</a><a href="#" class="lv3">Soporte de cuantificación más amplio</a><a href="#" class="lv3">Múltiples adaptadores con targetparameters</a><a href="#" class="lv3">AdaLoRA para Conv2d</a><a href="#" class="lv3">Reestructuración de la documentación</a><a href="#" class>Cambios</a><a href="#" class="lv3">AutoGPTQ en desuso</a><a href="#" class>Puntos de referencia</a><a href="#" class="lv3">Punto de referencia de generación de imágenes</a><a href="#" class="lv3">MetaMathQA</a><a href="#" class="lv3">Tienda PEFT</a><a href="#" class>Todos los cambios</a><a href="#" class>Nuevos contribuyentes</a> </nav> </div> <div class="rail-card"> <div class="rail-title">Historial de versiones</div> <ul class="rail-list"> <li> <a href="/releases/peft/0.21.3"> <span class="v">v0.21.3</span> <span class="d">26-11-13</span> </a> </li><li> <a href="/releases/peft/0.21.2"> <span class="v">v0.21.2</span> <span class="d">26-10-01</span> </a> </li><li> <a href="/releases/peft/0.21.1"> <span class="v">v0.21.1</span> <span class="d">26-09-29</span> </a> </li><li> <a href="/releases/peft/0.21.0"> <span class="v">v0.21.0</span> <span class="d">26-09-15</span> </a> </li><li> <a href="/releases/peft/0.20.0" aria-current="true"> <span class="v">v0.20.0</span> <span class="d">26-07-28</span> </a> </li><li> <a href="/releases/peft/0.19.1"> <span class="v">v0.19.1</span> <span class="d">26-04-16</span> </a> </li><li> <a href="/releases/peft/0.19.0"> <span class="v">v0.19.0</span> <span class="d">26-04-14</span> </a> </li><li> <a href="/releases/peft/0.18.1"> <span class="v">v0.18.1</span> <span class="d">26-01-09</span> </a> </li> </ul> <a href="/es/releases/peft" class="mono" style="display:inline-block;margin-top:var(--s3);font-size:11.5px;color:var(--ink-3)"> Ver todo 11 →
+</a> </div> </aside> </div> </div>  </main> <footer class="site-footer"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/es/" class="brand" aria-label="STAGS NextStack"><span class="brand-mark" aria-hidden="true">S</span><span class="brand-main">STAGS</span><span class="brand-sub" aria-hidden="true">NextStack</span></a> <p>Inteligencia de lanzamiento de código abierto, publicada diariamente.</p> </div> <div class="footer-col"> <h3>Seguimiento</h3> <ul> <li><a href="/es/releases">Versiones</a></li> <li><a href="/es/projects">Proyectos</a></li> <li><a href="/es/releases.xml">Feed RSS</a></li> </ul> </div> <div class="footer-col"> <h3>Archivo</h3> <ul> <li><a href="/zh/release_note" hreflang="zh-Hans">Archivo chino</a></li> <li><a href="/zh/chapters/" hreflang="zh-Hans">Notas técnicas</a></li> <li><a href="/zh/downloads/">Stags Tracker</a></li> </ul> </div> <div class="footer-col"> <h3>Información</h3> <ul> <li><a href="/privacy">Política de privacidad</a></li> <li><a href="/releases.xml">RSS</a></li> <li><a href="/sitemap-index.xml">Sitemap</a></li> </ul> </div> </div> <div class="footer-btm"> <span>© 2026 STAGS</span> <span>Los Release note pertenecen a sus proyectos upstream.</span> </div> </div> </footer> <!-- 搜索面板 --> <div class="palette-bg" data-palette-bg data-open="false"> <div class="palette" role="dialog" aria-modal="true" aria-label="Buscar versiones"> <div class="palette-in"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ink-4);flex:none"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <input type="search" data-palette-input placeholder="Busca lanzamientos, proyectos, versiones…" autocomplete="off" spellcheck="false"> <span class="kbd">esc</span> </div> <ul class="palette-res" data-palette-res></ul> <div class="palette-ft"> <span>↑↓ navigate</span> <span>↵ open</span> <span style="margin-left:auto" data-palette-count></span> </div> </div> </div> <script type="module" src="/assets/Shell.astro_astro_type_script_index_0_lang.0ZkKXV47.js"></script> </body> </html>

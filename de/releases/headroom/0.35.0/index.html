@@ -1,0 +1,320 @@
+<!DOCTYPE html><html lang="de" dir="ltr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>headroom v0.35.0 — STAGS NextStack</title><meta name="description" content="fix: emit SSE ping before message_start on Bedrock streaming path (issue #902) · fix(litellm): add async_post_call_success_hook to HeadroomCallback · deps: bump brace-expansion from 5.0.7 to 5.0.9 in /docs[bot]"><meta name="keywords" content="Open-Source-release notes, Release-Tracker, changelog-Aggregator, Breaking Changes, Deprecation-Tracker, Kafka-Releases, Spring Boot-Releases, Kubernetes-Releases"><meta name="generator" content="Astro v5.18.2"><link rel="canonical" href="https://www.stags.cn/de/releases/headroom/0.35.0/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="STAGS NextStack — releases" href="/de/releases.xml"><link rel="alternate" hreflang="en" href="https://www.stags.cn/releases/headroom/0.35.0/"><link rel="alternate" hreflang="zh-Hans" href="https://www.stags.cn/releases/headroom/0.35.0/"><link rel="alternate" hreflang="x-default" href="https://www.stags.cn/releases/headroom/0.35.0/"><meta property="og:site_name" content="STAGS"><meta property="og:type" content="article"><meta property="og:title" content="headroom v0.35.0 — STAGS NextStack"><meta property="og:description" content="fix: emit SSE ping before message_start on Bedrock streaming path (issue #902) · fix(litellm): add async_post_call_success_hook to HeadroomCallback · deps: bump brace-expansion from 5.0.7 to 5.0.9 in /docs[bot]"><meta property="og:url" content="https://www.stags.cn/de/releases/headroom/0.35.0/"><meta property="og:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><meta property="og:locale" content="de_DE"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="ja_JP"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:locale:alternate" content="es_ES"><meta property="og:locale:alternate" content="pt_BR"><meta property="og:locale:alternate" content="ko_KR"><meta property="og:locale:alternate" content="it_IT"><meta property="og:locale:alternate" content="ru_RU"><meta property="og:locale:alternate" content="tr_TR"><meta property="og:locale:alternate" content="id_ID"><meta property="og:locale:alternate" content="vi_VN"><meta property="og:locale:alternate" content="ar_SA"><meta property="og:locale:alternate" content="sv_SE"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.stags.cn/#website","name":"STAGS","url":"https://www.stags.cn/","inLanguage":"de","description":"NextStack indexiert Release Notes aus Infrastruktur- und KI-Projekten – Breaking Changes, Deprecations und Migrationen – in einem englischsprachigen Feed.","publisher":{"@id":"https://www.stags.cn/#org"}},{"@type":"Organization","@id":"https://www.stags.cn/#org","name":"STAGS","alternateName":"NextStack","url":"https://www.stags.cn/"},{"@type":"TechArticle","@id":"https://www.stags.cn/de/releases/headroom/0.35.0/#article","headline":"headroom v0.35.0 release notes","datePublished":"2026-08-13","inLanguage":"en","isPartOf":{"@id":"https://www.stags.cn/#website"},"about":{"@type":"SoftwareSourceCode","codeRepository":"https://github.com/headroomlabs-ai/headroom"}}]}</script><!-- 第三方脚本的连接预热：这两个域名几乎每页都要连，
+         提前建连能省掉 DNS + TCP + TLS 一个往返（移动网络 100~300ms）。
+         AdSense 只在开关打开时预热——关掉广告后连这个域名都没必要。 --><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://pagead2.googlesyndication.com"><!-- Google AdSense：站点所有权校验与广告投放共用同一段脚本，全站只加载一次。
+         未创建广告单元时页面上不渲染任何广告容器，站点保持干净。
+         fetchpriority=low：它不参与首屏渲染，不该跟正文抢带宽。 --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184355057086168" crossorigin="anonymous" fetchpriority="low"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-RFRF1TVRMP" fetchpriority="low"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RFRF1TVRMP");
+    </script><!-- 百度统计（国内流量统计）。官方标准片段，is:inline 原样输出，
+         hm.js 动态插到首个 script 前，异步不阻塞首屏渲染。 --><script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?299e5b4e65b86ed16879bdcbe70531d6";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script><link rel="stylesheet" href="/assets/index.DQGt3qLZ.css">
+<style>.ad-slot[data-astro-cid-fgwukgf6]{margin:var(--s10) 0 0;padding-top:var(--s5);border-top:1px solid var(--line)}.ad-slot-label[data-astro-cid-fgwukgf6]{margin-bottom:var(--s3);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{display:block;min-height:100px}@media(min-width:640px){.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{min-height:250px}}
+</style></head> <body> <a class="skip" href="#main">Zum Inhalt springen</a> <header class="hdr" data-header> <div class="wrap hdr-inner"> <a href="/de/" class="brand" aria-label="STAGS NextStack — Release-Informationen für Open Source"> <span class="brand-mark" aria-hidden="true">S</span> <span class="brand-main">STAGS</span> <span class="brand-sub" aria-hidden="true">NextStack</span> </a> <nav class="nav" aria-label="Primary"> <a href="/de/releases">Releases</a><a href="/de/projects">Projekte</a> </nav>  <details class="navmenu" data-navmenu> <summary class="navmenu-btn" aria-label="Open menu"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> </summary> <div class="navmenu-panel" role="group" aria-label="Primary"> <a href="/de/releases" class="navmenu-item">Releases</a><a href="/de/projects" class="navmenu-item">Projekte</a> </div> </details> <div class="hdr-tools"> <button class="searchbtn" type="button" data-search-open aria-label="Releases durchsuchen"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <span class="lbl">Suche</span> <span class="kbd">⌘K</span> </button> <details class="langmenu" data-langmenu> <summary class="langmenu-btn" aria-label="Sprache"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"> <circle cx="12" cy="12" r="9"></circle> <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path> </svg> <span class="langmenu-cur">DE</span> <svg class="langmenu-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m2 4 4 4 4-4"></path></svg> </summary> <div class="langmenu-panel" role="group" aria-label="Sprache"> <p class="langmenu-head">Sprache</p> <a class="langmenu-item" href="/releases/headroom/0.35.0/" hreflang="en" lang="en" data-on="false"> <span class="langmenu-label">English</span> <span class="langmenu-code">EN</span> </a><a class="langmenu-item" href="/zh/release_note/headroom/headroom_v0.35.0" hreflang="zh-Hans" lang="zh-CN" data-on="false"> <span class="langmenu-label">中文</span> <span class="langmenu-code">中</span> </a><a class="langmenu-item" href="/ja/releases/headroom/0.35.0/" hreflang="ja" lang="ja" data-on="false"> <span class="langmenu-label">日本語</span> <span class="langmenu-code">日</span> </a><a class="langmenu-item" href="/de/releases/headroom/0.35.0/" hreflang="de" lang="de" aria-current="true" data-on="true"> <span class="langmenu-label">Deutsch</span> <span class="langmenu-code">DE</span> </a><a class="langmenu-item" href="/fr/releases/headroom/0.35.0/" hreflang="fr" lang="fr" data-on="false"> <span class="langmenu-label">Français</span> <span class="langmenu-code">FR</span> </a><a class="langmenu-item" href="/es/releases/headroom/0.35.0/" hreflang="es" lang="es" data-on="false"> <span class="langmenu-label">Español</span> <span class="langmenu-code">ES</span> </a><a class="langmenu-item" href="/pt/releases/headroom/0.35.0/" hreflang="pt-BR" lang="pt-BR" data-on="false"> <span class="langmenu-label">Português</span> <span class="langmenu-code">PT</span> </a><a class="langmenu-item" href="/ko/releases" hreflang="ko" lang="ko" data-on="false"> <span class="langmenu-label">한국어</span> <span class="langmenu-code">한</span> </a><a class="langmenu-item" href="/it/releases" hreflang="it" lang="it" data-on="false"> <span class="langmenu-label">Italiano</span> <span class="langmenu-code">IT</span> </a><a class="langmenu-item" href="/ru/releases" hreflang="ru" lang="ru" data-on="false"> <span class="langmenu-label">Русский</span> <span class="langmenu-code">RU</span> </a><a class="langmenu-item" href="/tr/releases" hreflang="tr" lang="tr" data-on="false"> <span class="langmenu-label">Türkçe</span> <span class="langmenu-code">TR</span> </a><a class="langmenu-item" href="/id/releases" hreflang="id" lang="id" data-on="false"> <span class="langmenu-label">Bahasa Indonesia</span> <span class="langmenu-code">ID</span> </a><a class="langmenu-item" href="/vi/releases" hreflang="vi" lang="vi" data-on="false"> <span class="langmenu-label">Tiếng Việt</span> <span class="langmenu-code">VI</span> </a><a class="langmenu-item" href="/ar/releases" hreflang="ar" lang="ar" data-on="false"> <span class="langmenu-label">العربية</span> <span class="langmenu-code">ع</span> </a><a class="langmenu-item" href="/sv/releases" hreflang="sv" lang="sv" data-on="false"> <span class="langmenu-label">Svenska</span> <span class="langmenu-code">SV</span> </a> </div> </details> <a class="iconlink" href="/releases.xml" aria-label="RSS"> <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"> <path d="M2 12.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM2 7.5a6.5 6.5 0 0 1 6.5 6.5h-2A4.5 4.5 0 0 0 2 9.5v-2ZM2 2.5A11.5 11.5 0 0 1 13.5 14h-2A9.5 9.5 0 0 0 2 4.5v-2Z"></path> </svg> </a> </div> </div> </header> <main id="main">  <div class="wrap"> <div class="detail"> <article> <header class="detail-hd"> <nav class="crumbs" aria-label="Breadcrumb"> <a href="/de/">Startseite</a> <span class="sep">/</span> <a href="/de/releases">Releases</a> <span class="sep">/</span> <a href="/de/releases/headroom">headroom</a> </nav> <h1 class="detail-title"> <span class="p">headroom</span> v0.35.0 </h1> <div class="detail-meta"> <span class="chip chip--minor">Minor</span> <span><span class="k">Veröffentlicht</span>13. Aug. 2026</span>  <span class="sep" aria-hidden="true"></span> <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener"> <span class="k">Quelle</span>headroomlabs-ai/headroom </a>   <span class="sep" aria-hidden="true"></span> <a href="/releases/headroom/0.35.0/"> Englisches Original </a>  <span class="sep" aria-hidden="true"></span> <button class="btn btn--ghost btn--sm" type="button" data-copy="https://www.stags.cn/de/releases/headroom/0.35.0/">Link kopieren</button> </div> </header> <div class="prose" style="margin-top:var(--s8)"> <p class="mt-notice" role="note">Diese Seite ist maschinell übersetzt. Maßgeblich ist der englische Originaltext.</p>  <div><h1>Kopffreiheit v0.35.0</h1>
+<h2>Was hat sich geändert?</h2>
+<ul>
+<li>Fix: Senden Sie einen SSE-Ping vor message_start auf dem Bedrock-Streaming-Pfad (Problem Nr. 902) von @MrAshRhodes in https://github.com/headroomlabs-ai/headroom/pull/1080</li>
+<li>fix(litellm): async_post_call_success_hook zu HeadroomCallback von @khaosdoctor in https://github.com/headroomlabs-ai/headroom/pull/1322 hinzufügen</li>
+<li>deps: Bump-Brace-Erweiterung von 5.0.7 auf 5.0.9 in /docs von @dependabot[bot] in https://github.com/headroomlabs-ai/headroom/pull/2751</li>
+<li>deps: Nächster Sprung von 16.2.10 zu 16.3.0 in /docs durch @dependabot[bot] in https://github.com/headroomlabs-ai/headroom/pull/2750</li>
+<li>deps: Postcss von 8.5.19 auf 8.5.25 in /plugins/openclaw von @dependabot[bot] in https://github.com/headroomlabs-ai/headroom/pull/2749 verschieben</li>
+<li>deps: Postcss von 8.5.19 auf 8.5.25 in /plugins/opencode von @dependabot[bot] in https://github.com/headroomlabs-ai/headroom/pull/2748 erhöhen</li>
+<li>deps: Bump Postcss von 8.5.19 zu 8.5.25 in /sdk/typescript von @dependabot[bot] in https://github.com/headroomlabs-ai/headroom/pull/2747</li>
+<li>Fix(Proxy): Entpacken Sie die Hermes-Tool_Call-Brücke in der Tool-Namenszuordnung von @pgjh in https://github.com/headroomlabs-ai/headroom/pull/2717</li>
+<li>fix(ccr): Behält die genaue SQLite-TTL-Grenze von @Agistaris in https://github.com/headroomlabs-ai/headroom/pull/2669 bei</li>
+<li>fix(tokenizer): Erzwinge Nicht-String-tool_call-Felder vor dem Zählen durch @Parideboy in https://github.com/headroomlabs-ai/headroom/pull/2801</li>
+<li>fix(beacon): Einsparungen auf allen Ebenen melden, nicht Kontextkomprimierung, nur von @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2796</li>
+<li>test(ccr): Überschreitung der maximalen Lebensdauer von SQLite durch @JerrettDavis in https://github.com/headroomlabs-ai/headroom/pull/2794</li>
+<li>fix(deps): Erzwingen Sie überwachte transitive Abhängigkeitsuntergrenzen von @JerrettDavis in https://github.com/headroomlabs-ai/headroom/pull/2791</li>
+<li>feat(cli,pricing): CLI Extension Seam und Prompt-Cache TTL Pricing von @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2802 hinzufügen</li>
+<li>fix(opencode): Laden Sie einen fehlenden Transport-Shim nicht vorab in untergeordnete Prozesse von @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2806</li>
+<li>fix(proxy): Tool-Suche standardmäßig aktivieren und vergiftete Transkripte von @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2807 reparieren</li>
+<li>Backend-Auswahl pro Anfrage für Routing-Erweiterungen durch @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2809</li>
+<li>fix(beacon): Sitzungsfehler nach Statuscode von @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2815 aufteilen</li>
+<li>fix(proxy): ordnungsgemäßes Herunterfahren und zuverlässiges Beenden mit Strg+C durch @neogenix in https://github.com/headroomlabs-ai/headroom/pull/621</li>
+<li>feat(beacon): Den Routing-Zusammenfassungsschlüssel von @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2818 auf die Zulassungsliste setzen</li>
+<li>fix(deps): h2 auf 4.4.1 für CVE-2026-71554 von @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2839 erhöhen</li>
+<li>Leistung: Hot-Path-Latenz um 27 % reduzieren (Token-Count-Memo, Startup-Preloads, JSON-Scan-Memo) von @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2838</li>
+<li>Fix(Proxy): Stoppen Sie das Verwerfen komprimierter Codex WS-Later-Frame-Nutzlasten von @ashishpatel26 in https://github.com/headroomlabs-ai/headroom/pull/2823</li>
+<li>test(openclaw): Übereinstimmung mit der geerbten PATH-Shell-Prüfung von @JerrettDavis in https://github.com/headroomlabs-ai/headroom/pull/2821</li>
+<li>fix(proxy/gemini): Behalten Sie die Streaming-Paritäts-Basislinie bei, sodass berechtigter_pct 100 von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2824 nicht überschreiten kann</li>
+<li>fix(memory): hat den TrafficLearner-Pending-Pattern-Akkumulator (Speicherleck) durch @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2579 gebunden</li>
+<li>fix(proxy/anthropic): headroom_retrieve immer dann injizieren, wenn ein CCR-Marker vorhanden ist, nicht nur für neue Marker von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2848</li>
+<li>fix(install): Stoppen Sie das Backen des Hostspeicher-DB-Pfads in eine Containerbereitstellung durch @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2845</li>
+<li>fix(install): Verwenden Sie --userns=keep-id unter Podman, damit Bind-Mount-Schreibvorgänge nicht durch @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2846 fehlschlagen</li>
+<li>fix(wrap): Stoppen Sie, dass der Launch-CWD das installierte Paket im Proxy-Unterprozess von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2843 überschattet</li>
+<li>fix(openai): Antwort-Tool-Suchverzögerung für clients überspringen, die es nicht von @rodboev in https://github.com/headroomlabs-ai/headroom/pull/2696 ausführen können</li>
+<li>fix(onnx): ONNX-Thread-Pools daran hindern, inaktive Kerne zu drehen (#2495) von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2540</li>
+<li>fix(anthropic): Erstanbieter-Tool-Suche auf benutzerdefinierten Upstreams von @rodboev in https://github.com/headroomlabs-ai/headroom/pull/2539 entfernen</li>
+<li>perf(subscription): Transkripte überspringen, die älter als das Fenster in „compute_window_tokens“ von @romulomorgan in https://github.com/headroomlabs-ai/headroom/pull/2861 sind</li>
+<li>fix(proxy/openai): Führen Sie Antwort-Hooks für Antworten aus und berechnen Sie deren erneute Laufwerke durch @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2872</li>
+<li>Beacon: stündliche R2-Komprimierung, Einsparungen pro Strategie und ein Stack, der von @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2853 berichtet</li>
+<li>perf(proxy): gebundene Upstream-Anrufe und Hot-Path-Kosten von @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2852</li>
+<li>fix(litellm): Eine Anrufertaste, die das Ziel nicht akzeptieren kann, nicht weiterleiten von @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2883</li>
+<li>deps: Postcss von 8.5.19 auf 8.5.26 in /docs von @dependabot[bot] in https://github.com/headroomlabs-ai/headroom/pull/2881 erhöhen</li>
+<li>build(deps): gitpython von 3.1.50 auf 3.1.54 in der UV-Gruppe über 1 Verzeichnis von @dependabot[bot] in https://github.com/headroomlabs-ai/headroom/pull/2575 erhöhen</li>
+<li>deps: Bump Ruff von 0.15.17 zu 0.15.22 in der Pip-Minor-Patch-Gruppe von @dependabot[bot] in https://github.com/headroomlabs-ai/headroom/pull/2501</li>
+<li>deps: Bump Rusqlite von 0.32.1 auf 0.40.1 von @dependabot[bot] in https://github.com/headroomlabs-ai/headroom/pull/2287</li>
+<li>deps: Bytegröße von 1.3.3 auf 2.4.2 durch @dependabot[bot] in https://github.com/headroomlabs-ai/headroom/pull/2286 erhöhen</li>
+<li>deps: HF-Hub von 0.4.3 auf 0.5.0 durch @dependabot[bot] in https://github.com/headroomlabs-ai/headroom/pull/2285 erhöhen</li>
+<li>fix(cache): Anthropic Block-Wachstumslinien von @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2917 stabilisieren</li>
+<li>fix(proxy/anthropic): Führen Sie die Reparatur des Tool-Suchverlaufs nach Turn-Hooks von @gglucass in https://github.com/headroomlabs-ai/headroom/pull/2889 aus</li>
+<li>fix(wrap/serena): Installiere Serena vom Serena-Agent-PyPI-Rad, nicht von der Git-Quelle von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2877</li>
+<li>fix(opencode): Versenden Sie den Transport-Hook-Shim, damit das Rad den untergeordneten Routenknotenverkehr von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2878 installiert</li>
+<li>fix(opencode): Claude-Modelle vom OpenAI-Anbieter von @SulimanAbdulrazzaq in https://github.com/headroomlabs-ai/headroom/pull/2913 fernhalten</li>
+<li>Fix(Proxy): Regelmäßige TOIN-Aufgabe beim Herunterfahren durch @abhinavkr26104 in https://github.com/headroomlabs-ai/headroom/pull/2906 abbrechen</li>
+<li>fix(cache): gebundene Komprimierungs-Cache-Buchhaltung von @Robert2547 in https://github.com/headroomlabs-ai/headroom/pull/2875</li>
+<li>fix(proxy): Zeitstempel des Anforderungsprotokolls in UTC von @SulimanAbdulrazzaq in https://github.com/headroomlabs-ai/headroom/pull/2912 ausgeben</li>
+<li>Fix(Speicher): MCP-Backend beim Herunterfahren durch @abhinavkr26104 in https://github.com/headroomlabs-ai/headroom/pull/2905 schließen</li>
+<li>fix(proxy): Litellm-Modellauflösung zwischenspeichern, um wiederholten Anbieterlisten-Spam von @connectsudhindra-gif in https://github.com/headroomlabs-ai/headroom/pull/2860 zu stoppen</li>
+<li>fix(litellm): Gemeinsame Cloud client von @abhinavkr26104 in https://github.com/headroomlabs-ai/headroom/pull/2903 schließen</li>
+<li>fix(oauth2): Repository-Lint-Prüfungen durch @abhinavkr26104 in https://github.com/headroomlabs-ai/headroom/pull/2902 passieren lassen</li>
+<li>fix(installieren): trust Docker Bridge für Dashboard-Metadaten von @SulimanAbdulrazzaq in https://github.com/headroomlabs-ai/headroom/pull/2914</li>
+<li>fix(memory): DirectMem0-Ressourcen von @abhinavkr26104 in https://github.com/headroomlabs-ai/headroom/pull/2904 schließen</li>
+<li>Fix(Speicher): FTS5- und Vektorindizes auf CLI synchronisieren, löschen/bearbeiten/beschneiden/bereinigen von @gingeekrishna in https://github.com/headroomlabs-ai/headroom/pull/2869</li>
+<li>fix(settings): Akzeptiere dokumentierte HEADROOM_*-Env-Namen als Einstellungsschlüssel von @axelray-dev in https://github.com/headroomlabs-ai/headroom/pull/2833</li>
+<li>fix(cli/update): Lassen Sie die Installationseigentümerschaft über bare /.dockerenv siegen, damit venv die Selbstaktualisierung von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2830 installiert</li>
+<li>fix(toin): gebundene private Abfrage und Musteraufbewahrung durch @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2929</li>
+<li>fix(proxy): bewacht Telemetrie- und TOIN-Endpunkte von @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2930</li>
+<li>fix(ccr): Vermeiden Sie das Einfügen eines Tools in das Chat-Streaming von @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2931</li>
+<li>fix(wrap/opencode): Überprüfen Sie die Opencode-Binärdatei, bevor Sie die Konfiguration durch @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2923 ändern</li>
+<li>fix(wrap/claude): --1m bleibt wirksam, wenn ein explizites --model von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2922 übergeben wird</li>
+<li>fix(cache): Spiegelung von client-Cache_Control-Positionen anstelle der Einzelmarker-Konsolidierung durch @gglucass in https://github.com/headroomlabs-ai/headroom/pull/2919</li>
+<li>fix(backends/anyllm): Anthropic-Tools und tool_choice in OpenAI-Form von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2892 konvertieren</li>
+<li>fix(backends/anyllm): Tool_use-Blöcke streamen und Finish_reason auf dem Streaming-Pfad von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2890 zuordnen</li>
+<li>fix(content-router): Benutzerdefinierte Tag-Blöcke vor der Aufteilung des Abschnitts mit gemischtem Inhalt durch @gglucass in https://github.com/headroomlabs-ai/headroom/pull/2887 schützen</li>
+<li>fix(proxy): Schließen Sie den Upstream-Stream, wenn ein Streaming-Body niemals von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2882 verbraucht wird</li>
+<li>fix(proxy): Tool_search_deferral-Einsparungen in das Sparbuch von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2880 aufnehmen</li>
+<li>Fix: Die Vertex-Modellpreise zeigen $0.00 für versionierte Modellnamen und den vertex:anthropic-Anbieter von @yossiovadia in https://github.com/headroomlabs-ai/headroom/pull/2517 an</li>
+<li>Fix(Proxy): Einstellungsrouten für trusted Gateway/Dashboard clients von @Parideboy in https://github.com/headroomlabs-ai/headroom/pull/2491 zulassen</li>
+<li>fix(ccr): Eingebettete Hashes vom Komprimierungsendpunkt von @Alexsun1one in https://github.com/headroomlabs-ai/headroom/pull/717 melden</li>
+<li>fix(health): Kennzeichnen Sie kompress als herabgestuft/optional, wenn es noch nicht von @gingeekrishna in https://github.com/headroomlabs-ai/headroom/pull/2865 geladen wurde</li>
+<li>fix(proxy): Gate-Mid-Turn-Nachricht verschmilzt mit Claude Code clients von @tenderdeve in https://github.com/headroomlabs-ai/headroom/pull/1643</li>
+<li>fix(proxy): Geben Sie jeder Codex /v1/responses WS-Runde eine eindeutige request_id von @rodboev in https://github.com/headroomlabs-ai/headroom/pull/2164</li>
+<li>fix(learn/gemini): Erkennen Sie den Projektpfad für JSONL-Sitzungen von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2229</li>
+<li>fix(learn/gemini): Doppelzählung von Sitzungstoken durch @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2230 stoppen</li>
+<li>fix(memory): explizite Projekt- und Benutzerspeicherschlüssel kollisionssicher machen durch @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2231</li>
+<li>fix(transforms/smart_crusher): Absturz nicht bei einem Toolaufruf mit einer Nullfunktion von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2232</li>
+<li>fix(ci): Neueste Version aus dem Root-Manifest Docker von @rodboev in https://github.com/headroomlabs-ai/headroom/pull/2252 veröffentlichen</li>
+<li>fix(gemini): Native CCR-Abrufaufrufe von @rodboev in https://github.com/headroomlabs-ai/headroom/pull/2253 auflösen</li>
+<li>fix(tokenizer): Preis von CJK im Festverhältnisschätzer Rust (Python-Parität) von @lifeodyssey in https://github.com/headroomlabs-ai/headroom/pull/2260</li>
+<li>fix(proxy/openai): Die Schleifen des Antwortspeichertools bei Nullargumenten von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2273 werden nicht zum Absturz gebracht</li>
+<li>fix(learn/grok): Erkennen Sie einen absoluten Windows-Projektpfad durch @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2283</li>
+<li>fix(learn): Stoppen Sie die Klassifizierung eines erfolgreichen Exit-Codes 0 als Fehler durch @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2289</li>
+<li>fix(memory): Vektormetadaten synchron halten von @superdiaodiao in https://github.com/headroomlabs-ai/headroom/pull/2295</li>
+<li>Fix(Proxy/Batch): Bringt einen OpenAI-Batch auf einer valid-JSON-Nichtobjektzeile von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2316 nicht zum Absturz</li>
+<li>fix(proxy/bedrock): Melden Sie nicht zwischengespeicherte Eingabe-Tokens aus der Backend-Nutzung, nicht die Live-Zonen-Zählung von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2318</li>
+<li>fix(transforms/adaptive-sizer): Berücksichtigung von max_k auf dem schnellen Pfad mit kleinen Eingaben von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2319</li>
+<li>fix(backends/litellm): Non-Guard-Core-Token-Zählungen im OpenAI-Nutzungsblock von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2324</li>
+<li>fix(proxy): Signierte Anthropic-Thinking-Blöcke bleiben bei ausgehender Neuserialisierung durch @axelray-dev in https://github.com/headroomlabs-ai/headroom/pull/2254 erhalten</li>
+<li>fix(proxy): Übergeben Sie regionsübergreifende vorangestellte Bedrock-Modell-IDs direkt von @mhaitana in https://github.com/headroomlabs-ai/headroom/pull/2330</li>
+<li>fix(proxy/openai): Codex WS-Verkehr in den Traffic-Learner von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2334 einspeisen</li>
+<li>fix(proxy): Kaltstarts im Cache-Modus komprimieren und Passthrough bei Tag-Präfix-Nichtübereinstimmung von @Parideboy in https://github.com/headroomlabs-ai/headroom/pull/2365</li>
+<li>Fix: Headroom-Opencode im Release-Workflow von @rodboev in https://github.com/headroomlabs-ai/headroom/pull/2372 veröffentlichen</li>
+<li>fix(proxy): Session-Sticky-Beta-Header von @abcgco in https://github.com/headroomlabs-ai/headroom/pull/2381 auf den Rust-Proxy portieren</li>
+<li>fix(wrap): Berücksichtigung der Copilot-OAuth-Wire-api-Überschreibung und Modellvorgabe von @mvanhorn in https://github.com/headroomlabs-ai/headroom/pull/2387</li>
+<li>Fix(Abonnement): Dedup-Transkript-Nutzung nach Nachrichten-ID (#2340 Token-Inflation) durch @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2408</li>
+<li>fix(proxy): Zeitbegrenzung der Komprimierungs-Timeout-Debt-Quarantäne (#2360) von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2412</li>
+<li>fix(proxy/anthropic): Non-Guard-Usage-Token zählt auf dem direkten gepufferten Pfad von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2434</li>
+<li>fix(install/windows): Register persistent-task from S4U Hidden XML (#2453) von @Parideboy in https://github.com/headroomlabs-ai/headroom/pull/2459</li>
+<li>fix(proxy/metrics): Escape-Label-Werte im Prometheus-Export von @inix-x in https://github.com/headroomlabs-ai/headroom/pull/2463</li>
+<li>fix(ccr): toleriert null/fehlerhafte OpenAI-Daten bei der Antwortverarbeitung durch @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2467</li>
+<li>fix(install): stürzt das PowerShell-Installationsprogramm nicht ab, wenn $PROFILE von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2469 deaktiviert wird</li>
+<li>fix(memory): Die Inline-Speicherextraktion auf einem Nicht-Objekt-&lt;memory&gt;-Block von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2470 stürzt nicht ab</li>
+<li>fix(providers/anthropic): Token-Schätzung bei Null-Tool_Calls von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2472 nicht zum Absturz bringen</li>
+<li>fix(claude): Stoppen Sie das Erzwingen der Werkzeugsuche auf Foundry von @rodboev in https://github.com/headroomlabs-ai/headroom/pull/2477</li>
+<li>fix(proxy/metrics): cap client-gelieferte Modell-Label-Kardinalität von @inix-x in https://github.com/headroomlabs-ai/headroom/pull/2480</li>
+<li>Dokumente: Anleitung zur Verwendung von Headroom mit OpenCode + DeepSeek von @suvenkatesh97 in https://github.com/headroomlabs-ai/headroom/pull/2497 hinzufügen</li>
+<li>docs(transforms): Korrigieren Sie veraltete Unit-Result-Cache-Platzhalterkommentare von @gglucass in https://github.com/headroomlabs-ai/headroom/pull/2506</li>
+<li>fix(ccr): &lt;<a href="">ccr:...</a>&gt;-Markierungen inline auflösen, wenn kein Abruf-Tool-Pfad von @Parideboy in https://github.com/headroomlabs-ai/headroom/pull/2512 vorhanden ist</li>
+<li>fix(doctor): Flag <code>ollama launch claude</code>-Proxy-Umgehung statt Fehlleitung durch @tenderdeve in https://github.com/headroomlabs-ai/headroom/pull/2566</li>
+<li>fix(providers/openai): gebundene Tiktoken-Vokabelladungen mit dem geschützten Loader von @gglucass in https://github.com/headroomlabs-ai/headroom/pull/2554</li>
+<li>fix(memory): &lt;system-reminder&gt;-Blöcke beim Erstellen der Abrufabfrage (#2195) von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2541 überspringen</li>
+<li>fix(codex): Alpha-Suche durch das Codex-Backend von @rodboev in https://github.com/headroomlabs-ai/headroom/pull/2538 weiterleiten</li>
+<li>fix(image): Routing-Typen von trained_router entkoppeln, sodass beim Importieren des Kompressors kein Brenner (#2513) von @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2537 importiert wird</li>
+<li>fix(observability): aggregierte Tool-Einsparungen in OTEL von @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2936</li>
+<li>fix(proxy): Zusammengeführte Sitzungs- und Quarantäneverträge von @JerrettDavis in https://github.com/headroomlabs-ai/headroom/pull/2943 beibehalten</li>
+<li>fix(wrap): Serialisierung des Shared-Proxy-Starts durch @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2946</li>
+<li>fix(cache): erzwingt Anthropics 1h-before-5m-cache_control-Reihenfolge vor der Weiterleitung durch @Parideboy in https://github.com/headroomlabs-ai/headroom/pull/2941</li>
+<li>deps: Verschieben Sie die Gruppe „cargo-minor-patch“ über ein Verzeichnis mit 22 Updates von @dependabot[bot] in https://github.com/headroomlabs-ai/headroom/pull/2916</li>
+<li>Aufgabe: headroom-ai 0.35.0 von @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2792 veröffentlichen</li>
+</ul>
+<h2>Neue Mitwirkende</h2>
+<ul>
+<li>@pgjh hat seinen ersten Beitrag in https://github.com/headroomlabs-ai/headroom/pull/2717 geleistet</li>
+<li>@Agistaris hat seinen ersten Beitrag in https://github.com/headroomlabs-ai/headroom/pull/2669 geleistet</li>
+<li>@romulomorgan hat seinen ersten Beitrag in https://github.com/headroomlabs-ai/headroom/pull/2861 geleistet</li>
+<li>@SulimanAbdulrazzaq hat seinen ersten Beitrag in https://github.com/headroomlabs-ai/headroom/pull/2913 geleistet</li>
+<li>@abhinavkr26104 hat seinen ersten Beitrag in https://github.com/headroomlabs-ai/headroom/pull/2906 geleistet</li>
+<li>@Robert2547 hat seinen ersten Beitrag in https://github.com/headroomlabs-ai/headroom/pull/2875 geleistet</li>
+<li>@connectsudhindra-gif hat seinen ersten Beitrag in https://github.com/headroomlabs-ai/headroom/pull/2860 geleistet</li>
+<li>@gingeekrishna hat seinen ersten Beitrag in https://github.com/headroomlabs-ai/headroom/pull/2869 geleistet</li>
+<li>@yossiovadia hat ihren ersten Beitrag in https://github.com/headroomlabs-ai/headroom/pull/2517 geleistet</li>
+<li>@Alexsun1one hat seinen ersten Beitrag in https://github.com/headroomlabs-ai/headroom/pull/717 geleistet</li>
+<li>@suvenkatesh97 hat seinen ersten Beitrag in https://github.com/headroomlabs-ai/headroom/pull/2497 geleistet
+<strong>Vollständig Changelog</strong>: https://github.com/headroomlabs-ai/headroom/compare/v0.34.0...v0.35.0</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>Quelle</strong> <a href="https://github.com/headroomlabs-ai/headroom">headroomlabs-ai/headroom</a> · <code>v0.35.0</code> · 2026-08-13 · <a href="https://github.com/headroomlabs-ai/headroom/releases/tag/v0.35.0">Upstream-Release</a>
+<em>Zum Indexieren wörtlich gespiegelt. Alle Rechte liegen beim Upstream-Projekt.</em></p>
+</blockquote></div>  <details class="mt-original"> <summary>Englisches Original / English original</summary> <div class="prose mt-original-body"><h1>headroom v0.35.0</h1>
+<h2>What's Changed</h2>
+<ul>
+<li>fix: emit SSE ping before message_start on Bedrock streaming path (issue #902) by @MrAshRhodes in https://github.com/headroomlabs-ai/headroom/pull/1080</li>
+<li>fix(litellm): add async_post_call_success_hook to HeadroomCallback by @khaosdoctor in https://github.com/headroomlabs-ai/headroom/pull/1322</li>
+<li>deps: bump brace-expansion from 5.0.7 to 5.0.9 in /docs by @dependabot[bot] in https://github.com/headroomlabs-ai/headroom/pull/2751</li>
+<li>deps: bump next from 16.2.10 to 16.3.0 in /docs by @dependabot[bot] in https://github.com/headroomlabs-ai/headroom/pull/2750</li>
+<li>deps: bump postcss from 8.5.19 to 8.5.25 in /plugins/openclaw by @dependabot[bot] in https://github.com/headroomlabs-ai/headroom/pull/2749</li>
+<li>deps: bump postcss from 8.5.19 to 8.5.25 in /plugins/opencode by @dependabot[bot] in https://github.com/headroomlabs-ai/headroom/pull/2748</li>
+<li>deps: bump postcss from 8.5.19 to 8.5.25 in /sdk/typescript by @dependabot[bot] in https://github.com/headroomlabs-ai/headroom/pull/2747</li>
+<li>fix(proxy): unwrap Hermes tool_call bridge in tool name map by @pgjh in https://github.com/headroomlabs-ai/headroom/pull/2717</li>
+<li>fix(ccr): preserve exact SQLite TTL boundary by @Agistaris in https://github.com/headroomlabs-ai/headroom/pull/2669</li>
+<li>fix(tokenizer): coerce non-string tool_call fields before counting by @Parideboy in https://github.com/headroomlabs-ai/headroom/pull/2801</li>
+<li>fix(beacon): report all-layers savings, not context-compression only by @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2796</li>
+<li>test(ccr): cross SQLite max lifetime boundary by @JerrettDavis in https://github.com/headroomlabs-ai/headroom/pull/2794</li>
+<li>fix(deps): enforce audited transitive dependency floors by @JerrettDavis in https://github.com/headroomlabs-ai/headroom/pull/2791</li>
+<li>feat(cli,pricing): add CLI extension seam and prompt-cache TTL pricing by @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2802</li>
+<li>fix(opencode): don't preload a missing transport shim into child processes by @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2806</li>
+<li>fix(proxy): enable tool search by default and repair poisoned transcripts by @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2807</li>
+<li>Per-request backend selection for routing extensions by @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2809</li>
+<li>fix(beacon): split session failures by status code by @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2815</li>
+<li>fix(proxy): graceful shutdown and reliable Ctrl+C exit by @neogenix in https://github.com/headroomlabs-ai/headroom/pull/621</li>
+<li>feat(beacon): allowlist the routing summary key by @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2818</li>
+<li>fix(deps): bump h2 to 4.4.1 for CVE-2026-71554 by @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2839</li>
+<li>perf: cut hot-path latency 27% (token-count memo, startup preloads, JSON scan memo) by @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2838</li>
+<li>fix(proxy): stop discarding compressed Codex WS later-frame payloads by @ashishpatel26 in https://github.com/headroomlabs-ai/headroom/pull/2823</li>
+<li>test(openclaw): match inherited PATH shell check by @JerrettDavis in https://github.com/headroomlabs-ai/headroom/pull/2821</li>
+<li>fix(proxy/gemini): keep streaming-parity baseline so eligible_pct can't exceed 100 by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2824</li>
+<li>fix(memory): bound the TrafficLearner pending-pattern accumulator (memory leak) by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2579</li>
+<li>fix(proxy/anthropic): inject headroom_retrieve whenever a CCR marker is present, not only for new markers by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2848</li>
+<li>fix(install): stop baking the host memory DB path into a container deployment by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2845</li>
+<li>fix(install): use --userns=keep-id under Podman so bind-mount writes don't fail by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2846</li>
+<li>fix(wrap): stop the launch cwd from shadowing the installed package in the proxy subprocess by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2843</li>
+<li>fix(openai): skip Responses tool-search deferral for clients that cannot execute it by @rodboev in https://github.com/headroomlabs-ai/headroom/pull/2696</li>
+<li>fix(onnx): stop ONNX thread pools from spinning idle cores (#2495) by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2540</li>
+<li>fix(anthropic): strip first-party tool search on custom upstreams by @rodboev in https://github.com/headroomlabs-ai/headroom/pull/2539</li>
+<li>perf(subscription): skip transcripts older than the window in compute_window_tokens by @romulomorgan in https://github.com/headroomlabs-ai/headroom/pull/2861</li>
+<li>fix(proxy/openai): run response hooks on Responses, and bill their re-drives by @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2872</li>
+<li>Beacon: hourly R2 compaction, per-strategy savings, and a stack that reports by @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2853</li>
+<li>perf(proxy): bound upstream calls and hot-path costs by @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2852</li>
+<li>fix(litellm): don't forward a caller key the target cannot accept by @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2883</li>
+<li>deps: bump postcss from 8.5.19 to 8.5.26 in /docs by @dependabot[bot] in https://github.com/headroomlabs-ai/headroom/pull/2881</li>
+<li>build(deps): bump gitpython from 3.1.50 to 3.1.54 in the uv group across 1 directory by @dependabot[bot] in https://github.com/headroomlabs-ai/headroom/pull/2575</li>
+<li>deps: bump ruff from 0.15.17 to 0.15.22 in the pip-minor-patch group by @dependabot[bot] in https://github.com/headroomlabs-ai/headroom/pull/2501</li>
+<li>deps: bump rusqlite from 0.32.1 to 0.40.1 by @dependabot[bot] in https://github.com/headroomlabs-ai/headroom/pull/2287</li>
+<li>deps: bump bytesize from 1.3.3 to 2.4.2 by @dependabot[bot] in https://github.com/headroomlabs-ai/headroom/pull/2286</li>
+<li>deps: bump hf-hub from 0.4.3 to 0.5.0 by @dependabot[bot] in https://github.com/headroomlabs-ai/headroom/pull/2285</li>
+<li>fix(cache): stabilize Anthropic block-growing lineages by @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2917</li>
+<li>fix(proxy/anthropic): run tool-search history repair after turn hooks by @gglucass in https://github.com/headroomlabs-ai/headroom/pull/2889</li>
+<li>fix(wrap/serena): install Serena from the serena-agent PyPI wheel, not the git source by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2877</li>
+<li>fix(opencode): ship the transport hook-shim so wheel installs route Node child traffic by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2878</li>
+<li>fix(opencode): keep Claude models off OpenAI provider by @SulimanAbdulrazzaq in https://github.com/headroomlabs-ai/headroom/pull/2913</li>
+<li>fix(proxy): cancel periodic TOIN task on shutdown by @abhinavkr26104 in https://github.com/headroomlabs-ai/headroom/pull/2906</li>
+<li>fix(cache): bound compression cache bookkeeping by @Robert2547 in https://github.com/headroomlabs-ai/headroom/pull/2875</li>
+<li>fix(proxy): emit request log timestamps in UTC by @SulimanAbdulrazzaq in https://github.com/headroomlabs-ai/headroom/pull/2912</li>
+<li>fix(memory): close MCP backend on shutdown by @abhinavkr26104 in https://github.com/headroomlabs-ai/headroom/pull/2905</li>
+<li>fix(proxy): cache litellm model resolution to stop repeated Provider List spam by @connectsudhindra-gif in https://github.com/headroomlabs-ai/headroom/pull/2860</li>
+<li>fix(litellm): close shared cloud client by @abhinavkr26104 in https://github.com/headroomlabs-ai/headroom/pull/2903</li>
+<li>fix(oauth2): make repository lint checks pass by @abhinavkr26104 in https://github.com/headroomlabs-ai/headroom/pull/2902</li>
+<li>fix(install): trust Docker bridge for dashboard metadata by @SulimanAbdulrazzaq in https://github.com/headroomlabs-ai/headroom/pull/2914</li>
+<li>fix(memory): close DirectMem0 resources by @abhinavkr26104 in https://github.com/headroomlabs-ai/headroom/pull/2904</li>
+<li>fix(memory): sync FTS5 and vector indexes on CLI delete/edit/prune/purge by @gingeekrishna in https://github.com/headroomlabs-ai/headroom/pull/2869</li>
+<li>fix(settings): accept documented HEADROOM_* env names as settings keys by @axelray-dev in https://github.com/headroomlabs-ai/headroom/pull/2833</li>
+<li>fix(cli/update): let install ownership win over bare /.dockerenv so venv installs self-update by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2830</li>
+<li>fix(toin): bound private query and pattern retention by @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2929</li>
+<li>fix(proxy): guard telemetry and TOIN endpoints by @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2930</li>
+<li>fix(ccr): avoid injecting tool on chat streaming by @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2931</li>
+<li>fix(wrap/opencode): verify the opencode binary before mutating config by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2923</li>
+<li>fix(wrap/claude): keep --1m effective when an explicit --model is passed through by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2922</li>
+<li>fix(cache): mirror client cache_control positions instead of single-marker consolidation by @gglucass in https://github.com/headroomlabs-ai/headroom/pull/2919</li>
+<li>fix(backends/anyllm): convert Anthropic tools and tool_choice to OpenAI shape by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2892</li>
+<li>fix(backends/anyllm): stream tool_use blocks and map finish_reason on the streaming path by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2890</li>
+<li>fix(content-router): protect custom-tag blocks before mixed-content section split by @gglucass in https://github.com/headroomlabs-ai/headroom/pull/2887</li>
+<li>fix(proxy): close the upstream stream when a streaming body is never consumed by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2882</li>
+<li>fix(proxy): include tool_search_deferral savings in the savings ledger by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2880</li>
+<li>fix: Vertex model pricing shows $0.00 for versioned model names and vertex:anthropic provider by @yossiovadia in https://github.com/headroomlabs-ai/headroom/pull/2517</li>
+<li>fix(proxy): allow settings routes for trusted gateway/dashboard clients by @Parideboy in https://github.com/headroomlabs-ai/headroom/pull/2491</li>
+<li>fix(ccr): report embedded hashes from compress endpoint by @Alexsun1one in https://github.com/headroomlabs-ai/headroom/pull/717</li>
+<li>fix(health): label kompress as degraded/optional when not yet loaded by @gingeekrishna in https://github.com/headroomlabs-ai/headroom/pull/2865</li>
+<li>fix(proxy): gate mid-turn message coalescing to Claude Code clients by @tenderdeve in https://github.com/headroomlabs-ai/headroom/pull/1643</li>
+<li>fix(proxy): give each Codex /v1/responses WS turn a unique request_id by @rodboev in https://github.com/headroomlabs-ai/headroom/pull/2164</li>
+<li>fix(learn/gemini): detect the project path for JSONL sessions by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2229</li>
+<li>fix(learn/gemini): stop double-counting session tokens by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2230</li>
+<li>fix(memory): make explicit-project and user store keys collision-resistant by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2231</li>
+<li>fix(transforms/smart_crusher): don't crash on a tool call with a null function by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2232</li>
+<li>fix(ci): publish latest from the root Docker manifest by @rodboev in https://github.com/headroomlabs-ai/headroom/pull/2252</li>
+<li>fix(gemini): resolve native CCR retrieval calls by @rodboev in https://github.com/headroomlabs-ai/headroom/pull/2253</li>
+<li>fix(tokenizer): price CJK in the Rust fixed-ratio estimator (Python parity) by @lifeodyssey in https://github.com/headroomlabs-ai/headroom/pull/2260</li>
+<li>fix(proxy/openai): don't crash the Responses memory tool loops on null arguments by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2273</li>
+<li>fix(learn/grok): detect a Windows absolute project path by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2283</li>
+<li>fix(learn): stop classifying a successful exit code 0 as an error by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2289</li>
+<li>fix(memory): keep vector metadata in sync by @superdiaodiao in https://github.com/headroomlabs-ai/headroom/pull/2295</li>
+<li>fix(proxy/batch): don't crash an OpenAI batch on a valid-JSON non-object line by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2316</li>
+<li>fix(proxy/bedrock): report uncached input tokens from backend usage, not the live-zone count by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2318</li>
+<li>fix(transforms/adaptive-sizer): honor max_k on small-input fast path by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2319</li>
+<li>fix(backends/litellm): None-guard core token counts in OpenAI usage block by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2324</li>
+<li>fix(proxy): preserve signed Anthropic thinking blocks on outbound re-serialize by @axelray-dev in https://github.com/headroomlabs-ai/headroom/pull/2254</li>
+<li>fix(proxy): pass through cross-region prefixed Bedrock model IDs directly by @mhaitana in https://github.com/headroomlabs-ai/headroom/pull/2330</li>
+<li>fix(proxy/openai): feed Codex WS traffic into the traffic learner by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2334</li>
+<li>fix(proxy): compress cache-mode cold starts and tag prefix-mismatch passthrough by @Parideboy in https://github.com/headroomlabs-ai/headroom/pull/2365</li>
+<li>fix: publish headroom-opencode in release workflow by @rodboev in https://github.com/headroomlabs-ai/headroom/pull/2372</li>
+<li>fix(proxy): port session-sticky beta headers to the Rust proxy by @abcgco in https://github.com/headroomlabs-ai/headroom/pull/2381</li>
+<li>fix(wrap): honor Copilot OAuth wire-api override and model default by @mvanhorn in https://github.com/headroomlabs-ai/headroom/pull/2387</li>
+<li>fix(subscription): dedup transcript usage by message id (#2340 token inflation) by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2408</li>
+<li>fix(proxy): time-cap the compression timeout-debt quarantine (#2360) by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2412</li>
+<li>fix(proxy/anthropic): None-guard usage token counts on the direct buffered path by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2434</li>
+<li>fix(install/windows): register persistent-task from S4U hidden XML (#2453) by @Parideboy in https://github.com/headroomlabs-ai/headroom/pull/2459</li>
+<li>fix(proxy/metrics): escape label values in the Prometheus export by @inix-x in https://github.com/headroomlabs-ai/headroom/pull/2463</li>
+<li>fix(ccr): tolerate null/malformed OpenAI data in response handling by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2467</li>
+<li>fix(install): don't crash the PowerShell installer when $PROFILE is unset by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2469</li>
+<li>fix(memory): don't crash inline memory extraction on a non-object &lt;memory&gt; block by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2470</li>
+<li>fix(providers/anthropic): don't crash token estimation on null tool_calls by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2472</li>
+<li>fix(claude): stop forcing tool search on Foundry by @rodboev in https://github.com/headroomlabs-ai/headroom/pull/2477</li>
+<li>fix(proxy/metrics): cap client-supplied model label cardinality by @inix-x in https://github.com/headroomlabs-ai/headroom/pull/2480</li>
+<li>docs: add guide for using Headroom with OpenCode + DeepSeek by @suvenkatesh97 in https://github.com/headroomlabs-ai/headroom/pull/2497</li>
+<li>docs(transforms): correct stale unit-result-cache placeholder comments by @gglucass in https://github.com/headroomlabs-ai/headroom/pull/2506</li>
+<li>fix(ccr): resolve &lt;<a href="">ccr:...</a>&gt; markers inline when no retrieve-tool path exists by @Parideboy in https://github.com/headroomlabs-ai/headroom/pull/2512</li>
+<li>fix(doctor): flag <code>ollama launch claude</code> proxy bypass instead of misdirecting by @tenderdeve in https://github.com/headroomlabs-ai/headroom/pull/2566</li>
+<li>fix(providers/openai): bound tiktoken vocab loads with the guarded loader by @gglucass in https://github.com/headroomlabs-ai/headroom/pull/2554</li>
+<li>fix(memory): skip &lt;system-reminder&gt; blocks when building the retrieval query (#2195) by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2541</li>
+<li>fix(codex): route alpha search through the Codex backend by @rodboev in https://github.com/headroomlabs-ai/headroom/pull/2538</li>
+<li>fix(image): decouple routing types from trained_router so importing the compressor doesn't import torch (#2513) by @abhay-codes07 in https://github.com/headroomlabs-ai/headroom/pull/2537</li>
+<li>fix(observability): aggregate tool savings in OTEL by @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2936</li>
+<li>fix(proxy): preserve merged session and quarantine contracts by @JerrettDavis in https://github.com/headroomlabs-ai/headroom/pull/2943</li>
+<li>fix(wrap): serialize shared proxy startup by @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2946</li>
+<li>fix(cache): enforce Anthropic's 1h-before-5m cache_control ordering before forwarding by @Parideboy in https://github.com/headroomlabs-ai/headroom/pull/2941</li>
+<li>deps: bump the cargo-minor-patch group across 1 directory with 22 updates by @dependabot[bot] in https://github.com/headroomlabs-ai/headroom/pull/2916</li>
+<li>chore: release headroom-ai 0.35.0 by @chopratejas in https://github.com/headroomlabs-ai/headroom/pull/2792</li>
+</ul>
+<h2>New Contributors</h2>
+<ul>
+<li>@pgjh made their first contribution in https://github.com/headroomlabs-ai/headroom/pull/2717</li>
+<li>@Agistaris made their first contribution in https://github.com/headroomlabs-ai/headroom/pull/2669</li>
+<li>@romulomorgan made their first contribution in https://github.com/headroomlabs-ai/headroom/pull/2861</li>
+<li>@SulimanAbdulrazzaq made their first contribution in https://github.com/headroomlabs-ai/headroom/pull/2913</li>
+<li>@abhinavkr26104 made their first contribution in https://github.com/headroomlabs-ai/headroom/pull/2906</li>
+<li>@Robert2547 made their first contribution in https://github.com/headroomlabs-ai/headroom/pull/2875</li>
+<li>@connectsudhindra-gif made their first contribution in https://github.com/headroomlabs-ai/headroom/pull/2860</li>
+<li>@gingeekrishna made their first contribution in https://github.com/headroomlabs-ai/headroom/pull/2869</li>
+<li>@yossiovadia made their first contribution in https://github.com/headroomlabs-ai/headroom/pull/2517</li>
+<li>@Alexsun1one made their first contribution in https://github.com/headroomlabs-ai/headroom/pull/717</li>
+<li>@suvenkatesh97 made their first contribution in https://github.com/headroomlabs-ai/headroom/pull/2497</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/headroomlabs-ai/headroom/compare/v0.34.0...v0.35.0</p>
+<hr />
+<blockquote>
+<p><strong>Source</strong> <a href="https://github.com/headroomlabs-ai/headroom">headroomlabs-ai/headroom</a> · <code>v0.35.0</code> · 2026-08-13 · <a href="https://github.com/headroomlabs-ai/headroom/releases/tag/v0.35.0">upstream release</a></p>
+</blockquote>
+<p><em>Mirrored verbatim for indexing. All rights belong to the upstream project.</em></p></div> </details> </div> <p class="muted" style="margin-top:var(--s8);font-size:12.5px;border-top:1px solid var(--line);padding-top:var(--s4)"> Versionshinweise stammen aus dem Upstream-Projekt. Wir ordnen und verknüpfen sie, damit du Versionen auf einen Blick vergleichen kannst. Alle Rechte liegen bei den ursprünglichen Autoren. </p> <nav class="pager" aria-label="Release navigation"> <a href="/releases/headroom/0.36.0"> <span class="k">← Weiter</span> <span class="t">v0.36.0</span> </a> <a href="/releases/headroom/0.34.0"> <span class="k">Zurück →</span> <span class="t">v0.34.0</span> </a> </nav> <aside class="ad-slot" aria-label="Advertisement" data-astro-cid-fgwukgf6><div class="ad-slot-label" data-astro-cid-fgwukgf6>Advertisement</div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4184355057086168" data-ad-slot="9133765584" data-ad-format="auto" data-full-width-responsive="true" data-astro-cid-fgwukgf6></ins><script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script></aside> </article> <aside class="rail"> <div class="rail-card"> <div class="rail-title">Source</div> <ul class="rail-list"> <li> <a href="https://github.com/headroomlabs-ai/headroom/releases/tag/v0.35.0" target="_blank" rel="noopener"> <span>Original auf GitHub</span> <span class="d">↗</span> </a> </li> <li> <a href="https://github.com/headroomlabs-ai/headroom" target="_blank" rel="noopener"> <span>headroomlabs-ai/headroom</span> <span class="d">↗</span> </a> </li> </ul> </div>  <div class="rail-card"> <div class="rail-title">Versionsverlauf</div> <ul class="rail-list"> <li> <a href="/releases/headroom/0.45.0"> <span class="v">v0.45.0</span> <span class="d">26-11-22</span> </a> </li><li> <a href="/releases/headroom/0.44.0"> <span class="v">v0.44.0</span> <span class="d">26-11-10</span> </a> </li><li> <a href="/releases/headroom/0.43.1"> <span class="v">v0.43.1</span> <span class="d">26-11-05</span> </a> </li><li> <a href="/releases/headroom/0.43.0"> <span class="v">v0.43.0</span> <span class="d">26-11-05</span> </a> </li><li> <a href="/releases/headroom/0.42.0"> <span class="v">v0.42.0</span> <span class="d">26-10-26</span> </a> </li><li> <a href="/releases/headroom/0.41.0"> <span class="v">v0.41.0</span> <span class="d">26-10-14</span> </a> </li><li> <a href="/releases/headroom/0.40.0"> <span class="v">v0.40.0</span> <span class="d">26-10-06</span> </a> </li><li> <a href="/releases/headroom/0.39.1"> <span class="v">v0.39.1</span> <span class="d">26-09-26</span> </a> </li> </ul> <a href="/de/releases/headroom" class="mono" style="display:inline-block;margin-top:var(--s3);font-size:11.5px;color:var(--ink-3)"> Alle anzeigen 26 →
+</a> </div> </aside> </div> </div>  </main> <footer class="site-footer"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/de/" class="brand" aria-label="STAGS NextStack"><span class="brand-mark" aria-hidden="true">S</span><span class="brand-main">STAGS</span><span class="brand-sub" aria-hidden="true">NextStack</span></a> <p>Open-Source-Release-Informationen, täglich veröffentlicht.</p> </div> <div class="footer-col"> <h3>Verfolgen</h3> <ul> <li><a href="/de/releases">Releases</a></li> <li><a href="/de/projects">Projekte</a></li> <li><a href="/de/releases.xml">RSS-Feed</a></li> </ul> </div> <div class="footer-col"> <h3>Archiv</h3> <ul> <li><a href="/zh/release_note" hreflang="zh-Hans">Chinesisches Archiv</a></li> <li><a href="/zh/chapters/" hreflang="zh-Hans">Technische Notizen</a></li> <li><a href="/zh/downloads/">Stags Tracker</a></li> </ul> </div> <div class="footer-col"> <h3>Info</h3> <ul> <li><a href="/privacy">Datenschutzrichtlinie</a></li> <li><a href="/releases.xml">RSS</a></li> <li><a href="/sitemap-index.xml">Sitemap</a></li> </ul> </div> </div> <div class="footer-btm"> <span>© 2026 STAGS</span> <span>Release notes gehören zu ihren Upstream-Projekten.</span> </div> </div> </footer> <!-- 搜索面板 --> <div class="palette-bg" data-palette-bg data-open="false"> <div class="palette" role="dialog" aria-modal="true" aria-label="Releases durchsuchen"> <div class="palette-in"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ink-4);flex:none"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <input type="search" data-palette-input placeholder="Suchen Sie nach Releases, Projekten, Versionen ..." autocomplete="off" spellcheck="false"> <span class="kbd">esc</span> </div> <ul class="palette-res" data-palette-res></ul> <div class="palette-ft"> <span>↑↓ navigate</span> <span>↵ open</span> <span style="margin-left:auto" data-palette-count></span> </div> </div> </div> <script type="module" src="/assets/Shell.astro_astro_type_script_index_0_lang.0ZkKXV47.js"></script> </body> </html>

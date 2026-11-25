@@ -1,0 +1,592 @@
+<!DOCTYPE html><html lang="ja" dir="ltr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>oh-my-pi v18.20.1 — STAGS NextStack</title><meta name="description" content="Corrected context cost estimates for requests that omit reasoning history, so billing estimates now include thinking text only when it is sent or reconstructed for a tool call."><meta name="keywords" content="オープンソース release note、リリース トラッカー、changelog アグリゲーター、重大な変更、非推奨トラッカー、Kafka リリース、Spring Boot リリース、Kubernetes リリース"><meta name="generator" content="Astro v5.18.2"><link rel="canonical" href="https://www.stags.cn/ja/releases/oh-my-pi/18.20.1/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="STAGS NextStack — releases" href="/ja/releases.xml"><link rel="alternate" hreflang="en" href="https://www.stags.cn/releases/oh-my-pi/18.20.1/"><link rel="alternate" hreflang="zh-Hans" href="https://www.stags.cn/releases/oh-my-pi/18.20.1/"><link rel="alternate" hreflang="x-default" href="https://www.stags.cn/releases/oh-my-pi/18.20.1/"><meta property="og:site_name" content="STAGS"><meta property="og:type" content="article"><meta property="og:title" content="oh-my-pi v18.20.1 — STAGS NextStack"><meta property="og:description" content="Corrected context cost estimates for requests that omit reasoning history, so billing estimates now include thinking text only when it is sent or reconstructed for a tool call."><meta property="og:url" content="https://www.stags.cn/ja/releases/oh-my-pi/18.20.1/"><meta property="og:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><meta property="og:locale" content="ja_JP"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="de_DE"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:locale:alternate" content="es_ES"><meta property="og:locale:alternate" content="pt_BR"><meta property="og:locale:alternate" content="ko_KR"><meta property="og:locale:alternate" content="it_IT"><meta property="og:locale:alternate" content="ru_RU"><meta property="og:locale:alternate" content="tr_TR"><meta property="og:locale:alternate" content="id_ID"><meta property="og:locale:alternate" content="vi_VN"><meta property="og:locale:alternate" content="ar_SA"><meta property="og:locale:alternate" content="sv_SE"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.stags.cn/#website","name":"STAGS","url":"https://www.stags.cn/","inLanguage":"ja","description":"NextStack はインフラストラクチャおよび AI プロジェクトのリリースノートを索引化し、破壊的変更・非推奨・移行情報を英語優先の単一フィードで提供します。","publisher":{"@id":"https://www.stags.cn/#org"}},{"@type":"Organization","@id":"https://www.stags.cn/#org","name":"STAGS","alternateName":"NextStack","url":"https://www.stags.cn/"},{"@type":"TechArticle","@id":"https://www.stags.cn/ja/releases/oh-my-pi/18.20.1/#article","headline":"oh-my-pi v18.20.1 release notes","datePublished":"2026-11-14","inLanguage":"en","isPartOf":{"@id":"https://www.stags.cn/#website"},"about":{"@type":"SoftwareSourceCode","codeRepository":"https://github.com/can1357/oh-my-pi"}}]}</script><!-- 第三方脚本的连接预热：这两个域名几乎每页都要连，
+         提前建连能省掉 DNS + TCP + TLS 一个往返（移动网络 100~300ms）。
+         AdSense 只在开关打开时预热——关掉广告后连这个域名都没必要。 --><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://pagead2.googlesyndication.com"><!-- Google AdSense：站点所有权校验与广告投放共用同一段脚本，全站只加载一次。
+         未创建广告单元时页面上不渲染任何广告容器，站点保持干净。
+         fetchpriority=low：它不参与首屏渲染，不该跟正文抢带宽。 --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184355057086168" crossorigin="anonymous" fetchpriority="low"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-RFRF1TVRMP" fetchpriority="low"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RFRF1TVRMP");
+    </script><!-- 百度统计（国内流量统计）。官方标准片段，is:inline 原样输出，
+         hm.js 动态插到首个 script 前，异步不阻塞首屏渲染。 --><script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?299e5b4e65b86ed16879bdcbe70531d6";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script><link rel="stylesheet" href="/assets/index.DQGt3qLZ.css">
+<style>.ad-slot[data-astro-cid-fgwukgf6]{margin:var(--s10) 0 0;padding-top:var(--s5);border-top:1px solid var(--line)}.ad-slot-label[data-astro-cid-fgwukgf6]{margin-bottom:var(--s3);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{display:block;min-height:100px}@media(min-width:640px){.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{min-height:250px}}
+</style></head> <body> <a class="skip" href="#main">本文へスキップ</a> <header class="hdr" data-header> <div class="wrap hdr-inner"> <a href="/ja/" class="brand" aria-label="STAGS NextStack — オープンソースのリリース情報"> <span class="brand-mark" aria-hidden="true">S</span> <span class="brand-main">STAGS</span> <span class="brand-sub" aria-hidden="true">NextStack</span> </a> <nav class="nav" aria-label="Primary"> <a href="/ja/releases">リリース</a><a href="/ja/projects">プロジェクト</a> </nav>  <details class="navmenu" data-navmenu> <summary class="navmenu-btn" aria-label="Open menu"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> </summary> <div class="navmenu-panel" role="group" aria-label="Primary"> <a href="/ja/releases" class="navmenu-item">リリース</a><a href="/ja/projects" class="navmenu-item">プロジェクト</a> </div> </details> <div class="hdr-tools"> <button class="searchbtn" type="button" data-search-open aria-label="リリースを検索"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <span class="lbl">検索</span> <span class="kbd">⌘K</span> </button> <details class="langmenu" data-langmenu> <summary class="langmenu-btn" aria-label="言語"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"> <circle cx="12" cy="12" r="9"></circle> <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path> </svg> <span class="langmenu-cur">日</span> <svg class="langmenu-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m2 4 4 4 4-4"></path></svg> </summary> <div class="langmenu-panel" role="group" aria-label="言語"> <p class="langmenu-head">言語</p> <a class="langmenu-item" href="/releases/oh-my-pi/18.20.1/" hreflang="en" lang="en" data-on="false"> <span class="langmenu-label">English</span> <span class="langmenu-code">EN</span> </a><a class="langmenu-item" href="/zh/release_note/oh-my-pi/oh-my-pi_v18.20.1" hreflang="zh-Hans" lang="zh-CN" data-on="false"> <span class="langmenu-label">中文</span> <span class="langmenu-code">中</span> </a><a class="langmenu-item" href="/ja/releases/oh-my-pi/18.20.1/" hreflang="ja" lang="ja" aria-current="true" data-on="true"> <span class="langmenu-label">日本語</span> <span class="langmenu-code">日</span> </a><a class="langmenu-item" href="/de/releases/oh-my-pi/18.20.1/" hreflang="de" lang="de" data-on="false"> <span class="langmenu-label">Deutsch</span> <span class="langmenu-code">DE</span> </a><a class="langmenu-item" href="/fr/releases/oh-my-pi/18.20.1/" hreflang="fr" lang="fr" data-on="false"> <span class="langmenu-label">Français</span> <span class="langmenu-code">FR</span> </a><a class="langmenu-item" href="/es/releases/oh-my-pi/18.20.1/" hreflang="es" lang="es" data-on="false"> <span class="langmenu-label">Español</span> <span class="langmenu-code">ES</span> </a><a class="langmenu-item" href="/pt/releases/oh-my-pi/18.20.1/" hreflang="pt-BR" lang="pt-BR" data-on="false"> <span class="langmenu-label">Português</span> <span class="langmenu-code">PT</span> </a><a class="langmenu-item" href="/ko/releases" hreflang="ko" lang="ko" data-on="false"> <span class="langmenu-label">한국어</span> <span class="langmenu-code">한</span> </a><a class="langmenu-item" href="/it/releases" hreflang="it" lang="it" data-on="false"> <span class="langmenu-label">Italiano</span> <span class="langmenu-code">IT</span> </a><a class="langmenu-item" href="/ru/releases" hreflang="ru" lang="ru" data-on="false"> <span class="langmenu-label">Русский</span> <span class="langmenu-code">RU</span> </a><a class="langmenu-item" href="/tr/releases" hreflang="tr" lang="tr" data-on="false"> <span class="langmenu-label">Türkçe</span> <span class="langmenu-code">TR</span> </a><a class="langmenu-item" href="/id/releases" hreflang="id" lang="id" data-on="false"> <span class="langmenu-label">Bahasa Indonesia</span> <span class="langmenu-code">ID</span> </a><a class="langmenu-item" href="/vi/releases" hreflang="vi" lang="vi" data-on="false"> <span class="langmenu-label">Tiếng Việt</span> <span class="langmenu-code">VI</span> </a><a class="langmenu-item" href="/ar/releases" hreflang="ar" lang="ar" data-on="false"> <span class="langmenu-label">العربية</span> <span class="langmenu-code">ع</span> </a><a class="langmenu-item" href="/sv/releases" hreflang="sv" lang="sv" data-on="false"> <span class="langmenu-label">Svenska</span> <span class="langmenu-code">SV</span> </a> </div> </details> <a class="iconlink" href="/releases.xml" aria-label="RSS"> <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"> <path d="M2 12.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM2 7.5a6.5 6.5 0 0 1 6.5 6.5h-2A4.5 4.5 0 0 0 2 9.5v-2ZM2 2.5A11.5 11.5 0 0 1 13.5 14h-2A9.5 9.5 0 0 0 2 4.5v-2Z"></path> </svg> </a> </div> </div> </header> <main id="main">  <div class="wrap"> <div class="detail"> <article> <header class="detail-hd"> <nav class="crumbs" aria-label="Breadcrumb"> <a href="/ja/">ホーム</a> <span class="sep">/</span> <a href="/ja/releases">リリース</a> <span class="sep">/</span> <a href="/ja/releases/oh-my-pi">oh-my-pi</a> </nav> <h1 class="detail-title"> <span class="p">oh-my-pi</span> v18.20.1 </h1> <div class="detail-meta"> <span class="chip chip--patch">パッチ</span> <span><span class="k">公開日</span>2026年11月14日</span>  <span class="sep" aria-hidden="true"></span> <a href="https://github.com/can1357/oh-my-pi" target="_blank" rel="noopener"> <span class="k">出典</span>can1357/oh-my-pi </a>   <span class="sep" aria-hidden="true"></span> <a href="/releases/oh-my-pi/18.20.1/"> English original </a>  <span class="sep" aria-hidden="true"></span> <button class="btn btn--ghost btn--sm" type="button" data-copy="https://www.stags.cn/ja/releases/oh-my-pi/18.20.1/">リンクをコピー</button> </div> </header> <div class="prose" style="margin-top:var(--s8)"> <p class="mt-notice" role="note">このページは機械翻訳です。内容は必ず英文原文をご確認ください。</p>  <div><p>#オーマイパイv18.20.1</p>
+<h2>@oh-my-pi/pi-agent-core</h2>
+<h3>修正済み</h3>
+<ul>
+<li>推論履歴を省略するリクエストのコンテキスト コスト見積もりを修正したため、ツール呼び出しのために送信または再構築された場合にのみ、請求見積もりに思考テキストが含まれるようになりました。</li>
+</ul>
+<h2>@oh-my-pi/pi-ai</h2>
+<h3>追加</h3>
+<ul>
+<li><code>setUnpausedProviders()</code> を <code>@oh-my-pi/pi-ai/oauth</code> に追加し、アプリケーションが認証ルールによって一時停止されたプロバイダーを再度有効にできるようにします。ロードされた認証情報プールと拡張機能ログインは、次回の読み取り時に変更を認識します。</li>
+</ul>
+<h3>変更されました</h3>
+<ul>
+<li>v1beta1 API を使用するように Vertex AI Gemini リクエストを更新し、長い Gemini レスポンスのサポートを復元しました。</li>
+<li>Google Antigravity クォータの回復が改善され、Gemini の共有容量が利用可能な場合にクォータまたはプランの変更後に Gemini 4 Argon アクセスを再開できるようになりました。</li>
+<li><code>us-east-1</code> にフォールバックする前に、設定されたリージョン エンドポイントを尊重するように Amazon Bedrock リージョン選択が改善されました。</li>
+</ul>
+<h3>修正済み</h3>
+<ul>
+<li>Google、Vertex AI、Gemini CLI、Antigravity 全体で単一の出力セグメントを超える Gemini 4 応答を修正し、長い応答が生成され続け、1 つの完全な応答として配信されるようにしました。</li>
+<li>カーソル会話を修正し、フックで追加されたプロンプト コンテンツが現在のユーザー メッセージに残り、会話のコンテキストがターンを超えて正しく保持されるようにしました。</li>
+<li>Amazon Bedrock ストリーミングを修正し、不正な応答が即座に失敗し、中断された応答は完了したものとして扱われずに再試行されるようになりました。</li>
+<li>使用状況レポートに共有使用ウィンドウが 1 つしか含まれていない場合のクロード アカウントの回復を修正しました。</li>
+<li>モデルを切り替えるときに推論コンテキストが保持されるように、OpenRouter と Kim および DeepSeek との会話を修正しました。</li>
+<li>バンドルまたはキャッシュされた構成からロードされたモデルを含む、正しい地域エンドポイントを使用するように Xiaomi MiMo トークン プラン認証を修正しました。</li>
+<li>ログイン フローおよびセットアップ ウィザードでの Perplexity サインイン (電子メール コードとブラウザベースの SSO 認証を含む) を修正しました。</li>
+<li>ネイティブ ジャッジが、他の一時的な 502 エラーに対する再試行を保持しながら、上流の資格情報の枯渇によって引き起こされるゲートウェイ エラーを再試行することを停止しました。</li>
+<li>サポートされているプロバイダーが停止シーケンスと頻度ペナルティ設定を受信できるように、単純な完了と認証されたゲートウェイ チャット ルートを修正しました。</li>
+<li>資格情報の変更、キーのローテーション、またはアイドル再開後の Muse セッションを修正し、後続のターンが通常どおり続行できるようにしました。</li>
+</ul>
+<h2>@oh-my-pi/pi-catalog</h2>
+<h3>追加</h3>
+<ul>
+<li>Google Antigravity に Gemini 4 Hydrogen を、選択可能な低、中、高、xhigh の思考レベルを備えた単一モデルとして追加しました。価格は 100 万トークンあたり $1.50/$7.50 です。</li>
+<li>ライブ モデル検出と <code>CHUTES_API_KEY</code> を使用した <code>/login chutes</code> 認証によるシュート プロバイダーのサポートを追加しました。</li>
+</ul>
+<h3>変更されました</h3>
+<ul>
+<li>Google Antigravity の一時停止: ログインは利用できなくなり、プロバイダーが再度有効になるまで、保存された認証情報は使用されません。代わりに、Google AI Studio または <code>google-vertex</code> プロバイダーで <code>GEMINI_API_KEY</code> を使用してください (<a href="https://github.com/can1357/oh-my-pi/issues/18341">#18341</a>)。</li>
+<li>Claude Haiku 5.5、GPT-6.1 Sol および Terra、Grok 4.7、および Claude Sonnet 5.5 のロングコンテキスト価格帯を含む、プロバイダーの現在の料金に一致するようにコマンド コード モデルの価格設定と使用状況レポートを更新しました。</li>
+<li>Gemini API および Vertex AI の Gemini 4 アルゴン、カーボン、水素の最大出力が 262,144 トークンに増加し、大幅に長い応答が可能になりました。</li>
+<li>OpenCode Go Claude Haiku 5.5 を更新し、明示的思考の障害を含む、低レベルから最大レベルまでの思考レベルをサポートしました。</li>
+<li>現在の安定バージョンである Devin CLI 3000.12.57 として識別するように Devin リクエストを更新しました。</li>
+</ul>
+<h3>修正済み</h3>
+<ul>
+<li>コマンド コードの Gemini 4 Argon を修正し、画像の添付ファイルが保存され、使用量が入力トークン 100 万あたり 2 ドル、出力トークン 100 万あたり 10 ドル、キャッシュ読み取りトークン 100 万あたり $0.10 で正しく請求されるようにしました (<a href="https://github.com/wolfiesch">@wolfiesch</a> による <a href="https://github.com/can1357/oh-my-pi/pull/19125">#19125</a>)。</li>
+<li>Bedrock または Snowflake セッション中に思考レベルを変更した後、次のターンで Factory Droid GPT-6 モデルが失敗する問題を修正しました (<a href="https://github.com/can1357/oh-my-pi/pull/19188">#19188</a> by <a href="https://github.com/will-bogusz">@will-bogusz</a>)。</li>
+<li>ワークスペースに制限された API キーの OpenRouter モデル リストを修正し、各キーが正しい許可されたモデル一覧を表示し、独立したモデル キャッシュを維持できるようにしました (<a href="https://github.com/YibaiMeng">@YibaiMeng</a> による <a href="https://github.com/can1357/oh-my-pi/pull/19013">#19013</a>)。</li>
+<li>OpenCode Go Muse Spark ツール呼び出しでステップ間の暗号化された推論が失われる問題を修正しました (<a href="https://github.com/nico2525nn">@nico2525nn</a> による <a href="https://github.com/can1357/oh-my-pi/pull/17748">#17748</a>)。</li>
+<li>Vertex AI Gemini 3 以降のモデルが思考シグネチャのないリプレイまたはクロスモデル ツール呼び出しを拒否する問題を修正しました (<a href="https://github.com/can1357/oh-my-pi/pull/17150">#17150</a> by <a href="https://github.com/duck1eee">@duck1eee</a>)。</li>
+<li>GLM 5.3 や Grok 4.7 (<a href="https://github.com/joseotaviorf">@joseotaviorf</a> による <a href="https://github.com/can1357/oh-my-pi/pull/18248">#18248</a>) など、プロバイダーが利用できるモデルを省略するカーソル モデルのリストを修正しました。</li>
+</ul>
+<h2>@oh-my-pi/pi-coding-agent</h2>
+<h3>追加</h3>
+<ul>
+<li>他のエージェントとユーザーの作業を保持しながら、エージェントまたは選択したサブエージェントによって行われた変更のみを含むコミットを作成するための <code>/commit</code> を追加しました。このワークフローは eval <code>commit</code> 名前空間を通じても利用でき、セッション ディレクトリの外部にあるリポジトリのターゲットをサポートし、バイナリ ファイルと非 UTF-8 ファイル、シンボリック リンク、ファイル モードの変更、初期コミットを処理し、オプションで <code>no_verify</code> によるコミット フックをスキップできます。無効にするには、<code>commit.enabled</code> を使用します。</li>
+<li><code>auth.unpausedProviders</code> (<strong>一時停止されていないプロバイダー</strong> 設定) を追加し、保存されているログイン状態を維持しながら、Google Antigravity などの一時停止されたプロバイダーを自己の責任で再度有効にします。</li>
+<li><code>todo.midRunNudges</code> を介して、設定可能なロングターン ToDo リマインダーを追加しました。これには、リマインダーを無効にする、リマインダーを 2 つに制限する、または間隔を増やして継続するオプションが含まれます。</li>
+<li>スタイル付きコンテンツをコンポーザーに貼り付けると、マークダウン形式が保持され、埋め込まれた画像が元の位置に配置されますが、エディターからコピーされたコードはプレーン テキストのままです。</li>
+<li><code>/clear</code> がセッション ID を変更せずに現在のセッション コンテキストをリセットするときに発行される <code>session_clear</code> フックおよび拡張イベントを追加しました。</li>
+<li>パス スコープの Bash 許可ルール、プロジェクトと構成のオーバーレイの優先順位、<code>bash.allowedEnvVars</code> およびルールごとの <code>env</code> 設定による環境変数制御を追加しました。</li>
+<li>サブエージェントは、モデルを継承するときに <code>@upstream</code> プロバイダーの固定を保持するようになりました。</li>
+<li>Ctrl+R 履歴から Delete キーを使用して個々のプロンプトを削除できるようになりました。</li>
+<li>アクティブなモデルのプロバイダー外の補助サービスを制限または無効にするための <code>--no-judge</code>、<code>--no-spotlight</code>、および <code>--offline</code> オプションを追加しました。</li>
+<li>リマインダーの繰り返しを制御するために、ルールごとの TTSR <code>repeatMode</code> 設定 (<code>once</code>、<code>after-gap</code>、または <code>always</code>) を追加しました。</li>
+<li>Bash 承認プロンプトでは、複合コマンド セグメントが個別に表示され、どのセグメントが許可されているか、または承認が必要かを識別できるようになりました。</li>
+<li>Todo <code>done</code>、<code>drop</code>、および <code>rm</code> オペレーションは、正確に一致するタスク名を分割することなく、改行、セミコロン、カンマ、またはスペースで区切られた入力を含む複数のタスクを 1 つのリクエストで受け入れるようになりました。</li>
+<li>複数のターゲットが関係している場合、Todo ステータス行にタスク数が表示されるようになりました。</li>
+</ul>
+<h3>変更されました</h3>
+<ul>
+<li><code>/fork</code> および fork-from-transcript はアクティブな応答を中止し、すぐにフォークするようになりました。</li>
+<li>一致する行のみを表示し、ファイルごとの一致を制限することで、デフォルトの <code>grep</code> 出力を削減しました。周囲のコンテキストを含めるように <code>grep.contextBefore</code> および <code>grep.contextAfter</code> を構成します。</li>
+<li>より深い結果分析とランク付けの向上のために、より高いリクエスト コストで、デフォルトの <code>spotlight.thinking</code> レベルを <code>low</code> から <code>med</code> に変更しました。</li>
+<li>Spotlight が有効になっている場合、一般に、追加のソース ファイル タイプのサポートを含め、アウトラインの前にソースと発行またはプルリクエストのコンテンツがより完全に再読み込みされます。</li>
+</ul>
+<h3>修正済み</h3>
+<ul>
+<li><code>/loop</code> は、レート制限などのプロバイダー エラーの後に、同じプロンプトを再送信して <code>@file</code> メンションを再度添付するのではなく、一時停止するようになりました (<a href="https://github.com/can1357/oh-my-pi/issues/19272">#19272</a>)。</li>
+<li>ディレクトリが削除されたセッションを再開すると、失敗するのではなく警告が表示され、現在のディレクトリで続行されるようになりました。</li>
+<li>モデルのメンションと <code>/switch</code> の完了は、起動時にプロバイダーの検出が失敗した後、検出されたモデルを回復し、必要に応じて検出を再試行するようになりました。</li>
+<li>ACP プロンプトの終了後に到着するバックグラウンド ジョブの結果は、目に見えないターンを開始するのではなく、次のプロンプトに引き継がれるようになりました。</li>
+<li>OpenAI サーバーの圧縮が失敗した場合、別のモデルでサーバーの圧縮を再試行するのではなく、次に利用可能な圧縮方法に進むようになりました。</li>
+<li>言語サーバーは、macOS を含め、ファイルの作成直後に行われた編集を認識するようになりました。</li>
+<li>擬似シェル ビューに表示される Bash コマンドは、ヒアドキュメント、置換、ループ、継続、算術式、およびバックグラウンド実行を通じてストリーミングしている間も正確なままになりました。</li>
+<li>セッションを再開するか、思考サフィックス (<code>:xhigh</code> など) を使用した再試行フォールバック後にサブエージェントを復活させると、フォールバックの思考レベルを保持するのではなく、プライマリ モデル自体の思考レベルが復元されるようになりました (<a href="https://github.com/can1357/oh-my-pi/issues/19273">#19273</a>)。</li>
+</ul>
+<h2>@オーマイパイ/コラボウェブ</h2>
+<h3>修正済み</h3>
+<ul>
+<li>再参加に失敗した後、ゲストが古いエージェント、ツール カード、および動作状態を保持する問題を修正しました。ゲストは再接続時に現在のセッション状態を確実に復元できるようになりました。</li>
+</ul>
+<h2>@oh-my-pi/pi-natives</h2>
+<h3>重大な変更</h3>
+<ul>
+<li>lsTree() を変更して、裸のパスの代わりに { path, mode } エントリを返すようにしました。 mode は git ls-tree の出力と一致します (たとえば、100755 または 120000)。</li>
+</ul>
+<h3>追加</h3>
+<ul>
+<li>commitCreate() オプションに noVerify を追加し、git commit --no-verify と一致するように、pre-commit フックと commit-msg フックをスキップします。</li>
+<li>commitCreate() にオプティミスティック同時実行性と代替インデックスのサポートを追加しました。これにより、コミットで別のインデックスを使用し、HEAD が変更されたときに古いコミットを拒否できるようになります。</li>
+<li>ネイティブのフォールバック動作と既存のストリーミング、フィルタリング、およびリンク追跡オプションを維持しながら、利用可能な場合はサービング デーモンを使用することにより、ovnfs チェックアウトの grep() および glob() のパフォーマンスが向上しました。</li>
+</ul>
+<h3>変更されました</h3>
+<ul>
+<li>ローカル ファイル システムとネットワーク ファイル システム全体にわたるシェル検索の改善: ローカル検索はネットワーク マウントを予期せず走査することを回避し、ネットワークを利用した検索はより多くのディレクトリ操作を同時に実行し、fd は無視、プルーニング、深さ、ワーカー、およびエラー報告オプションとともに並列走査をサポートします。</li>
+</ul>
+<h3>修正済み</h3>
+<ul>
+<li>Latin-1 などの非 UTF-8 テキストに対して diffText({ binary: true }) および diffNoIndex(…, true) によって生成されるバイナリ パッチを修正しました。これにより、パッチは元のバイトを保持し、正しく適用されます。</li>
+<li>一般的なフォント ファミリが使用できないフォントを参照する場合の SVG レンダリングを修正し、&lt;text&gt; 要素が消えるのを防ぎました。</li>
+<li>追跡されたディレクトリがシンボリックリンクに置き換えられる場合を含む、読み取り専用のファイルまたはディレクトリを含むソース チェックアウトに対するワークツリーの追加を修正しました。</li>
+<li>キャンセルおよびタイムアウトした Shell.run 呼び出しを修正し、後の実行のためにシェル セッションを保持しながら、その呼び出しによって開始されたジョブのみを終了するようにしました。</li>
+<li>長い複数行のシェル コマンドを視覚化する際のメモリ使用量が削減されました。</li>
+<li>シェルの cp ビルトインを修正し、再帰や属性の保存を無効にすることなく、シンボリックリンクをたどるオプションがアーカイブ モードやディレクトリ コピー モードで正しく動作するようにしました。</li>
+<li>[ ] 内の非常に長い -a/-o チェーンでの組み込みシェルのクラッシュと、過度に深い式の明らかなエラーを伴うテスト式を置き換えました。</li>
+</ul>
+<h2>@oh-my-pi/omp-stats</h2>
+<h3>修正済み</h3>
+<ul>
+<li>バックグラウンド ジョブが正確なアイドル期間やターン期間を含む実際の完了時間を表示できるように、[トレース] タブのタイミングを修正しました。</li>
+<li>Frustration ページのモデルごとのメッセージ数を修正し、すべての応答メッセージが含まれるようにしました。</li>
+<li>Spotlight の再構築中に他のページとライブ ステータスを利用できるようにすることで、ダッシュボードの応答性が向上しました。</li>
+<li>UTC ではなくユーザーのローカル暦日ごとにアクティビティをグループ化するように日次使用量グラフを修正しました。</li>
+</ul>
+<h2>@oh-my-pi/pi-tui</h2>
+<h3>追加</h3>
+<ul>
+<li>作業が複数のターゲットに割り当てられている場合、Todo ステータス行にタスク数を追加しました。</li>
+<li>Tern で Composer ドラフトをコピーするときに、貼り付けられたイメージが保持されるようになりました。</li>
+<li>Ctrl+R 検索フィールドの最後にある Delete キーを押して、選択したプロンプトを履歴から削除する機能を追加しました。</li>
+<li>登録された拡張スキームを使用して Markdown リンクに個別のテーマを追加し、新しい色を定義しないテーマのミュートされたフォールバックを追加しました。</li>
+<li>許可されたセグメントと承認が必要なセグメントを区別し、承認が必要な最初のセグメントで開くことにより、複合 Bash コマンドの承認ダイアログが改善されました。</li>
+<li>BTW 履歴シートの <code>b</code> ショートカットを含む、チャットへのオプションの分岐アクションを追加しました。</li>
+</ul>
+<h3>修正済み</h3>
+<ul>
+<li>解釈されたシェル ビューから生のコマンド ラインに切り替わる非同期 Bash コマンドを修正しました。</li>
+<li>サブエージェントへの切り替え、セッションの再開、または長いトランスクリプトの再構築時のトランスクリプトのレンダリングが改善され、最新のメッセージがすぐに表示されるようになりました。</li>
+<li>マークダウン タスク リストで完了済みアイテムと未解決アイテムのチェックボックスの状態が間違って表示される問題を修正しました。</li>
+<li>iTerm2 が帯域内サイズ変更を報告するときに、端末のサイズ変更データをコンポーザーに挿入する問題を修正しました。</li>
+<li>tmux 3.6 など、出力が同期されていない端末でツールまたはモデルを待機しているときの作業行アニメーションが改善されました。</li>
+<li>完全なソフトラップされた出力を表示するように拡張された IRC ツール カードを修正し、隠しテキストを含む折りたたまれたカードに拡張ヒントを追加しました。</li>
+<li>リストの中央近くに移動するときの <code>/resume</code> セッション ピッカーの途中でのスクロールを修正しました。</li>
+</ul>
+<h2>@oh-my-pi/pi-utils</h2>
+<h3>追加</h3>
+<ul>
+<li>2 つの 16 進カラーをブレンドするための <code>mixHex</code> を追加しました。</li>
+</ul>
+<h3>修正済み</h3>
+<ul>
+<li>より正確な再試行ガイダンスを提供するために、複合期間やリセット タイムスタンプなどの Cloud Code Assist クォータ リセット情報の抽出が改善されました。</li>
+</ul>
+<h2>何が変わったのか</h2>
+<ul>
+<li>修正 (ネイティブ): https://github.com/can1357/oh-my-pi/pull/18538 の @Alex-Wengg によって、汎用フォント ファミリがアンインストールされたフォントに名前を付ける場合に SVG テキストを保持する</li>
+<li>fix(ai): https://github.com/can1357/oh-my-pi/pull/19081 の @eggpeat による 65,536 トークンの出力セグメントにわたる Gemini 4 水素の回答を継続します</li>
+<li>修正(vcs): <code>worktree add</code> クローンが、https://github.com/can1357/oh-my-pi/pull/18537 の @Alex-Wengg によってソースからコピーされた読み取り専用エントリを許容するようにしました。</li>
+<li>修正 (カタログ): Gemini 4 水素の思考層を 1 つのモデルに折りたたむ (https://github.com/can1357/oh-my-pi/pull/19070 の @eggpeat による)</li>
+<li>fix(coding-agent): https://github.com/can1357/oh-my-pi/pull/19145 で @anatoli-tsinovoy によってオーバーレイとして注釈付きメッセージ ピッカーを開く</li>
+<li>fix(coding-agent): 交霊会 ID が別のプロジェクトに属している場合に .jsonl パスをヒント (https://github.com/can1357/oh-my-pi/pull/19095 の @zhivko-kocev による)</li>
+<li>fix(install): https://github.com/can1357/oh-my-pi/pull/19099 の @wescopeland により、インストール ディレクトリを PATH に追加するシェル固有のコマンドを出力します。</li>
+<li>fix(session): https://github.com/can1357/oh-my-pi/pull/19104 の @roboomp が別のプロセスが所有するセッションの終了レコードをスキップしました</li>
+<li>fix(coding-agent): https://github.com/can1357/oh-my-pi/pull/19106 の @zhivko-kocev により Windows 上で設定された mnemopi dbPath にネイティブのセパレーターを使用する</li>
+<li>fix(pi-shell): Unix の POSIX エラー番号とテキスト (https://github.com/can1357/oh-my-pi/pull/19107 の @zhivko-kocev による)</li>
+<li>fix(pi-shell): https://github.com/can1357/oh-my-pi/pull/19108 の @zhivko-kocev により、Windows 上で -exec、xargs、および env を解決する .exe を実行します。</li>
+<li>fix(history): https://github.com/can1357/oh-my-pi/pull/19111 の @Alex-Wengg により、検索語の句読点部分をまとめて保持します。</li>
+<li>修正 (acp): https://github.com/can1357/oh-my-pi/pull/19113 の @Alex-Wengg による use_update コストにバックグラウンド サブエージェントの支出を含める</li>
+<li>fix(stats): https://github.com/can1357/oh-my-pi/pull/19114 の @will-bogusz によるモデルごとの Frustration テーブル内のすべての応答メッセージをカウントします。</li>
+<li>修正(統計): バックグラウンド ジョブが終了したときにトレースを閉じるため、アイドル時間とターン終了が https://github.com/can1357/oh-my-pi/pull/19115 の @will-bogusz によって表示されます。</li>
+<li>fix(coding-agent): https://github.com/can1357/oh-my-pi/pull/19117 の @chan1103 により、固定された TODO パネルのコンテンツの下にラップされた行をハングします。</li>
+<li>fix(stats,coding-agent): Spotlight が再構築されている間、統計ダッシュボードを応答し続ける (https://github.com/can1357/oh-my-pi/pull/19118 の @will-bogusz による)</li>
+<li>修正 (ai): クォータの概要にアルゴン バケットがない場合に古い反重力アルゴン ブロックを修復 (https://github.com/can1357/oh-my-pi/pull/19123 の @wolfiesch による)</li>
+<li>修正 (カタログ): コマンド コード レートをコマンド コード @1.88.5 に同期 (https://github.com/can1357/oh-my-pi/pull/19125 の @wolfiesch により)</li>
+<li>修正(カタログ): https://github.com/can1357/oh-my-pi/pull/19129 の @roboomp による opencode-go 俳句 5.5 人間の思考のはしごを提供しました</li>
+<li>fix(coding-agent): https://github.com/can1357/oh-my-pi/pull/19141 で @roboomp によってプラン セッション名をシードするときに PI_NO_TITLE が尊重されるようになりました。</li>
+<li>修正 (pi-shell): https://github.com/can1357/oh-my-pi/pull/19146 の @zhivko-kocev により Windows ドライブのルートを zsh/files パスに保持</li>
+<li>修正(ai): https://github.com/can1357/oh-my-pi/pull/19156 の @anzhen-tech によってコンテキストが追跡される場合、ユーザー プロンプトをカーソルの実行メッセージとして保持する</li>
+<li>fix(ai): https://github.com/can1357/oh-my-pi/pull/19031 の @Xytronix によるバッファリング前のバインドされた AWS イベント ストリーム フレーム</li>
+<li>修正 (Web 検索): 共有ブラウザーで中止された未確認のブラウザー フォールバック ページを閉じる (https://github.com/can1357/oh-my-pi/pull/19058 の @tuschla による)</li>
+<li>chore(fallow): https://github.com/can1357/oh-my-pi/pull/19071 の @eggpeat によって現在生成されたカタログを除外します。</li>
+<li>修正(acp): https://github.com/can1357/oh-my-pi/pull/19074 の @roboomp によって /session の削除後続処理が遅延状態に保たれました。</li>
+<li>fix(ai): https://github.com/can1357/oh-my-pi/pull/19090 の @jeffscottward によるリセットと一致する場合、単一ウィンドウの使用状況レポートからクロード アカウント全体のブロックを修復します。</li>
+<li>fix(coding-agent): @file メンションのハッシュライン アンカーを、https://github.com/can1357/oh-my-pi/pull/19093 の @apoc によって全体が表示される行に制限する</li>
+<li>fix(coding-agent): https://github.com/can1357/oh-my-pi/pull/19094 の @will-bogusz によってボタンが押されている間にページがフレームを削除した click が失敗する</li>
+<li>ドキュメント (設定): https://github.com/can1357/oh-my-pi/pull/19096 の @zhivko-kocev により、computer.display のデフォルトがアクティブになります</li>
+<li>feat(tui): https://github.com/can1357/oh-my-pi/pull/19167 の @materemias による別の mdExtensionLink トークンを使用したカラー拡張リンク</li>
+<li>feat(ttsr): https://github.com/can1357/oh-my-pi/pull/19163 の @Xytronix によるルールごとのrepeatMode フロントマターを追加</li>
+<li>修正(カタログ): ジェミニ 4 水素を 1 つの思考ルールに保持し、再生成されたカタログが https://github.com/can1357/oh-my-pi/pull/19181 の @will-bogusz によって始まるようにします。</li>
+<li>偉業(カタログ): https://github.com/can1357/oh-my-pi/pull/18640 の @Algowary によるシュート プロバイダーを追加</li>
+<li>修正 (collab-web): https://github.com/can1357/oh-my-pi/pull/19182 の @alphastorm によってウェルカムが適用されなかった再参加を再試行します</li>
+<li>feat(wait): 最上段で一人待機し、https://github.com/can1357/oh-my-pi/pull/19122 の @alphastorm までに TUI エージェントにターンを終了するよう指示します。</li>
+<li>fix(tui): https://github.com/can1357/oh-my-pi/pull/19202 の @JustasMasiulis によるトレースされていない bash 結果の解釈されたシェル ビューを保持する</li>
+<li>fix(tui): https://github.com/can1357/oh-my-pi/pull/19204 の @JustasMasiulis により、集中した末尾で排出量の多いトランスクリプト バックログをペイント</li>
+<li>特技(設定): https://github.com/can1357/oh-my-pi/pull/18350 の @asuffield による bash.patterns および bashInterceptor.patterns のパス スコープのオブジェクト エントリをサポート</li>
+<li>feat(bash): bash.patterns で許可された先頭の環境割り当てをサポートし、https://github.com/can1357/oh-my-pi/pull/18351 の @asuffield による制限で環境プレフィックスを削除します</li>
+<li>特技(設定): プロジェクトの先頭に追加し、https://github.com/can1357/oh-my-pi/pull/18352 の @asuffield によって bash パターン配列をグローバル ルールにオーバーレイします</li>
+<li>feat(coding-agent,tui): https://github.com/can1357/oh-my-pi/pull/18749 の @asuffield による複合 Bash 承認プロンプトでカバーされたセグメントとプロンプトされたセグメントを視覚的に示します</li>
+<li>perf(tui): 各 diff 行を 1 回解析し、https://github.com/can1357/oh-my-pi/pull/19210 の @JustasMasiulis によって diff 正規表現をホイストします。</li>
+<li>修正(tui): https://github.com/can1357/oh-my-pi/pull/19032 の @nategriffin26 により、非同期端末上で作業行のシマーが動き続けた</li>
+<li>修正 (コーディング エージェント): https://github.com/can1357/oh-my-pi/pull/19135 の @Clannad47 による Tern サーフェス上の /btw ブランチを復元</li>
+<li>fix(coding-agent): https://github.com/can1357/oh-my-pi/pull/19160 で @shgew によってアンダースコアで綴られたプレフィックスで呼び出された xd:// デバイスをディスパッチします</li>
+<li>修正 (ネイティブ): https://github.com/can1357/oh-my-pi/pull/19162 の @shgew による clippy の macOS メニュー レンダリングでネストされた場合に折りたたまれる</li>
+<li>修正 (pi-shell): https://github.com/can1357/oh-my-pi/pull/19169 の @zhivko-kocev による Windows ドライブのルートを超えて zsh mkdir -p を開始します</li>
+<li>修正 (pi-shell): https://github.com/can1357/oh-my-pi/pull/19170 の @zhivko-kocev により、マップされていない Win32 エラーを Unix の EIO にマップ</li>
+<li>修正 (タスク): https://github.com/can1357/oh-my-pi/pull/19174 の @Alex-Wengg によって、分離されたエージェントが古い親からフォークするときにベースライン コミットを保持します。</li>
+<li>修正(モデル): https://github.com/can1357/oh-my-pi/pull/19175 の @Alex-Wengg により、プロバイダー全体ではなく、あいまいに検出されたモデルをスキップします</li>
+<li>ドキュメント: zh-CN README を、https://github.com/can1357/oh-my-pi/pull/19176 の @bigHippoZz による英語 README と同期します。</li>
+<li>修正 (シェル): https://github.com/can1357/oh-my-pi/pull/19177 の @Alex-Wengg によってのみ複数行コマンドのソースを最初の視覚化行に保持する</li>
+<li>修正 (カタログ): https://github.com/can1357/oh-my-pi/pull/19180 の @will-bogusz により、Devin リクエストを CLI 3000.12.57 として識別します</li>
+<li>修正 (カタログ): https://github.com/can1357/oh-my-pi/pull/19188 の @will-bogusz により、Factory Droid Bedrock および Snowflake で GPT-6 エフォートの変更をconfiguration_update からオフにしておく</li>
+<li>修正 (スポットライト): https://github.com/can1357/oh-my-pi/pull/19189 の @eggpeat による圧縮ダンプ内の数値リテラルを保持する</li>
+<li>修正(タスク): https://github.com/can1357/oh-my-pi/pull/19190 の @eggpeat による請求可能なトークンの合計ではなく、占有されたコンテキストを報告する</li>
+<li>修正 (ツール): https://github.com/can1357/oh-my-pi/pull/19193 の @eggpeat により、グロブと欠落しているパスを含む URL 優先検索リストを分割しました</li>
+<li>修正(秘密): https://github.com/can1357/oh-my-pi/pull/19197 の @eggpeat による完全なコード ポイントによる空の Unicode 一致を進める</li>
+<li>fix(ai): https://github.com/can1357/oh-my-pi/pull/19198 の @eggpeat による単純なリクエスト停止シーケンスと周波数ペナルティを保存</li>
+<li>修正 (ai): https://github.com/can1357/oh-my-pi/pull/19199 の @eggpeat による Google ストリーム上の応答オブザーバーに通知</li>
+<li>修正 (ブラウザ): https://github.com/can1357/oh-my-pi/pull/19206 の @tuschla によりルート CDP 接続を介して共有ブラウザ ターゲットを閉じる</li>
+<li>fix(pi-shell): https://github.com/can1357/oh-my-pi/pull/19212 の @JustasMasiulis によって継続されるストリーミング bash テールを描画します</li>
+<li>fix(builtins): https://github.com/can1357/oh-my-pi/pull/19215 でリンク フラグの後に @eggpeat が続く場合、cp -a と -d の効果を維持</li>
+<li>修正 (カタログ): https://github.com/can1357/oh-my-pi/pull/19217 の @yuzu-octopus による Gemini-cli 検出パス上の Gemini 4 SKU を折りたたむ</li>
+<li>修正（コーディングエージェント）：https://github.com/can1357/oh-my-pi/pull/19218の@harshaygadekarによるinspect.getsourceのラインキャッシュにセルソースを保存</li>
+<li>fix(coding-agent): https://github.com/can1357/oh-my-pi/pull/19219 の @yuzu-octopus により、圧縮せずに短いスキルの説明をそのまま使用する</li>
+<li>修正(tui): https://github.com/can1357/oh-my-pi/pull/16557 の @mottopanikeiku によるレンダリングされた Markdown でタスク リストのチェックボックスを表示</li>
+<li>fix(coding-agent): https://github.com/can1357/oh-my-pi/pull/16558 の @mottopanikeiku による競合://ブロックを解決するときに UTF-8 BOM を維持する</li>
+<li>修正(ai): https://github.com/can1357/oh-my-pi/pull/16559 の @mottopanikeiku による messageStop の前に終了する Bedrock ストリームが失敗する</li>
+<li>fix(coding-agent): https://github.com/can1357/oh-my-pi/pull/16563 の @mottopanikeiku による行間 grep 一致の各行に番号を付ける</li>
+<li>fix(coding-agent): https://github.com/can1357/oh-my-pi/pull/16566 の @jorgoose によるセッション切り替え時に前のセッションの評価カーネルを解放します</li>
+<li>修正（統計）: https://github.com/can1357/oh-my-pi/pull/16605 の @GarrettShrop によるローカル暦日ごとに日次チャートをグループ化</li>
+<li>修正 (ai): https://github.com/can1357/oh-my-pi/pull/16646 の @Komzpa によって Xiaomi トークン プラン キーをトークン プラン ホストに送信します。</li>
+<li>fix(coding-agent): https://github.com/can1357/oh-my-pi/pull/16656 の @adi-IL による繰り返し @-import インクルードを展開</li>
+<li>修正(tui): https://github.com/can1357/oh-my-pi/pull/16695 の @demon-i386 によってコンポーザーに漏れる 2048 年 12 月レポートの断片を停止</li>
+<li>fix(coding-agent): https://github.com/can1357/oh-my-pi/pull/17275 で @manjast によって読み取られた GitHub の URL でマージされた PR を区別する</li>
+<li>fix(ai,utils): Cloud Code Assist の「個別クォータに達しました」および複合「リセット」形式をサポート (https://github.com/can1357/oh-my-pi/pull/17327 の @ironbabatekkral による)</li>
+<li>fix(coding-agent): https://github.com/can1357/oh-my-pi/pull/17419 で @jonasboos によって中止されるのではなく、不明な models.yml 入力モダリティを無視する</li>
+<li>修正(タスク): https://github.com/can1357/oh-my-pi/pull/18484 の @roboomp によるリポジトリごとのシリアル化パッチモード分離マージバック</li>
+<li>修正（エージェント）: https://github.com/can1357/oh-my-pi/pull/18489 の @yuzu-octopus によってフィルターされた応答ルートが送信されないと考える価格設定を停止しました</li>
+<li>修正 (発見): https://github.com/can1357/oh-my-pi/pull/18492 の @yuzu-octopus による拡張ウォーカーでシンボリックリンクされたディレクトリを受け入れる</li>
+<li>修正（シェル）: https://github.com/can1357/oh-my-pi/pull/18543 の @roboomp により、macOS がエージェント コマンド用にロードできるロケールを固定しました</li>
+<li>修正 (ai): https://github.com/can1357/oh-my-pi/pull/18573 の @nick-maderight による地域の Bedrock BaseUrl リージョンを尊重します</li>
+<li>修正(セッション): https://github.com/can1357/oh-my-pi/pull/18574 で @roboomp による不正なハンドオフ ドキュメントが拒否されました</li>
+<li>fix(coding-agent): https://github.com/can1357/oh-my-pi/pull/18613 の @yuzu-octopus による非中断散文ルールに対する真実の TTSR 通知</li>
+<li>fix(coding-agent): eval workpool()/judgeBatch() op が https://github.com/can1357/oh-my-pi/pull/18614 の @yuzu-octopus によってオーバーライドされないようにする</li>
+<li>fix(ai): https://github.com/can1357/oh-my-pi/pull/18625 の @joswha による Perplexity ログイン方法プロンプトで電子メール アドレスを受け入れる</li>
+<li>fix(coding-agent): https://github.com/can1357/oh-my-pi/pull/18866 の @bigHippoZz による /move、/clear、および /new の後にワークスペース ツリーを再スキャンします</li>
+<li>修正 (コーディング エージェント): https://github.com/can1357/oh-my-pi/pull/18877 の @yuzu-octopus によるセッション削除時に履歴と統計行をパージ</li>
+<li>修正 (コーディング エージェント): https://github.com/can1357/oh-my-pi/pull/18889 の @dagurval によって…</li>
+<li>修正(tui): https://github.com/can1357/oh-my-pi/pull/18969 の @robfeldmann による実行中に OSC 133 プロンプト マークがプログラム ステータスをドロップするのを停止</li>
+<li>docs(coding-agent): https://github.com/can1357/oh-my-pi/pull/19076 の @eggpeat による古いソース レイアウト エントリを修正</li>
+<li>修正(判断): https://github.com/can1357/oh-my-pi/pull/19158 の @Xytronix による、使い果たされたアップストリーム資格情報を持つゲートウェイの背後でジャッジをスキップする</li>
+<li>fix(advisor): https://github.com/can1357/oh-my-pi/pull/19159 の @eggpeat によって付与された各アドバイザーからツールの可用性を導出します。</li>
+<li>feat(extensions): https://github.com/can1357/oh-my-pi/pull/17317 の @SAKANA-MOONLIGHT によりセッションコンテキストをクリアした後にフックを通知する</li>
+<li>修正 (カタログ): OpenCode Go Muse Spark の暗号化された推論リプレイを復元 (https://github.com/can1357/oh-my-pi/pull/17748 の @nico2525nn による)</li>
+<li>fix(pi-shell): 長い <code>[ x -a x … ]</code> または <code>test … -o …</code> チェーンは、https://github.com/can1357/oh-my-pi/pull/18498 の @sjawhar によってシェル プロセスを強制終了します。</li>
+<li>修正 (tui): https://github.com/can1357/oh-my-pi/pull/18648 の @yuzu-octopus による拡張 IRC カード ボディのソフトラップ</li>
+<li>修正 (カタログ): https://github.com/can1357/oh-my-pi/pull/19013 の @YibaiMeng によりワークスペースのガードレールによって禁止されている OpenRouter チャット モデルを表示しない</li>
+<li>修正(カタログ、ai): https://github.com/can1357/oh-my-pi/pull/17150 の @duck1eee による Vertex Gemini 3+ でのファーストコール思考署名センチネルの発行</li>
+<li>修正 (todo): https://github.com/can1357/oh-my-pi/pull/18144 の @JhonMA82 による指数バックオフを使用して実行中のナッジを維持します</li>
+<li>修正（カーソル）：https://github.com/can1357/oh-my-pi/pull/18248 の @joseotaviorf による GetUsableModels ゲートなしで利用可能なモデルの名簿をリストする</li>
+<li>修正(tui): https://github.com/can1357/oh-my-pi/pull/18604 の @SuperUserA によってカーソルが下端に到達する前にリストをシフトするセッション ピッカーの再開を停止</li>
+</ul>
+<h2>新しい貢献者</h2>
+<ul>
+<li>@zhivko-kocev が https://github.com/can1357/oh-my-pi/pull/19095 で最初の寄稿を行いました</li>
+<li>@wescopeland が https://github.com/can1357/oh-my-pi/pull/19099 で最初の投稿を行いました</li>
+<li>@anzhen-tech が https://github.com/can1357/oh-my-pi/pull/19156 に初めて貢献しました</li>
+<li>@tuschla が https://github.com/can1357/oh-my-pi/pull/19058 で最初の投稿を行いました</li>
+<li>@Algowary が https://github.com/can1357/oh-my-pi/pull/18640 で最初の貢献を行いました</li>
+<li>@GarrettShrop が https://github.com/can1357/oh-my-pi/pull/16605 で最初の投稿を行いました</li>
+<li>@demon-i386 が https://github.com/can1357/oh-my-pi/pull/16695 に初めて投稿しました</li>
+<li>@manjast が https://github.com/can1357/oh-my-pi/pull/17275 で最初の貢献をしました</li>
+<li>@ironbabatekkral が https://github.com/can1357/oh-my-pi/pull/17327 で最初の投稿を行いました</li>
+<li>@dagurval が https://github.com/can1357/oh-my-pi/pull/18889 で最初の投稿を行いました</li>
+<li>@nico2525nn が https://github.com/can1357/oh-my-pi/pull/17748 に初めて投稿しました</li>
+<li>@YibaiMeng が https://github.com/can1357/oh-my-pi/pull/19013 で最初の投稿を行いました</li>
+<li>@JhonMA82 が https://github.com/can1357/oh-my-pi/pull/18144 に初めて投稿しました
+<strong>フル Changelog</strong>: https://github.com/can1357/oh-my-pi/compare/v18.20.0...v18.20.1</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>ソース</strong> <a href="https://github.com/can1357/oh-my-pi">can1357/oh-my-pi</a> · <code>v18.20.1</code> · 2026-11-14 · <a href="https://github.com/can1357/oh-my-pi/releases/tag/v18.20.1">アップストリーム リリース</a>
+<em>インデックス作成のためにそのままミラーリングされます。すべての権利は上流プロジェクトに帰属します。</em></p>
+</blockquote></div>  <details class="mt-original"> <summary>English original / English original</summary> <div class="prose mt-original-body"><h1>oh-my-pi v18.20.1</h1>
+<h2>@oh-my-pi/pi-agent-core</h2>
+<h3>Fixed</h3>
+<ul>
+<li>Corrected context cost estimates for requests that omit reasoning history, so billing estimates now include thinking text only when it is sent or reconstructed for a tool call.</li>
+</ul>
+<h2>@oh-my-pi/pi-ai</h2>
+<h3>Added</h3>
+<ul>
+<li>Added <code>setUnpausedProviders()</code> to <code>@oh-my-pi/pi-ai/oauth</code>, allowing applications to re-enable providers paused by authentication rules; loaded credential pools and extension logins recognize the change on their next read.</li>
+</ul>
+<h3>Changed</h3>
+<ul>
+<li>Updated Vertex AI Gemini requests to use the v1beta1 API, restoring support for long Gemini responses.</li>
+<li>Improved Google Antigravity quota recovery so Gemini 4 Argon access can resume after quota or plan changes when shared Gemini capacity is available.</li>
+<li>Improved Amazon Bedrock region selection to honor a configured regional endpoint before falling back to <code>us-east-1</code>.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li>Fixed Gemini 4 responses that exceed a single output segment across Google, Vertex AI, Gemini CLI, and Antigravity, ensuring long responses continue generating and are delivered as one complete reply.</li>
+<li>Fixed Cursor conversations so hook-added prompt content remains in the current user message and conversation context is correctly preserved across turns.</li>
+<li>Fixed Amazon Bedrock streaming so malformed responses fail promptly and interrupted responses are retried rather than treated as complete.</li>
+<li>Fixed Claude account recovery when usage reports contain only one shared usage window.</li>
+<li>Fixed OpenRouter conversations with Kimi and DeepSeek so reasoning context is preserved when switching models.</li>
+<li>Fixed Xiaomi MiMo Token Plan authentication to use the correct regional endpoint, including for models loaded from bundled or cached configuration.</li>
+<li>Fixed Perplexity sign-in in the login flow and setup wizard, including email-code and browser-based SSO authentication.</li>
+<li>Stopped native judges from retrying gateway errors caused by exhausted upstream credentials while retaining retries for other transient 502 errors.</li>
+<li>Fixed simple completion and authenticated gateway chat routes so supported providers receive stop-sequence and frequency-penalty settings.</li>
+<li>Fixed Muse sessions after credential changes, key rotation, or idle resume so subsequent turns can continue normally.</li>
+</ul>
+<h2>@oh-my-pi/pi-catalog</h2>
+<h3>Added</h3>
+<ul>
+<li>Added Gemini 4 Hydrogen on Google Antigravity as a single model with selectable low, medium, high, and xhigh thinking levels, priced at $1.50/$7.50 per million tokens.</li>
+<li>Added Chutes provider support with live model discovery and <code>/login chutes</code> authentication using <code>CHUTES_API_KEY</code>.</li>
+</ul>
+<h3>Changed</h3>
+<ul>
+<li>Paused Google Antigravity: login is no longer available and stored credentials are not used until the provider is re-enabled. Use <code>GEMINI_API_KEY</code> with Google AI Studio or the <code>google-vertex</code> provider instead (<a href="https://github.com/can1357/oh-my-pi/issues/18341">#18341</a>).</li>
+<li>Updated Command Code model pricing and usage reporting to match the provider's current rates, including long-context pricing tiers for Claude Haiku 5.5, GPT-6.1 Sol and Terra, Grok 4.7, and Claude Sonnet 5.5.</li>
+<li>Increased the maximum output for Gemini 4 Argon, Carbon, and Hydrogen on the Gemini API and Vertex AI to 262,144 tokens, enabling substantially longer responses.</li>
+<li>Updated OpenCode Go Claude Haiku 5.5 to support thinking levels from low through max, including explicit thinking disablement.</li>
+<li>Updated Devin requests to identify as Devin CLI 3000.12.57, the current stable version.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li>Fixed Gemini 4 Argon on Command Code so image attachments are preserved and usage is billed correctly at $2 per million input tokens, $10 per million output tokens, and $0.10 per million cache-read tokens (<a href="https://github.com/can1357/oh-my-pi/pull/19125">#19125</a> by <a href="https://github.com/wolfiesch">@wolfiesch</a>).</li>
+<li>Fixed Factory Droid GPT-6 models failing on the next turn after changing the thinking level during Bedrock or Snowflake sessions (<a href="https://github.com/can1357/oh-my-pi/pull/19188">#19188</a> by <a href="https://github.com/will-bogusz">@will-bogusz</a>).</li>
+<li>Fixed OpenRouter model listings for workspace-restricted API keys so each key shows its correct allowed model roster and maintains an independent model cache (<a href="https://github.com/can1357/oh-my-pi/pull/19013">#19013</a> by <a href="https://github.com/YibaiMeng">@YibaiMeng</a>).</li>
+<li>Fixed OpenCode Go Muse Spark tool-call turns losing encrypted reasoning between steps (<a href="https://github.com/can1357/oh-my-pi/pull/17748">#17748</a> by <a href="https://github.com/nico2525nn">@nico2525nn</a>).</li>
+<li>Fixed Vertex AI Gemini 3 and newer models rejecting replayed or cross-model tool calls that lack a thought signature (<a href="https://github.com/can1357/oh-my-pi/pull/17150">#17150</a> by <a href="https://github.com/duck1eee">@duck1eee</a>).</li>
+<li>Fixed Cursor model listings omitting models available to the provider, including GLM 5.3 and Grok 4.7 (<a href="https://github.com/can1357/oh-my-pi/pull/18248">#18248</a> by <a href="https://github.com/joseotaviorf">@joseotaviorf</a>).</li>
+</ul>
+<h2>@oh-my-pi/pi-coding-agent</h2>
+<h3>Added</h3>
+<ul>
+<li>Added <code>/commit</code> to create commits containing only changes made by the agent or a selected subagent, while preserving other agents’ and the user’s work. The workflow is also available through the eval <code>commit</code> namespace, supports targeting repositories outside the session directory, handles binary and non-UTF-8 files, symlinks, file mode changes, and initial commits, and can optionally skip commit hooks with <code>no_verify</code>; use <code>commit.enabled</code> to disable it.</li>
+<li>Added <code>auth.unpausedProviders</code> (the <strong>Unpaused Providers</strong> setting) to re-enable paused providers such as Google Antigravity at your own risk while preserving their stored login state.</li>
+<li>Added configurable long-turn todo reminders through <code>todo.midRunNudges</code>, including options to disable reminders, limit them to two, or continue with increasing intervals.</li>
+<li>Pasting styled content into the composer now preserves Markdown formatting and places embedded images at their original positions, while code copied from editors remains plain text.</li>
+<li>Added the <code>session_clear</code> hook and extension event, emitted when <code>/clear</code> resets the current session context without changing its session ID.</li>
+<li>Added path-scoped Bash allow rules, project and configuration overlay precedence, and environment-variable controls through <code>bash.allowedEnvVars</code> and per-rule <code>env</code> settings.</li>
+<li>Subagents now preserve <code>@upstream</code> provider pinning when inheriting models.</li>
+<li>Added deletion of individual prompts from Ctrl+R history with the Delete key.</li>
+<li>Added <code>--no-judge</code>, <code>--no-spotlight</code>, and <code>--offline</code> options to restrict or disable auxiliary services outside the active model’s provider.</li>
+<li>Added per-rule TTSR <code>repeatMode</code> settings (<code>once</code>, <code>after-gap</code>, or <code>always</code>) to control reminder repetition.</li>
+<li>Bash approval prompts now show compound command segments individually and identify which segments are allowed or require approval.</li>
+<li>Todo <code>done</code>, <code>drop</code>, and <code>rm</code> operations now accept multiple tasks in a single request, including newline-, semicolon-, comma-, or space-separated input without splitting exact task-name matches.</li>
+<li>Todo status lines now display task counts when multiple targets are involved.</li>
+</ul>
+<h3>Changed</h3>
+<ul>
+<li><code>/fork</code> and fork-from-transcript now abort an active response and fork immediately.</li>
+<li>Reduced default <code>grep</code> output by showing only matching lines and limiting matches per file; configure <code>grep.contextBefore</code> and <code>grep.contextAfter</code> to include surrounding context.</li>
+<li>Changed the default <code>spotlight.thinking</code> level from <code>low</code> to <code>med</code> for deeper result analysis and improved ranking, at a higher request cost.</li>
+<li>When Spotlight is enabled, commonly reread source and issue or pull-request content is shown more completely before outlining, including support for additional source file types.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li><code>/loop</code> now pauses after a provider error such as a rate limit instead of resubmitting the same prompt and attaching its <code>@file</code> mentions again (<a href="https://github.com/can1357/oh-my-pi/issues/19272">#19272</a>).</li>
+<li>Resuming a session whose directory was deleted now continues in the current directory with a warning instead of failing.</li>
+<li>Model mentions and <code>/switch</code> completions now recover discovered models after provider discovery fails at startup, retrying discovery when needed.</li>
+<li>Background job results that arrive after an ACP prompt ends are now carried into the next prompt instead of starting an invisible turn.</li>
+<li>OpenAI server compaction failures now proceed to the next available compaction method instead of retrying server compaction on another model.</li>
+<li>Language servers now recognize edits made shortly after a file is created, including on macOS.</li>
+<li>Bash commands displayed in the Pseudo shell view now remain accurate while streaming through heredocs, substitutions, loops, continuations, arithmetic expressions, and background execution.</li>
+<li>Resuming a session or reviving a subagent after a retry fallback with a thinking suffix (e.g. <code>:xhigh</code>) now restores the primary model's own thinking level instead of keeping the fallback's (<a href="https://github.com/can1357/oh-my-pi/issues/19273">#19273</a>).</li>
+</ul>
+<h2>@oh-my-pi/collab-web</h2>
+<h3>Fixed</h3>
+<ul>
+<li>Fixed guests retaining stale agents, tool cards, and working state after a failed rejoin; guests now reliably restore the current session state when reconnecting.</li>
+</ul>
+<h2>@oh-my-pi/pi-natives</h2>
+<h3>Breaking Changes</h3>
+<ul>
+<li>Changed lsTree() to return { path, mode } entries instead of bare paths; mode matches git ls-tree output (for example, 100755 or 120000).</li>
+</ul>
+<h3>Added</h3>
+<ul>
+<li>Added noVerify to commitCreate() options to skip the pre-commit and commit-msg hooks, matching git commit --no-verify.</li>
+<li>Added optimistic concurrency and alternate-index support to commitCreate(), allowing commits to use a separate index and reject stale commits when HEAD has changed.</li>
+<li>Improved grep() and glob() performance for ovnfs checkouts by using the serving daemon when available while preserving native fallback behavior and existing streaming, filtering, and link-following options.</li>
+</ul>
+<h3>Changed</h3>
+<ul>
+<li>Improved shell search across local and network filesystems: local searches avoid unexpectedly traversing network mounts, network-backed searches perform more directory operations concurrently, and fd supports parallel traversal together with ignore, pruning, depth, worker, and error-reporting options.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li>Fixed binary patches produced by diffText({ binary: true }) and diffNoIndex(…, true) for non-UTF-8 text, such as Latin-1, so patches preserve the original bytes and apply correctly.</li>
+<li>Fixed SVG rendering when a generic font family refers to an unavailable font, preventing &lt;text&gt; elements from disappearing.</li>
+<li>Fixed worktree add for source checkouts containing read-only files or directories, including cases where tracked directories are replaced by symlinks.</li>
+<li>Fixed cancelled and timed-out Shell.run calls so they terminate only jobs started by that invocation while preserving the shell session for later runs.</li>
+<li>Reduced memory usage when visualizing long multi-line shell commands.</li>
+<li>Fixed the shell cp builtin so symlink-following options work correctly with archive and directory-copy modes without disabling recursion or attribute preservation.</li>
+<li>Replaced built-in shell crashes on very long -a/-o chains in [ ] and test expressions with a clear error for excessively deep expressions.</li>
+</ul>
+<h2>@oh-my-pi/omp-stats</h2>
+<h3>Fixed</h3>
+<ul>
+<li>Fixed Traces tab timing so background jobs show their actual completion times, including accurate idle periods and turn durations.</li>
+<li>Fixed per-model message counts on the Frustration page to include all answered messages.</li>
+<li>Improved dashboard responsiveness by keeping other pages and Live status available while Spotlight rebuilds.</li>
+<li>Fixed daily usage charts to group activity by the user's local calendar day instead of UTC.</li>
+</ul>
+<h2>@oh-my-pi/pi-tui</h2>
+<h3>Added</h3>
+<ul>
+<li>Added task counts to the Todo status line when work is assigned to multiple targets.</li>
+<li>Preserved pasted images when copying Composer drafts in Tern.</li>
+<li>Added the ability to delete the selected prompt from history by pressing Delete at the end of the Ctrl+R search field.</li>
+<li>Added distinct theming for Markdown links using registered extension schemes, with a muted fallback for themes that do not define the new color.</li>
+<li>Improved compound Bash command approval dialogs by distinguishing allowed and approval-required segments and opening at the first segment requiring approval.</li>
+<li>Added an optional Branch action to chat, including the <code>b</code> shortcut in the BTW history sheet.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li>Fixed asynchronous Bash commands switching from the interpreted shell view to the raw command line.</li>
+<li>Improved transcript rendering when switching to a subagent, resuming a session, or rebuilding a long transcript so the newest messages appear immediately.</li>
+<li>Fixed Markdown task lists displaying the wrong checkbox state for completed and open items.</li>
+<li>Fixed iTerm2 inserting terminal resize data into the composer when reporting in-band resizes.</li>
+<li>Improved working-row animation while waiting for tools or models on terminals without synchronized output, including tmux 3.6.</li>
+<li>Fixed expanded IRC tool cards to show complete soft-wrapped output and added an expand hint to collapsed cards containing hidden text.</li>
+<li>Fixed premature scrolling in the <code>/resume</code> session picker when navigating near the middle of the list.</li>
+</ul>
+<h2>@oh-my-pi/pi-utils</h2>
+<h3>Added</h3>
+<ul>
+<li>Added <code>mixHex</code> for blending two hexadecimal colors.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li>Improved extraction of Cloud Code Assist quota reset information, including compound durations and reset timestamps, to provide more accurate retry guidance.</li>
+</ul>
+<h2>What's Changed</h2>
+<ul>
+<li>fix(natives): keep SVG text when a generic font family names an uninstalled font by @Alex-Wengg in https://github.com/can1357/oh-my-pi/pull/18538</li>
+<li>fix(ai): continue Gemini 4 Hydrogen answers across 65,536-token output segments by @eggpeat in https://github.com/can1357/oh-my-pi/pull/19081</li>
+<li>fix(vcs): make <code>worktree add</code> clones tolerate read-only entries copied from the source by @Alex-Wengg in https://github.com/can1357/oh-my-pi/pull/18537</li>
+<li>fix(catalog): collapse Gemini 4 Hydrogen thinking tiers into one model by @eggpeat in https://github.com/can1357/oh-my-pi/pull/19070</li>
+<li>fix(coding-agent): open annotate message picker as overlay by @anatoli-tsinovoy in https://github.com/can1357/oh-my-pi/pull/19145</li>
+<li>fix(coding-agent): hint the .jsonl path when a seance id belongs to another project by @zhivko-kocev in https://github.com/can1357/oh-my-pi/pull/19095</li>
+<li>fix(install): print a shell-specific command to add the install dir to PATH by @wescopeland in https://github.com/can1357/oh-my-pi/pull/19099</li>
+<li>fix(session): skipped the exit record for a session another process owns by @roboomp in https://github.com/can1357/oh-my-pi/pull/19104</li>
+<li>fix(coding-agent): use native separators for a configured mnemopi dbPath on Windows by @zhivko-kocev in https://github.com/can1357/oh-my-pi/pull/19106</li>
+<li>fix(pi-shell): POSIX errno numbers and texts off Unix by @zhivko-kocev in https://github.com/can1357/oh-my-pi/pull/19107</li>
+<li>fix(pi-shell): run the .exe that find -exec, xargs and env resolve on Windows by @zhivko-kocev in https://github.com/can1357/oh-my-pi/pull/19108</li>
+<li>fix(history): keep a search term's punctuated parts together by @Alex-Wengg in https://github.com/can1357/oh-my-pi/pull/19111</li>
+<li>fix(acp): include background subagent spend in usage_update cost by @Alex-Wengg in https://github.com/can1357/oh-my-pi/pull/19113</li>
+<li>fix(stats): count every answered message in the Frustration per-model table by @will-bogusz in https://github.com/can1357/oh-my-pi/pull/19114</li>
+<li>fix(stats): close Traces background jobs when they finish, so idle time and turn ends show by @will-bogusz in https://github.com/can1357/oh-my-pi/pull/19115</li>
+<li>fix(coding-agent): hang wrapped rows in the pinned TODO panel beneath their content by @chan1103 in https://github.com/can1357/oh-my-pi/pull/19117</li>
+<li>fix(stats,coding-agent): keep the stats dashboard answering while Spotlight rebuilds by @will-bogusz in https://github.com/can1357/oh-my-pi/pull/19118</li>
+<li>fix(ai): heal stale Antigravity Argon blocks when the quota summary has no Argon bucket by @wolfiesch in https://github.com/can1357/oh-my-pi/pull/19123</li>
+<li>fix(catalog): sync Command Code rates to command-code@1.88.5 by @wolfiesch in https://github.com/can1357/oh-my-pi/pull/19125</li>
+<li>fix(catalog): gave opencode-go haiku 5.5 anthropic's thinking ladder by @roboomp in https://github.com/can1357/oh-my-pi/pull/19129</li>
+<li>fix(coding-agent): honored PI_NO_TITLE when seeding plan session names by @roboomp in https://github.com/can1357/oh-my-pi/pull/19141</li>
+<li>fix(pi-shell): keep Windows drive roots in zsh/files paths by @zhivko-kocev in https://github.com/can1357/oh-my-pi/pull/19146</li>
+<li>fix(ai): keep the user prompt as Cursor's run message when context trails it by @anzhen-tech in https://github.com/can1357/oh-my-pi/pull/19156</li>
+<li>fix(ai): bound AWS event-stream framing before buffering by @Xytronix in https://github.com/can1357/oh-my-pi/pull/19031</li>
+<li>fix(web-search): close aborted and unconfirmed browser-fallback pages in the shared browser by @tuschla in https://github.com/can1357/oh-my-pi/pull/19058</li>
+<li>chore(fallow): exclude the current generated catalog by @eggpeat in https://github.com/can1357/oh-my-pi/pull/19071</li>
+<li>fix(acp): kept the /session delete successor lazy by @roboomp in https://github.com/can1357/oh-my-pi/pull/19074</li>
+<li>fix(ai): heal Claude account-wide blocks from single-window usage reports when the reset matches by @jeffscottward in https://github.com/can1357/oh-my-pi/pull/19090</li>
+<li>fix(coding-agent): limit @file mention hashline anchors to rows shown whole by @apoc in https://github.com/can1357/oh-my-pi/pull/19093</li>
+<li>fix(coding-agent): fail a click whose frame the page removed while the button was down by @will-bogusz in https://github.com/can1357/oh-my-pi/pull/19094</li>
+<li>docs(settings): computer.display defaults to active by @zhivko-kocev in https://github.com/can1357/oh-my-pi/pull/19096</li>
+<li>feat(tui): color extension links with a separate mdExtensionLink token by @materemias in https://github.com/can1357/oh-my-pi/pull/19167</li>
+<li>feat(ttsr): add per-rule repeatMode frontmatter by @Xytronix in https://github.com/can1357/oh-my-pi/pull/19163</li>
+<li>fix(catalog): keep Gemini 4 Hydrogen in one thinking rule so a regenerated catalog starts by @will-bogusz in https://github.com/can1357/oh-my-pi/pull/19181</li>
+<li>feat(catalog): add Chutes provider by @Algowary in https://github.com/can1357/oh-my-pi/pull/18640</li>
+<li>fix(collab-web): retry a rejoin whose welcome fails to apply by @alphastorm in https://github.com/can1357/oh-my-pi/pull/19182</li>
+<li>feat(wait): give a lone wait the top rung and tell the TUI agent to end its turn by @alphastorm in https://github.com/can1357/oh-my-pi/pull/19122</li>
+<li>fix(tui): keep interpreted shell view for untraced bash results by @JustasMasiulis in https://github.com/can1357/oh-my-pi/pull/19202</li>
+<li>fix(tui): paint a draining transcript backlog at its converged tail by @JustasMasiulis in https://github.com/can1357/oh-my-pi/pull/19204</li>
+<li>feat(settings): support path-scoped object entries in bash.patterns and bashInterceptor.patterns by @asuffield in https://github.com/can1357/oh-my-pi/pull/18350</li>
+<li>feat(bash): support allowed leading env assignments in bash.patterns and strip env prefixes on restrictions by @asuffield in https://github.com/can1357/oh-my-pi/pull/18351</li>
+<li>feat(settings): prepend project and overlay bash pattern arrays onto global rules by @asuffield in https://github.com/can1357/oh-my-pi/pull/18352</li>
+<li>feat(coding-agent,tui): visually indicate covered vs prompted segments in compound bash approval prompts by @asuffield in https://github.com/can1357/oh-my-pi/pull/18749</li>
+<li>perf(tui): parse each diff line once and hoist diff regexes by @JustasMasiulis in https://github.com/can1357/oh-my-pi/pull/19210</li>
+<li>fix(tui): kept the working-row shimmer moving on unsynchronized terminals by @nategriffin26 in https://github.com/can1357/oh-my-pi/pull/19032</li>
+<li>fix(coding-agent): restore /btw branch on Tern surfaces by @Clannad47 in https://github.com/can1357/oh-my-pi/pull/19135</li>
+<li>fix(coding-agent): dispatch xd:// devices called with an underscore-spelled prefix by @shgew in https://github.com/can1357/oh-my-pi/pull/19160</li>
+<li>fix(natives): collapse nested if in macOS menu rendering for clippy by @shgew in https://github.com/can1357/oh-my-pi/pull/19162</li>
+<li>fix(pi-shell): start zsh mkdir -p past a Windows drive root by @zhivko-kocev in https://github.com/can1357/oh-my-pi/pull/19169</li>
+<li>fix(pi-shell): map unmapped Win32 errors to EIO off Unix by @zhivko-kocev in https://github.com/can1357/oh-my-pi/pull/19170</li>
+<li>fix(task): preserve baseline commit when isolated agent forks from older parent by @Alex-Wengg in https://github.com/can1357/oh-my-pi/pull/19174</li>
+<li>fix(models): skip ambiguous discovered model instead of whole provider by @Alex-Wengg in https://github.com/can1357/oh-my-pi/pull/19175</li>
+<li>docs: sync zh-CN README with English README by @bigHippoZz in https://github.com/can1357/oh-my-pi/pull/19176</li>
+<li>fix(shell): keep a multi-line command's source on its first visualization row only by @Alex-Wengg in https://github.com/can1357/oh-my-pi/pull/19177</li>
+<li>fix(catalog): identify Devin requests as CLI 3000.12.57 by @will-bogusz in https://github.com/can1357/oh-my-pi/pull/19180</li>
+<li>fix(catalog): keep GPT-6 effort changes off configuration_update on Factory Droid Bedrock and Snowflake by @will-bogusz in https://github.com/can1357/oh-my-pi/pull/19188</li>
+<li>fix(spotlight): preserve number literals in compacted dumps by @eggpeat in https://github.com/can1357/oh-my-pi/pull/19189</li>
+<li>fix(task): report occupied context instead of billable token totals by @eggpeat in https://github.com/can1357/oh-my-pi/pull/19190</li>
+<li>fix(tools): split URL-first search lists with globs and missing paths by @eggpeat in https://github.com/can1357/oh-my-pi/pull/19193</li>
+<li>fix(secrets): advance empty Unicode matches by full code point by @eggpeat in https://github.com/can1357/oh-my-pi/pull/19197</li>
+<li>fix(ai): preserve simple request stop sequences and frequency penalties by @eggpeat in https://github.com/can1357/oh-my-pi/pull/19198</li>
+<li>fix(ai): notify response observers on Google streams by @eggpeat in https://github.com/can1357/oh-my-pi/pull/19199</li>
+<li>fix(browser): close shared-browser targets over the root CDP connection by @tuschla in https://github.com/can1357/oh-my-pi/pull/19206</li>
+<li>fix(pi-shell): draw a streaming bash tail as it will continue by @JustasMasiulis in https://github.com/can1357/oh-my-pi/pull/19212</li>
+<li>fix(builtins): keep cp -a and -d effects when link flags follow by @eggpeat in https://github.com/can1357/oh-my-pi/pull/19215</li>
+<li>fix(catalog): collapse Gemini 4 SKUs on the gemini-cli discovery path by @yuzu-octopus in https://github.com/can1357/oh-my-pi/pull/19217</li>
+<li>fix(coding-agent): preserve cell source in linecache for inspect.getsource by @harshaygadekar in https://github.com/can1357/oh-my-pi/pull/19218</li>
+<li>fix(coding-agent): use short skill descriptions verbatim without compression by @yuzu-octopus in https://github.com/can1357/oh-my-pi/pull/19219</li>
+<li>fix(tui): show task-list checkboxes in rendered Markdown by @mottopanikeiku in https://github.com/can1357/oh-my-pi/pull/16557</li>
+<li>fix(coding-agent): keep the UTF-8 BOM when resolving conflict:// blocks by @mottopanikeiku in https://github.com/can1357/oh-my-pi/pull/16558</li>
+<li>fix(ai): fail Bedrock streams that end before messageStop by @mottopanikeiku in https://github.com/can1357/oh-my-pi/pull/16559</li>
+<li>fix(coding-agent): number every line of a cross-line grep match by @mottopanikeiku in https://github.com/can1357/oh-my-pi/pull/16563</li>
+<li>fix(coding-agent): release the previous session's eval kernels on session switch by @jorgoose in https://github.com/can1357/oh-my-pi/pull/16566</li>
+<li>fix(stats): group daily charts by the local calendar day by @GarrettShrop in https://github.com/can1357/oh-my-pi/pull/16605</li>
+<li>fix(ai): send Xiaomi Token Plan keys to the Token Plan host by @Komzpa in https://github.com/can1357/oh-my-pi/pull/16646</li>
+<li>fix(coding-agent): expand repeated @-import includes by @adi-IL in https://github.com/can1357/oh-my-pi/pull/16656</li>
+<li>fix(tui): stop DEC 2048 report fragments leaking into the composer by @demon-i386 in https://github.com/can1357/oh-my-pi/pull/16695</li>
+<li>fix(coding-agent): distinguish merged PRs in GitHub URL reads by @manjast in https://github.com/can1357/oh-my-pi/pull/17275</li>
+<li>fix(ai,utils): support Cloud Code Assist 'Individual quota reached' and compound 'Resets in' quota formats by @ironbabatekkral in https://github.com/can1357/oh-my-pi/pull/17327</li>
+<li>fix(coding-agent): ignore unknown models.yml input modalities instead of aborting by @jonasboos in https://github.com/can1357/oh-my-pi/pull/17419</li>
+<li>fix(task): serialized patch-mode isolation merge-back per repo by @roboomp in https://github.com/can1357/oh-my-pi/pull/18484</li>
+<li>fix(agent): stopped pricing thinking that filtered Responses routes never send by @yuzu-octopus in https://github.com/can1357/oh-my-pi/pull/18489</li>
+<li>fix(discovery): accept symlinked directories in extension walkers by @yuzu-octopus in https://github.com/can1357/oh-my-pi/pull/18492</li>
+<li>fix(shell): pinned a locale macOS can load for agent commands by @roboomp in https://github.com/can1357/oh-my-pi/pull/18543</li>
+<li>fix(ai): honor regional Bedrock baseUrl region by @nick-maderight in https://github.com/can1357/oh-my-pi/pull/18573</li>
+<li>fix(session): rejected malformed handoff documents by @roboomp in https://github.com/can1357/oh-my-pi/pull/18574</li>
+<li>fix(coding-agent): truthful TTSR notice for non-interrupting prose rules by @yuzu-octopus in https://github.com/can1357/oh-my-pi/pull/18613</li>
+<li>fix(coding-agent): keep eval workpool()/judgeBatch() op from being overridden by @yuzu-octopus in https://github.com/can1357/oh-my-pi/pull/18614</li>
+<li>fix(ai): accept an email address at the Perplexity login-method prompt by @joswha in https://github.com/can1357/oh-my-pi/pull/18625</li>
+<li>fix(coding-agent): rescan the workspace tree after /move, /clear, and /new by @bigHippoZz in https://github.com/can1357/oh-my-pi/pull/18866</li>
+<li>fix(coding-agent): purge history and stats rows on session delete by @yuzu-octopus in https://github.com/can1357/oh-my-pi/pull/18877</li>
+<li>fix(coding-agent): walk fallback chain on text-only overflow when con… by @dagurval in https://github.com/can1357/oh-my-pi/pull/18889</li>
+<li>fix(tui): stop OSC 133 prompt marks from dropping program status mid-run by @robfeldmann in https://github.com/can1357/oh-my-pi/pull/18969</li>
+<li>docs(coding-agent): correct stale source-layout entries by @eggpeat in https://github.com/can1357/oh-my-pi/pull/19076</li>
+<li>fix(judgment): skip judges behind a gateway with exhausted upstream credentials by @Xytronix in https://github.com/can1357/oh-my-pi/pull/19158</li>
+<li>fix(advisor): derive tool availability from each advisor grant by @eggpeat in https://github.com/can1357/oh-my-pi/pull/19159</li>
+<li>feat(extensions): notify hooks after clearing session context by @SAKANA-MOONLIGHT in https://github.com/can1357/oh-my-pi/pull/17317</li>
+<li>fix(catalog): restore encrypted reasoning replay for OpenCode Go Muse Spark by @nico2525nn in https://github.com/can1357/oh-my-pi/pull/17748</li>
+<li>fix(pi-shell): a long <code>[ x -a x … ]</code> or <code>test … -o …</code> chain kills the shell process by @sjawhar in https://github.com/can1357/oh-my-pi/pull/18498</li>
+<li>fix(tui): soft-wrap expanded IRC card bodies by @yuzu-octopus in https://github.com/can1357/oh-my-pi/pull/18648</li>
+<li>fix(catalog): do not display OpenRouter chat models prohibited by workspace guardrails by @YibaiMeng in https://github.com/can1357/oh-my-pi/pull/19013</li>
+<li>fix(catalog,ai): emit first-call thought-signature sentinel on Vertex Gemini 3+ by @duck1eee in https://github.com/can1357/oh-my-pi/pull/17150</li>
+<li>fix(todo): keep mid-run nudges alive with exponential backoff by @JhonMA82 in https://github.com/can1357/oh-my-pi/pull/18144</li>
+<li>fix(cursor): list AvailableModels roster without GetUsableModels gate by @joseotaviorf in https://github.com/can1357/oh-my-pi/pull/18248</li>
+<li>fix(tui): stop resume session picker from shifting list before cursor reaches bottom edge by @SuperUserA in https://github.com/can1357/oh-my-pi/pull/18604</li>
+</ul>
+<h2>New Contributors</h2>
+<ul>
+<li>@zhivko-kocev made their first contribution in https://github.com/can1357/oh-my-pi/pull/19095</li>
+<li>@wescopeland made their first contribution in https://github.com/can1357/oh-my-pi/pull/19099</li>
+<li>@anzhen-tech made their first contribution in https://github.com/can1357/oh-my-pi/pull/19156</li>
+<li>@tuschla made their first contribution in https://github.com/can1357/oh-my-pi/pull/19058</li>
+<li>@Algowary made their first contribution in https://github.com/can1357/oh-my-pi/pull/18640</li>
+<li>@GarrettShrop made their first contribution in https://github.com/can1357/oh-my-pi/pull/16605</li>
+<li>@demon-i386 made their first contribution in https://github.com/can1357/oh-my-pi/pull/16695</li>
+<li>@manjast made their first contribution in https://github.com/can1357/oh-my-pi/pull/17275</li>
+<li>@ironbabatekkral made their first contribution in https://github.com/can1357/oh-my-pi/pull/17327</li>
+<li>@dagurval made their first contribution in https://github.com/can1357/oh-my-pi/pull/18889</li>
+<li>@nico2525nn made their first contribution in https://github.com/can1357/oh-my-pi/pull/17748</li>
+<li>@YibaiMeng made their first contribution in https://github.com/can1357/oh-my-pi/pull/19013</li>
+<li>@JhonMA82 made their first contribution in https://github.com/can1357/oh-my-pi/pull/18144</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/can1357/oh-my-pi/compare/v18.20.0...v18.20.1</p>
+<hr />
+<blockquote>
+<p><strong>Source</strong> <a href="https://github.com/can1357/oh-my-pi">can1357/oh-my-pi</a> · <code>v18.20.1</code> · 2026-11-14 · <a href="https://github.com/can1357/oh-my-pi/releases/tag/v18.20.1">upstream release</a></p>
+</blockquote>
+<p><em>Mirrored verbatim for indexing. All rights belong to the upstream project.</em></p></div> </details> </div> <p class="muted" style="margin-top:var(--s8);font-size:12.5px;border-top:1px solid var(--line);padding-top:var(--s4)"> リリースノートは上流プロジェクトが公開したものです。私たちはそれらを整理し、関連付けて、バージョンを一眼で比較できるようにしています。コンテンツの権利はすべて原作者に属します。 </p> <nav class="pager" aria-label="Release navigation"> <a href="/releases/oh-my-pi/18.20.2"> <span class="k">← 次へ</span> <span class="t">v18.20.2</span> </a> <a href="/releases/oh-my-pi/18.20.0"> <span class="k">前へ →</span> <span class="t">v18.20.0</span> </a> </nav> <aside class="ad-slot" aria-label="Advertisement" data-astro-cid-fgwukgf6><div class="ad-slot-label" data-astro-cid-fgwukgf6>Advertisement</div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4184355057086168" data-ad-slot="9133765584" data-ad-format="auto" data-full-width-responsive="true" data-astro-cid-fgwukgf6></ins><script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script></aside> </article> <aside class="rail"> <div class="rail-card"> <div class="rail-title">Source</div> <ul class="rail-list"> <li> <a href="https://github.com/can1357/oh-my-pi/releases/tag/v18.20.1" target="_blank" rel="noopener"> <span>GitHub で見る</span> <span class="d">↗</span> </a> </li> <li> <a href="https://github.com/can1357/oh-my-pi" target="_blank" rel="noopener"> <span>can1357/oh-my-pi</span> <span class="d">↗</span> </a> </li> </ul> </div> <div class="rail-card rail-toc"> <div class="rail-title">このページの目次</div> <nav> <a href="#" class>@oh-my-pi/pi-agent-core</a><a href="#" class="lv3">修正済み</a><a href="#" class>@oh-my-pi/pi-ai</a><a href="#" class="lv3">追加</a><a href="#" class="lv3">変更されました</a><a href="#" class="lv3">修正済み</a><a href="#" class>@oh-my-pi/pi-catalog</a><a href="#" class="lv3">追加</a><a href="#" class="lv3">変更されました</a><a href="#" class="lv3">修正済み</a><a href="#" class>@oh-my-pi/pi-coding-agent</a><a href="#" class="lv3">追加</a><a href="#" class="lv3">変更されました</a><a href="#" class="lv3">修正済み</a><a href="#" class>@オーマイパイ/コラボウェブ</a><a href="#" class="lv3">修正済み</a><a href="#" class>@oh-my-pi/pi-natives</a><a href="#" class="lv3">重大な変更</a><a href="#" class="lv3">追加</a><a href="#" class="lv3">変更されました</a><a href="#" class="lv3">修正済み</a><a href="#" class>@oh-my-pi/omp-stats</a><a href="#" class="lv3">修正済み</a><a href="#" class>@oh-my-pi/pi-tui</a> </nav> </div> <div class="rail-card"> <div class="rail-title">バージョン履歴</div> <ul class="rail-list"> <li> <a href="/releases/oh-my-pi/19.1.1"> <span class="v">v19.1.1</span> <span class="d">26-11-23</span> </a> </li><li> <a href="/releases/oh-my-pi/19.1.0"> <span class="v">v19.1.0</span> <span class="d">26-11-21</span> </a> </li><li> <a href="/releases/oh-my-pi/19.0.1"> <span class="v">v19.0.1</span> <span class="d">26-11-19</span> </a> </li><li> <a href="/releases/oh-my-pi/19.0.0"> <span class="v">v19.0.0</span> <span class="d">26-11-19</span> </a> </li><li> <a href="/releases/oh-my-pi/18.22.2"> <span class="v">v18.22.2</span> <span class="d">26-11-18</span> </a> </li><li> <a href="/releases/oh-my-pi/18.22.1"> <span class="v">v18.22.1</span> <span class="d">26-11-17</span> </a> </li><li> <a href="/releases/oh-my-pi/18.22.0"> <span class="v">v18.22.0</span> <span class="d">26-11-16</span> </a> </li><li> <a href="/releases/oh-my-pi/18.21.0"> <span class="v">v18.21.0</span> <span class="d">26-11-16</span> </a> </li> </ul> <a href="/ja/releases/oh-my-pi" class="mono" style="display:inline-block;margin-top:var(--s3);font-size:11.5px;color:var(--ink-3)"> すべての 40 件を見る →
+</a> </div> </aside> </div> </div>  </main> <footer class="site-footer"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/ja/" class="brand" aria-label="STAGS NextStack"><span class="brand-mark" aria-hidden="true">S</span><span class="brand-main">STAGS</span><span class="brand-sub" aria-hidden="true">NextStack</span></a> <p>オープンソースのリリース インテリジェンスが毎日公開されます。</p> </div> <div class="footer-col"> <h3>追跡</h3> <ul> <li><a href="/ja/releases">リリース</a></li> <li><a href="/ja/projects">プロジェクト</a></li> <li><a href="/ja/releases.xml">RSS フィード</a></li> </ul> </div> <div class="footer-col"> <h3>アーカイブ</h3> <ul> <li><a href="/zh/release_note" hreflang="zh-Hans">中文アーカイブ</a></li> <li><a href="/zh/chapters/" hreflang="zh-Hans">技術ノート</a></li> <li><a href="/zh/downloads/">Stags Tracker</a></li> </ul> </div> <div class="footer-col"> <h3>情報</h3> <ul> <li><a href="/privacy">プライバシーポリシー</a></li> <li><a href="/releases.xml">RSS</a></li> <li><a href="/sitemap-index.xml">Sitemap</a></li> </ul> </div> </div> <div class="footer-btm"> <span>© 2026 STAGS</span> <span>Release note は上流プロジェクトに属します。</span> </div> </div> </footer> <!-- 搜索面板 --> <div class="palette-bg" data-palette-bg data-open="false"> <div class="palette" role="dialog" aria-modal="true" aria-label="リリースを検索"> <div class="palette-in"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ink-4);flex:none"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <input type="search" data-palette-input placeholder="リリース、プロジェクト、バージョンを検索…" autocomplete="off" spellcheck="false"> <span class="kbd">esc</span> </div> <ul class="palette-res" data-palette-res></ul> <div class="palette-ft"> <span>↑↓ navigate</span> <span>↵ open</span> <span style="margin-left:auto" data-palette-count></span> </div> </div> </div> <script type="module" src="/assets/Shell.astro_astro_type_script_index_0_lang.0ZkKXV47.js"></script> </body> </html>

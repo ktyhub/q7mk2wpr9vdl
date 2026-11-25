@@ -1,0 +1,600 @@
+<!DOCTYPE html><html lang="de" dir="ltr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>trl v1.7.0 — STAGS NextStack</title><meta name="description" content="The flip announced in v1.6 has landed. Setting loss_type is optional, and the default now resolves to 'chunked_nll' — giving every SFTTrainer run 30% less peak VRAM on average (up to 50% on large-vocab models) with…"><meta name="keywords" content="Open-Source-release notes, Release-Tracker, changelog-Aggregator, Breaking Changes, Deprecation-Tracker, Kafka-Releases, Spring Boot-Releases, Kubernetes-Releases"><meta name="generator" content="Astro v5.18.2"><link rel="canonical" href="https://www.stags.cn/de/releases/trl/1.7.0/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="STAGS NextStack — releases" href="/de/releases.xml"><link rel="alternate" hreflang="en" href="https://www.stags.cn/releases/trl/1.7.0/"><link rel="alternate" hreflang="zh-Hans" href="https://www.stags.cn/releases/trl/1.7.0/"><link rel="alternate" hreflang="x-default" href="https://www.stags.cn/releases/trl/1.7.0/"><meta property="og:site_name" content="STAGS"><meta property="og:type" content="article"><meta property="og:title" content="trl v1.7.0 — STAGS NextStack"><meta property="og:description" content="The flip announced in v1.6 has landed. Setting loss_type is optional, and the default now resolves to 'chunked_nll' — giving every SFTTrainer run 30% less peak VRAM on average (up to 50% on large-vocab models) with…"><meta property="og:url" content="https://www.stags.cn/de/releases/trl/1.7.0/"><meta property="og:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><meta property="og:locale" content="de_DE"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="ja_JP"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:locale:alternate" content="es_ES"><meta property="og:locale:alternate" content="pt_BR"><meta property="og:locale:alternate" content="ko_KR"><meta property="og:locale:alternate" content="it_IT"><meta property="og:locale:alternate" content="ru_RU"><meta property="og:locale:alternate" content="tr_TR"><meta property="og:locale:alternate" content="id_ID"><meta property="og:locale:alternate" content="vi_VN"><meta property="og:locale:alternate" content="ar_SA"><meta property="og:locale:alternate" content="sv_SE"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.stags.cn/#website","name":"STAGS","url":"https://www.stags.cn/","inLanguage":"de","description":"NextStack indexiert Release Notes aus Infrastruktur- und KI-Projekten – Breaking Changes, Deprecations und Migrationen – in einem englischsprachigen Feed.","publisher":{"@id":"https://www.stags.cn/#org"}},{"@type":"Organization","@id":"https://www.stags.cn/#org","name":"STAGS","alternateName":"NextStack","url":"https://www.stags.cn/"},{"@type":"TechArticle","@id":"https://www.stags.cn/de/releases/trl/1.7.0/#article","headline":"trl v1.7.0 release notes","datePublished":"2026-06-25","inLanguage":"en","isPartOf":{"@id":"https://www.stags.cn/#website"},"about":{"@type":"SoftwareSourceCode","codeRepository":"https://github.com/huggingface/trl"}}]}</script><!-- 第三方脚本的连接预热：这两个域名几乎每页都要连，
+         提前建连能省掉 DNS + TCP + TLS 一个往返（移动网络 100~300ms）。
+         AdSense 只在开关打开时预热——关掉广告后连这个域名都没必要。 --><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://pagead2.googlesyndication.com"><!-- Google AdSense：站点所有权校验与广告投放共用同一段脚本，全站只加载一次。
+         未创建广告单元时页面上不渲染任何广告容器，站点保持干净。
+         fetchpriority=low：它不参与首屏渲染，不该跟正文抢带宽。 --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184355057086168" crossorigin="anonymous" fetchpriority="low"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-RFRF1TVRMP" fetchpriority="low"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RFRF1TVRMP");
+    </script><!-- 百度统计（国内流量统计）。官方标准片段，is:inline 原样输出，
+         hm.js 动态插到首个 script 前，异步不阻塞首屏渲染。 --><script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?299e5b4e65b86ed16879bdcbe70531d6";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script><link rel="stylesheet" href="/assets/index.DQGt3qLZ.css">
+<style>.ad-slot[data-astro-cid-fgwukgf6]{margin:var(--s10) 0 0;padding-top:var(--s5);border-top:1px solid var(--line)}.ad-slot-label[data-astro-cid-fgwukgf6]{margin-bottom:var(--s3);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{display:block;min-height:100px}@media(min-width:640px){.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{min-height:250px}}
+</style></head> <body> <a class="skip" href="#main">Zum Inhalt springen</a> <header class="hdr" data-header> <div class="wrap hdr-inner"> <a href="/de/" class="brand" aria-label="STAGS NextStack — Release-Informationen für Open Source"> <span class="brand-mark" aria-hidden="true">S</span> <span class="brand-main">STAGS</span> <span class="brand-sub" aria-hidden="true">NextStack</span> </a> <nav class="nav" aria-label="Primary"> <a href="/de/releases">Releases</a><a href="/de/projects">Projekte</a> </nav>  <details class="navmenu" data-navmenu> <summary class="navmenu-btn" aria-label="Open menu"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> </summary> <div class="navmenu-panel" role="group" aria-label="Primary"> <a href="/de/releases" class="navmenu-item">Releases</a><a href="/de/projects" class="navmenu-item">Projekte</a> </div> </details> <div class="hdr-tools"> <button class="searchbtn" type="button" data-search-open aria-label="Releases durchsuchen"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <span class="lbl">Suche</span> <span class="kbd">⌘K</span> </button> <details class="langmenu" data-langmenu> <summary class="langmenu-btn" aria-label="Sprache"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"> <circle cx="12" cy="12" r="9"></circle> <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path> </svg> <span class="langmenu-cur">DE</span> <svg class="langmenu-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m2 4 4 4 4-4"></path></svg> </summary> <div class="langmenu-panel" role="group" aria-label="Sprache"> <p class="langmenu-head">Sprache</p> <a class="langmenu-item" href="/releases/trl/1.7.0/" hreflang="en" lang="en" data-on="false"> <span class="langmenu-label">English</span> <span class="langmenu-code">EN</span> </a><a class="langmenu-item" href="/zh/release_note/trl/trl_v1.7.0" hreflang="zh-Hans" lang="zh-CN" data-on="false"> <span class="langmenu-label">中文</span> <span class="langmenu-code">中</span> </a><a class="langmenu-item" href="/ja/releases/trl/1.7.0/" hreflang="ja" lang="ja" data-on="false"> <span class="langmenu-label">日本語</span> <span class="langmenu-code">日</span> </a><a class="langmenu-item" href="/de/releases/trl/1.7.0/" hreflang="de" lang="de" aria-current="true" data-on="true"> <span class="langmenu-label">Deutsch</span> <span class="langmenu-code">DE</span> </a><a class="langmenu-item" href="/fr/releases/trl/1.7.0/" hreflang="fr" lang="fr" data-on="false"> <span class="langmenu-label">Français</span> <span class="langmenu-code">FR</span> </a><a class="langmenu-item" href="/es/releases/trl/1.7.0/" hreflang="es" lang="es" data-on="false"> <span class="langmenu-label">Español</span> <span class="langmenu-code">ES</span> </a><a class="langmenu-item" href="/pt/releases/trl/1.7.0/" hreflang="pt-BR" lang="pt-BR" data-on="false"> <span class="langmenu-label">Português</span> <span class="langmenu-code">PT</span> </a><a class="langmenu-item" href="/ko/releases" hreflang="ko" lang="ko" data-on="false"> <span class="langmenu-label">한국어</span> <span class="langmenu-code">한</span> </a><a class="langmenu-item" href="/it/releases" hreflang="it" lang="it" data-on="false"> <span class="langmenu-label">Italiano</span> <span class="langmenu-code">IT</span> </a><a class="langmenu-item" href="/ru/releases" hreflang="ru" lang="ru" data-on="false"> <span class="langmenu-label">Русский</span> <span class="langmenu-code">RU</span> </a><a class="langmenu-item" href="/tr/releases" hreflang="tr" lang="tr" data-on="false"> <span class="langmenu-label">Türkçe</span> <span class="langmenu-code">TR</span> </a><a class="langmenu-item" href="/id/releases" hreflang="id" lang="id" data-on="false"> <span class="langmenu-label">Bahasa Indonesia</span> <span class="langmenu-code">ID</span> </a><a class="langmenu-item" href="/vi/releases" hreflang="vi" lang="vi" data-on="false"> <span class="langmenu-label">Tiếng Việt</span> <span class="langmenu-code">VI</span> </a><a class="langmenu-item" href="/ar/releases" hreflang="ar" lang="ar" data-on="false"> <span class="langmenu-label">العربية</span> <span class="langmenu-code">ع</span> </a><a class="langmenu-item" href="/sv/releases" hreflang="sv" lang="sv" data-on="false"> <span class="langmenu-label">Svenska</span> <span class="langmenu-code">SV</span> </a> </div> </details> <a class="iconlink" href="/releases.xml" aria-label="RSS"> <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"> <path d="M2 12.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM2 7.5a6.5 6.5 0 0 1 6.5 6.5h-2A4.5 4.5 0 0 0 2 9.5v-2ZM2 2.5A11.5 11.5 0 0 1 13.5 14h-2A9.5 9.5 0 0 0 2 4.5v-2Z"></path> </svg> </a> </div> </div> </header> <main id="main">  <div class="wrap"> <div class="detail"> <article> <header class="detail-hd"> <nav class="crumbs" aria-label="Breadcrumb"> <a href="/de/">Startseite</a> <span class="sep">/</span> <a href="/de/releases">Releases</a> <span class="sep">/</span> <a href="/de/releases/trl">trl</a> </nav> <h1 class="detail-title"> <span class="p">trl</span> v1.7.0 </h1> <div class="detail-meta"> <span class="chip chip--minor">Minor</span> <span><span class="k">Veröffentlicht</span>25. Juni 2026</span>  <span class="sep" aria-hidden="true"></span> <a href="https://github.com/huggingface/trl" target="_blank" rel="noopener"> <span class="k">Quelle</span>huggingface/trl </a>   <span class="sep" aria-hidden="true"></span> <a href="/releases/trl/1.7.0/"> Englisches Original </a>  <span class="sep" aria-hidden="true"></span> <button class="btn btn--ghost btn--sm" type="button" data-copy="https://www.stags.cn/de/releases/trl/1.7.0/">Link kopieren</button> </div> </header> <div class="prose" style="margin-top:var(--s8)"> <p class="mt-notice" role="note">Diese Seite ist maschinell übersetzt. Maßgeblich ist der englische Originaltext.</p>  <div><h1>trl v1.7.0</h1>
+<h2>Funktionen</h2>
+<h3>SFT-Standard <code>loss_type</code> ist jetzt <code>&quot;chunked_nll&quot;</code></h3>
+<p>Der in v1.6 angekündigte Flip ist gelandet. Das Festlegen von <code>loss_type</code> ist optional und die Standardeinstellung wird jetzt auf <code>&quot;chunked_nll&quot;</code> aufgelöst. Dadurch erhält jeder <code>SFTTrainer</code>-Lauf <strong>im Durchschnitt ~30 % weniger Spitzen-VRAM (bis zu ~50 % bei Modellen mit großem Vokabular)</strong> bei neutraler oder etwas schnellerer Wanduhrzeit. Es sind keine Maßnahmen erforderlich.
+Bei <code>use_liger_kernel=True</code> fällt die automatische Auflösung auf <code>&quot;nll&quot;</code> zurück (die beiden Pfade sind inkompatibel). Wenn Sie das alte Verhalten wünschen – z. für benutzerdefinierte Köpfe – explizit anpinnen:</p>
+<pre><code class="language-python">SFTConfig(loss_type=&quot;nll&quot;)
+</code></pre>
+<p>von @qgallouedec in https://github.com/huggingface/trl/pull/5846</p>
+<h3>MoE-Hilfsverlust in GRPO / RLOO / AsyncGRPO</h3>
+<p>MoE-Modelle nach dem Training enthalten jetzt korrekt den Router-Lastausgleichs-Hilfsverlust, der mit der eigenen Referenzweiterleitung und <code>SFTTrainer</code> des Modells übereinstimmt. Freigabe über <code>model_init_kwargs</code>:</p>
+<pre><code class="language-python">GRPOConfig(
+    ...,
+    model_init_kwargs={&quot;output_router_logits&quot;: True, &quot;router_aux_loss_coef&quot;: 0.001},
+)
+</code></pre>
+<p>Durch <code>_get_per_token_logps_and_entropies</code> ausgelotet (gibt jetzt ein 3-Tupel einschließlich <code>aux_loss</code> zurück), in den Richtlinienverlust mit abgeglichener Grad-Akkumulation-Skalierung pro Trainer eingefügt und als <code>aux_loss</code> protokolliert. AsyncGRPO berechnet es über <code>load_balancing_loss_func</code> im Chunked-LM-Head-Pfad neu (identisch mit dem Chunked-Pfad von SFT).
+von @AmineDiro in https://github.com/huggingface/trl/pull/6083, plus <code>router_aux_loss_coef</code>-Konfigurationsverkabelung von @qgallouedec in https://github.com/huggingface/trl/pull/6085</p>
+<h3>Neuer experimenteller GMPO-Trainer</h3>
+<p>[Geometrisch-mittlere Richtlinienoptimierung] (https://huggingface.co/papers/2507.20673) landet als experimenteller Trainer. Ersetzt das arithmetische Mittel der Wichtigkeitsverhältnisse pro Token von GRPO durch ein <strong>geometrisches Mittel auf Sequenzebene</strong> (Mittelwert von clipped Log-Verhältnissen, dann <code>exp</code>); clipping ist einseitig durch Vorteilszeichen und wird im Protokollbereich angewendet. Standardmäßig <code>epsilon=0.4</code> gemäß Papier.</p>
+<pre><code class="language-python">from trl.experimental.gmpo import GMPOConfig, GMPOTrainer
+
+trainer = GMPOTrainer(
+    model=&quot;Qwen/Qwen3-4B&quot;,
+    args=GMPOConfig(epsilon=0.4),
+    reward_funcs=accuracy_reward,
+    train_dataset=dataset,
+)
+</code></pre>
+<p>von @raghulchandramouli in https://github.com/huggingface/trl/pull/6078</p>
+<h3>Kontinuierliche Stapelverarbeitung von Transformatoren in GRPO / RLOO</h3>
+<p><code>use_transformers_paged</code> wurde in v1.4 veraltet; Es wurde jetzt durch die richtige [kontinuierliche Stapelverarbeitung von Transformatoren] (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation#transformers.GenerationMixin.generate_batch) ersetzt. Der alte Zweig hat die Wichtigkeitsstichprobenkorrektur stillschweigend umgangen (<code>logprobs = None</code>); Der neue Pfad erfasst Logprobs von <code>output.logprobs</code> und stellt einen <code>ContinuousBatchingConfig</code> für die KV-Cache-Optimierung bereit.</p>
+<pre><code class="language-python">GRPOConfig(
+    ...,
+    use_transformers_continuous_batching=True,
+    transformers_continuous_batching_config={
+        &quot;use_cuda_graph&quot;: False,
+        &quot;max_memory_percent&quot;: 0.4,  # leave headroom for training
+    },
+)
+</code></pre>
+<p>Benchmark (Llama-3.2-1B-Instruct, A100 80 GB, GSM8K): <strong>1.25× schneller bei N=64 Generationen</strong> mit <strong>-16 GB Spitzen-VRAM</strong> im Vergleich zum Standard-<code>generate()</code>. Verwendung, wenn N ≥ 32 mit variablen Abschlusslängen.
+<code>use_transformers_paged=True</code> funktioniert weiterhin und leitet mit einem <code>FutureWarning</code> an die neue Flagge weiter. Erfordert <code>transformers&gt;=5.8.0</code>.
+von @sergiopaniego in https://github.com/huggingface/trl/pull/5765</p>
+<h3>AsyncGRPO: native Gewichtssynchronisierung mit vLLM ≥ 0.22.0</h3>
+<p><code>WeightTransferClient</code> steuert jetzt vLLMs native <a href="https://docs.vllm.ai/en/latest/training/weight_transfer/">4-Phasen-RL-Gewichtsübertragung API</a> anstelle des älteren 2-Aufruf-Ablaufs: <code>pause(mode=&quot;keep&quot;)</code> → <code>start_weight_update</code> → Threaded <code>update_weights</code> + NCCL-Broadcast → <code>finish_weight_update</code> → <code>resume</code>. End-to-End-Validierung auf H100 über Einzelknoten, FSDP2×4 + TP=4 und 2-Knoten FSDP2×4 + DP=2×TP=4 (Gewichtssynchronisationszeit ≈ 0.18-0.8 s).
+von @AmineDiro in https://github.com/huggingface/trl/pull/5892</p>
+<h3>Padding-freies Training in AsyncGRPO</h3>
+<p>AsyncGRPO unterstützt jetzt denselben auffüllfreien Pfad, den SFT bereits hatte. Reduziert den Stapel und verwendet <code>position_ids</code>-basierte Dokumentgrenzen, anstatt rechts auf die längste Sequenz aufzufüllen – eine erhebliche Beschleunigung und Speichereinsparung bei Workloads mit heterogener Länge.
+von @qgallouedec in https://github.com/huggingface/trl/pull/5854</p>
+<h3>Experimentelle Harbor-Integration</h3>
+<p>Ein neuer <code>trl.experimental.harbor</code>-Adapter verbindet die Agenten-Task-Suites von <a href="https://www.harborframework.com">Harbor</a> über <code>environment_factory</code> mit <code>GRPOTrainer</code>. Gleiches Muster wie bei der OpenReward-Integration – eine Spezifikation verbindet alle drei Trainer-Slots:</p>
+<pre><code class="language-python">from trl import GRPOConfig, GRPOTrainer
+from trl.experimental.harbor import HarborSpec
+
+spec = HarborSpec(&quot;AdithyaSK/data_agent_rl_environment_train&quot;, agent=&quot;bash&quot;, num_tasks=64)
+
+trainer = GRPOTrainer(
+    model=&quot;Qwen/Qwen3-4B&quot;,
+    args=GRPOConfig(num_generations=8, max_steps=50, max_tool_calling_iterations=25),
+    train_dataset=spec.train_dataset,
+    environment_factory=spec.environment_factory,
+    reward_funcs=spec.reward_funcs,
+)
+</code></pre>
+<p>Integrierter <code>bash</code>-Kabelbaum sowie Beispielkabelbäume <code>jupyter</code> und <code>terminal_notes</code>. Gesteuert durch das neue <code>trl[harbor]</code>-Extra.
+von @adithya-s-k in https://github.com/huggingface/trl/pull/6018</p>
+<h3><code>trust_remote_code</code> in Trainerkonfigurationen</h3>
+<p>Ein einzelnes <code>trust_remote_code: bool = False</code>-Feld in den Trainerkonfigurationen deckt jetzt die <strong>gesamte Ladeoberfläche</strong> ab – Modell, Prozessor/Tokenizer, Referenzmodell, Belohnungsmodell, Belohnungs-Tokenizer, Lehrer – anstatt Benutzer zu zwingen, es durch mehrere unabhängige Kwarg-Dikte zu führen.</p>
+<pre><code class="language-python">SFTConfig(trust_remote_code=True)
+</code></pre>
+<p><code>ModelConfig.trust_remote_code</code> wurde entfernt, um doppelte <code>--trust_remote_code</code> beim Kombinieren von Datenklassen zu vermeiden; Das Verhalten von CLI bleibt unverändert.
+von @qgallouedec in https://github.com/huggingface/trl/pull/5802</p>
+<h3>KTO ↔ DPO-Ausrichtung: Tests, Bewertung, sync_ref_model</h3>
+<p>Der letzte Ausrichtungszyklus vor dem Abschluss: KTO hat jetzt Parität mit DPO auf <code>pad_to_multiple_of</code>, <code>sync_ref_model</code>, <code>evaluate()</code>, Methodenreihenfolge/Signatur, metrische Platzierung (alle in <code>_compute_loss</code> verschoben) und eine Testsuite für echten Text + VLM (einschließlich mehrerer Bilder).
+PRs alle von @albertvillanova: #6029, #6030, #6033, #6034, #6035, #6080, #6093, #6148, #6149, #6150, #6152, #6160, #6163.</p>
+<h3>LFM2-VL multimodale Eingaben in GRPO / RLOO</h3>
+<p>GRPO und RLOO unterstützen jetzt <a href="https://huggingface.co/LiquidAI/LFM2-VL-1.6B">LFM2-VL</a> multimodale Eingaben durchgängig.
+von @zwischenraum in https://github.com/huggingface/trl/pull/6114</p>
+<h3>Neue integrierte Belohnungshelfer</h3>
+<ul>
+<li><code>get_repetition_penalty_reward</code> von @qgallouedec in https://github.com/huggingface/trl/pull/6058</li>
+<li><code>get_cosine_scaled_reward</code> von @qgallouedec in https://github.com/huggingface/trl/pull/6066</li>
+</ul>
+<h3>SFT-Refaktor: Labels während der Datensatzvorbereitung erstellen</h3>
+<p>Die Beschriftungskonstruktion verlagert sich aus dem Collator in die Datensatzvorbereitung, sodass „was trainierbar ist“ an genau einer Stelle definiert wird. Ein einzelner <code>map</code>-Batch erzeugt eine <code>labels</code>-Spalte, in der jedes Token seine ID behält, wenn jede anwendbare Maske 1 ist, andernfalls <code>-100</code>. Einfaches LM bleibt lagerungsneutral; Vorab tokenisierte Datensätze mit Maskenspalten durchlaufen jetzt denselben Pfad. Schritt 1 zur Behebung von #3927.
+von @0xadvait in https://github.com/huggingface/trl/pull/6037</p>
+<h3>Idefics3-Chat-Vorlage</h3>
+<p><code>{% generation %}</code>-Marker-Trainingsvorlage für Idefics3, die <code>assistant_only_loss=True</code> ermöglicht.
+von @aazizyan in https://github.com/huggingface/trl/pull/5871</p>
+<h3>vLLM-Versions-Sweep</h3>
+<ul>
+<li>Unterstützen Sie vLLM 0.19.1 von @qgallouedec in https://github.com/huggingface/trl/pull/6107</li>
+<li>Unterstützen Sie vLLM 0.20.0 von @qgallouedec in https://github.com/huggingface/trl/pull/6108</li>
+<li>Unterstützen Sie vLLM 0.22.1 von @qgallouedec in https://github.com/huggingface/trl/pull/6119</li>
+<li>Unterstützen Sie vLLM 0.23.0 von @qgallouedec in https://github.com/huggingface/trl/pull/6153</li>
+<li>Legen Sie vLLM 0.12 von @qgallouedec in https://github.com/huggingface/trl/pull/6109 ab</li>
+<li>Legen Sie vLLM 0.13 von @qgallouedec in https://github.com/huggingface/trl/pull/6154 ab</li>
+</ul>
+<h3>Sonstiges</h3>
+<ul>
+<li>JSD-Destillationsverlust durch <code>num_items_in_batch</code> für Gradientenakkumulation durch @behroozazarkhalili in https://github.com/huggingface/trl/pull/6006 normalisieren</li>
+<li><code>[AsyncGRPO]</code> Rollout-Worker: Setzen Sie das aiohttp-Limit auf <code>max(100, max_inflight_tasks)</code> von @ggcr in https://github.com/huggingface/trl/pull/5861</li>
+<li>SDPO mit GRPO/RLOO ausrichten: NaN-Werte bei der Mittelung der protokollierten Metriken von @anshulkulhari7 in https://github.com/huggingface/trl/pull/6055 löschen</li>
+<li>Sorgen Sie dafür, dass <code>evaluate()</code> dieselben Datensatztypen akzeptiert wie der Trainer von @qgallouedec in https://github.com/huggingface/trl/pull/6116</li>
+<li>Behalten Sie zusätzliche Spalten in <code>unpair_preference_dataset</code> von @albertvillanova in https://github.com/huggingface/trl/pull/6161</li>
+<li>Warnung, wenn die Wichtigkeitsstichprobe auf Sequenzebene mit einem Token-summierten Verlusttyp von @discobot in https://github.com/huggingface/trl/pull/6042 kombiniert wird</li>
+<li><code>fix(profiling)</code>: Protokollieren Sie <code>ProfilingContext</code>-Metriken im Trackio-Backend von @Anai-Guo in https://github.com/huggingface/trl/pull/5979</li>
+<li>Verschieben Sie experimentelle Beispielskripte aus dem gepackten Baum von @sergiopaniego in https://github.com/huggingface/trl/pull/6141</li>
+<li>Entfernen Sie redundante <code>.contiguous()</code>-Aufrufe von @qgallouedec in https://github.com/huggingface/trl/pull/6045 und https://github.com/huggingface/trl/pull/6046</li>
+<li>Logger-Importe harmonisieren von @qgallouedec in https://github.com/huggingface/trl/pull/6142</li>
+</ul>
+<h2>Korrekturen</h2>
+<ul>
+<li><strong>Eingefrorene Ebenen mit dem Referenzmodell teilen, anstatt sie im Speicher zu duplizieren</strong> – <code>create_reference_model</code> mit <code>num_shared_layers</code> hat die „gemeinsamen“ eingefrorenen Ebenen doppelt zugewiesen, da die Schleife <code>_ref_param</code> nie zurück zugewiesen hat. Jetzt ist dies der Fall, sodass gemeinsam genutzte Ebenen einmal gespeichert werden. Von @behroozazarkhalili in https://github.com/huggingface/trl/pull/6053</li>
+<li><strong>Behebung des gemischten Tensor/DTensor-Fehlers <code>chunked_nll</code> unter FSDP2 + PEFT</strong> von @albertvillanova in https://github.com/huggingface/trl/pull/6065</li>
+<li><strong>Pro-Chunk-<code>lm_head.weight</code>-All-Gathers unter FSDP2 + <code>chunked_nll</code> behoben</strong> von @albertvillanova in https://github.com/huggingface/trl/pull/6077</li>
+<li><strong>ZeRO-3 + PEFT-Mixed-D-Type-Fehler behoben</strong> für Core-Trainer von @albertvillanova in https://github.com/huggingface/trl/pull/6091 und KTO von @albertvillanova in https://github.com/huggingface/trl/pull/6093</li>
+<li>Korrigieren Sie die Erstellung des Ref-Adapters, wenn die LoRA-Konfiguration <code>target_parameters</code> von @discobot in https://github.com/huggingface/trl/pull/6043 verwendet</li>
+<li>Erhöhen, wenn <code>use_liger_kernel</code> mit einem PEFT-Adapter auf <code>lm_head</code> von @akshansh47 in https://github.com/huggingface/trl/pull/5977 kombiniert wird</li>
+<li><code>[fix]</code> GLM-4-MoE-Vorlage: Rundenbeendigungs-Token für die Runde selbst von @qgallouedec in https://github.com/huggingface/trl/pull/6044</li>
+<li>Korrigiert, dass <code>unpair_preference_dataset</code> zusätzliche Spalten von @albertvillanova in https://github.com/huggingface/trl/pull/6059 entfernt hat</li>
+<li><code>fix(gold)</code>: Vllm-Eingabeaufforderungs-Spezialtoken von @he-yufeng in https://github.com/huggingface/trl/pull/6063 beibehalten</li>
+<li><code>fix(sft)</code>: Transformierte Datensätze während der Vorbereitung durch @he-yufeng in https://github.com/huggingface/trl/pull/6054 ablehnen</li>
+<li>Defektes Bannerbild im Lichtmodus in README von @strickvl in https://github.com/huggingface/trl/pull/6112 behoben</li>
+<li>Korrigiert BrowserGym OpenEnv-Beispielabhängigkeit und Aufgabenverknüpfung von @burtenshaw in https://github.com/huggingface/trl/pull/6117</li>
+<li>Signatur von <code>_unpair_row</code> von @albertvillanova in https://github.com/huggingface/trl/pull/6062 korrigiert</li>
+<li>Entfernen Sie stillschweigend ignorierte W&amp;B/Hub-Felder aus GOLD- und Destillationskonfigurationen von @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6023</li>
+</ul>
+<h2>Dokumentation und Beispiele</h2>
+<ul>
+<li>Dokumente: Synchronisieren Sie experimentelle Trainer-Dokumentzeichenfolgen mit ihren <code>__init__</code>-Signaturen von @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6011</li>
+<li>Dokumente: Veraltete Standardwerte in Konfigurationsdokumentzeichenfolgen von @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6015 korrigieren</li>
+<li>Dokumente: Funktionsdokumentzeichenfolgen korrigiert, die von ihren Signaturen von @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6022 abgewichen sind</li>
+<li>Defekte Dokumentlinks in <code>paper_index</code> (experimentelle Seite wurde geteilt) von @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6070 behoben</li>
+<li>Fehler beim Import in GOLD-Trainerdokumenten (GOLD ist experimentell) von @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6073 behoben</li>
+<li>Defekte Abschnittsanker in Dokumenten von @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6071 reparieren</li>
+<li>Fehlerhafter Beispiellink in BCO-Trainerdokumenten von @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6084 behoben</li>
+<li><code>docs(rloo)</code>: Klarstellungskommentar zur Abweichung der KL-Strafformel von GRPO von @abderahmane-ai in https://github.com/huggingface/trl/pull/6096 hinzufügen</li>
+<li>Korrigieren Sie, dass asynchrone GRPO-Dokumente <code>vllm&gt;=0.22.0</code> von @sergiopaniego in https://github.com/huggingface/trl/pull/6101 erfordern</li>
+<li>Defekter interner Dokumentlink zum GKD-Trainer in MiniLLM-Dokumenten von @ShamSaleem in https://github.com/huggingface/trl/pull/6131 behoben</li>
+<li>Richten Sie den <code>epsilon</code>-Hilfe-/Docstring-Wortlaut von @qgallouedec in https://github.com/huggingface/trl/pull/6014 aus</li>
+<li>Stil optionaler Parameter in Dokumentzeichenfolgen von @albertvillanova in https://github.com/huggingface/trl/pull/6081 korrigiert</li>
+<li>Format der Codebeispiele in Dokumentzeichenfolgen von @albertvillanova in https://github.com/huggingface/trl/pull/6147 ausrichten</li>
+<li>Lizenz zu Harbor-Beispielen von @qgallouedec in https://github.com/huggingface/trl/pull/6104 hinzufügen</li>
+</ul>
+<h2>CI</h2>
+<ul>
+<li>Extrahieren Sie VLM-Tests in spezielle Klassen für Kerntrainer von @albertvillanova in https://github.com/huggingface/trl/pull/6033</li>
+<li>Erhöhungstest mit Vision-Datensatz und Textmodell für DPO und SFT von @albertvillanova in https://github.com/huggingface/trl/pull/6026 hinzugefügt</li>
+<li>Extrahieren Sie den <code>_push_param_to_vllm</code>-Helfer in <code>VLLMGeneration</code> von @albertvillanova in https://github.com/huggingface/trl/pull/6004</li>
+<li>Verwenden Sie relative Importe in <code>async_grpo</code>, um den Rest von <code>trl/experimental</code> von @qgallouedec in https://github.com/huggingface/trl/pull/6012 anzupassen</li>
+<li>AsyncGRPO mit GRPO ausrichten: <code>num_completions_to_print</code>, <code>epsilon_high</code>-Fallback, <code>logging_steps</code>-Dokumentzeichenfolge, Verlustvariablennamen, clip-Verhältnis-Metriken von @qgallouedec in https://github.com/huggingface/trl/pull/6020, https://github.com/huggingface/trl/pull/6019, https://github.com/huggingface/trl/pull/6016, https://github.com/huggingface/trl/pull/6013 und https://github.com/huggingface/trl/pull/6021</li>
+<li>Sehanforderungsmarker zum Idefics3-Testparameter von @qgallouedec in https://github.com/huggingface/trl/pull/6106 hinzugefügt</li>
+<li>Aktualisieren Sie den verteilten SFT-Test nach dem standardmäßigen <code>chunked_nll</code>-Verlust von @albertvillanova in https://github.com/huggingface/trl/pull/6074</li>
+<li><code>test</code>: Speicher in <code>test_gkd_trainer_with_liger</code> gebunden, um OOM auf gemeinsam genutzten Läufern von @behroozazarkhalili in https://github.com/huggingface/trl/pull/6103 zu vermeiden</li>
+<li><code>sft_fa2</code>-Invariantentest von @qgallouedec in https://github.com/huggingface/trl/pull/6069 behoben</li>
+<li>Pin SHA anstelle des Versions-Tags für CI <code>actions/checkout</code> / <code>astral-sh/setup-uv</code> / <code>actions/setup-python</code> / <code>pre-commit/action</code> von @albertvillanova in https://github.com/huggingface/trl/pull/6097, https://github.com/huggingface/trl/pull/6098, https://github.com/huggingface/trl/pull/6099 und https://github.com/huggingface/trl/pull/6100</li>
+<li>Ersetzen Sie <code>parse_version</code> durch <code>Version</code> von @albertvillanova in https://github.com/huggingface/trl/pull/6164</li>
+<li>Hotfix CI: <code>deepspeed &lt; 0.19.2</code> von @albertvillanova vorübergehend in https://github.com/huggingface/trl/pull/6090 anpinnen</li>
+<li><code>chore</code>: Update <code>tests_transformers_branch.yml</code> von @hf-security-analysis[bot] in https://github.com/huggingface/trl/pull/6051</li>
+<li><code>chore</code>: Update <code>clear_cache.yml</code> von @hf-security-analysis[bot] in https://github.com/huggingface/trl/pull/6047</li>
+<li><code>chore</code>: Update <code>docker-build.yml</code> von @hf-security-analysis[bot] in https://github.com/huggingface/trl/pull/6048</li>
+<li>CI <code>pr_style_bot</code>-Workflow von @albertvillanova in https://github.com/huggingface/trl/pull/6082 löschen</li>
+<li>Issue-Labeler von @qgallouedec in https://github.com/huggingface/trl/pull/6052 entfernen</li>
+<li>Erweitern Sie die Aktionsgruppe mit 4 Updates von @dependabot[bot] in https://github.com/huggingface/trl/pull/6041</li>
+<li>Ändern Sie den Kommentar von <code>_get_train_sampler</code>, um <code>num_iterations &gt; 1</code> von @anidoesdev in https://github.com/huggingface/trl/pull/6125 zu erwähnen</li>
+</ul>
+<h2>Neue Mitwirkende</h2>
+<ul>
+<li>@Anai-Guo hat ihren ersten Beitrag in https://github.com/huggingface/trl/pull/5979 geleistet</li>
+<li>@ggcr hat seinen ersten Beitrag in https://github.com/huggingface/trl/pull/5861 geleistet</li>
+<li>@he-yufeng hat seinen ersten Beitrag in https://github.com/huggingface/trl/pull/6063 geleistet</li>
+<li>@discobot hat seinen ersten Beitrag in https://github.com/huggingface/trl/pull/6043 geleistet</li>
+<li>@anshulkulhari7 hat seinen ersten Beitrag in https://github.com/huggingface/trl/pull/6055 geleistet</li>
+<li>@abderahmane-ai hat seinen ersten Beitrag in https://github.com/huggingface/trl/pull/6096 geleistet</li>
+<li>@akshansh47 hat seinen ersten Beitrag in https://github.com/huggingface/trl/pull/5977 geleistet</li>
+<li>@strickvl hat seinen ersten Beitrag in https://github.com/huggingface/trl/pull/6112 geleistet</li>
+<li>@ShamSaleem hat seinen ersten Beitrag in https://github.com/huggingface/trl/pull/6131 geleistet</li>
+<li>@0xadvait hat seinen ersten Beitrag in https://github.com/huggingface/trl/pull/6037 geleistet</li>
+<li>@anidoesdev hat seinen ersten Beitrag in https://github.com/huggingface/trl/pull/6125 geleistet</li>
+<li>@zwischenraum hat seinen ersten Beitrag in https://github.com/huggingface/trl/pull/6114 gemacht</li>
+</ul>
+<h2>Was hat sich geändert?</h2>
+<ul>
+<li>⬆️ Bump-Entwicklerversion von @qgallouedec in https://github.com/huggingface/trl/pull/6010</li>
+<li>Dokumente: Synchronisieren Sie experimentelle Trainer-Dokumentzeichenfolgen mit ihren <strong>init</strong>-Signaturen von @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6011</li>
+<li>Dokumente: Veraltete Standardwerte in Konfigurationsdokumentzeichenfolgen von @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6015 korrigieren</li>
+<li>fix(profiling): Protokollieren Sie ProfilingContext-Metriken im Trackio-Backend von @Anai-Guo in https://github.com/huggingface/trl/pull/5979</li>
+<li>Dokumente: Funktionsdokumentzeichenfolgen korrigiert, die von ihren Signaturen von @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6022 abgewichen sind</li>
+<li>Erhöhungstest mit Vision-Datensatz und Textmodell für DPO und SFT von @albertvillanova in https://github.com/huggingface/trl/pull/6026 hinzugefügt</li>
+<li>KTO mit DPO ausrichten: VLM-Batch-Dimension für Nur-Text-Daten in _tokenize von @albertvillanova in https://github.com/huggingface/trl/pull/6029 entpacken</li>
+<li>Extrahieren Sie VLM-Tests in spezielle Klassen für Kerntrainer von @albertvillanova in https://github.com/huggingface/trl/pull/6033</li>
+<li>Extrahieren Sie den _push_param_to_vllm-Helfer in VLLMGeneration von @albertvillanova in https://github.com/huggingface/trl/pull/6004</li>
+<li>KTO mit DPO ausrichten: Tests für den Textdaten-Collator von @albertvillanova in https://github.com/huggingface/trl/pull/6034 hinzufügen</li>
+<li>KTO mit DPO ausrichten: Unterstützen Sie pad_to_multiple_of von @albertvillanova in https://github.com/huggingface/trl/pull/6035</li>
+<li>KTO mit DPO ausrichten: VLM-Tests von @albertvillanova in https://github.com/huggingface/trl/pull/6030 hinzufügen</li>
+<li>JSD-Destillationsverlust durch num_items_in_batch für Gradientenakkumulation durch @behroozazarkhalili in https://github.com/huggingface/trl/pull/6006 normalisieren</li>
+<li>Erweitern Sie die Aktionsgruppe mit 4 Updates von @dependabot[bot] in https://github.com/huggingface/trl/pull/6041</li>
+<li>[Fix] GLM-4-MoE-Vorlage: Zug-beendendes Token für den Zug selbst von @qgallouedec in https://github.com/huggingface/trl/pull/6044</li>
+<li>Fix: Eingefrorene Ebenen mit Referenzmodell teilen, anstatt sie im Speicher zu duplizieren, von @behroozazarkhalili in https://github.com/huggingface/trl/pull/6053</li>
+<li>Standardmäßiger SFT-Verlust an chunked_nll von @qgallouedec in https://github.com/huggingface/trl/pull/5846</li>
+<li>Entfernen Sie redundante <code>.contiguous()</code>-Aufrufe von @qgallouedec in https://github.com/huggingface/trl/pull/6045</li>
+<li>Entfernen Sie stillschweigend ignorierte W&amp;B/Hub-Felder aus GOLD- und Destillationskonfigurationen von @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6023</li>
+<li>[AsyncGRPO] Rollout-Worker: Setzen Sie das aiohttp-Limit auf max(100, max_inflight_tasks) von @ggcr in https://github.com/huggingface/trl/pull/5861</li>
+<li>asynchrone grpo native Gewichtssynchronisierung mit vllm&gt;=0.22.0 von @AmineDiro in https://github.com/huggingface/trl/pull/5892</li>
+<li>Korrigiert, dass <code>unpair_preference_dataset</code> zusätzliche Spalten von @albertvillanova in https://github.com/huggingface/trl/pull/6059 entfernt hat</li>
+<li>fix(gold): vllm prompt spezielle Token von @he-yufeng in https://github.com/huggingface/trl/pull/6063 beibehalten</li>
+<li>Defekte Dokumentlinks in paper_index (experimentelle Seite wurde geteilt) von @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6070 behoben</li>
+<li>Aufgabe: testen_transformers_branch.yml von @hf-security-analysis[bot] in https://github.com/huggingface/trl/pull/6051 aktualisieren</li>
+<li>Behebung des gemischten Tensor/DTensor-Fehlers chunked_nll unter FSDP2 + PEFT von @albertvillanova in https://github.com/huggingface/trl/pull/6065</li>
+<li>Signatur von _unpair_row von @albertvillanova in https://github.com/huggingface/trl/pull/6062 korrigiert</li>
+<li>fix(sft): transformierte Datensätze während der Vorbereitung durch @he-yufeng in https://github.com/huggingface/trl/pull/6054 ablehnen</li>
+<li>Fehler beim Import in GOLD-Trainerdokumenten (GOLD ist experimentell) von @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6073 behoben</li>
+<li>Defekte Abschnittsanker in Dokumenten behoben (Slug-Konflikte, umbenannte/entfernte Abschnitte) von @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6071</li>
+<li>Verteilten SFT-Test nach Standardverlust von chunked_nll durch @albertvillanova in https://github.com/huggingface/trl/pull/6074 aktualisieren</li>
+<li>Fügen Sie den experimentellen GMPO-Trainer (Geographic-Mean Policy Optimization) von @raghulchandramouli in https://github.com/huggingface/trl/pull/6078 hinzu</li>
+<li>Stil optionaler Parameter in Dokumentzeichenfolgen von @albertvillanova in https://github.com/huggingface/trl/pull/6081 korrigiert</li>
+<li>KTO mit DPO ausrichten: Unterstützt config pad_to_multiple_of von @albertvillanova in https://github.com/huggingface/trl/pull/6080</li>
+<li>Aufgabe: Clear_cache.yml von @hf-security-analysis[bot] in https://github.com/huggingface/trl/pull/6047 aktualisieren</li>
+<li>Aufgabe: docker-build.yml von @hf-security-analysis[bot] in https://github.com/huggingface/trl/pull/6048 aktualisieren</li>
+<li>Padding-freies Training in AsyncGRPO von @qgallouedec in https://github.com/huggingface/trl/pull/5854</li>
+<li>Löschen Sie den CI pr_style_bot-Workflow von @albertvillanova in https://github.com/huggingface/trl/pull/6082</li>
+<li>Fehlerhafter Beispiellink in BCO-Trainerdokumenten von @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6084 behoben</li>
+<li>Hotfix CI: Deepspeed &lt; 0.19.2 von @albertvillanova vorübergehend in https://github.com/huggingface/trl/pull/6090 anpinnen</li>
+<li>MoE-Hilfsverlust zu GRPO-, RLOO- und AsyncGRPO-Trainern hinzugefügt von @AmineDiro in https://github.com/huggingface/trl/pull/6083</li>
+<li>Fügen Sie die experimentelle Harbor-Integration für das GRPO-Umgebungstraining von @adithya-s-k in https://github.com/huggingface/trl/pull/6018 hinzu</li>
+<li>Invariantentest <code>sft_fa2</code> von @qgallouedec in https://github.com/huggingface/trl/pull/6069 behoben</li>
+<li>Verwenden Sie relative Importe in async_grpo, um sie mit dem Rest von trl/experimental` von @qgallouedec in https://github.com/huggingface/trl/pull/6012 abzugleichen</li>
+<li>Korrigieren Sie die Erstellung des Ref-Adapters, wenn die LoRA-Konfiguration <code>target_parameters</code> von @discobot in https://github.com/huggingface/trl/pull/6043 verwendet</li>
+<li>Issue-Labeler von @qgallouedec in https://github.com/huggingface/trl/pull/6052 entfernen</li>
+<li>Fügen Sie das Idefics3-Original und die Trainings-Chat-Vorlage mit Generationsmarkierungen von @aazizyan in https://github.com/huggingface/trl/pull/5871 hinzu</li>
+<li>SDPO mit GRPO/RLOO ausrichten: NaN-Werte bei der Mittelung der protokollierten Metriken von @anshulkulhari7 in https://github.com/huggingface/trl/pull/6055 löschen</li>
+<li>docs(rloo): Klarstellungskommentar zur Abweichung der KL-Strafformel von GRPO von @abderahmane-ai in https://github.com/huggingface/trl/pull/6096 hinzufügen</li>
+<li>feat(grpo): Ersetzen Sie den veralteten <code>use_transformers_paged</code> durch Transformers Continuous Batching von @sergiopaniego in https://github.com/huggingface/trl/pull/5765</li>
+<li>test: Speicher in test_gkd_trainer_with_liger gebunden, um OOM auf gemeinsam genutzten Läufern von @behroozazarkhalili in https://github.com/huggingface/trl/pull/6103 zu vermeiden</li>
+<li>Sehanforderungsmarker zum Idefics3-Testparameter von @qgallouedec in https://github.com/huggingface/trl/pull/6106 hinzugefügt</li>
+<li>Pin SHA anstelle des Versions-Tags für CI-Aktionen/Checkout von @albertvillanova in https://github.com/huggingface/trl/pull/6097</li>
+<li>Pin SHA anstelle des Versions-Tags für CI astral-sh/setup-uv von @albertvillanova in https://github.com/huggingface/trl/pull/6098</li>
+<li>Pin SHA anstelle des Versions-Tags für CI actions/setup-python von @albertvillanova in https://github.com/huggingface/trl/pull/6099</li>
+<li>PIN-SHA anstelle des Versions-Tags für CI-Pre-Commit/Aktion von @albertvillanova in https://github.com/huggingface/trl/pull/6100</li>
+<li>Behebung des ZeRO-3 + PEFT-Mixed-D-Type-Fehlers für Core-Trainer von @albertvillanova in https://github.com/huggingface/trl/pull/6091</li>
+<li>KTO mit DPO ausrichten: ZeRO-3 + PEFT-dtype-Nichtübereinstimmung für nicht quantisierte Modelle von @albertvillanova in https://github.com/huggingface/trl/pull/6093 beheben</li>
+<li>Korrigieren Sie pro Chunk lm_head.weight All-Gathers unter FSDP2 + chunked_nll von @albertvillanova in https://github.com/huggingface/trl/pull/6077</li>
+<li>Erhöhen, wenn use_liger_kernel mit einem PEFT-Adapter auf lm_head von @akshansh47 in https://github.com/huggingface/trl/pull/5977 kombiniert wird</li>
+<li>Richten Sie den <code>epsilon</code>-Hilfe-/Docstring-Wortlaut von @qgallouedec in https://github.com/huggingface/trl/pull/6014 aus</li>
+<li>Defektes Bannerbild im Lichtmodus in README von @strickvl in https://github.com/huggingface/trl/pull/6112 behoben</li>
+<li>Entfernen Sie die vLLM 0.12-Unterstützung von @qgallouedec in https://github.com/huggingface/trl/pull/6109</li>
+<li><code>router_aux_loss_coef</code> von @qgallouedec in https://github.com/huggingface/trl/pull/6085 hinzufügen</li>
+<li>Unterstützung für vLLM 0.19.1 von @qgallouedec in https://github.com/huggingface/trl/pull/6107 hinzugefügt</li>
+<li>Lizenz zu Harbor-Beispielen von @qgallouedec in https://github.com/huggingface/trl/pull/6104 hinzufügen</li>
+<li>Entfernen Sie das redundante <code>.contiguous()</code> aus dem Schichtprotokoll-/Beschriftungsmuster von @qgallouedec in https://github.com/huggingface/trl/pull/6046</li>
+<li>Korrigiert BrowserGym OpenEnv-Beispielabhängigkeit und Aufgabenverkabelung von @burtenshaw in https://github.com/huggingface/trl/pull/6117</li>
+<li>Korrigieren Sie, dass asynchrone GRPO-Dokumente vllm&gt;=0.22.0 von @sergiopaniego in https://github.com/huggingface/trl/pull/6101 erfordern</li>
+<li><code>get_repetition_penalty_reward</code> von @qgallouedec in https://github.com/huggingface/trl/pull/6058 hinzufügen</li>
+<li><code>trust_remote_code</code> zu den Trainerkonfigurationen von @qgallouedec in https://github.com/huggingface/trl/pull/5802 hinzufügen</li>
+<li>Richten Sie AsyncGRPO num_completions_to_print mit GRPO (int | None) von @qgallouedec in https://github.com/huggingface/trl/pull/6020 aus</li>
+<li>AsyncGRPO epsilon_high mit GRPO ausrichten (Kein Fallback auf epsilon) von @qgallouedec in https://github.com/huggingface/trl/pull/6019</li>
+<li>Korrigieren Sie die in der AsyncGRPOConfig-Dokumentzeichenfolge von @qgallouedec in https://github.com/huggingface/trl/pull/6016 erwähnte Standardeinstellung „logging_steps“.</li>
+<li>Richten Sie asynchrone GRPO-Verlustvariablennamen mit GRPOTrainer von @qgallouedec in https://github.com/huggingface/trl/pull/6013 aus</li>
+<li>Sorgen Sie dafür, dass <code>evaluate()</code> dieselben Datensatztypen akzeptiert wie der Trainer von @qgallouedec in https://github.com/huggingface/trl/pull/6116</li>
+<li>Unterstützung für vLLM 0.20.0 von @qgallouedec in https://github.com/huggingface/trl/pull/6108 hinzugefügt</li>
+<li>Unterstützung für vLLM 0.22.1 von @qgallouedec in https://github.com/huggingface/trl/pull/6119 hinzugefügt</li>
+<li>Defekter interner Dokumentlink zum GKD-Trainer in MiniLLM-Dokumenten von @ShamSaleem in https://github.com/huggingface/trl/pull/6131 behoben</li>
+<li>Richten Sie die AsyncGRPO clip-Verhältnis-Metriken mit GRPOTrainer von @qgallouedec in https://github.com/huggingface/trl/pull/6021 aus</li>
+<li>Fügen Sie <code>get_cosine_scaled_reward</code> von @qgallouedec in https://github.com/huggingface/trl/pull/6066 hinzu</li>
+<li>Verschieben Sie experimentelle Beispielskripte aus dem gepackten Baum von @sergiopaniego in https://github.com/huggingface/trl/pull/6141</li>
+<li>Logger-Importe harmonisieren von @qgallouedec in https://github.com/huggingface/trl/pull/6142</li>
+<li>Refactor(sft): Erstellen Sie Beschriftungen während der Datensatzvorbereitung anstelle der Sortierung durch @0xadvait in https://github.com/huggingface/trl/pull/6037</li>
+<li>Unterstützung für vLLM 0.23.0 von @qgallouedec in https://github.com/huggingface/trl/pull/6153 hinzugefügt</li>
+<li>Ändern Sie den Kommentar von <code>_get_train_sampler</code>, um <code>num_iterations &gt; 1</code> von @anidoesdev in https://github.com/huggingface/trl/pull/6125 zu erwähnen</li>
+<li>Warnung, wenn die Wichtigkeitsstichprobe auf Sequenzebene mit einem Token-summierten Verlusttyp von @discobot in https://github.com/huggingface/trl/pull/6042 kombiniert wird</li>
+<li>Entfernen Sie die vLLM 0.13-Unterstützung von @qgallouedec in https://github.com/huggingface/trl/pull/6154</li>
+<li>KTO mit DPO ausrichten: Evalue()-Überschreibung durch @albertvillanova in https://github.com/huggingface/trl/pull/6148 hinzufügen</li>
+<li>KTO mit DPO ausrichten: Reihenfolge und Signatur der Methoden von @albertvillanova in https://github.com/huggingface/trl/pull/6149 ausrichten</li>
+<li>KTO mit DPO ausrichten: Verschieben Sie alle Metrikberechnungen vom Protokoll nach _compute_loss von @albertvillanova in https://github.com/huggingface/trl/pull/6150</li>
+<li>KTO mit DPO ausrichten: Unterstützen Sie sync_ref_model von @albertvillanova in https://github.com/huggingface/trl/pull/6152</li>
+<li>Ersetzen Sie parse_version durch Version von @albertvillanova in https://github.com/huggingface/trl/pull/6164</li>
+<li>Behalten Sie zusätzliche Spalten in unpair_preference_dataset von @albertvillanova in https://github.com/huggingface/trl/pull/6161 bei</li>
+<li>KTO mit DPO ausrichten: Tests von @albertvillanova in https://github.com/huggingface/trl/pull/6160 hinzufügen</li>
+<li>Format der Codebeispiele in Dokumentzeichenfolgen von @albertvillanova in https://github.com/huggingface/trl/pull/6147 ausrichten</li>
+<li>KTO mit DPO ausrichten: VLM-Multi-Image-Test von @albertvillanova in https://github.com/huggingface/trl/pull/6163 hinzufügen</li>
+<li>Unterstützt multimodale LFM2-VL-Eingaben in GRPO und RLOO von @zwischenraum in https://github.com/huggingface/trl/pull/6114
+<strong>Vollständig Changelog</strong>: https://github.com/huggingface/trl/compare/v1.6.0...v1.7.0</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>Quelle</strong> <a href="https://github.com/huggingface/trl">huggingface/trl</a> · <code>v1.7.0</code> · 25.06.2026 · <a href="https://github.com/huggingface/trl/releases/tag/v1.7.0">Upstream-Veröffentlichung</a>
+<em>Zum Indexieren wörtlich gespiegelt. Alle Rechte liegen beim Upstream-Projekt.</em></p>
+</blockquote></div>  <details class="mt-original"> <summary>Englisches Original / English original</summary> <div class="prose mt-original-body"><h1>trl v1.7.0</h1>
+<h2>Features</h2>
+<h3>SFT default <code>loss_type</code> is now <code>&quot;chunked_nll&quot;</code></h3>
+<p>The flip announced in v1.6 has landed. Setting <code>loss_type</code> is optional, and the default now resolves to <code>&quot;chunked_nll&quot;</code> — giving every <code>SFTTrainer</code> run <strong>~30% less peak VRAM on average (up to ~50% on large-vocab models)</strong> with wall-clock time neutral or slightly faster. No action needed.</p>
+<p>The auto-resolve falls back to <code>&quot;nll&quot;</code> when <code>use_liger_kernel=True</code> (the two paths are incompatible). If you want the old behavior — e.g. for custom heads — pin it explicitly:</p>
+<pre><code class="language-python">SFTConfig(loss_type=&quot;nll&quot;)
+</code></pre>
+<p>by @qgallouedec in https://github.com/huggingface/trl/pull/5846</p>
+<h3>MoE auxiliary loss in GRPO / RLOO / AsyncGRPO</h3>
+<p>Post-training MoE models now correctly include the router load-balancing auxiliary loss, matching the model's own reference forward and <code>SFTTrainer</code>. Enable via <code>model_init_kwargs</code>:</p>
+<pre><code class="language-python">GRPOConfig(
+    ...,
+    model_init_kwargs={&quot;output_router_logits&quot;: True, &quot;router_aux_loss_coef&quot;: 0.001},
+)
+</code></pre>
+<p>Plumbed through <code>_get_per_token_logps_and_entropies</code> (now returns a 3-tuple including <code>aux_loss</code>), folded into the policy loss with grad-accum scaling matched per trainer, and logged as <code>aux_loss</code>. AsyncGRPO recomputes it via <code>load_balancing_loss_func</code> in the chunked LM-head path (same as SFT's chunked path).</p>
+<p>by @AmineDiro in https://github.com/huggingface/trl/pull/6083, plus <code>router_aux_loss_coef</code> config wiring by @qgallouedec in https://github.com/huggingface/trl/pull/6085</p>
+<h3>New experimental GMPO trainer</h3>
+<p><a href="https://huggingface.co/papers/2507.20673">Geometric-Mean Policy Optimization</a> lands as an experimental trainer. Replaces GRPO's per-token arithmetic mean of importance ratios with a <strong>sequence-level geometric mean</strong> (mean of clipped log-ratios, then <code>exp</code>); clipping is one-sided by advantage sign and applied in log space. Default <code>epsilon=0.4</code> per the paper.</p>
+<pre><code class="language-python">from trl.experimental.gmpo import GMPOConfig, GMPOTrainer
+
+trainer = GMPOTrainer(
+    model=&quot;Qwen/Qwen3-4B&quot;,
+    args=GMPOConfig(epsilon=0.4),
+    reward_funcs=accuracy_reward,
+    train_dataset=dataset,
+)
+</code></pre>
+<p>by @raghulchandramouli in https://github.com/huggingface/trl/pull/6078</p>
+<h3>Transformers continuous batching in GRPO / RLOO</h3>
+<p><code>use_transformers_paged</code> was deprecated in v1.4; it's now replaced with proper <a href="https://huggingface.co/docs/transformers/main/en/main_classes/text_generation#transformers.GenerationMixin.generate_batch">transformers continuous batching</a>. The old branch silently bypassed importance-sampling correction (<code>logprobs = None</code>); the new path captures logprobs from <code>output.logprobs</code> and exposes a <code>ContinuousBatchingConfig</code> for KV-cache tuning.</p>
+<pre><code class="language-python">GRPOConfig(
+    ...,
+    use_transformers_continuous_batching=True,
+    transformers_continuous_batching_config={
+        &quot;use_cuda_graph&quot;: False,
+        &quot;max_memory_percent&quot;: 0.4,  # leave headroom for training
+    },
+)
+</code></pre>
+<p>Benchmark (Llama-3.2-1B-Instruct, A100 80GB, GSM8K): <strong>1.25× faster at N=64 generations</strong> with <strong>-16 GB peak VRAM</strong> vs default <code>generate()</code>. Use when N ≥ 32 with variable completion lengths.</p>
+<p><code>use_transformers_paged=True</code> still works and forwards to the new flag with a <code>FutureWarning</code>. Requires <code>transformers&gt;=5.8.0</code>.</p>
+<p>by @sergiopaniego in https://github.com/huggingface/trl/pull/5765</p>
+<h3>AsyncGRPO: native weight sync with vLLM ≥ 0.22.0</h3>
+<p><code>WeightTransferClient</code> now drives vLLM's native <a href="https://docs.vllm.ai/en/latest/training/weight_transfer/">4-phase RL weight-transfer API</a> instead of the older 2-call flow: <code>pause(mode=&quot;keep&quot;)</code> → <code>start_weight_update</code> → threaded <code>update_weights</code> + NCCL broadcast → <code>finish_weight_update</code> → <code>resume</code>. Validated end-to-end on H100 across single-node, FSDP2×4 + TP=4, and 2-node FSDP2×4 + DP=2×TP=4 (weight-sync time ≈ 0.18-0.8 s).</p>
+<p>by @AmineDiro in https://github.com/huggingface/trl/pull/5892</p>
+<h3>Padding-free training in AsyncGRPO</h3>
+<p>AsyncGRPO now supports the same padding-free path SFT already had. Flattens the batch and uses <code>position_ids</code>-based document boundaries instead of right-padding to the longest sequence — meaningful speedup and memory savings on heterogeneous-length workloads.</p>
+<p>by @qgallouedec in https://github.com/huggingface/trl/pull/5854</p>
+<h3>Experimental Harbor integration</h3>
+<p>A new <code>trl.experimental.harbor</code> adapter plugs <a href="https://www.harborframework.com">Harbor</a> agentic task suites into <code>GRPOTrainer</code> via <code>environment_factory</code>. Same pattern as the OpenReward integration — one spec wires all three trainer slots:</p>
+<pre><code class="language-python">from trl import GRPOConfig, GRPOTrainer
+from trl.experimental.harbor import HarborSpec
+
+spec = HarborSpec(&quot;AdithyaSK/data_agent_rl_environment_train&quot;, agent=&quot;bash&quot;, num_tasks=64)
+
+trainer = GRPOTrainer(
+    model=&quot;Qwen/Qwen3-4B&quot;,
+    args=GRPOConfig(num_generations=8, max_steps=50, max_tool_calling_iterations=25),
+    train_dataset=spec.train_dataset,
+    environment_factory=spec.environment_factory,
+    reward_funcs=spec.reward_funcs,
+)
+</code></pre>
+<p>Built-in <code>bash</code> harness, plus <code>jupyter</code> and <code>terminal_notes</code> example harnesses. Gated by the new <code>trl[harbor]</code> extra.</p>
+<p>by @adithya-s-k in https://github.com/huggingface/trl/pull/6018</p>
+<h3><code>trust_remote_code</code> in trainer configs</h3>
+<p>A single <code>trust_remote_code: bool = False</code> field on the trainer configs now covers the <strong>whole load surface</strong> — model, processor / tokenizer, reference model, reward model, reward tokenizer, teacher — instead of forcing users to thread it through several independent kwarg dicts.</p>
+<pre><code class="language-python">SFTConfig(trust_remote_code=True)
+</code></pre>
+<p><code>ModelConfig.trust_remote_code</code> is removed to avoid duplicate <code>--trust_remote_code</code> when combining dataclasses; CLI behavior is unchanged.</p>
+<p>by @qgallouedec in https://github.com/huggingface/trl/pull/5802</p>
+<h3>KTO ↔ DPO alignment: tests, evaluate, sync_ref_model</h3>
+<p>The last alignment cycle before graduation: KTO now has parity with DPO on <code>pad_to_multiple_of</code>, <code>sync_ref_model</code>, <code>evaluate()</code>, method order/signature, metric placement (all moved into <code>_compute_loss</code>), and a real text + VLM (including multi-image) test suite.</p>
+<p>PRs all by @albertvillanova: #6029, #6030, #6033, #6034, #6035, #6080, #6093, #6148, #6149, #6150, #6152, #6160, #6163.</p>
+<h3>LFM2-VL multimodal inputs in GRPO / RLOO</h3>
+<p>GRPO and RLOO now support <a href="https://huggingface.co/LiquidAI/LFM2-VL-1.6B">LFM2-VL</a> multimodal inputs end-to-end.</p>
+<p>by @zwischenraum in https://github.com/huggingface/trl/pull/6114</p>
+<h3>New built-in reward helpers</h3>
+<ul>
+<li><code>get_repetition_penalty_reward</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6058</li>
+<li><code>get_cosine_scaled_reward</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6066</li>
+</ul>
+<h3>SFT refactor: build labels during dataset preparation</h3>
+<p>Label construction moves out of the collator and into dataset preparation, so &quot;what's trainable&quot; is defined in exactly one place. A single batched <code>map</code> produces a <code>labels</code> column where each token keeps its ID when every applicable mask is 1, else <code>-100</code>. Plain LM stays storage-neutral; pre-tokenized datasets with mask columns now go through the same path. Step 1 toward fixing #3927.</p>
+<p>by @0xadvait in https://github.com/huggingface/trl/pull/6037</p>
+<h3>Idefics3 chat template</h3>
+<p><code>{% generation %}</code>-marker training template for Idefics3, enabling <code>assistant_only_loss=True</code>.</p>
+<p>by @aazizyan in https://github.com/huggingface/trl/pull/5871</p>
+<h3>vLLM version sweep</h3>
+<ul>
+<li>Support vLLM 0.19.1 by @qgallouedec in https://github.com/huggingface/trl/pull/6107</li>
+<li>Support vLLM 0.20.0 by @qgallouedec in https://github.com/huggingface/trl/pull/6108</li>
+<li>Support vLLM 0.22.1 by @qgallouedec in https://github.com/huggingface/trl/pull/6119</li>
+<li>Support vLLM 0.23.0 by @qgallouedec in https://github.com/huggingface/trl/pull/6153</li>
+<li>Drop vLLM 0.12 by @qgallouedec in https://github.com/huggingface/trl/pull/6109</li>
+<li>Drop vLLM 0.13 by @qgallouedec in https://github.com/huggingface/trl/pull/6154</li>
+</ul>
+<h3>Other</h3>
+<ul>
+<li>Normalize JSD distillation loss by <code>num_items_in_batch</code> for gradient accumulation by @behroozazarkhalili in https://github.com/huggingface/trl/pull/6006</li>
+<li><code>[AsyncGRPO]</code> Rollout worker: set aiohttp limit to <code>max(100, max_inflight_tasks)</code> by @ggcr in https://github.com/huggingface/trl/pull/5861</li>
+<li>Align SDPO with GRPO/RLOO: drop NaN values when averaging logged metrics by @anshulkulhari7 in https://github.com/huggingface/trl/pull/6055</li>
+<li>Make <code>evaluate()</code> accept the same dataset types as the trainer by @qgallouedec in https://github.com/huggingface/trl/pull/6116</li>
+<li>Keep extra columns in <code>unpair_preference_dataset</code> by @albertvillanova in https://github.com/huggingface/trl/pull/6161</li>
+<li>Warn when sequence-level importance sampling is combined with a token-summed loss type by @discobot in https://github.com/huggingface/trl/pull/6042</li>
+<li><code>fix(profiling)</code>: log <code>ProfilingContext</code> metrics to Trackio backend by @Anai-Guo in https://github.com/huggingface/trl/pull/5979</li>
+<li>Move experimental example scripts out of the packaged tree by @sergiopaniego in https://github.com/huggingface/trl/pull/6141</li>
+<li>Remove redundant <code>.contiguous()</code> calls by @qgallouedec in https://github.com/huggingface/trl/pull/6045 and https://github.com/huggingface/trl/pull/6046</li>
+<li>Harmonize logger imports by @qgallouedec in https://github.com/huggingface/trl/pull/6142</li>
+</ul>
+<h2>Fixes</h2>
+<ul>
+<li><strong>Share frozen layers with reference model instead of duplicating in memory</strong> — <code>create_reference_model</code> with <code>num_shared_layers</code> was double-allocating the &quot;shared&quot; frozen layers because the loop never assigned <code>_ref_param</code> back. Now it does, so shared layers are held once. By @behroozazarkhalili in https://github.com/huggingface/trl/pull/6053</li>
+<li><strong>Fix <code>chunked_nll</code> mixed Tensor/DTensor error under FSDP2 + PEFT</strong> by @albertvillanova in https://github.com/huggingface/trl/pull/6065</li>
+<li><strong>Fix per-chunk <code>lm_head.weight</code> all-gathers under FSDP2 + <code>chunked_nll</code></strong> by @albertvillanova in https://github.com/huggingface/trl/pull/6077</li>
+<li><strong>Fix ZeRO-3 + PEFT mixed-dtype error</strong> for core trainers by @albertvillanova in https://github.com/huggingface/trl/pull/6091 and KTO by @albertvillanova in https://github.com/huggingface/trl/pull/6093</li>
+<li>Fix ref adapter creation when the LoRA config uses <code>target_parameters</code> by @discobot in https://github.com/huggingface/trl/pull/6043</li>
+<li>Raise when <code>use_liger_kernel</code> is combined with a PEFT adapter on <code>lm_head</code> by @akshansh47 in https://github.com/huggingface/trl/pull/5977</li>
+<li><code>[fix]</code> GLM-4-MoE template: turn-terminating token to the turn itself by @qgallouedec in https://github.com/huggingface/trl/pull/6044</li>
+<li>Fix <code>unpair_preference_dataset</code> dropping extra columns by @albertvillanova in https://github.com/huggingface/trl/pull/6059</li>
+<li><code>fix(gold)</code>: preserve vllm prompt special tokens by @he-yufeng in https://github.com/huggingface/trl/pull/6063</li>
+<li><code>fix(sft)</code>: reject transformed datasets during preparation by @he-yufeng in https://github.com/huggingface/trl/pull/6054</li>
+<li>Fix broken light-mode banner image in README by @strickvl in https://github.com/huggingface/trl/pull/6112</li>
+<li>Fix BrowserGym OpenEnv example dependency and task wiring by @burtenshaw in https://github.com/huggingface/trl/pull/6117</li>
+<li>Fix signature of <code>_unpair_row</code> by @albertvillanova in https://github.com/huggingface/trl/pull/6062</li>
+<li>Remove silently-ignored W&amp;B/Hub fields from GOLD and Distillation configs by @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6023</li>
+</ul>
+<h2>Documentation and Examples</h2>
+<ul>
+<li>docs: sync experimental trainer docstrings with their <code>__init__</code> signatures by @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6011</li>
+<li>docs: fix stale default values in config docstrings by @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6015</li>
+<li>docs: fix function docstrings that drifted from their signatures by @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6022</li>
+<li>Fix broken doc links in <code>paper_index</code> (experimental page was split) by @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6070</li>
+<li>Fix broken import in GOLD trainer docs (GOLD is experimental) by @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6073</li>
+<li>Fix broken section anchors in docs by @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6071</li>
+<li>Fix broken example link in BCO trainer docs by @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6084</li>
+<li><code>docs(rloo)</code>: add clarifying comment on KL penalty formula divergence from GRPO by @abderahmane-ai in https://github.com/huggingface/trl/pull/6096</li>
+<li>Fix async GRPO docs to require <code>vllm&gt;=0.22.0</code> by @sergiopaniego in https://github.com/huggingface/trl/pull/6101</li>
+<li>Fix broken internal doc link to GKD Trainer in MiniLLM docs by @ShamSaleem in https://github.com/huggingface/trl/pull/6131</li>
+<li>Align <code>epsilon</code> help/docstring wording by @qgallouedec in https://github.com/huggingface/trl/pull/6014</li>
+<li>Fix style of optional parameters in docstrings by @albertvillanova in https://github.com/huggingface/trl/pull/6081</li>
+<li>Align format of code examples in docstrings by @albertvillanova in https://github.com/huggingface/trl/pull/6147</li>
+<li>Add license to Harbor examples by @qgallouedec in https://github.com/huggingface/trl/pull/6104</li>
+</ul>
+<h2>CI</h2>
+<ul>
+<li>Extract VLM tests into dedicated classes for core trainers by @albertvillanova in https://github.com/huggingface/trl/pull/6033</li>
+<li>Add raises test with vision dataset and text model for DPO and SFT by @albertvillanova in https://github.com/huggingface/trl/pull/6026</li>
+<li>Extract <code>_push_param_to_vllm</code> helper in <code>VLLMGeneration</code> by @albertvillanova in https://github.com/huggingface/trl/pull/6004</li>
+<li>Use relative imports in <code>async_grpo</code> to match the rest of <code>trl/experimental</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6012</li>
+<li>Align AsyncGRPO with GRPO: <code>num_completions_to_print</code>, <code>epsilon_high</code> fallback, <code>logging_steps</code> docstring, loss variable names, clip-ratio metrics by @qgallouedec in https://github.com/huggingface/trl/pull/6020, https://github.com/huggingface/trl/pull/6019, https://github.com/huggingface/trl/pull/6016, https://github.com/huggingface/trl/pull/6013 and https://github.com/huggingface/trl/pull/6021</li>
+<li>Add vision requirement marker to Idefics3 test parameter by @qgallouedec in https://github.com/huggingface/trl/pull/6106</li>
+<li>Update distributed SFT test after default <code>chunked_nll</code> loss by @albertvillanova in https://github.com/huggingface/trl/pull/6074</li>
+<li><code>test</code>: bound memory in <code>test_gkd_trainer_with_liger</code> to avoid OOM on shared runners by @behroozazarkhalili in https://github.com/huggingface/trl/pull/6103</li>
+<li>Fix <code>sft_fa2</code> invariant test by @qgallouedec in https://github.com/huggingface/trl/pull/6069</li>
+<li>Pin SHA instead of version tag for CI <code>actions/checkout</code> / <code>astral-sh/setup-uv</code> / <code>actions/setup-python</code> / <code>pre-commit/action</code> by @albertvillanova in https://github.com/huggingface/trl/pull/6097, https://github.com/huggingface/trl/pull/6098, https://github.com/huggingface/trl/pull/6099 and https://github.com/huggingface/trl/pull/6100</li>
+<li>Replace <code>parse_version</code> with <code>Version</code> by @albertvillanova in https://github.com/huggingface/trl/pull/6164</li>
+<li>Hotfix CI: temporarily pin <code>deepspeed &lt; 0.19.2</code> by @albertvillanova in https://github.com/huggingface/trl/pull/6090</li>
+<li><code>chore</code>: update <code>tests_transformers_branch.yml</code> by @hf-security-analysis[bot] in https://github.com/huggingface/trl/pull/6051</li>
+<li><code>chore</code>: update <code>clear_cache.yml</code> by @hf-security-analysis[bot] in https://github.com/huggingface/trl/pull/6047</li>
+<li><code>chore</code>: update <code>docker-build.yml</code> by @hf-security-analysis[bot] in https://github.com/huggingface/trl/pull/6048</li>
+<li>Delete CI <code>pr_style_bot</code> workflow by @albertvillanova in https://github.com/huggingface/trl/pull/6082</li>
+<li>Remove issue labeller by @qgallouedec in https://github.com/huggingface/trl/pull/6052</li>
+<li>Bump the actions group with 4 updates by @dependabot[bot] in https://github.com/huggingface/trl/pull/6041</li>
+<li>Change <code>_get_train_sampler</code> comment to mention <code>num_iterations &gt; 1</code> by @anidoesdev in https://github.com/huggingface/trl/pull/6125</li>
+</ul>
+<h2>New Contributors</h2>
+<ul>
+<li>@Anai-Guo made their first contribution in https://github.com/huggingface/trl/pull/5979</li>
+<li>@ggcr made their first contribution in https://github.com/huggingface/trl/pull/5861</li>
+<li>@he-yufeng made their first contribution in https://github.com/huggingface/trl/pull/6063</li>
+<li>@discobot made their first contribution in https://github.com/huggingface/trl/pull/6043</li>
+<li>@anshulkulhari7 made their first contribution in https://github.com/huggingface/trl/pull/6055</li>
+<li>@abderahmane-ai made their first contribution in https://github.com/huggingface/trl/pull/6096</li>
+<li>@akshansh47 made their first contribution in https://github.com/huggingface/trl/pull/5977</li>
+<li>@strickvl made their first contribution in https://github.com/huggingface/trl/pull/6112</li>
+<li>@ShamSaleem made their first contribution in https://github.com/huggingface/trl/pull/6131</li>
+<li>@0xadvait made their first contribution in https://github.com/huggingface/trl/pull/6037</li>
+<li>@anidoesdev made their first contribution in https://github.com/huggingface/trl/pull/6125</li>
+<li>@zwischenraum made their first contribution in https://github.com/huggingface/trl/pull/6114</li>
+</ul>
+<h2>What's Changed</h2>
+<ul>
+<li>⬆️ Bump dev version by @qgallouedec in https://github.com/huggingface/trl/pull/6010</li>
+<li>docs: sync experimental trainer docstrings with their <strong>init</strong> signatures by @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6011</li>
+<li>docs: fix stale default values in config docstrings by @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6015</li>
+<li>fix(profiling): log ProfilingContext metrics to Trackio backend by @Anai-Guo in https://github.com/huggingface/trl/pull/5979</li>
+<li>docs: fix function docstrings that drifted from their signatures by @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6022</li>
+<li>Add raises test with vision dataset and text model for DPO and SFT by @albertvillanova in https://github.com/huggingface/trl/pull/6026</li>
+<li>Align KTO with DPO: Unwrap VLM batch dimension for text-only data in _tokenize by @albertvillanova in https://github.com/huggingface/trl/pull/6029</li>
+<li>Extract VLM tests into dedicated classes for core trainers by @albertvillanova in https://github.com/huggingface/trl/pull/6033</li>
+<li>Extract _push_param_to_vllm helper in VLLMGeneration by @albertvillanova in https://github.com/huggingface/trl/pull/6004</li>
+<li>Align KTO with DPO: Add tests for text data collator by @albertvillanova in https://github.com/huggingface/trl/pull/6034</li>
+<li>Align KTO with DPO: Support pad_to_multiple_of by @albertvillanova in https://github.com/huggingface/trl/pull/6035</li>
+<li>Align KTO with DPO: Add VLM tests by @albertvillanova in https://github.com/huggingface/trl/pull/6030</li>
+<li>Normalize JSD distillation loss by num_items_in_batch for gradient accumulation by @behroozazarkhalili in https://github.com/huggingface/trl/pull/6006</li>
+<li>Bump the actions group with 4 updates by @dependabot[bot] in https://github.com/huggingface/trl/pull/6041</li>
+<li>[fix] GLM-4-MoE template: turn-terminating token to the turn itself by @qgallouedec in https://github.com/huggingface/trl/pull/6044</li>
+<li>fix: share frozen layers with reference model instead of duplicating in memory by @behroozazarkhalili in https://github.com/huggingface/trl/pull/6053</li>
+<li>Default SFT loss to chunked_nll by @qgallouedec in https://github.com/huggingface/trl/pull/5846</li>
+<li>Remove redundant <code>.contiguous()</code> calls by @qgallouedec in https://github.com/huggingface/trl/pull/6045</li>
+<li>Remove silently-ignored W&amp;B/Hub fields from GOLD and Distillation configs by @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6023</li>
+<li>[AsyncGRPO] Rollout worker: set aiohttp limit to max(100, max_inflight_tasks) by @ggcr in https://github.com/huggingface/trl/pull/5861</li>
+<li>async grpo native weight sync with vllm&gt;=0.22.0 by @AmineDiro in https://github.com/huggingface/trl/pull/5892</li>
+<li>Fix <code>unpair_preference_dataset</code> dropping extra columns by @albertvillanova in https://github.com/huggingface/trl/pull/6059</li>
+<li>fix(gold): preserve vllm prompt special tokens by @he-yufeng in https://github.com/huggingface/trl/pull/6063</li>
+<li>Fix broken doc links in paper_index (experimental page was split) by @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6070</li>
+<li>chore: update tests_transformers_branch.yml by @hf-security-analysis[bot] in https://github.com/huggingface/trl/pull/6051</li>
+<li>Fix chunked_nll mixed Tensor/DTensor error under FSDP2 + PEFT by @albertvillanova in https://github.com/huggingface/trl/pull/6065</li>
+<li>Fix signature of _unpair_row by @albertvillanova in https://github.com/huggingface/trl/pull/6062</li>
+<li>fix(sft): reject transformed datasets during preparation by @he-yufeng in https://github.com/huggingface/trl/pull/6054</li>
+<li>Fix broken import in GOLD trainer docs (GOLD is experimental) by @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6073</li>
+<li>Fix broken section anchors in docs (slug mismatches, renamed/removed sections) by @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6071</li>
+<li>Update distributed SFT test after default chunked_nll loss by @albertvillanova in https://github.com/huggingface/trl/pull/6074</li>
+<li>Add GMPO (Geometric-Mean Policy Optimization) experimental trainer by @raghulchandramouli in https://github.com/huggingface/trl/pull/6078</li>
+<li>Fix style of optional parameters in docstrings by @albertvillanova in https://github.com/huggingface/trl/pull/6081</li>
+<li>Align KTO with DPO: Support config pad_to_multiple_of by @albertvillanova in https://github.com/huggingface/trl/pull/6080</li>
+<li>chore: update clear_cache.yml by @hf-security-analysis[bot] in https://github.com/huggingface/trl/pull/6047</li>
+<li>chore: update docker-build.yml by @hf-security-analysis[bot] in https://github.com/huggingface/trl/pull/6048</li>
+<li>Padding-free training in AsyncGRPO by @qgallouedec in https://github.com/huggingface/trl/pull/5854</li>
+<li>Delete CI pr_style_bot workflow by @albertvillanova in https://github.com/huggingface/trl/pull/6082</li>
+<li>Fix broken example link in BCO trainer docs by @DaoyuanLi2816 in https://github.com/huggingface/trl/pull/6084</li>
+<li>Hotfix CI: Temporarily pin deepspeed &lt; 0.19.2 by @albertvillanova in https://github.com/huggingface/trl/pull/6090</li>
+<li>Add MoE auxiliary loss to GRPO, RLOO, and AsyncGRPO trainers by @AmineDiro in https://github.com/huggingface/trl/pull/6083</li>
+<li>Add experimental Harbor integration for GRPO environment training by @adithya-s-k in https://github.com/huggingface/trl/pull/6018</li>
+<li>Fix <code>sft_fa2</code> invariant test by @qgallouedec in https://github.com/huggingface/trl/pull/6069</li>
+<li>Use relative imports in async_grpo to match the rest of trl/experimental` by @qgallouedec in https://github.com/huggingface/trl/pull/6012</li>
+<li>Fix ref adapter creation when the LoRA config uses <code>target_parameters</code> by @discobot in https://github.com/huggingface/trl/pull/6043</li>
+<li>Remove issue labeller by @qgallouedec in https://github.com/huggingface/trl/pull/6052</li>
+<li>Add Idefics3 original and training chat template with generation markers by @aazizyan in https://github.com/huggingface/trl/pull/5871</li>
+<li>Align SDPO with GRPO/RLOO: drop NaN values when averaging logged metrics by @anshulkulhari7 in https://github.com/huggingface/trl/pull/6055</li>
+<li>docs(rloo): add clarifying comment on KL penalty formula divergence from GRPO by @abderahmane-ai in https://github.com/huggingface/trl/pull/6096</li>
+<li>feat(grpo): replace deprecated <code>use_transformers_paged</code> with transformers continuous batching by @sergiopaniego in https://github.com/huggingface/trl/pull/5765</li>
+<li>test: bound memory in test_gkd_trainer_with_liger to avoid OOM on shared runners by @behroozazarkhalili in https://github.com/huggingface/trl/pull/6103</li>
+<li>Add vision requirement marker to Idefics3 test parameter by @qgallouedec in https://github.com/huggingface/trl/pull/6106</li>
+<li>Pin SHA instead of version tag for CI actions/checkout by @albertvillanova in https://github.com/huggingface/trl/pull/6097</li>
+<li>Pin SHA instead of version tag for CI astral-sh/setup-uv by @albertvillanova in https://github.com/huggingface/trl/pull/6098</li>
+<li>Pin SHA instead of version tag for CI actions/setup-python by @albertvillanova in https://github.com/huggingface/trl/pull/6099</li>
+<li>Pin SHA instead of version tag for CI pre-commit/action by @albertvillanova in https://github.com/huggingface/trl/pull/6100</li>
+<li>Fix ZeRO-3 + PEFT mixed-dtype error for core trainers by @albertvillanova in https://github.com/huggingface/trl/pull/6091</li>
+<li>Align KTO with DPO: Fix ZeRO-3 + PEFT dtype mismatch for non-quantized models by @albertvillanova in https://github.com/huggingface/trl/pull/6093</li>
+<li>Fix per-chunk lm_head.weight all-gathers under FSDP2 + chunked_nll by @albertvillanova in https://github.com/huggingface/trl/pull/6077</li>
+<li>Raise when use_liger_kernel is combined with a PEFT adapter on lm_head by @akshansh47 in https://github.com/huggingface/trl/pull/5977</li>
+<li>Align <code>epsilon</code> help/docstring wording by @qgallouedec in https://github.com/huggingface/trl/pull/6014</li>
+<li>Fix broken light-mode banner image in README by @strickvl in https://github.com/huggingface/trl/pull/6112</li>
+<li>Drop vLLM 0.12 support by @qgallouedec in https://github.com/huggingface/trl/pull/6109</li>
+<li>Add <code>router_aux_loss_coef</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6085</li>
+<li>Add support for vLLM 0.19.1 by @qgallouedec in https://github.com/huggingface/trl/pull/6107</li>
+<li>Add license to Harbor examples by @qgallouedec in https://github.com/huggingface/trl/pull/6104</li>
+<li>Remove redundant <code>.contiguous()</code> from the shift logits/labels pattern by @qgallouedec in https://github.com/huggingface/trl/pull/6046</li>
+<li>Fix BrowserGym OpenEnv example dependency and task wiring by @burtenshaw in https://github.com/huggingface/trl/pull/6117</li>
+<li>Fix async GRPO docs to require vllm&gt;=0.22.0 by @sergiopaniego in https://github.com/huggingface/trl/pull/6101</li>
+<li>Add <code>get_repetition_penalty_reward</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6058</li>
+<li>Add <code>trust_remote_code</code> to trainer configs by @qgallouedec in https://github.com/huggingface/trl/pull/5802</li>
+<li>Align AsyncGRPO num_completions_to_print with GRPO (int | None) by @qgallouedec in https://github.com/huggingface/trl/pull/6020</li>
+<li>Align AsyncGRPO epsilon_high with GRPO (None fallback to epsilon) by @qgallouedec in https://github.com/huggingface/trl/pull/6019</li>
+<li>Fix logging_steps default mentioned in AsyncGRPOConfig docstring by @qgallouedec in https://github.com/huggingface/trl/pull/6016</li>
+<li>Align async GRPO loss variable names with GRPOTrainer by @qgallouedec in https://github.com/huggingface/trl/pull/6013</li>
+<li>Make <code>evaluate()</code> accept the same dataset types as the trainer by @qgallouedec in https://github.com/huggingface/trl/pull/6116</li>
+<li>Add support for vLLM 0.20.0 by @qgallouedec in https://github.com/huggingface/trl/pull/6108</li>
+<li>Add support for vLLM 0.22.1 by @qgallouedec in https://github.com/huggingface/trl/pull/6119</li>
+<li>Fix broken internal doc link to GKD Trainer in MiniLLM docs by @ShamSaleem in https://github.com/huggingface/trl/pull/6131</li>
+<li>Align AsyncGRPO clip-ratio metrics with GRPOTrainer by @qgallouedec in https://github.com/huggingface/trl/pull/6021</li>
+<li>Add <code>get_cosine_scaled_reward</code> by @qgallouedec in https://github.com/huggingface/trl/pull/6066</li>
+<li>Move experimental example scripts out of the packaged tree by @sergiopaniego in https://github.com/huggingface/trl/pull/6141</li>
+<li>Harmonize logger imports by @qgallouedec in https://github.com/huggingface/trl/pull/6142</li>
+<li>refactor(sft): build labels during dataset preparation instead of collation by @0xadvait in https://github.com/huggingface/trl/pull/6037</li>
+<li>Add support for vLLM 0.23.0 by @qgallouedec in https://github.com/huggingface/trl/pull/6153</li>
+<li>Change <code>_get_train_sampler</code> comment to mention <code>num_iterations &gt; 1</code> by @anidoesdev in https://github.com/huggingface/trl/pull/6125</li>
+<li>Warn when sequence-level importance sampling is combined with a token-summed loss type by @discobot in https://github.com/huggingface/trl/pull/6042</li>
+<li>Drop vLLM 0.13 support by @qgallouedec in https://github.com/huggingface/trl/pull/6154</li>
+<li>Align KTO with DPO: Add evaluate() override by @albertvillanova in https://github.com/huggingface/trl/pull/6148</li>
+<li>Align KTO with DPO: Align order and signature of methods by @albertvillanova in https://github.com/huggingface/trl/pull/6149</li>
+<li>Align KTO with DPO: Move all metrics computation from log to _compute_loss by @albertvillanova in https://github.com/huggingface/trl/pull/6150</li>
+<li>Align KTO with DPO: Support sync_ref_model by @albertvillanova in https://github.com/huggingface/trl/pull/6152</li>
+<li>Replace parse_version with Version by @albertvillanova in https://github.com/huggingface/trl/pull/6164</li>
+<li>Keep extra columns in unpair_preference_dataset by @albertvillanova in https://github.com/huggingface/trl/pull/6161</li>
+<li>Align KTO with DPO: Add tests by @albertvillanova in https://github.com/huggingface/trl/pull/6160</li>
+<li>Align format of code examples in docstrings by @albertvillanova in https://github.com/huggingface/trl/pull/6147</li>
+<li>Align KTO with DPO: Add VLM multi-image test by @albertvillanova in https://github.com/huggingface/trl/pull/6163</li>
+<li>Support LFM2-VL multimodal inputs in GRPO and RLOO by @zwischenraum in https://github.com/huggingface/trl/pull/6114</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/huggingface/trl/compare/v1.6.0...v1.7.0</p>
+<hr />
+<blockquote>
+<p><strong>Source</strong> <a href="https://github.com/huggingface/trl">huggingface/trl</a> · <code>v1.7.0</code> · 2026-06-25 · <a href="https://github.com/huggingface/trl/releases/tag/v1.7.0">upstream release</a></p>
+</blockquote>
+<p><em>Mirrored verbatim for indexing. All rights belong to the upstream project.</em></p></div> </details> </div> <p class="muted" style="margin-top:var(--s8);font-size:12.5px;border-top:1px solid var(--line);padding-top:var(--s4)"> Versionshinweise stammen aus dem Upstream-Projekt. Wir ordnen und verknüpfen sie, damit du Versionen auf einen Blick vergleichen kannst. Alle Rechte liegen bei den ursprünglichen Autoren. </p> <nav class="pager" aria-label="Release navigation"> <a href="/releases/trl/1.7.1"> <span class="k">← Weiter</span> <span class="t">v1.7.1</span> </a> <span></span> </nav> <aside class="ad-slot" aria-label="Advertisement" data-astro-cid-fgwukgf6><div class="ad-slot-label" data-astro-cid-fgwukgf6>Advertisement</div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4184355057086168" data-ad-slot="9133765584" data-ad-format="auto" data-full-width-responsive="true" data-astro-cid-fgwukgf6></ins><script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script></aside> </article> <aside class="rail"> <div class="rail-card"> <div class="rail-title">Source</div> <ul class="rail-list"> <li> <a href="https://github.com/huggingface/trl/releases/tag/v1.7.0" target="_blank" rel="noopener"> <span>Original auf GitHub</span> <span class="d">↗</span> </a> </li> <li> <a href="https://github.com/huggingface/trl" target="_blank" rel="noopener"> <span>huggingface/trl</span> <span class="d">↗</span> </a> </li> </ul> </div> <div class="rail-card rail-toc"> <div class="rail-title">Auf dieser Seite</div> <nav> <a href="#" class>Funktionen</a><a href="#" class="lv3">SFT-Standard losstype ist jetzt &quot;chunkednll&quot;</a><a href="#" class="lv3">MoE-Hilfsverlust in GRPO / RLOO / AsyncGRPO</a><a href="#" class="lv3">Neuer experimenteller GMPO-Trainer</a><a href="#" class="lv3">Kontinuierliche Stapelverarbeitung von Transformatoren in GRPO / RLOO</a><a href="#" class="lv3">AsyncGRPO: native Gewichtssynchronisierung mit vLLM ≥ 0.22.0</a><a href="#" class="lv3">Padding-freies Training in AsyncGRPO</a><a href="#" class="lv3">Experimentelle Harbor-Integration</a><a href="#" class="lv3">trustremotecode in Trainerkonfigurationen</a><a href="#" class="lv3">KTO ↔ DPO-Ausrichtung: Tests, Bewertung, syncrefmodel</a><a href="#" class="lv3">LFM2-VL multimodale Eingaben in GRPO / RLOO</a><a href="#" class="lv3">Neue integrierte Belohnungshelfer</a><a href="#" class="lv3">SFT-Refaktor: Labels während der Datensatzvorbereitung erstellen</a><a href="#" class="lv3">Idefics3-Chat-Vorlage</a><a href="#" class="lv3">vLLM-Versions-Sweep</a><a href="#" class="lv3">Sonstiges</a><a href="#" class>Korrekturen</a><a href="#" class>Dokumentation und Beispiele</a><a href="#" class>CI</a><a href="#" class>Neue Mitwirkende</a><a href="#" class>Was hat sich geändert?</a> </nav> </div> <div class="rail-card"> <div class="rail-title">Versionsverlauf</div> <ul class="rail-list"> <li> <a href="/releases/trl/1.18.2"> <span class="v">v1.18.2</span> <span class="d">26-11-19</span> </a> </li><li> <a href="/releases/trl/1.18.1"> <span class="v">v1.18.1</span> <span class="d">26-11-17</span> </a> </li><li> <a href="/releases/trl/1.18.0"> <span class="v">v1.18.0</span> <span class="d">26-11-13</span> </a> </li><li> <a href="/releases/trl/1.17.1"> <span class="v">v1.17.1</span> <span class="d">26-10-30</span> </a> </li><li> <a href="/releases/trl/1.17.0"> <span class="v">v1.17.0</span> <span class="d">26-10-29</span> </a> </li><li> <a href="/releases/trl/1.16.0"> <span class="v">v1.16.0</span> <span class="d">26-10-15</span> </a> </li><li> <a href="/releases/trl/1.15.0"> <span class="v">v1.15.0</span> <span class="d">26-10-08</span> </a> </li><li> <a href="/releases/trl/1.14.2"> <span class="v">v1.14.2</span> <span class="d">26-10-06</span> </a> </li> </ul> <a href="/de/releases/trl" class="mono" style="display:inline-block;margin-top:var(--s3);font-size:11.5px;color:var(--ink-3)"> Alle anzeigen 20 →
+</a> </div> </aside> </div> </div>  </main> <footer class="site-footer"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/de/" class="brand" aria-label="STAGS NextStack"><span class="brand-mark" aria-hidden="true">S</span><span class="brand-main">STAGS</span><span class="brand-sub" aria-hidden="true">NextStack</span></a> <p>Open-Source-Release-Informationen, täglich veröffentlicht.</p> </div> <div class="footer-col"> <h3>Verfolgen</h3> <ul> <li><a href="/de/releases">Releases</a></li> <li><a href="/de/projects">Projekte</a></li> <li><a href="/de/releases.xml">RSS-Feed</a></li> </ul> </div> <div class="footer-col"> <h3>Archiv</h3> <ul> <li><a href="/zh/release_note" hreflang="zh-Hans">Chinesisches Archiv</a></li> <li><a href="/zh/chapters/" hreflang="zh-Hans">Technische Notizen</a></li> <li><a href="/zh/downloads/">Stags Tracker</a></li> </ul> </div> <div class="footer-col"> <h3>Info</h3> <ul> <li><a href="/privacy">Datenschutzrichtlinie</a></li> <li><a href="/releases.xml">RSS</a></li> <li><a href="/sitemap-index.xml">Sitemap</a></li> </ul> </div> </div> <div class="footer-btm"> <span>© 2026 STAGS</span> <span>Release notes gehören zu ihren Upstream-Projekten.</span> </div> </div> </footer> <!-- 搜索面板 --> <div class="palette-bg" data-palette-bg data-open="false"> <div class="palette" role="dialog" aria-modal="true" aria-label="Releases durchsuchen"> <div class="palette-in"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ink-4);flex:none"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <input type="search" data-palette-input placeholder="Suchen Sie nach Releases, Projekten, Versionen ..." autocomplete="off" spellcheck="false"> <span class="kbd">esc</span> </div> <ul class="palette-res" data-palette-res></ul> <div class="palette-ft"> <span>↑↓ navigate</span> <span>↵ open</span> <span style="margin-left:auto" data-palette-count></span> </div> </div> </div> <script type="module" src="/assets/Shell.astro_astro_type_script_index_0_lang.0ZkKXV47.js"></script> </body> </html>

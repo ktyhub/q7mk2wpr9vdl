@@ -1,0 +1,913 @@
+<!DOCTYPE html><html lang="ja" dir="ltr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>LocalAI v4.9.0 — STAGS NextStack</title><meta name="description" content="Thirteen days and 146 pull requests, spent on the parts of LocalAI you touch every day rather than on new engines. Authentication is now deny-by-default, chat gained end-to-end context compression, models and backends…"><meta name="keywords" content="オープンソース release note、リリース トラッカー、changelog アグリゲーター、重大な変更、非推奨トラッカー、Kafka リリース、Spring Boot リリース、Kubernetes リリース"><meta name="generator" content="Astro v5.18.2"><link rel="canonical" href="https://www.stags.cn/ja/releases/localai/4.9.0/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="STAGS NextStack — releases" href="/ja/releases.xml"><link rel="alternate" hreflang="en" href="https://www.stags.cn/releases/localai/4.9.0/"><link rel="alternate" hreflang="zh-Hans" href="https://www.stags.cn/releases/localai/4.9.0/"><link rel="alternate" hreflang="x-default" href="https://www.stags.cn/releases/localai/4.9.0/"><meta property="og:site_name" content="STAGS"><meta property="og:type" content="article"><meta property="og:title" content="LocalAI v4.9.0 — STAGS NextStack"><meta property="og:description" content="Thirteen days and 146 pull requests, spent on the parts of LocalAI you touch every day rather than on new engines. Authentication is now deny-by-default, chat gained end-to-end context compression, models and backends…"><meta property="og:url" content="https://www.stags.cn/ja/releases/localai/4.9.0/"><meta property="og:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><meta property="og:locale" content="ja_JP"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="de_DE"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:locale:alternate" content="es_ES"><meta property="og:locale:alternate" content="pt_BR"><meta property="og:locale:alternate" content="ko_KR"><meta property="og:locale:alternate" content="it_IT"><meta property="og:locale:alternate" content="ru_RU"><meta property="og:locale:alternate" content="tr_TR"><meta property="og:locale:alternate" content="id_ID"><meta property="og:locale:alternate" content="vi_VN"><meta property="og:locale:alternate" content="ar_SA"><meta property="og:locale:alternate" content="sv_SE"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.stags.cn/#website","name":"STAGS","url":"https://www.stags.cn/","inLanguage":"ja","description":"NextStack はインフラストラクチャおよび AI プロジェクトのリリースノートを索引化し、破壊的変更・非推奨・移行情報を英語優先の単一フィードで提供します。","publisher":{"@id":"https://www.stags.cn/#org"}},{"@type":"Organization","@id":"https://www.stags.cn/#org","name":"STAGS","alternateName":"NextStack","url":"https://www.stags.cn/"},{"@type":"TechArticle","@id":"https://www.stags.cn/ja/releases/localai/4.9.0/#article","headline":"LocalAI v4.9.0 release notes","datePublished":"2026-08-20","inLanguage":"en","isPartOf":{"@id":"https://www.stags.cn/#website"},"about":{"@type":"SoftwareSourceCode","codeRepository":"https://github.com/mudler/LocalAI"}}]}</script><!-- 第三方脚本的连接预热：这两个域名几乎每页都要连，
+         提前建连能省掉 DNS + TCP + TLS 一个往返（移动网络 100~300ms）。
+         AdSense 只在开关打开时预热——关掉广告后连这个域名都没必要。 --><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://pagead2.googlesyndication.com"><!-- Google AdSense：站点所有权校验与广告投放共用同一段脚本，全站只加载一次。
+         未创建广告单元时页面上不渲染任何广告容器，站点保持干净。
+         fetchpriority=low：它不参与首屏渲染，不该跟正文抢带宽。 --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184355057086168" crossorigin="anonymous" fetchpriority="low"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-RFRF1TVRMP" fetchpriority="low"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RFRF1TVRMP");
+    </script><!-- 百度统计（国内流量统计）。官方标准片段，is:inline 原样输出，
+         hm.js 动态插到首个 script 前，异步不阻塞首屏渲染。 --><script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?299e5b4e65b86ed16879bdcbe70531d6";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script><link rel="stylesheet" href="/assets/index.DQGt3qLZ.css">
+<style>.ad-slot[data-astro-cid-fgwukgf6]{margin:var(--s10) 0 0;padding-top:var(--s5);border-top:1px solid var(--line)}.ad-slot-label[data-astro-cid-fgwukgf6]{margin-bottom:var(--s3);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{display:block;min-height:100px}@media(min-width:640px){.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{min-height:250px}}
+</style></head> <body> <a class="skip" href="#main">本文へスキップ</a> <header class="hdr" data-header> <div class="wrap hdr-inner"> <a href="/ja/" class="brand" aria-label="STAGS NextStack — オープンソースのリリース情報"> <span class="brand-mark" aria-hidden="true">S</span> <span class="brand-main">STAGS</span> <span class="brand-sub" aria-hidden="true">NextStack</span> </a> <nav class="nav" aria-label="Primary"> <a href="/ja/releases">リリース</a><a href="/ja/projects">プロジェクト</a> </nav>  <details class="navmenu" data-navmenu> <summary class="navmenu-btn" aria-label="Open menu"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> </summary> <div class="navmenu-panel" role="group" aria-label="Primary"> <a href="/ja/releases" class="navmenu-item">リリース</a><a href="/ja/projects" class="navmenu-item">プロジェクト</a> </div> </details> <div class="hdr-tools"> <button class="searchbtn" type="button" data-search-open aria-label="リリースを検索"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <span class="lbl">検索</span> <span class="kbd">⌘K</span> </button> <details class="langmenu" data-langmenu> <summary class="langmenu-btn" aria-label="言語"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"> <circle cx="12" cy="12" r="9"></circle> <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path> </svg> <span class="langmenu-cur">日</span> <svg class="langmenu-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m2 4 4 4 4-4"></path></svg> </summary> <div class="langmenu-panel" role="group" aria-label="言語"> <p class="langmenu-head">言語</p> <a class="langmenu-item" href="/releases/localai/4.9.0/" hreflang="en" lang="en" data-on="false"> <span class="langmenu-label">English</span> <span class="langmenu-code">EN</span> </a><a class="langmenu-item" href="/zh/release_note/LocalAI/LocalAI_v4.9.0" hreflang="zh-Hans" lang="zh-CN" data-on="false"> <span class="langmenu-label">中文</span> <span class="langmenu-code">中</span> </a><a class="langmenu-item" href="/ja/releases/localai/4.9.0/" hreflang="ja" lang="ja" aria-current="true" data-on="true"> <span class="langmenu-label">日本語</span> <span class="langmenu-code">日</span> </a><a class="langmenu-item" href="/de/releases/localai/4.9.0/" hreflang="de" lang="de" data-on="false"> <span class="langmenu-label">Deutsch</span> <span class="langmenu-code">DE</span> </a><a class="langmenu-item" href="/fr/releases/localai/4.9.0/" hreflang="fr" lang="fr" data-on="false"> <span class="langmenu-label">Français</span> <span class="langmenu-code">FR</span> </a><a class="langmenu-item" href="/es/releases/localai/4.9.0/" hreflang="es" lang="es" data-on="false"> <span class="langmenu-label">Español</span> <span class="langmenu-code">ES</span> </a><a class="langmenu-item" href="/pt/releases/localai/4.9.0/" hreflang="pt-BR" lang="pt-BR" data-on="false"> <span class="langmenu-label">Português</span> <span class="langmenu-code">PT</span> </a><a class="langmenu-item" href="/ko/releases" hreflang="ko" lang="ko" data-on="false"> <span class="langmenu-label">한국어</span> <span class="langmenu-code">한</span> </a><a class="langmenu-item" href="/it/releases" hreflang="it" lang="it" data-on="false"> <span class="langmenu-label">Italiano</span> <span class="langmenu-code">IT</span> </a><a class="langmenu-item" href="/ru/releases" hreflang="ru" lang="ru" data-on="false"> <span class="langmenu-label">Русский</span> <span class="langmenu-code">RU</span> </a><a class="langmenu-item" href="/tr/releases" hreflang="tr" lang="tr" data-on="false"> <span class="langmenu-label">Türkçe</span> <span class="langmenu-code">TR</span> </a><a class="langmenu-item" href="/id/releases" hreflang="id" lang="id" data-on="false"> <span class="langmenu-label">Bahasa Indonesia</span> <span class="langmenu-code">ID</span> </a><a class="langmenu-item" href="/vi/releases" hreflang="vi" lang="vi" data-on="false"> <span class="langmenu-label">Tiếng Việt</span> <span class="langmenu-code">VI</span> </a><a class="langmenu-item" href="/ar/releases" hreflang="ar" lang="ar" data-on="false"> <span class="langmenu-label">العربية</span> <span class="langmenu-code">ع</span> </a><a class="langmenu-item" href="/sv/releases" hreflang="sv" lang="sv" data-on="false"> <span class="langmenu-label">Svenska</span> <span class="langmenu-code">SV</span> </a> </div> </details> <a class="iconlink" href="/releases.xml" aria-label="RSS"> <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"> <path d="M2 12.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM2 7.5a6.5 6.5 0 0 1 6.5 6.5h-2A4.5 4.5 0 0 0 2 9.5v-2ZM2 2.5A11.5 11.5 0 0 1 13.5 14h-2A9.5 9.5 0 0 0 2 4.5v-2Z"></path> </svg> </a> </div> </div> </header> <main id="main">  <div class="wrap"> <div class="detail"> <article> <header class="detail-hd"> <nav class="crumbs" aria-label="Breadcrumb"> <a href="/ja/">ホーム</a> <span class="sep">/</span> <a href="/ja/releases">リリース</a> <span class="sep">/</span> <a href="/ja/releases/localai">LocalAI</a> </nav> <h1 class="detail-title"> <span class="p">LocalAI</span> v4.9.0 </h1> <div class="detail-meta"> <span class="chip chip--minor">マイナー</span> <span><span class="k">公開日</span>2026年8月20日</span>  <span class="sep" aria-hidden="true"></span> <a href="https://github.com/mudler/LocalAI" target="_blank" rel="noopener"> <span class="k">出典</span>mudler/LocalAI </a>   <span class="sep" aria-hidden="true"></span> <a href="/releases/localai/4.9.0/"> English original </a>  <span class="sep" aria-hidden="true"></span> <button class="btn btn--ghost btn--sm" type="button" data-copy="https://www.stags.cn/ja/releases/localai/4.9.0/">リンクをコピー</button> </div> </header> <div class="prose" style="margin-top:var(--s8)"> <p class="mt-notice" role="note">このページは機械翻訳です。内容は必ず英文原文をご確認ください。</p>  <div><p>#ローカルAI v4.9.0</p>
+<h1>🎉 LocalAI 4.9.0 発売！ 🚀</h1>
+&lt;h1 align=&quot;center&quot;&gt;
+  &lt;br&gt;
+  &lt;img height=&quot;300&quot; src=&quot;https://raw.githubusercontent.com/mudler/LocalAI/refs/heads/master/core/http/static/logo.png&quot;&gt;
+  &lt;br&gt;
+  &lt;br&gt;
+&lt;/h1&gt;
+<p>LocalAI 4.9.0 登場！</p>
+<p>13 日間と 146 件のプル リクエストは、新しいエンジンではなく、毎日触れる LocalAI の部分に費やされました。認証はデフォルトで拒否されるようになり、チャットはエンドツーエンドのコンテキスト圧縮を獲得し、モデルとバックエンドにはそれぞれ 3 つではなく 1 つの正規ページがあり、<code>vllm-cpp</code> は、実際のオーディオ トラックを備えた MiniMax-H3 を提供するビデオ モダリティを成長させました。</p>
+<p><strong>ハイライト:</strong></p>
+<ul>
+<li>🔐 <strong>認証はデフォルトで拒否されます</strong> - 明示的なパブリック レジストリに表示されない限り、すべての HTTP ルートに資格情報が必要です。これにより、<code>/moderations</code>、<code>/models</code>、<code>/backends</code>、<code>/mcp/chat/completions</code> などのプレフィックスのないエイリアスが古い保護プレフィックス リストの外にあったバイパスのクラスが閉じられます。 <a href="https://www.linkedin.com/in/naor-yaacov/">Naor Yaacov</a> によって報告されました。</li>
+<li>🗜️ <strong>チャット コンテキスト圧縮</strong> - モデルごとにオプトインし、古い完全なターンは推論前に LocalAI モデルを通じて圧縮され、システム プロンプト、最新のメッセージ、およびツール呼び出しユニット全体が保持されます。比率と期間は、応答のメタデータとメトリクスとして返されます。</li>
+<li>🖥️ <strong>リソースごとに 1 ページ</strong> - <code>/app/models</code> は Explore と Installed を所有し、<code>/app/backends</code> は Catalog と Installed を所有し、ネストされたホスト ビューはなくなりました。古い <code>/app/manage</code> ブックマークは引き続き機能します。</li>
+<li>🎬 <strong>MiniMax-H3 ビデオ生成</strong> - <code>vllm-cpp</code> は、H3 チェックポイント セットの 2 番目のエンジン ハンドルを開き、ビデオとオーディオを一緒にレンダリングするため、MP4 には実際の AAC トラックが含まれます。プロンプトで音声を要求すると、モデルがそれを口パクします。</li>
+<li>🗣️ <strong>llama.cpp 上の Qwen3-TTS</strong> - アップストリーム独自の GGUF 変換を使用した、テキスト生成用にすでに出荷されているフル アクセラレータ マトリックス (CUDA、ROCm、SYCL、Vulkan、Metal、L4T) でのテキスト読み上げ。</li>
+<li>🧭 <strong>ファーストクラスルーターとしての KNN</strong> - ラベル付きプロンプトの厳選され永続化されたコーパスに対する類似性加重投票。分類子モデルがなく、ラベルが付けられたものとは異なるプロンプトは、推測ではなく決定不可能として扱われます。</li>
+<li>📊 <strong>グローバル アドミッション コントロールとライブ バックエンド トレース</strong> - プロセス全体の HTTP アドミッション境界、実行中のバックエンド操作が実行中に表現され、UI はログに直接リンクします。</li>
+<li>🕵️ <strong>可逆 PII 仮名</strong> - マスクされた値はリクエスト スコープの決定論的仮名 (<code>EMAIL_001</code>) になり、JSON および SSE トークン分割書き込みでバックエンドが値をエコーし​​た場合に復元されます。</li>
+<li>📦 <strong>Hugging Face の並列ダウンロード</strong> - スナップショット マテリアライゼーションは、一度に最大 N 個のファイル全体の転送を実行するため、多くのシャードに分割されたリポジトリがファイルごとのレイテンシーで実時間を消費することがなくなります。</li>
+<li>🖧 <strong>コールド モデル ロードは永続的なジョブです</strong> - モデルごとのアドバイザリー ロックは、複数 GB の転送にまたがることがなくなりました。これにより、オペレーター席からは 35.7 GB ロードが永久に壊れているように見えましたが、ステージングは​​その下で正常に進行していました。</li>
+<li>🎮 <strong>vllm-cpp は所有するカードをカバーします</strong> - CUDA ビルドは 1 つまたは 2 つのアーキテクチャから、amd64 では 8 つ、arm64 では 5 つになり、A100、L4、4090、H100/H200、B200、Jetson Orin、Jetson Thor が追加されました。</li>
+</ul>
+<p>さらに、リアルタイム用の単一の共有 WebRTC UDP ポート、macOS Stable Diffusion および Parakeet ビルドで実際に有効になっている Metal、デフォルトのログ レベルでのバックエンド クラッシュ診断、およびポルトガル語 (ブラジル) とインドネシア語の UI 翻訳。</p>
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img width=&quot;2880&quot; height=&quot;1800&quot; alt=&quot;ui-models-explore&quot; src=&quot;https://github.com/user-attachments/assets/7dd68a4a-e707-43e6-af1a-dcc3922469eb&quot; /&gt;
+&lt;br&gt;&lt;em&gt;モデルとバックエンドにはそれぞれ 1 つの正規ページがあり、Explore と Installed は別々の宛先ではなくビューとして表示されます。&lt;/em&gt;
+&lt;/p&gt;
+<hr />
+<h2>📊 このリリースの数字</h2>
+<p>| | |
+|---|---|
+|プルリクエストがマージされました | <strong>146</strong> |
+|コミット | 148 |
+|ファイルが変更されました | 420 (<strong>+27,788</strong> / -4,670) |
+|開発ウィンドウ | 13 日間 (2026-08-07 から 2026-08-20) |
+|人間の貢献者 | 10 名、うち <strong>3 名が初めて</strong> |
+|ギャラリーエントリー | 1,622 ～ <strong>1,707</strong> (+85) |</p>
+<p>作業が着地した場所:</p>
+<p>|エリア |変更 |
+|---|---|
+| <code>core/</code> | 279 ファイル全体で +17,193 / -4,187 |
+| <code>gallery/</code> | +3,808 / -62 |
+| <code>backend/</code> | 60 ファイル全体で +3,298 / -177 |
+| <code>pkg/</code> | 31 ファイル全体で +1,180 / -113 |
+| <code>swagger/</code> | +1,095 / -5 |
+| <code>docs/</code> | 23 ファイル全体で +952 / -98 |</p>
+<hr />
+<h2>📌TL;DR</h2>
+<p>|エリア |概要 |
+|-----|----------|
+| 🔐 <strong>デフォルトで認証</strong> |明示的なパブリック レジストリにリストされていない限り、すべてのメソッドとパスには資格情報が必要です。 API 命令、Swagger GET、LocalAI の既知のドキュメント、およびヘルス、ログイン、OAuth、SPA、資産、ブランド化、およびノー​​ド登録トークンのブートストラップ フローは公開されたままです。 <strong>移行:</strong> データベース認証または従来の API キーが構成されている場合、<code>/version</code> および生成された音声、画像、ビデオ、および 3D URL には資格情報が必要になりました。組み込み展開では、<code>ApplicationConfig.PathWithoutAuth</code> を通じてナロー プレフィックスを追加でき、従来の GET 除外フラグは明示的な互換性オーバーライドとして残ります。 |
+| 🗜️ <strong>コンテキスト圧縮</strong> |モデルごとのオプトイン <code>compression</code> 構成。古い完全なターンは、PII フィルタリングとアシスタント/MCP プロンプト インジェクション (後の MCP 反復を含む) の後、推論前に構成された LocalAI モデルを通じて圧縮されます。主要なシステム/開発者プロンプト、最新のメッセージ、および完全なツール呼び出し/結果ユニットが保存されます。ツール スキーマと完了ヘッドルームは、保守的なオフライン トークン バウンドで考慮されます。メタデータは、エクスポートされたイベント、比率、および期間のメトリクスとともに、非ストリーミング応答とストリーミング使用状況トレーラーに乗ります。デフォルトでは無効になっています。クラウドプロキシのパススルーは拒否されます (変換モードは機能します)。 |
+| 🖥️ <strong>統合ライフサイクル UI</strong> | <code>/app/models</code> は、URL ベースの検索、状態、選択を備えた <strong>Explore</strong> と <strong>Installed</strong> を所有しています。 <code>/app/backends</code> は、バリアント、開発ビルド、ターゲット ノード スコープを維持しながら、<strong>カタログ</strong> と <strong>インストール済み</strong> を所有します。 Explore は、機能を認識したオープンおよび管理インストールを提供します。破壊的モデル コントロールは [インストール済み] のままです。操作の概要には、共有サマリー ポーラーからのホスト容量が表示され、ネストされたホストの宛先が削除されます。 <code>/app/manage</code> は、レガシー クエリの状態を維持しながらリダイレクトします。 APIの変更はありません。 |
+| 📥 <strong>インポートフォームの再構築</strong> |インポート ページは <code>page--medium</code> に移動し、作業列と書式参照が閉じた山形の後ろではなくその横に表示されます。ソース フィールドが主人公であり、独自の [インポート] ボタンがあり、実際のアクションが <code>&lt;form&gt;</code> の外側にあったためにのみ存在していた <code>aria-hidden</code> 送信を削除します。シンプル モードとアドバンス モードはなくなりました (約 80% の面が同じ)。ソースまたは YAML の実際の区別は、2 つのタブになりました。また、2 つのクラスのバグも修正されています。<code>className</code> がブラウザのクロムにまったく落ちないプライマリ ボタンと、2 つのアイコンが 1 つの <code>::before</code> をめぐって争っているときに、ボタン独自のフォントとして Font Awesome を設定する <code>class=&quot;btn btn-primary fas fa-save fa-upload&quot;</code> です。 |
+| 🎬 <strong>MiniMax-H3 ビデオ</strong> | vllm.cpp ABI v12 上の <code>vllm-cpp</code>。 2 番目のエンジン ハンドルは H3 チェックポイント セット (DiT は <code>parameters.model</code>、テキスト エンコーダーと 2 つの VAE の名前は <code>options:</code>) をロードし、<code>GenerateVideo</code> はビデオとオーディオを組み合わせて実際の AAC トラックを含む MP4 にレンダリングします。 DiT パーティションは宣言されていますが、検出されません。コミュニティ量子化はリリース メタデータを取り除き、FL2VA と Ref2VA の DiT はバイト構造的に同一であるため、<code>checkPartitionConditioning</code> はエンジンが実行される前に参照条件付き FL2VA リクエストを拒否します (そうでないと、何時間もレンダリングされて色付きのラティスが返されてしまいます)。 ffmpeg はホストから来ます。libvllm はマルチプレクサ argv を構成し、何も生成しません。新しいギャラリーエントリー <code>minimax-h3-fl2va-q4</code>。 |
+| 🗣️ <strong>llama-cpp 上の Qwen3-TTS</strong> |アップストリームの GGUF 変換を使用した、CUDA、ROCm、SYCL、Vulkan、Metal、および L4T 上の <code>llama-cpp</code> バックエンドを介した TTS。スロット ベースの <code>SERVER_TASK_TYPE_TTS</code> タスクとして実装されます。これは、<code>server_context</code> が <code>llama_context</code> を所有し、独自のスレッドでスロット スケジューラを実行することを前提とした同時実行安全な統合です。まだドラフト中のアップストリーム サーバー ハンクを <code>patches/0002-add-server-task-type-tts.patch</code> として保持します (ggml-org/llama.cpp#26603 のマージ時に削除)。ギャラリー: <code>qwen3-tts-llamacpp</code> と <code>qwen3-tts-llamacpp-q4</code>。既存の <code>qwen3-tts-cpp</code> バックエンドは変更されず、別のパスのままになります。 |
+| 🧭 <strong>KNN ルーティング</strong> | <code>classifier: knn</code> は、ラベル付きサンプル プロンプトに対する類似度加重投票によってルーティングするため、分類子モデルは必要なく、ラベルの知識はシードおよびキュレートしたコーパス内に存在します。 <code>knn.similarity_threshold</code> 未満のエントリーは投票できません。どれもこれをクリアしない場合は、ルータがフォールバックを実行し、<code>nearest_similarity</code> は決定とフォールバックの両方に記録されます。 <code>&lt;data path&gt;/router-corpus</code> 下のルーターごとに 1 つの JSONL ファイルが信頼できる情報源であり、分類子の構築時にメモリ内インデックスが再構築され、埋め込みモデルが変更されたときにエントリが再埋め込まれます。コーパス入力は設計により API のみです: <code>POST /api/router/{name}/corpus</code>、<code>GET .../corpus/stats</code> (ラベル カウントのみ、テキストは返されません)、<code>DELETE .../corpus</code>、管理ゲートされ、MCP ツールとして公開されます。 |
+| 📊 <strong>入場と痕跡</strong> |プロセス全体の HTTP アドミッション コントロール。以前はバックエンドごとにのみ行われていたものを制限します。バックエンド操作は実行中に表現され、実行中のバックエンド トレースは即時のログ リンクとともに UI に表示されます。 |
+| 🕵️ <strong>PII の仮名</strong> | <code>pii.reverse_in_response</code> をオプトインします。マスクされたリクエスト値は、リクエスト内で一意の決定論的な仮名 (<code>EMAIL_001</code>、<code>EMAIL_002</code>) になり、バックエンドがそれらを返すと、応答書き込み全体で分割された SSE トークンを含めて復元されます。置換マップはリクエストローカルであり、永続化されません。不可逆的な <code>[REDACTED:...]</code> はデフォルトのままです。 |
+| 📦 <strong>並列 HF ダウンロード</strong> | <code>DownloadFilesWithConcurrency</code> は、<code>errgroup</code> と <code>SetLimit</code> を介して最大 N 回のファイル全体転送を実行します。単一ファイルは決して分割されないため、<code>.partial</code> 再開とファイルごとの SHA 検証は変更されず、2 つの非アーティファクト呼び出し元は、1 個の制限のラッパーを通じて順次順序付けとフェイルファスト動作を維持します。 <code>completedBytes</code> は <code>atomic.Int64</code> になり (それ以外の場合、レース検出器は 3 つのレースを報告しました)、呼び出し元のステータス コールバックはシリアル化されたままになります。 |
+| 📞 <strong>リアルタイム WebRTC ポート</strong> | <code>--web-rtc-udp-port</code> / <code>LOCALAI_WEBRTC_UDP_PORT</code> は、リアルタイム呼び出し全体で 1 つの Pion ICE UDP マルチプレクサを再利用し、シグナリングおよび文書化されたコンテナ/ファイアウォールのセットアップを通じてバインドの失敗が表面化しました。フォローアップの修正により、固定ポートが設定されている場合に <code>LOCALAI_WEBRTC_ICE_INTERFACES</code> が有効になりますが、これは黙って無視されていました。ワイルドカード マルチプレクサにより pion がすべてのインターフェイス自体を列挙し、ICE 同意チェックが失敗するとドロップされるルーティング不可能な <code>172.x</code> 候補をブラウザに渡しました。 |
+| 🖧 <strong>耐久性のある低温荷重</strong> |モデルごとの勧告ロックは、転送の有効期間ではなく、ミリ秒単位で測定される重複排除の決定です。コールド ロードは、バックエンド インストール、マルチ GB ステージング、チェックポイント ロードにわたって保持されるのではなく、永続ジョブとして実行されるようになりました。また、<code>WithLockCtx</code> は、<code>statement_timeout</code> だけでなく <code>lock_timeout</code> からも防御できるようになりました (どちらも同じブロッキング <code>pg_advisory_lock</code> を中止し、後者のみがオーバーライドされました)。 |
+| 🎮 <strong>vllm-cpp CUDA カバレッジ</strong> | amd64 は <code>120a;121a</code> から <code>80;86;89;90a;100a;103a;120a;121a</code> まで、arm64 は <code>121a</code> から <code>87;90a;100a;110;121a</code> までとなり、シリコンが存在する場所によって分割されます。リストにないカードの動作が遅くなったわけではありません。インストールが成功したと報告された後、<code>no kernel image is available for execution on the device</code> による最初のリクエストでカードが停止しました。 CUDA 13 ガードが両方のブランチをカバーするようになり、Triton-AOT はオンのままになります。 |
+| 🌍 <strong>2 つの新しい言語</strong> |ポルトガル語 (ブラジル)、<code>en/</code> と完全に同等のキーでの 14 の名前空間の完全な翻訳、および管理、メディア、およびナビゲーション サーフェス用のインドネシア語。 |
+| 🧠 <strong>モデル</strong> | 85 の新しいギャラリー エントリ: Qwen3.8 (9B、27B、Ridge および小型バリアント)、Gemma 4 Agentic および Scotoma 2、DeepSeek V4 Pro 0813、Ling 3.0 Flash、Nemotron 3.5 Lightning 30B、Tess 4 27B、Ornith 1.0 および 1.5 9B、 LFM2.5 230M および VL 1.6B、HunyuanOCR および OvisOCR2、Higgs Audio v3 TTS、MiniMax-H3 Ref2VA、さらに vllm.cpp テキスト生成エントリ、および最初の Carbon ゲノミクス ファミリ。 |</p>
+<hr />
+<h2>🚀 新機能と主要な機能強化</h2>
+<h3>🔐 認証がデフォルトで拒否されるようになりました</h3>
+<p>以前の分類子は、選択された API スタイルのパスをプレフィックスによってゲートしました。そのリストにないパスはすべてパブリックであり、接頭辞のないエイリアス (<code>/mcp/chat/completions</code>、<code>/moderations</code>、<code>/models</code>、<code>/backends</code>、<code>/import-model</code>) はグローバル認証をバイパスでき、新しく登録されたルートはデフォルトで同じ弱点を継承する可能性があります。</p>
+<p>ミドルウェアはメソッドを認識し、デフォルトで拒否するようになりました。ルートは、そのメソッドとパスが明示的なパブリック レジストリに存在する場合にのみパブリックになります。公開されたままなのは、ブートストラップと検出可能にするために必要なセットです。API 命令、Swagger GET ルート、LocalAI の既知のドキュメント、ヘルス、ログイン、OAuth、SPA、資産、ブランディング、およびノー​​ド登録トークンのフローです。テストではルーター全体のカバレッジがアサートされるため、新しいルートが省略によって公開されることはありません。</p>
+<p><strong>移行の影響。</strong> データベース認証または従来の API キーが構成されている場合、<code>/version</code> および生成された音声、画像、ビデオ、および 3D URL には資格情報が必要になります。組み込み展開では、<code>ApplicationConfig.PathWithoutAuth</code> 経由でナロー プレフィックスを追加でき、従来の GET 除外フラグは明示的な互換性オーバーライドとして引き続き利用できます。</p>
+<p>このクラスの認証バイパスを報告してくれた <a href="https://www.linkedin.com/in/naor-yaacov/">Naor Yaacov</a> に感謝します。</p>
+<blockquote>
+<p>🔗 PR: #11602</p>
+</blockquote>
+<h3>🗜️ エンドツーエンドのコンテキスト圧縮</h3>
+<p>長い会話は最終的には合わなくなります。圧縮はモデルごとにオプトインされており、有効にすると、構成された LocalAI モデルを通じて古い完全なターンが切り捨てられるのではなく、推論前に圧縮されます。</p>
+<p>触れられないもの: 主要なシステムと開発者の安全性プロンプト、最新のメッセージ、完全なツール呼び出し/結果ユニット。これらは完全に保持されるため、圧縮された履歴が結果なしで呼び出しを残すことはありません。これは、PII フィルタリングの後、およびその後の MCP 反復を含むアシスタント/MCP プロンプト挿入後に実行されるため、圧縮されるのは実際に送信されるプロンプトです。ツール スキーマと完了ヘッドルームは、保守的なオフライン トークン バウンドで考慮されます。
+圧縮メタデータは、非ストリーミング応答およびストリーミング使用状況トレーラーで公開され、圧縮イベント、比率、および期間がメトリクスとしてエクスポートされます。 LocalAI は不透明なプロバイダー ペイロードを安全に書き換えることができないため、クラウド プロキシ パススルー構成は圧縮を拒否します。翻訳モードがサポートされています。すでに開始されているストリームでの遅延障害は、帯域内 SSE エラーとして返され、その後に <code>[DONE]</code> が続きます。</p>
+<blockquote>
+<p>🔗 PR: #11556</p>
+</blockquote>
+<h3>🖥️ リソースごとに 1 つの正規ページ</h3>
+<p>モデルにはギャラリーと別個のホスト管理画面がありました。バックエンドには、インストールされたバイナリ用のネストされたホスト ビューがありました。これらの間では、リソースがどこに存在するかは明らかではなく、共通のライフサイクル アクションは必要以上に 1 レベル深い位置にありました。</p>
+<p>各リソースには 1 ページが含まれるようになりました。 <code>/app/models</code> は <strong>Explore</strong> と <strong>Installed</strong> を所有し、<code>/app/backends</code> は <strong>Catalog</strong> と <strong>Installed</strong> を所有し、どちらも URL ベースの検索、状態、選択を備え、バックエンドはバリアント、開発ビルド、およびターゲット ノード スコープを保持します。 Explore では、機能を認識した <strong>開く</strong> および <strong>インストールの管理</strong> アクションが表示されますが、破壊モデル コントロールはインストール済みのままです。 Operate Overview は、共有サマリー ポーラーからホスト容量を読み取り、ネストされたホストの宛先が削除されます。狭いリスト/詳細ビューでは、詳細ビューから戻ったときにフォーカスが元の行に戻ります。</p>
+<p>API は何も変更されておらず、既存の <code>/app/manage</code> ブックマークは、レガシー モデルとバックエンド クエリの状態を保持する置換リダイレクトを通じて機能し続けます。</p>
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img width=&quot;2880&quot; height=&quot;1800&quot; alt=&quot;ui-backends-catalog&quot; src=&quot;https://github.com/user-attachments/assets/c18e9272-70bd-4875-bda0-319bea616637&quot; /&gt;
+  &lt;br&gt;&lt;em&gt;ターゲット ノードのスコープはそのままで、1 ページのビューとしてカタログ化およびインストールされます。&lt;/em&gt;
+&lt;/p&gt;
+<blockquote>
+<p>🔗 PR: #11548</p>
+</blockquote>
+<h3>📥 インポートフォーム、再構築されました</h3>
+<p>インポート ページは新しいパレットを採用しましたが、古いレイアウト (送信するフォームから切り離されたプライマリ アクションを含む 760 ピクセルの列) を維持しました。問題のうち 2 つは完全なバグでした。</p>
+<p><code>ImportModel.jsx:808</code> には <code>className</code> がまったく搭載されていなかったので、システム クロム、システム フォント、間違った半径、そしてデザイン システム フォーカス リングなしで、ページの唯一の最も重要なコントロールがユーザー エージェント ボタンに渡されました。その隣では、<code>class=&quot;btn btn-primary fas fa-save fa-upload&quot;</code> が Font Awesome をボタン独自のフォント ファミリとして設定し、そのラベル テキストが継承しました。一方、<code>fa-save</code> と <code>fa-upload</code> は 1 つの <code>::before</code> をめぐって争っていました。</p>
+<p>レイアウトは <code>page--medium</code> に移動し、作業列とその横に書式参照が表示されます。この参照は、初めての管理者が抱く唯一の質問に答えるものであり、デフォルトで閉じられている山形の後ろに座っていました。 1024px以下では消えるのではなく開示になります。ソース フィールドは主人公であり、貼り付けるものを保持する等幅です。また、独自の [インポート] ボタンがあり、<code>&lt;form&gt;</code> の外側にある実際のアクションを補うためだけに存在していた <code>aria-hidden</code> 送信を削除します。シンプル モードとアドバンスト モードは廃止されました。これらは約 80% 同一の表面であり、重複によりモード スイッチ、localStorage キー、およびスイッチが非表示にする状態を保護することだけを行う 3 つのボタンの Keep/Discard/Cancel ダイアログが必要になりました。本当に異なるのは入力の種類で、ソースまたは YAML という 2 つのタブになっています。サイズと VRAM の推定値は、ページ ヘッダー上のバナーとしてではなく、それを生成したフィールドの下にレポートされます。</p>
+<p>フォローアップでは、同じクラスのバグが UI の残りの部分にわたって一掃されました。7 ページ上の 8 つのヘッダー コントロールで、2 つまたは 3 つの要素のクラスが 1 つの文字列に折りたたまれていました。</p>
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img width=&quot;2880&quot; height=&quot;1800&quot; alt=&quot;ui-import-model&quot; src=&quot;https://github.com/user-attachments/assets/d8abd9d6-81fa-4ef7-8062-4bcf3836a27a&quot; /&gt;
+  &lt;br&gt;&lt;em&gt;1 つのフォーム、折りたたみ可能なオプション パネル、およびそれを読むことができるフォーマット リファレンス。&lt;/em&gt;
+&lt;/p&gt;
+<blockquote>
+<p>🔗 PR: #11461、#11462、#11488</p>
+</blockquote>
+<h3>🎬 MiniMax-H3: ビデオとオーディオを統合</h3>
+<p>vllm.cpp の安定した C ABI は v12 でビデオ スライスを拡張し、<code>vllm-cpp</code> は 2 つの機能を提供するようになりました。テキストの生成は変更されません。モデル構成が H3 チェックポイント セットを宣言すると、代わりに <code>Load</code> がビデオ エンジンを開き、<code>GenerateVideo</code> が LocalAI の既存の <code>/video</code> エンドポイントを介して <strong>ビデオとオーディオを一緒に生成</strong>して clip をレンダリングするため、MP4 はサイレントではなく実際の AAC トラックで返されます。プロンプトで音声を要求すると、モデルがそれを口パクします。</p>
+<p>統合を形成するのは次の 3 つです。</p>
+<p><strong>ビデオ エンジンは 2 番目のハンドルであり、最初のハンドルのモードではありません。</strong> H3 はモデル ディレクトリではありません。 DiT、テキスト エンコーダー、および 2 つの VAE は別個のアーティファクトであり、vllm.cpp の 2 つのローダーは互いのチェックポイントを拒否します。 <code>parameters.model</code> は DiT です。セットの残りの部分の名前は <code>options:</code> です。</p>
+<p><strong>DiT パーティションは宣言されていますが、検出されません。</strong> FL2VA DiT は <code>t2va</code> および ZZPH100​​ZZ に対応します。 <code>ref2va</code> は別のチェックポイントです。コミュニティ GGUF および NVFP4 量子化はリリース メタデータを取り除き、2 つの DiT はバイト構造的に同一であるため、エンジンはどちらを持っているかが通知されるまで生成を拒否します。 FL2VA DiT にリファレンス コンディショニングを渡すと、何時間もレンダリングが行われ、フレーム上に色付きのラティスが返されるため、<code>checkPartitionConditioning</code> はエンジンが呼び出される前にその組み合わせを拒否します。</p>
+<p><strong>ffmpeg はホストから来ます。</strong> libvllm はフレームと WAV を書き込み、マルチプレクサ argv を構成します。その後、何も生成しません。これは意図的な上流プロセス境界です。バックエンドは<code>argv[0]</code>を代替して実行します。</p>
+<p>ギャラリーエントリー <code>minimax-h3-fl2va-q4</code> (Q4_K_M FL2VA セット) および <code>minimax-h3-ref2va-q4</code> は同梱されます。</p>
+<blockquote>
+<p>🔗 PR: #11424、#11439</p>
+</blockquote>
+<h3>🗣️ llama.cpp バックエンドを介した Qwen3-TTS</h3>
+<p>Qwen3-TTS は <code>llama-cpp</code> バックエンドで実行されるようになりました。これは、アップストリーム独自の GGUF 変換を使用して、テキスト生成用にすでに出荷されている同じアクセラレータ マトリックス (CUDA、ROCm、SYCL、Vulkan、Metal、L4T) 上でテキスト読み上げを行うことを意味します。</p>
+<p><code>grpc-server.cpp</code> は、llama.cpp の共有 <code>server_context</code> 上のアダプターであり、<code>llama_context</code> を所有し、独自のスレッドでスロット スケジューラーを実行するため、gen-audio ループ自体を駆動する gRPC ハンドラーはそのスケジューラーと競合します。 TTS をスロットベースの <code>SERVER_TASK_TYPE_TTS</code> タスクにすることは、ツリー内に既に存在する <code>0001-add-server-task-type-score.patch</code> の先行例に続く、同時実行性を考慮した統合です。 llama.cpp は Qwen3-TTS を ggml-org/llama.cpp#26254 にマージしました。 #26603 のサーバー配管はまだドラフトであるため、<code>patches/0002-add-server-task-type-tts.patch</code> として保持されており、マージされたら削除する必要があります。 <code>disable-tts-task.sh</code> は、パッチなしで <code>grpc-server.cpp</code> をフォークにコピーするため、turboquant と bonsai のコンパイルを継続します。</p>
+<p>どちらのパスも CPU 上でエンドツーエンドで検証され、目視ではなく測定された実際の音声を含む有効な 24 kHz モノラル 16 ビット WAV が返されました。ギャラリー エントリ: <code>qwen3-tts-llamacpp</code> および <code>qwen3-tts-llamacpp-q4</code>。</p>
+<p>qwentts.cpp 上の既存の <code>qwen3-tts-cpp</code> バックエンドはそのままです。これは 2 番目の独立したパスであり、代替ではありません。</p>
+<blockquote>
+<p>🔗 PR: #11392</p>
+</blockquote>
+<h3>🧭 ファーストクラスルーターとしての KNN</h3>
+<p><code>classifier: knn</code> は、分類子のキャッシュからプライマリ要求ルーターへの KNN 検索をプロモートします。 <code>score</code> や <code>colbert</code> とは異なり、分類子モデルは必要ありません。ラベルの知識は、管理者 API を通じてシードおよびキュレートするラベル付きサンプル プロンプトのコーパス内に存在するため、ルーティングの決定は決定論的で監査可能で、モデルの意見ではなく段階的な経験に基づいています。</p>
+<p>明示的な認識論的ゲートがあります。 <code>knn.similarity_threshold</code> より下のコーパス エントリは投票できず、どれもクリアしない場合、分類子はラベルをアクティブにせず、ルーターがフォールバックを実行します。すべてのラベル付きエクスペリエンスとは異なるプロンプトは、推測ではなく決定不可能として扱われます。意思決定ではフォールバック行にも <code>nearest_similarity</code> が記録されるため、最も近いラベル付きエクスペリエンスが実際にどれだけ離れていたかを確認できます。また、[ルーティング] タブではコーパス外フォールバックについて説明し、ラベルごとのコーパス数が表示されます。</p>
+<p>永続性は、<code>&lt;data path&gt;/router-corpus</code> 下のルーターごとに 1 つの JSONL ファイルであり、テキスト、ラベル、ベクター、およびエンベッダー フィンガープリントが保持されます。そのファイルが真実の情報源です。ローカル ストア インデックスは分類子の構築時にそこから再構築され、純粋なメモリ内インデックスのままとなり、別の埋め込みモデルで記録されたエントリはロード時に再埋め込まれます。これは、ローカル ストア コレクションが存続するというドキュメントの主張も訂正します。埋め込みキャッシュは再起動しても存続せず、今でも存続しますが、コーパスは存続します。</p>
+<p>コーパス入力は設計により API のみです。これは、エントリにユーザー コンテンツの例が含まれる可能性があるためです。<code>POST /api/router/{name}/corpus</code> シード (宣言されたポリシーに対して検証され、サーバー側に埋め込まれ、すぐにインデックス付けされるラベル)、<code>GET .../corpus/stats</code> はラベル カウントのみを検査して返します (エントリ テキストはどのサーフェスからも返されません)、および <code>DELETE .../corpus</code> ワイプです。すべては兄弟ルーターのエンドポイントと同様に管理ゲートされ、MCP ツールとして公開されます。</p>
+<blockquote>
+<p>🔗 PR: #10652</p>
+</blockquote>
+<h3>📊 グローバル アドミッション コントロールとバックエンド トレースの実行</h3>
+<p>アドミッション コントロールはバックエンドごとに存在するため、プロセス全体を制限するものは何も残っておらず、トレース リストは際限なく増加する可能性がありました。 HTTP アドミッションはプロセス全体で制限されるようになりました。</p>
+<p>それに加えて、バックエンド操作は完了後だけではなく実行中に表示され、実行中のバックエンド トレースはログへの即時リンクとともに UI に表示されるため、時間がかかりすぎる操作は待つのではなく確認できるものになります。</p>
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img width=&quot;2880&quot; height=&quot;1800&quot; alt=&quot;ui-activity-inflight&quot; src=&quot;https://github.com/user-attachments/assets/fe0acd52-3688-4c20-ae1d-cef9f8b2825e&quot; /&gt;
+  &lt;br&gt;&lt;em&gt;オペレーションは、終了後だけでなく、実行中にも表現されます。&lt;/em&gt;
+&lt;/p&gt;
+<blockquote>
+<p>🔗 PR: #11560</p>
+</blockquote>
+<h3>🕵️ 往復で生き残る PII の仮名</h3>
+<p>PII ミドルウェアは値を不可逆的にマスクしました。これはログにとっては適切ですが、会話にとっては間違っています。<code>[REDACTED:EMAIL]</code> を 2 回渡されたモデルは、1 つのアドレスを見たのか 2 つのアドレスを見たのか判断できず、それらについて記述されたものはすべて使用できなくなります。</p>
+<p>オプトイン <code>pii.reverse_in_response</code> は、マスクされたリクエスト値をリクエスト内の一意の決定論的な仮名 (<code>EMAIL_001</code>、<code>EMAIL_002</code>) に変換し、バックエンドがそれらを返した場合にそれらを復元します。復元では、通常の JSON トークンと SSE トークンが応答書き込みに分割されて処理されます。置換マップはリクエストローカルのままであり、永続化されません。不可逆的な <code>[REDACTED:...]</code> はデフォルトのままです。</p>
+<blockquote>
+<p>🔗 PR: #11272</p>
+</blockquote>
+<h3>📦 制限付き平行ハグフェイスのダウンロード</h3>
+<p>スナップショット マテリアライゼーションでは、シーケンシャル エグゼキュータを介してすべてのファイルがフェッチされるため、多くのシャードに分割されたリポジトリは、バイトの移動ではなく、ファイルごとのリクエストのレイテンシに実時間のほとんどを費やしてしまいました。</p>
+<p><code>DownloadFilesWithConcurrency</code> は、<code>errgroup</code> と <code>SetLimit</code> を介して、最大 N 個のファイル全体の転送を一度に実行できるようになりました。ファイル全体のみが並列実行されます。単一のファイルは決して分割されないため、<code>.partial</code> 再開機構とファイルごとの SHA チェックは影響を受けません。 2 つの非アーティファクト呼び出し元 (<code>core/gallery/models.go</code> および <code>core/config/model_config_loader.go</code>) は、制限 1 を渡すラッパーを通じて以前の動作を正確に維持するため、タスクは引き続きスライス順序で実行され、最初の失敗はその後のタスクが開始される前に返されます。</p>
+<p>並列パスの 2 つの結果は知っておく価値があります。<code>completedBytes</code> は <code>atomic.Int64</code> になりましたが、これは予防策ではありません (単純な <code>int64</code> では、競合検出器は 3 つの競合を報告します)。もう 1 つは、呼び出し元のステータス コールバックは、順次パスが暗黙的に与えた保証を保持するためにシリアル化されます。 <code>AfterDownload</code> は、並列処理が重複して存在するかどうかの確認と昇格の作業を行うため、意図的にシリアル化されていません。</p>
+<blockquote>
+<p>🔗 PR: #11162</p>
+</blockquote>
+<h3>📞 1 つの UDP ポート上のリアルタイム WebRTC</h3>
+<p><code>--web-rtc-udp-port</code> / <code>LOCALAI_WEBRTC_UDP_PORT</code> は、リアルタイム WebRTC 呼び出し全体で単一の Pion ICE UDP マルチプレクサを再利用するため、コンテナーまたはファイアウォールには範囲ではなく 1 つのルールが必要です。 UDP バインドの失敗は、不透明に失敗するのではなく、シグナリングを通じて表面化され、コンテナーとファイアウォールの設定が文書化されます。</p>
+<p>フォローアップにより、開いたギャップは埋まりました。固定 UDP ポートが設定されるたびに、<code>LOCALAI_WEBRTC_ICE_INTERFACES</code> は暗黙的に無視されました。これはまさにオペレーターが求める組み合わせです。ファイアウォール ルールを作成するためにポートを固定することと、到達不能な <code>docker0</code> アドレスと <code>veth</code> アドレスを候補リストから除外するためにインターフェイスを制限することは、通常は一緒に行われます。ワイルドカード マルチプレクサにより、pion は nil フィルターを使用してインターフェイス自体を列挙することで候補アドレスを導出するようになりました。そのため、docker ブリッジを備えたホストでは、ブラウザーは <code>172.18.0.1</code>、<code>172.17.0.1</code>、<code>10.10.10.1</code> およびその友人を受信し、正常なペアで接続され、ICE 同意チェックが他のペアで失敗するとドロップされました。</p>
+<blockquote>
+<p>🔗 PR: #11436、#11466</p>
+</blockquote>
+<h3>🖧 コールド モデルのロードは永続的なジョブとして実行されます</h3>
+<p>2 つのレプリカ フロントエンドで、新しく追加された Jetson Thor ワーカーに 35.7 GB GGUF をロードすると、モデルは操縦席から永久にアンロード可能になりましたが、実際にはその下でステージングが通常どおりに進行していました。レプリカ A は、約 20 分間の転送の間、モデルごとの勧告ロックを保持しました。レプリカ B は同じモデルの <code>pg_advisory_lock</code> でブロックされ、ロールの <code>statement_timeout</code> によって 60 秒で強制終了され、UI を再試行するたびにそれが再現されました。</p>
+<p>その 1 つの症状の背後には 2 つの欠陥がありました。ロックの有効期間は転送の有効期間であり、<code>Route</code> は <code>advisorylock.WithLockCtx</code> でバックエンド インストール、マルチ GB ステージング、およびチェックポイント ロードをラップしており、ミリ秒の重複排除の決定がそのモデルのクラスター全体の停止に変わります。また、<code>WithLockCtx</code> は <code>lock_timeout</code> をオーバーライドしますが、<code>statement_timeout</code> はオーバーライドしません。ただし、どちらも同じブロッキング呼び出しを中止します。</p>
+<p>コールド ロードは永続ジョブとして実行されるようになったため、ロックは決定を下すためにのみ保持されます。</p>
+<blockquote>
+<p>🔗 PR: #11514</p>
+</blockquote>
+<h3>🎮 vllm-cpp はユーザーが所有するカード用にビルドします</h3>
+<p><code>vllm-cpp</code> CUDA イメージは、vllm.cpp 独自のリリース アーカイブ ビルドの 10 アーキテクチャのうち、Blackwell 専用にビルドされました。AMD64 上の <code>120a;121a</code> と arm64 上の <code>121a</code> のみです。
+注目に値するのは、障害モードです。リストにないカードは遅いわけではなく、<code>local-ai backends install vllm-cpp</code> が成功を報告した後、<code>no kernel image is available for execution on the device</code> による最初のリクエストで停止します。これは、バックエンドがインストールされているが何も提供できない Jetson Thor ノードで見つかりました。</p>
+<p>| |前 |後 |
+|---|---|---|
+| amd64 | <code>120a;121a</code> | <code>80;86;89;90a;100a;103a;120a;121a</code> |
+|アーム64 | <code>121a</code> | <code>87;90a;100a;110;121a</code> |</p>
+<p>分割はシリコンが存在する場所に従います。Jetson (<code>87</code> Orin、<code>110</code> Thor) は arm64 のみ、デスクトップ <code>120a</code> は amd64 のみ、<code>90a</code>/<code>100a</code> は SBSA パーツのため両方にあります。これにより、A100、A10/3090、L4/4090/RTX 6000 Ada、H100/H200、B200、B300、Jetson Orin、Jetson Thor が追加されます。 CUDA 13 ガードは amd64 だけではなく両方のブランチをカバーするようになり、Triton-AOT はオンのままになります。</p>
+<blockquote>
+<p>🔗 PR: #11512</p>
+</blockquote>
+<h3>🌍 ポルトガル語 (ブラジル) およびインドネシア語</h3>
+<p>WebUI の完全な <code>pt-BR</code> 変換: <code>modelEditor.json</code> を含む <code>en/</code> と完全なキー パリティの 14 の名前空間。すべての i18next 補間変数と <code>_one</code>/<code>_other</code> 複数キーが保持されます。インドネシア語は、管理文字列、メディア文字列、ナビゲーション文字列をカバーします。どちらもブランド、モデル、技術識別子を翻訳せずに維持し、既存のロケール規則に一致させます。</p>
+<blockquote>
+<p>🔗 PR: #11427、#11493</p>
+</blockquote>
+<h3>🧰 知っておく価値のある小さな機能</h3>
+<ul>
+<li><strong>Metal は、実際には 2 つの macOS バックエンドでオンになっています。</strong> <code>stablediffusion-ggml</code> は、ランナーが決して定義しない <code>OS=Darwin</code> 変数で Metal フラグをゲートしたため、Darwin ワークフローの <code>BUILD_TYPE=metal</code> は <code>GGML_METAL_EMBED_LIBRARY=ON</code> なしでビルドを生成し、<code>kernel_mul_mv_ext_bf16_f32_r1_5</code> を公開できないランタイム ソース パスを配布しました。 <code>parakeet-cpp</code> は <code>BUILD_TYPE=metal</code> を <code>PARAKEET_GGML_METAL</code> にまったく転送しませんでした。M1 Air では、同じ 5 分間のサンプルがバイト同一の出力で 82.57 秒から 50.18 秒になりました。予行演習ビルド契約テストが安定拡散フラグを保護するようになりました。</li>
+<li><strong>バックエンドのクラッシュが理由を示します。</strong> 予期しないランタイム出口は、デバッグ レベルでのみ標準エラー出力を記録するため、デフォルトのログ レベルでは、オペレータは終了コードのみを確​​認します。空ではない最後の stderr 行には予期せぬ終了の警告が表示されるようになり、gRPC の準備が失敗すると、プロセスの終了コードと 4 KiB に制限された最後の stderr 診断が保存されます。</li>
+<li><strong>MCP サーバーは、障害が発生しても表示されたままになります。</strong> モデルレベルの MCP サーバーは、接続のセットアップまたはツールの検出が失敗するたびにチャットから消え、コンテナーの DNS、ルーティング、および VPN の到達可能性の問題が隠蔽されます。これらは、サーバーごとのエラーを含む無効なエラー行としてリストされたままになり、部分的に作成されたセッションを安全に閉じながら検出が再試行され、モデル エディターは予期される <code>mcp.remote</code> および <code>mcp.stdio</code> 形式を文書化します。</li>
+<li><strong>チェックサムの不一致の再試行。</strong> ダウンロード後の SHA の不一致は一時的な転送失敗として扱われるようになりました。LocalAI は不一致の部分を削除し、境界付きプランナーが未検証のバイトを拒否しながら、古いまたは破損した CDN 応答を再試行できるようにします。 <code>URI.DownloadFile</code> を直接呼び出した場合でも、不一致がすぐにわかります。</li>
+<li><strong>オーディオ変換は間違ったコントラクトを拒否します。</strong> オーディオ変換 WebSocket は <code>realtime_audio</code> モデルを受け入れ、フレームベースの <code>AudioTransformStream</code> RPC を開きましたが、<code>liquid-audio</code> のような any-to-any モデルの <code>NotImplementedError</code> とのハンドシェイク後に失敗しました。バックエンドがロードされる前にユースケースが検証されるようになり、any-to-any 呼び出し元は OpenAI Realtime API を指すようになります。</li>
+<li><strong>無効なプリロード JSON はそれ自体に名前を付けます。</strong> <code>PRELOAD_MODELS</code> / <code>--preload-models</code> は、どの入力が無効だったかを識別し、エラーで予期される形状を持つ非配列のトップレベル値 (ブール値や <code>null</code> を含む) を拒否するようになりました。</li>
+</ul>
+<blockquote>
+<p>🔗 PR: #11531、#11492、#11532、#11447、#11495、#11536、#11565、#11434</p>
+</blockquote>
+<hr />
+<h2>🐛 バグ修正 (要約)</h2>
+<ul>
+<li><code>fix(auth)</code>: デフォルトで HTTP ルートを保護 - #11602</li>
+<li><code>fix(distributed)</code>: アドバイザリー ロックを保持する代わりにコールド モデル ロードを永続ジョブとして実行 - #11514</li>
+<li><code>fix(vllm-cpp)</code>: プラットフォームがホストできるすべての CUDA アーキテクチャを構築する - #11512</li>
+<li><code>fix(realtime)</code>: ICE インターフェイス許可リストを固定 UDP ポートで動作させ続ける - #11466</li>
+<li><code>fix(stablediffusion)</code>: メタル ライブラリを埋め込む - #11531</li>
+<li><code>fix(parakeet-cpp)</code>: macOS ビルドで Metal を有効にする - #11492</li>
+<li><code>fix(model)</code>: バックエンド クラッシュ診断をレポートする - #11532</li>
+<li><code>fix(model)</code>: サーフェス バックエンドの起動終了 - #11447</li>
+<li><code>fix(downloader)</code>: チェックサムの不一致を再試行します - #11536</li>
+<li><code>fix(audio)</code>: 互換性のない変換ストリームを拒否 - #11565</li>
+<li><code>fix(gallery)</code>: gpt-oss-* モデルのハーモニー出力を正しく解析する - #11518</li>
+<li><code>fix(gallery)</code>: 無効なプリロード JSON を特定 - #11434</li>
+<li><code>fix(gallery)</code>: DeepSeek V4 フォールバックの修復 - #11480</li>
+<li><code>fix(gallery)</code>: 正しい Higgs Audio v3 チェックサム - #11459</li>
+<li><code>fix(fish-speech)</code>: ROCm PyTorch を保存 - #11568</li>
+<li><code>fix(vllm)</code>: インテル ベースキット ランタイムを 1 つに調整します API 2025.3.2 - #11437</li>
+<li><code>fix(kokoros)</code>: 欠落している <code>upscale_image</code> スタブをバックエンド特性 impl に追加します - #11414</li>
+<li><code>fix</code>: UI で MCP 接続エラーを表示 - #11495</li>
+<li><code>fix(ui)</code>: ブラウザーのクロムにボタンを残したクラス文字列のマージを解除 - #11462</li>
+<li><code>fix(ui)</code>: エージェントのインポート アクションを表示したままにする - #11488</li>
+<li><code>fix</code>: ページを広げる代わりに、長い TTS リクエスト テキストを折り返す - #11576</li>
+</ul>
+<hr />
+<h2>🧠 モデル</h2>
+<p>今サイクルでは 85 件の新しいギャラリー エントリがあり、インデックスは 1,622 から 1,707 になりました。</p>
+<p>テキスト生成: Qwen3.8 (9B、27B)、Ridge および小型バリアント、Gemma 4 Agentic および Gemma 4 Scotoma 2、DeepSeek V4 Pro 0813、Ling 3.0 Flash、Nemotron 3.5 Lightning 30B、Tess 4 27B、Ornith 1.0 および 1.5 9B、 Muse Glimmer 30B、Grug 12B、BigBang v1、Genesis Hermes V7、TwIL-LM3、BTL-4 Compact、XYZ Aquila mini、North Mini Code、AREX Turbo、Fara1.5 4B、MiniCPM5 1B Q8、Shieldstral 1.0 3B、UI-Mate 9B。</p>
+<p>ビジョンと OCR: HunyuanOCR、OvisOCR2、LFM2.5 VL 1.6B、およびそれに並ぶ LFM2.5 230M。</p>
+<p>オーディオとビデオ: Higgs Audio v3 TTS、Qwen3-TTS llama.cpp エントリ、MiniMax-H3 FL2VA および Ref2VA ビデオ セット。</p>
+<p>また、最初の Carbon ゲノミクス ファミリと、<code>vllm-cpp</code> バックエンド用のテキスト生成エントリです。</p>
+<blockquote>
+<p>🔗 PR: #11622、#11603、#11599、#11598、#11594、#11584、#11573、#11571、#11561、#11559、#11557、#11552、#11551、#11549、#11547、 #11540、#11533、#11526、#11519、#11511、#11490、#11479、#11478、#11477、#11458、#11456、#11455、#11449、#11446、#11443、#11441、 #11439、#11438、#11435</p>
+</blockquote>
+<hr />
+<h2>👒 依存関係</h2>
+<p>このサイクルでのサブモジュールとピンのバンプ:</p>
+<p>|プロジェクト |バンプ |
+|---|---|
+| CrispStrobe/CrispASR | 10 |
+| ikawrakow/ik_llama.cpp | 9 |
+| vllm-metal (ダーウィン) | 7 |
+|マドラー/vllm.cpp | 6 |
+| 0xShug0/audio.cpp | 5 |
+| ggml-org/llama.cpp | 4 |
+| ggml-org/whisper.cpp | 3 |
+| leejet/stable-diffusion.cpp | 2 |
+| antirez/ds4、mudler/parakeet.cpp、mudler/ Depth-anything.cpp、NVIDIA/NeMo-Speech.cpp、vllm-project/vllm cu130 ホイール |各1個 |
+さらに、<code>golang.org/x/net</code> から v0.55.0、vllm 0.26.0 および Python バックエンドのトランスフォーマー &gt;=5.15.0、文トランスフォーマー 5.7.0、パッケージ化 26.3、dompurify 3.4.13、Kokoros ソース ピン、unsloth から更新された推論デフォルト、および 7 つのギャラリー チェックサム更新。</p>
+<hr />
+<h2>📖 ドキュメント</h2>
+<p>コンテキスト圧縮と <code>vllm-cpp</code> に関する新しいページ、PII 仮名と圧縮サーフェスをカバーする大幅に拡張されたミドルウェア ページ、およびデフォルト拒否の変更後のパブリック ルート サーフェスと保護されたルート サーフェスを文書化する書き換えられた認証ページ。</p>
+<p>ビデオ生成には MiniMax-H3 セットアップが、テキストからオーディオには Qwen3-TTS llama.cpp パスが、分散モードには耐久性のあるコールド ロード動作が、MCP には構成形式とコンテナ ネットワークへの影響が、リアルタイムには共有 UDP ポートとファイアウォール ガイダンスが採用されました。埋め込み、モデル ギャラリー、バックエンド、API ディスカバリがすべて修正され、壊れたスター カウンターがサイトから削除されました。</p>
+<blockquote>
+<p>🔗 PR: #11448、#11581、#11582、#11415</p>
+</blockquote>
+<hr />
+<h2>🙌 新しい寄稿者</h2>
+<ul>
+<li>@tom-mi が #11518 に最初の投稿をしました</li>
+<li>@kassane が #11427 で最初の投稿を行いました</li>
+<li>@fieryWaters が #11492 で最初の投稿を行いました</li>
+</ul>
+<p>@richiejp、@jimmykarily、@Dennisadira、@dedyf5、@ALameLlama、@walcz-de、そして認証バイパス レポートを提供してくれた <a href="https://www.linkedin.com/in/naor-yaacov/">Naor Yaacov</a> にも感謝します。</p>
+&lt;!-- マスターの .github/release.yml の設定を使用して生成された Release note --&gt;
+<h2>何が変わったのか</h2>
+<h3>重大な変更 🛠</h3>
+<ul>
+<li>修正(認証): https://github.com/mudler/LocalAI/pull/11602 の @localai-bot によってデフォルトで HTTP ルートを保護</li>
+</ul>
+<h3>バグ修正 :bug:</h3>
+<ul>
+<li>修正(kokoros): https://github.com/mudler/LocalAI/pull/11414 の @Copilot を使用した @mudler によって、欠落していた <code>upscale_image</code> スタブをバックエンド特性実装に追加</li>
+<li>修正 (ギャラリー): https://github.com/mudler/LocalAI/pull/11434 の @localai-org-maint-bot による無効なプリロード JSON を特定</li>
+<li>fix(vllm): https://github.com/mudler/LocalAI/pull/11437 の @localai-org-maint-bot による Intel Basekit ランタイムの調整</li>
+<li>修正(モデル): https://github.com/mudler/LocalAI/pull/11447 の @localai-org-maint-bot によってサーフェス バックエンドのスタートアップが終了する</li>
+<li>fix(ui): https://github.com/mudler/LocalAI/pull/11462 の @localai-bot により、ブラウザー Chrome にボタンを残したクラス文字列のマージを解除します。</li>
+<li>修正 (リアルタイム): https://github.com/mudler/LocalAI/pull/11466 の @jimmykarily により、ICE インターフェイスの許可リストが固定 UDP ポートで動作するようにします。</li>
+<li>修正 (parakeet-cpp): macOS ビルドで Metal を有効にする (https://github.com/mudler/LocalAI/pull/11492 の @fieryWaters による)</li>
+<li>修正: https://github.com/mudler/LocalAI/pull/11495 の @richiejp による UI での MCP 接続エラーの表示</li>
+<li>fix(vllm-cpp): https://github.com/mudler/LocalAI/pull/11512 の @localai-bot によってプラットフォームがホストできるすべての CUDA アーキテクチャを構築します</li>
+<li>修正 (ギャラリー): gpt-oss-* モデルのハーモニー出力を正しく解析 (#8037) by @tom-mi (https://github.com/mudler/LocalAI/pull/11518)</li>
+<li>修正 (ui): https://github.com/mudler/LocalAI/pull/11488 の @localai-org-maint-bot によってエージェントのインポート アクションが表示されるようにする</li>
+<li>修正(安定拡散): @localai-org-maint-bot による Metal ライブラリを https://github.com/mudler/LocalAI/pull/11531 に埋め込む</li>
+<li>修正(モデル): https://github.com/mudler/LocalAI/pull/11532 の @localai-org-maint-bot によるバックエンド クラッシュ診断をレポート</li>
+<li>修正 (分散): https://github.com/mudler/LocalAI/pull/11514 の @localai-bot によるアドバイザリー ロックを保持する代わりに、コールド モデル ロードを永続ジョブとして実行します。</li>
+<li>修正 (ダウンローダー): https://github.com/mudler/LocalAI/pull/11536 の @localai-org-maint-bot によるチェックサムの不一致を再試行します</li>
+<li>修正（魚のスピーチ）: https://github.com/mudler/LocalAI/pull/11568 の @localai-org-maint-bot による ROCm PyTorch を保存</li>
+<li>修正（オーディオ）: https://github.com/mudler/LocalAI/pull/11565 の @localai-org-maint-bot による互換性のない変換ストリームを拒否</li>
+<li>修正: https://github.com/mudler/LocalAI/pull/11576 の @ALameLlama による tts テキストの回り込み</li>
+</ul>
+<h3>エキサイティングな新機能 🎉</h3>
+<ul>
+<li>feat(modelartifacts): https://github.com/mudler/LocalAI/pull/11162 の @Dennisadira による制限された並列ハグフェイス ファイルのダウンロードをサポート</li>
+<li>feat(i18n): https://github.com/mudler/LocalAI/pull/11427 に @kassane による pt-BR 翻訳を追加</li>
+<li>feat(vllm-cpp): https://github.com/mudler/LocalAI/pull/11424 で @localai-bot による MiniMax-H3 ビデオ + オーディオ生成を提供します</li>
+<li>feat(pii): https://github.com/mudler/LocalAI/pull/11272 の @localai-org-maint-bot によるリクエスト スコープの仮名を復元します</li>
+<li>feat(llama-cpp): https://github.com/mudler/LocalAI/pull/11392 の @localai-bot による llama.cpp バックエンドを通じて Qwen3-TTS を提供します</li>
+<li>偉業(リアルタイム): @localai-org-maint-bot による共有 WebRTC UDP ポートを https://github.com/mudler/LocalAI/pull/11436 に追加</li>
+<li>feat(ui): https://github.com/mudler/LocalAI/pull/11461 の @localai-bot により、スタイル変更されたデザイン言語でインポート フォームを再構築します。</li>
+<li>i18n(id): https://github.com/mudler/LocalAI/pull/11493 の @dedyf5 により管理者、メディア、およびナビゲーション UI 文字列をインドネシア語に翻訳します</li>
+<li>偉業(ui): https://github.com/mudler/LocalAI/pull/11548 の @localai-bot によるモデルとバックエンドのライフサイクルの統合</li>
+<li>功績: グローバル アドミッションをバインドし、実行中のバックエンド トレースを公開 (https://github.com/mudler/LocalAI/pull/11560 の @richiejp による)</li>
+<li>偉業(ルーター): https://github.com/mudler/LocalAI/pull/10652 の @richiejp によって永続化され、厳選されたコーパスを使用して KNN を第一級の分類器にします</li>
+<li>特技(チャット): @localai-org-maint-bot によるエンドツーエンドのコンテキスト圧縮を https://github.com/mudler/LocalAI/pull/11556 に追加</li>
+</ul>
+<h3>🧠モデル</h3>
+<ul>
+<li>feat(ギャラリー): @localai-org-maint-bot による Grug 12B バリアントを https://github.com/mudler/LocalAI/pull/11438 に追加</li>
+<li>功績 (ギャラリー): @localai-org-maint-bot による Shieldstral 1.0 3B バリアントを https://github.com/mudler/LocalAI/pull/11441 に追加</li>
+<li>功績 (ギャラリー): @localai-org-maint-bot による Genesis Hermes V7 バリアントを https://github.com/mudler/LocalAI/pull/11435 に追加</li>
+<li>feat(ギャラリー): minimax-h3-ref2va-q4 を追加 - Ref2VA パーティション。https://github.com/mudler/LocalAI/pull/11439 の @localai-bot によって一貫性が検証されています。</li>
+<li>feat(ギャラリー): @localai-org-maint-bot による BigBang v1 バリアントを https://github.com/mudler/LocalAI/pull/11443 に追加</li>
+<li>feat(ギャラリー): @localai-org-maint-bot による Gemma 4 Scotoma 2 のバリアントを https://github.com/mudler/LocalAI/pull/11458 に追加</li>
+<li>feat(ギャラリー): @localai-org-maint-bot による Muse Glimmer 30B バリアントを https://github.com/mudler/LocalAI/pull/11446 に追加</li>
+<li>feat(ギャラリー): @localai-org-maint-bot による Higgs Audio v3 TTS を https://github.com/mudler/LocalAI/pull/11456 に追加</li>
+<li>feat(ギャラリー): @localai-org-maint-bot による BTL-4 Compact を https://github.com/mudler/LocalAI/pull/11449 に追加</li>
+<li>feat(ギャラリー): @localai-org-maint-bot による XYZ Aquila ミニ バリアントを https://github.com/mudler/LocalAI/pull/11455 に追加</li>
+<li>修正 (ギャラリー): https://github.com/mudler/LocalAI/pull/11459 の @localai-org-maint-bot による Higgs Audio v3 チェックサムを修正</li>
+<li>雑用: https://github.com/mudler/LocalAI/pull/11270 の @github-actions[bot] による unsloth からのバンプ推論のデフォルト</li>
+<li>修正 (ギャラリー): https://github.com/mudler/LocalAI/pull/11476 の @localai-org-maint-bot による Higgs Audio チェックサム テストの調整</li>
+<li>feat(ギャラリー): @localai-org-maint-bot による Nemotron 3.5 Lightning 30B を https://github.com/mudler/LocalAI/pull/11477 に追加</li>
+<li>feat(ギャラリー): @localai-org-maint-bot による TwIL-LM3 バリアントを https://github.com/mudler/LocalAI/pull/11478 に追加</li>
+<li>修正 (ギャラリー): https://github.com/mudler/LocalAI/pull/11480 の @localai-org-maint-bot による DeepSeek V4 フォールバックの修復</li>
+<li>feat(ギャラリー): @localai-org-maint-bot による Fara1.5 4B バリアントを https://github.com/mudler/LocalAI/pull/11479 に追加</li>
+<li>feat(ギャラリー): @localai-org-maint-bot による LFM2.5 VL 1.6B バリアントを https://github.com/mudler/LocalAI/pull/11490 に追加</li>
+<li>feat(ギャラリー): @localai-org-maint-bot による Qwen3.8 27B バリアントを https://github.com/mudler/LocalAI/pull/11519 に追加</li>
+<li>feat(ギャラリー): @localai-org-maint-bot による DeepSeek V4 Pro 0813 を https://github.com/mudler/LocalAI/pull/11533 に追加</li>
+<li>feat(ギャラリー): @localai-org-maint-bot による LFM2.5 230M バリアントを https://github.com/mudler/LocalAI/pull/11526 に追加</li>
+<li>feat(ギャラリー): @localai-bot による vllm.cpp テキスト生成モデルを https://github.com/mudler/LocalAI/pull/11511 に追加</li>
+<li>feat(ギャラリー): @localai-org-maint-bot による HunyuanOCR バリアントを https://github.com/mudler/LocalAI/pull/11540 に追加</li>
+<li>feat(ギャラリー): @localai-org-maint-bot による Tess 4 27B バリアントを https://github.com/mudler/LocalAI/pull/11547 に追加</li>
+<li>feat(ギャラリー): @localai-org-maint-bot による AREX Turbo バリアントを https://github.com/mudler/LocalAI/pull/11551 に追加</li>
+<li>feat(ギャラリー): @localai-org-maint-bot による OvisOCR2 バリアントを https://github.com/mudler/LocalAI/pull/11549 に追加</li>
+<li>feat(ギャラリー): @localai-org-maint-bot による Qwen3.8 9B バリアントを https://github.com/mudler/LocalAI/pull/11557 に追加</li>
+<li>feat(ギャラリー): @localai-org-maint-bot による Ornith 1.0 9B バリアントを https://github.com/mudler/LocalAI/pull/11552 に追加</li>
+<li>feat(ギャラリー): @localai-org-maint-bot による Qwen3.8 Ridge バリアントを https://github.com/mudler/LocalAI/pull/11573 に追加</li>
+<li>feat(ギャラリー): @localai-org-maint-bot による Qwen3.8 の小さなバリアントを https://github.com/mudler/LocalAI/pull/11571 に追加</li>
+<li>偉業(ギャラリー): @localai-org-maint-bot による MiniCPM5 1B Q8 バリアントを https://github.com/mudler/LocalAI/pull/11561 に追加</li>
+<li>雑用(モデル ギャラリー): :robot: https://github.com/mudler/LocalAI/pull/11596 の @localai-bot によるギャラリー エージェント経由で新しいモデルを 1 つ追加します</li>
+<li>偉業(ギャラリー): @localai-org-maint-bot による North Mini Code バリアントを https://github.com/mudler/LocalAI/pull/11559 に追加</li>
+<li>偉業(ギャラリー): @localai-org-maint-bot による UI-Mate 9B バリアントを https://github.com/mudler/LocalAI/pull/11584 に追加</li>
+<li>feat(ギャラリー): @localai-org-maint-bot による Ling 3.0 Flash バリアントを https://github.com/mudler/LocalAI/pull/11598 に追加</li>
+<li>feat(ギャラリー): @localai-org-maint-bot による Hy-MT2 1.8B バリアントを https://github.com/mudler/LocalAI/pull/11599 に追加</li>
+<li>feat(ギャラリー): @localai-org-maint-bot による炭素ゲノミクスのバリアントを https://github.com/mudler/LocalAI/pull/11594 に追加</li>
+<li>雑務(モデル ギャラリー): :robot: https://github.com/mudler/LocalAI/pull/11605 の @localai-bot によるギャラリー エージェント経由で新しいモデルを 1 つ追加します</li>
+<li>feat(ギャラリー): @localai-org-maint-bot による Ornith 1.5 9B バリアントを https://github.com/mudler/LocalAI/pull/11603 に追加</li>
+<li>偉業(ギャラリー): @localai-org-maint-bot による Gemma 4 エージェントのバリアントを https://github.com/mudler/LocalAI/pull/11622 に追加</li>
+</ul>
+<h3>📖 ドキュメントと例</h3>
+<ul>
+<li>ドキュメント: :arrow_up: https://github.com/mudler/LocalAI/pull/11415 の @localai-bot によるドキュメント バージョンの Mudler/LocalAI の更新</li>
+<li>ドキュメント: https://github.com/mudler/LocalAI/pull/11448 の @richiejp による壊れた星カウンターを削除</li>
+<li>ドキュメント (採用者): @walcz-de による walcz.de を https://github.com/mudler/LocalAI/pull/11581 に追加</li>
+<li>ドキュメント (エコシステム): https://github.com/mudler/LocalAI/pull/11582 の @walcz-de により Walcz を寄稿者に追加</li>
+</ul>
+<h3>👒 依存関係</h3>
+<ul>
+<li>雑用: :arrow_up: https://github.com/mudler/LocalAI/pull/11416 の @localai-bot により、ggml-org/whisper.cpp を <code>592feef04a1802b18cbeffd0fd0eb5d02570c2ec</code> に更新します</li>
+<li>chore(model-gallery): :arrow_up: https://github.com/mudler/LocalAI/pull/11418 の @localai-bot によるチェックサムの更新</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11403 の @localai-bot により、ikawrakow/ik_llama.cpp を <code>40dffce6857b4fe051f096379dc464764c718458</code> に更新します</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11404 の @localai-bot により CrispStrobe/CrispASR を <code>17a6cc99422bfafadf7161e96dd7294c89da9c36</code> に更新</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11421 の @localai-bot により、ikawrakow/ik_llama.cpp を <code>f2328aa0c19954d0ab31a3de60fbf50e47c2429f</code> に更新します</li>
+<li>chore(model-gallery): :arrow_up: https://github.com/mudler/LocalAI/pull/11423 の @localai-bot によるチェックサムの更新</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11432 の @localai-bot により、antirez/ds4 を <code>84cc882352757baf628a1776badf7cc54d584e28</code> に更新します</li>
+<li>雑用: :arrow_up: https://github.com/mudler/LocalAI/pull/11431 の @localai-bot により、ikawrakow/ik_llama.cpp を <code>a7c81affa48c6800d63111bdb33469a01d062daa</code> に更新します</li>
+<li>chore(model-gallery): :arrow_up: https://github.com/mudler/LocalAI/pull/11433 の @localai-bot によるチェックサムの更新</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11401 の @localai-bot により、0xShug0/audio.cpp を <code>748c5e28f6a7228b8f38ad7142ca97d29584544b</code> に更新します</li>
+<li>雑用: :arrow_up: https://github.com/mudler/LocalAI/pull/11422 の @localai-bot により CrispStrobe/CrispASR を <code>8898b0fee199b1765321a5d0d8314aee51a34583</code> に更新</li>
+<li>chore(deps): https://github.com/mudler/LocalAI/pull/11425 の @dependabot[bot] により、npm_and_yarn グループの /core/http/react-ui にある 1 つのディレクトリにある 3.4.12 から 3.4.13 に dompurify をバンプします。</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11452 の @localai-bot により、ikawrakow/ik_llama.cpp を <code>5763a901de3f525b65ed5574fd57623905685755</code> に更新します</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11450 の @localai-bot により CrispStrobe/CrispASR を <code>8b91f4c5490b88ae6193673c35644d91d8695821</code> に更新</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11451 の @localai-bot により、0xShug0/audio.cpp を <code>9d6e7b39236e0151ad28a70fab0d538b84ce8718</code> に更新します</li>
+<li>chore(model-gallery): :arrow_up: https://github.com/mudler/LocalAI/pull/11453 の @localai-bot によるチェックサムの更新</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11454 の @localai-bot により、ggml-org/llama.cpp を <code>030ebb558a5820b444a8f836ed5cdd46c9b4bd7a</code> に更新します</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11385 の @localai-bot により、mudler/vllm.cpp を <code>24306364ab8beaed9197604a042a56aaccfde493</code> に更新します</li>
+<li>雑用: :arrow_up: https://github.com/mudler/LocalAI/pull/11475 の @localai-bot により、ikawrakow/ik_llama.cpp を <code>26ceed9d4091a1696cf50e2ed87e5767d5811d81</code> に更新します</li>
+<li>chore(model-gallery): :arrow_up: https://github.com/mudler/LocalAI/pull/11471 の @localai-bot によるチェックサムの更新</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11481 の @localai-bot により、mudler/ Depth-anything.cpp を <code>54abd5c0abfd1f394e01cb3c38f2e3af4daedf85</code> に更新します</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11472 の @localai-bot により、mudler/vllm.cpp を <code>9fd9e8f34408d5dd21d7f9385e96fc755708950b</code> に更新します</li>
+<li>雑用: :arrow_up: https://github.com/mudler/LocalAI/pull/11482 の @localai-bot により、ikawrakow/ik_llama.cpp を <code>c46ffaa5665cfb2d6cf372c9a054dbab896e14fe</code> に更新します</li>
+<li>雑用: :arrow_up: https://github.com/mudler/LocalAI/pull/11467 の @localai-bot により vllm-metal (darwin) を <code>v0.3.0.dev20260812005333</code> に更新</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11468 の @localai-bot により、vllm-project/vllm cu130 ホイールを <code>0.27.1</code> に更新します</li>
+<li>雑用: :arrow_up: https://github.com/mudler/LocalAI/pull/11470 の @localai-bot により CrispStrobe/CrispASR を <code>ce521ee178867ceaa5fdc11803616578c8936c19</code> に更新</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11469 の @localai-bot により、leejet/stable-diffusion.cpp を <code>de298c225bed97c3f9026b73cd7b71e7879bd41b</code> に更新</li>
+<li>chore(deps): https://github.com/mudler/LocalAI/pull/11496 の @dependabot[bot] による <code>7089168</code> から <code>29e99ad</code> へのバックエンド/rust/kokoros/sources/Kokoros のバンプ</li>
+<li>chore(deps): https://github.com/mudler/LocalAI/pull/11497 の @dependabot[bot] による /backend/python/coqui の 26.2 から 26.3 へのバンプパッケージ化</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11473 の @localai-bot により、ggml-org/llama.cpp を <code>84e908c625fb60992b4cdef8180fb12fa9b4c4bf</code> に更新します</li>
+<li>chore(deps): https://github.com/mudler/LocalAI/pull/11500 の @dependabot[bot] により、/backend/python/transformers のトランス要件を &gt;=5.14.1 から &gt;=5.15.0 に更新します</li>
+<li>雑用: :arrow_up: https://github.com/mudler/LocalAI/pull/11507 の @localai-bot により vllm-metal (darwin) を <code>v0.3.0.dev20260813121949</code> に更新</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11509 の @localai-bot により、ikawrakow/ik_llama.cpp を <code>981e5ea0d7579b4803c86afbb09a7cd7d7bf3bb8</code> に更新します</li>
+<li>雑用: :arrow_up: https://github.com/mudler/LocalAI/pull/11510 の @localai-bot により CrispStrobe/CrispASR を <code>cb082743c456ac77aec0947de36e6420a933da04</code> に更新</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11527 の @localai-bot により、ikawrakow/ik_llama.cpp を <code>43afea46c25a12aae6db1e3105643267164898b4</code> に更新します</li>
+<li>chore(model-gallery): :arrow_up: https://github.com/mudler/LocalAI/pull/11525 の @localai-bot によるチェックサムの更新</li>
+<li>雑用: :arrow_up: https://github.com/mudler/LocalAI/pull/11522 の @localai-bot により vllm-metal (darwin) を <code>v0.3.0.dev20260814013332</code> に更新</li>
+<li>雑用: :arrow_up: https://github.com/mudler/LocalAI/pull/11523 の @localai-bot により CrispStrobe/CrispASR を <code>cc498701f1a68d88dd489803ebad10053a924322</code> に更新</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11524 の @localai-bot により、ggml-org/whisper.cpp を <code>1fe009caeda75f69bc864d6370b10674e45a92bd</code> に更新します</li>
+<li>chore(deps): https://github.com/mudler/LocalAI/pull/11499 の @dependabot[bot] による /backend/python/transformers の 5.6.1 から 5.7.0 への文変換のバンプ</li>
+<li>chore(deps): https://github.com/mudler/LocalAI/pull/11402 の @dependabot[bot] により、/backend/python/vllm で vllm を 0.25.1 から 0.26.0 にバンプします</li>
+<li>雑用: :arrow_up: https://github.com/mudler/LocalAI/pull/11542 の @localai-bot により、ikawrakow/ik_llama.cpp を <code>8337e4cd3861406fc04e0854b1409cd1b027fbc9</code> に更新します</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11541 の @localai-bot により vllm-metal (darwin) を <code>v0.3.0.dev20260815085651</code> に更新</li>
+<li>chore(deps): https://github.com/mudler/LocalAI/pull/11544 の @localai-org-maint-bot によって golang.org/x/net を v0.55.0 にバンプする</li>
+<li>雑用: :arrow_up: https://github.com/mudler/LocalAI/pull/11515 の @localai-bot により、mudler/vllm.cpp を <code>4880c5715f36445a30bd39d3349a06dc96085a11</code> に更新します</li>
+<li>雑用: :arrow_up: https://github.com/mudler/LocalAI/pull/11553 の @localai-bot により vllm-metal (darwin) を <code>v0.3.0.dev20260816085229</code> に更新</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11554 の @localai-bot により CrispStrobe/CrispASR を <code>3721d402f7bcc911dd4143a58e3da1cc67f09cc2</code> に更新</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11570 の @localai-bot により vllm-metal (darwin) を <code>v0.3.0.dev20260817081527</code> に更新</li>
+<li>雑用: :arrow_up: https://github.com/mudler/LocalAI/pull/11569 の @localai-bot により CrispStrobe/CrispASR を <code>007fda47128aaba7e2ce2279b0947a1c13800d68</code> に更新</li>
+<li>雑用: :arrow_up: https://github.com/mudler/LocalAI/pull/11508 の @localai-bot により、ggml-org/llama.cpp を <code>0021a77de0a8966059dc94548fb3b96654e0bb12</code> に更新します</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11555 の @localai-bot により、mudler/vllm.cpp を <code>76f2a6d84e41cc9a593146a9a958f63645542731</code> に更新します</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11474 の @localai-bot により、0xShug0/audio.cpp を <code>3407559d7c83b543bd60ca8fa2b630374e71083f</code> に更新します</li>
+<li>雑用: :arrow_up: https://github.com/mudler/LocalAI/pull/11586 の @localai-bot により vllm-metal (darwin) を <code>v0.3.0.dev20260818075955</code> に更新</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11587 の @localai-bot により、0xShug0/audio.cpp を <code>92816fc5c48d33a58171b49678ccf884d70142fb</code> に更新します</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11588 の @localai-bot により、ggml-org/whisper.cpp を <code>4834a2327d008ace3ec5a9ed00f51454bcabbc1c</code> に更新します</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11589 の @localai-bot により、mudler/vllm.cpp を <code>6e99e4540b8d0811542a9d7690dc9aa0bda5812f</code> に更新します</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11590 の @localai-bot により、ggml-org/llama.cpp を <code>60addddf3c567c43ec3caf70fc953fba3572d96f</code> に更新します</li>
+<li>雑用: :arrow_up: https://github.com/mudler/LocalAI/pull/11591 の @localai-bot により CrispStrobe/CrispASR を <code>a117d433855ecc36b0cb20bd1abddd852902ed13</code> に更新</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11592 の @localai-bot により、mudler/parakeet.cpp を <code>e75de9b6b9b688fd293aa22f7e27aa724ea286f8</code> に更新します</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11612 の @localai-bot により、mudler/vllm.cpp を <code>438305e1577768ec0f75729456a4c8b9f425e2ee</code> に更新します</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11613 の @localai-bot により、0xShug0/audio.cpp を <code>a61da671b6a81c79071500954eea3c91c1a383dd</code> に更新します</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11616 の @localai-bot により、leejet/stable-diffusion.cpp を <code>97d2990807fe6d558e395f8764198d7c7e7b411c</code> に更新します</li>
+<li>chore(model-gallery): :arrow_up: https://github.com/mudler/LocalAI/pull/11615 の @localai-bot によるチェックサムの更新</li>
+<li>雑用: :arrow_up: https://github.com/mudler/LocalAI/pull/11611 の @localai-bot により CrispStrobe/CrispASR を <code>a153b09b37c90cd55cd9336fccbdf3ba7a289596</code> に更新</li>
+<li>雑務: :arrow_up: https://github.com/mudler/LocalAI/pull/11417 の @localai-bot により、NVIDIA/NeMo-Speech.cpp を <code>4f9676226f667d14608487df744f375db87127f8</code> に更新します</li>
+</ul>
+<h3>その他の変更点</h3>
+<ul>
+<li>fix(ci): https://github.com/mudler/LocalAI/pull/11457 の @localai-org-maint-bot による現在の vllm-metal バージョンのピンを解析します</li>
+<li>修正(ci): https://github.com/mudler/LocalAI/pull/11572 の @localai-org-maint-bot による PR を通じてサイト カウンターを更新</li>
+<li>feat(swagger): https://github.com/mudler/LocalAI/pull/11585 の @localai-bot による swagger の更新</li>
+<li>fix(ci): https://github.com/mudler/LocalAI/pull/11595 の @localai-org-maint-bot による分割バンドル内の古いチャンクをテスト</li>
+</ul>
+<p><strong>フル Changelog</strong>: https://github.com/mudler/LocalAI/compare/v4.8.2...v4.9.0</p>
+<hr />
+<blockquote>
+<p><strong>ソース</strong> <a href="https://github.com/mudler/LocalAI">mudler/LocalAI</a> · <code>v4.9.0</code> · 2026-08-20 · <a href="https://github.com/mudler/LocalAI/releases/tag/v4.9.0">アップストリーム リリース</a></p>
+</blockquote>
+<p><em>インデックス作成のためにそのままミラーリングされます。すべての権利は上流プロジェクトに帰属します。</em></p></div>  <details class="mt-original"> <summary>English original / English original</summary> <div class="prose mt-original-body"><h1>LocalAI v4.9.0</h1>
+<h2>Highlights</h2>
+<ul>
+<li>
+<p><strong>Authentication is deny-by-default (#11602)</strong> — Every route now requires credentials unless its method and path appear in an explicit public registry, closing bypasses through aliases such as <code>/models</code>, <code>/backends</code>, and <code>/mcp/chat/completions</code>. With database auth or legacy API keys enabled, <code>/version</code> and generated media URLs also require authentication, so existing clients must update. Embedded deployments can add narrow exceptions through <code>ApplicationConfig.PathWithoutAuth</code>; health, login, OAuth, and other bootstrap routes remain public.</p>
+</li>
+<li>
+<p><strong>Context compression avoids silent history truncation</strong> — Opt-in per-model <code>compression</code> condenses older complete turns through a configured LocalAI model after PII filtering and Assistant/MCP injection. It preserves leading system/developer prompts, recent messages, and complete tool-call/result units while budgeting for tool schemas and completion headroom. Compression is disabled by default, reports ratio and duration through response metadata and metrics, and rejects cloud-proxy passthrough—translation mode remains supported.</p>
+</li>
+<li>
+<p><strong>Media models gain synchronized audio and broader accelerator coverage</strong> — <code>vllm-cpp</code>, using vllm.cpp ABI v12, loads MiniMax-H3 through a second engine handle and produces MP4s with a real AAC track, enabling prompted speech with lip-sync. Its declared partition check rejects mismatched reference-conditioned requests before expensive rendering. Separately, Qwen3-TTS now runs through <code>llama-cpp</code> across CUDA, ROCm, SYCL, Vulkan, Metal, and L4T; track the temporary upstream patch pending llama.cpp#26603, while the existing <code>qwen3-tts-cpp</code> backend remains independent.</p>
+</li>
+<li>
+<p><strong>KNN routing trades a classifier model for an operator-owned corpus</strong> — <code>classifier: knn</code> uses similarity-weighted voting over persisted labelled prompts; entries below the configured threshold cannot vote, and an unrepresented prompt takes the fallback instead of receiving a guessed route. Decisions and fallbacks expose <code>nearest_similarity</code>, and changing the embedding model triggers re-embedding. Corpus management is admin-gated and available through API/MCP tools, but deployment quality now depends on curating representative examples.</p>
+</li>
+<li>
+<p><strong>Admission control and cold loads expose real backend state</strong> — Process-wide HTTP admission bounds prevent individual backend limits from being mistaken for system-wide protection, while in-flight operations surface with live traces and direct log links. Per-model locks now deduplicate briefly rather than spanning installation, multi-GB staging, and checkpoint loading; durable jobs own that work, and lock handling covers both PostgreSQL <code>lock_timeout</code> and <code>statement_timeout</code>. This removes misleading “permanently stuck” states during long loads.</p>
+</li>
+<li>
+<p><strong>Lifecycle management moves to canonical UI routes</strong> — <code>/app/models</code> now owns Explore and Installed, while <code>/app/backends</code> owns Catalog and Installed; the nested Host destination is removed. There is no API change, but UI automation, deep links, and bookmarks should target the new routes—<code>/app/manage</code> redirects while preserving legacy query state. Capability-aware installation actions appear in Explore, while destructive model controls remain confined to Installed.</p>
+</li>
+</ul>
+<h1>🎉 LocalAI 4.9.0 Release! 🚀</h1>
+&lt;h1 align=&quot;center&quot;&gt;
+  &lt;br&gt;
+  &lt;img height=&quot;300&quot; src=&quot;https://raw.githubusercontent.com/mudler/LocalAI/refs/heads/master/core/http/static/logo.png&quot;&gt;
+  &lt;br&gt;
+  &lt;br&gt;
+&lt;/h1&gt;
+<p>LocalAI 4.9.0 is out!</p>
+<p>Thirteen days and 146 pull requests, spent on the parts of LocalAI you touch every day rather than on new engines. Authentication is now deny-by-default, chat gained end-to-end context compression, models and backends each have one canonical page instead of three, and <code>vllm-cpp</code> grew a video modality serving MiniMax-H3 with a real audio track.</p>
+<p><strong>Highlights:</strong></p>
+<ul>
+<li>🔐 <strong>Authentication is deny-by-default</strong> - every HTTP route requires credentials unless it appears in an explicit public registry. This closes a class of bypass in which unprefixed aliases such as <code>/moderations</code>, <code>/models</code>, <code>/backends</code> and <code>/mcp/chat/completions</code> fell outside the old protected-prefix list. Reported by <a href="https://www.linkedin.com/in/naor-yaacov/">Naor Yaacov</a>.</li>
+<li>🗜️ <strong>Chat context compression</strong> - opt-in per model, older complete turns are compressed through a LocalAI model before inference, preserving system prompts, the newest messages and whole tool-call units. Ratio and duration come back as response metadata and metrics.</li>
+<li>🖥️ <strong>One page per resource</strong> - <code>/app/models</code> now owns Explore and Installed, <code>/app/backends</code> owns Catalog and Installed, and the nested Host view is gone. Old <code>/app/manage</code> bookmarks still work.</li>
+<li>🎬 <strong>MiniMax-H3 video generation</strong> - <code>vllm-cpp</code> opens a second engine handle for the H3 checkpoint set and renders video and audio jointly, so the MP4 arrives with a real AAC track. Ask for speech in the prompt and the model lip-syncs it.</li>
+<li>🗣️ <strong>Qwen3-TTS on llama.cpp</strong> - text-to-speech on the full accelerator matrix already shipped for text generation (CUDA, ROCm, SYCL, Vulkan, Metal, L4T), using upstream's own GGUF conversion.</li>
+<li>🧭 <strong>KNN as a first-class router</strong> - similarity-weighted voting over a curated, persisted corpus of labelled prompts. No classifier model, and a prompt unlike anything labelled is treated as undecidable rather than guessed.</li>
+<li>📊 <strong>Global admission control and live backend traces</strong> - process-wide HTTP admission bounds, in-flight backend operations are represented while they run, and the UI links straight to their logs.</li>
+<li>🕵️ <strong>Reversible PII pseudonyms</strong> - masked values become request-scoped deterministic pseudonyms (<code>EMAIL_001</code>) and are restored if the backend echoes them, across JSON and SSE tokens split over writes.</li>
+<li>📦 <strong>Parallel Hugging Face downloads</strong> - snapshot materialization runs up to N whole-file transfers at once, so a repository split into many shards stops spending its wall clock in per-file latency.</li>
+<li>🖧 <strong>Cold model loads are durable jobs</strong> - the per-model advisory lock no longer spans a multi-GB transfer, which had made a 35.7 GB load look permanently broken from the operator's seat while staging progressed normally underneath.</li>
+<li>🎮 <strong>vllm-cpp covers the cards you own</strong> - CUDA builds went from one or two architectures to eight on amd64 and five on arm64, picking up A100, L4, 4090, H100/H200, B200, Jetson Orin and Jetson Thor.</li>
+</ul>
+<p>Plus a single shared WebRTC UDP port for Realtime, Metal actually enabled in the macOS Stable Diffusion and Parakeet builds, backend crash diagnostics at the default log level, and Portuguese (Brazil) and Indonesian UI translations.</p>
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img width=&quot;2880&quot; height=&quot;1800&quot; alt=&quot;ui-models-explore&quot; src=&quot;https://github.com/user-attachments/assets/7dd68a4a-e707-43e6-af1a-dcc3922469eb&quot; /&gt;
+  &lt;br&gt;&lt;em&gt;Models and backends each get one canonical page, with Explore and Installed as views rather than separate destinations.&lt;/em&gt;
+&lt;/p&gt;
+<hr />
+<h2>📊 This release in numbers</h2>
+<p>| | |
+|---|---|
+| Pull requests merged | <strong>146</strong> |
+| Commits | 148 |
+| Files changed | 420 (<strong>+27,788</strong> / -4,670) |
+| Development window | 13 days (2026-08-07 to 2026-08-20) |
+| Human contributors | 10, of whom <strong>3 first-time</strong> |
+| Gallery entries | 1,622 to <strong>1,707</strong> (+85) |</p>
+<p>Where the work landed:</p>
+<p>| Area | Change |
+|---|---|
+| <code>core/</code> | +17,193 / -4,187 across 279 files |
+| <code>gallery/</code> | +3,808 / -62 |
+| <code>backend/</code> | +3,298 / -177 across 60 files |
+| <code>pkg/</code> | +1,180 / -113 across 31 files |
+| <code>swagger/</code> | +1,095 / -5 |
+| <code>docs/</code> | +952 / -98 across 23 files |</p>
+<hr />
+<h2>📌 TL;DR</h2>
+<p>| Area | Summary |
+|------|---------|
+| 🔐 <strong>Auth by default</strong> | Every method and path requires credentials unless listed in an explicit public registry. API instructions, Swagger GETs, the LocalAI well-known document, and the health, login, OAuth, SPA, asset, branding and node registration-token bootstrap flows stay public. <strong>Migration:</strong> with database auth or legacy API keys configured, <code>/version</code> and generated audio, image, video and 3D URLs now require credentials. Embedded deployments can add narrow prefixes through <code>ApplicationConfig.PathWithoutAuth</code>, and the legacy GET exemption flags remain as explicit compatibility overrides. |
+| 🗜️ <strong>Context compression</strong> | Opt-in per-model <code>compression</code> config. Older complete turns are compressed through a configured LocalAI model before inference, after PII filtering and Assistant/MCP prompt injection (including later MCP iterations). Leading system/developer prompts, the newest messages and complete tool-call/result units are preserved; tool schemas and completion headroom are accounted for with a conservative offline token bound. Metadata rides non-streaming responses and streaming usage trailers, with event, ratio and duration metrics exported. Disabled by default; cloud-proxy passthrough is rejected (translate mode works). |
+| 🖥️ <strong>Unified lifecycle UI</strong> | <code>/app/models</code> owns <strong>Explore</strong> and <strong>Installed</strong> with URL-backed search, state and selection; <code>/app/backends</code> owns <strong>Catalog</strong> and <strong>Installed</strong> while keeping variants, development builds and target-node scope. Explore offers capability-aware Open and Manage installation; destructive model controls stay in Installed. Operate Overview shows host capacity from its shared summary poller, and the nested Host destination is removed. <code>/app/manage</code> redirects while preserving legacy query state. No API change. |
+| 📥 <strong>Import form rebuild</strong> | The import page moves to <code>page--medium</code> with a work column and the format reference beside it rather than behind a closed chevron. The source field is the hero and carries its own Import button, which removes the <code>aria-hidden</code> submit that existed only because the real action sat outside the <code>&lt;form&gt;</code>. Simple and Advanced modes are gone (about 80% the same surface); the real distinction, a source or YAML, is now two tabs. Also fixes two class bugs: a primary button with no <code>className</code> at all falling through to browser chrome, and <code>class=&quot;btn btn-primary fas fa-save fa-upload&quot;</code> setting Font Awesome as the button's own font while two icons fought over one <code>::before</code>. |
+| 🎬 <strong>MiniMax-H3 video</strong> | <code>vllm-cpp</code> over vllm.cpp ABI v12. A second engine handle loads the H3 checkpoint set (the DiT is <code>parameters.model</code>, the text encoder and two VAEs are named in <code>options:</code>), and <code>GenerateVideo</code> renders video and audio jointly into an MP4 with a real AAC track. The DiT partition is declared, not detected: community quantizations strip the release metadata and the FL2VA and Ref2VA DiTs are byte-structurally identical, so <code>checkPartitionConditioning</code> refuses a reference-conditioned FL2VA request before the engine runs (it would otherwise render for hours and return a coloured lattice). ffmpeg comes from the host: libvllm composes the mux argv and spawns nothing. New gallery entry <code>minimax-h3-fl2va-q4</code>. |
+| 🗣️ <strong>Qwen3-TTS on llama-cpp</strong> | TTS through the <code>llama-cpp</code> backend on CUDA, ROCm, SYCL, Vulkan, Metal and L4T, using upstream's GGUF conversion. Implemented as a slot-based <code>SERVER_TASK_TYPE_TTS</code> task, which is the concurrency-safe integration given that <code>server_context</code> owns the <code>llama_context</code> and runs the slot scheduler on its own thread. Carries the still-draft upstream server hunks as <code>patches/0002-add-server-task-type-tts.patch</code> (delete on merge of ggml-org/llama.cpp#26603). Gallery: <code>qwen3-tts-llamacpp</code> and <code>qwen3-tts-llamacpp-q4</code>. The existing <code>qwen3-tts-cpp</code> backend is untouched and remains a separate path. |
+| 🧭 <strong>KNN routing</strong> | <code>classifier: knn</code> routes by similarity-weighted voting over labelled example prompts, so no classifier model is needed and label knowledge lives in a corpus you seed and curate. Entries below <code>knn.similarity_threshold</code> cannot vote; when none clears it the router takes the fallback, and <code>nearest_similarity</code> is recorded on decisions and fallbacks alike. One JSONL file per router under <code>&lt;data path&gt;/router-corpus</code> is the source of truth, with the in-memory index rebuilt at classifier build time and entries re-embedded when the embedding model changed. Corpus input is API-only by design: <code>POST /api/router/{name}/corpus</code>, <code>GET .../corpus/stats</code> (label counts only, texts are never returned), <code>DELETE .../corpus</code>, admin-gated and exposed as MCP tools. |
+| 📊 <strong>Admission and traces</strong> | Process-wide HTTP admission control, bounding what was previously only per backend. Backend operations are represented while in flight, and running backend traces surface in the UI with immediate log links. |
+| 🕵️ <strong>PII pseudonyms</strong> | Opt-in <code>pii.reverse_in_response</code>. Masked request values become unique deterministic pseudonyms within the request (<code>EMAIL_001</code>, <code>EMAIL_002</code>) and are restored if the backend returns them, including SSE tokens split across response writes. Substitution maps are request-local and never persisted. Irreversible <code>[REDACTED:...]</code> remains the default. |
+| 📦 <strong>Parallel HF downloads</strong> | <code>DownloadFilesWithConcurrency</code> runs up to N whole-file transfers through an <code>errgroup</code> with <code>SetLimit</code>. Single files are never split, so <code>.partial</code> resume and per-file SHA verification are untouched, and the two non-artifact callers keep sequential ordering and fail-fast behaviour through a limit-of-1 wrapper. <code>completedBytes</code> became an <code>atomic.Int64</code> (the race detector reported three races otherwise) and the caller's status callback stays serialized. |
+| 📞 <strong>Realtime WebRTC port</strong> | <code>--web-rtc-udp-port</code> / <code>LOCALAI_WEBRTC_UDP_PORT</code> reuses one Pion ICE UDP mux across Realtime calls, with bind failures surfaced through signaling and container/firewall setup documented. The follow-up fix keeps <code>LOCALAI_WEBRTC_ICE_INTERFACES</code> effective when a fixed port is set, which had been silently ignored: a wildcard mux made pion enumerate every interface itself, handing browsers unroutable <code>172.x</code> candidates that dropped once ICE consent checks failed. |
+| 🖧 <strong>Durable cold loads</strong> | The per-model advisory lock is a dedup decision measured in milliseconds, not a transfer's lifetime. Cold loads now run as durable jobs instead of holding it across backend install, multi-GB staging and checkpoint load, and <code>WithLockCtx</code> now defends against <code>statement_timeout</code> as well as <code>lock_timeout</code> (both abort the same blocking <code>pg_advisory_lock</code>, only the latter was overridden). |
+| 🎮 <strong>vllm-cpp CUDA coverage</strong> | amd64 goes from <code>120a;121a</code> to <code>80;86;89;90a;100a;103a;120a;121a</code>, arm64 from <code>121a</code> to <code>87;90a;100a;110;121a</code>, split by where the silicon exists. An unlisted card did not run slower, it died at the first request with <code>no kernel image is available for execution on the device</code>, long after install reported success. The CUDA 13 guard now covers both branches, and Triton-AOT stays on. |
+| 🌍 <strong>Two new languages</strong> | Portuguese (Brazil), a complete 14-namespace translation at full key parity with <code>en/</code>, and Indonesian for the admin, media and navigation surfaces. |
+| 🧠 <strong>Models</strong> | 85 new gallery entries: Qwen3.8 (9B, 27B, Ridge and small variants), Gemma 4 agentic and Scotoma 2, DeepSeek V4 Pro 0813, Ling 3.0 Flash, Nemotron 3.5 Lightning 30B, Tess 4 27B, Ornith 1.0 and 1.5 9B, LFM2.5 230M and VL 1.6B, HunyuanOCR and OvisOCR2, Higgs Audio v3 TTS, MiniMax-H3 Ref2VA, plus vllm.cpp text-generation entries and a first Carbon genomics family. |</p>
+<hr />
+<h2>🚀 New Features &amp; Major Enhancements</h2>
+<h3>🔐 Authentication now denies by default</h3>
+<p>The previous classifier gated selected API-style paths by prefix. Anything whose path was not on that list was public, which meant unprefixed aliases (<code>/mcp/chat/completions</code>, <code>/moderations</code>, <code>/models</code>, <code>/backends</code>, <code>/import-model</code>) could bypass global authentication, and any newly registered route inherited the same weakness by default.</p>
+<p>The middleware is now method-aware and denies by default: a route is public only if its method and path appear in an explicit public registry. What stays public is the set required to bootstrap and to be discoverable: API instructions, Swagger GET routes, the LocalAI well-known document, and the health, login, OAuth, SPA, asset, branding and node registration-token flows. Whole-router coverage is asserted in tests, so a new route cannot become public by omission.</p>
+<p><strong>Migration impact.</strong> When database authentication or legacy API keys are configured, <code>/version</code> and generated audio, image, video and 3D URLs now require credentials. Embedded deployments can still add narrow prefixes via <code>ApplicationConfig.PathWithoutAuth</code>, and the legacy GET exemption flags remain available as explicit compatibility overrides.</p>
+<p>Thanks to <a href="https://www.linkedin.com/in/naor-yaacov/">Naor Yaacov</a> for reporting this class of authentication bypass.</p>
+<blockquote>
+<p>🔗 PRs: #11602</p>
+</blockquote>
+<h3>🗜️ End-to-end context compression</h3>
+<p>A long conversation eventually stops fitting. Compression is opt-in per model, and when enabled it compresses older complete turns through a configured LocalAI model before inference rather than truncating them away.</p>
+<p>What it will not touch: leading system and developer safety prompts, the newest messages, and complete tool-call/result units, which are kept whole so a compressed history never leaves a call without its result. It runs after PII filtering and after Assistant/MCP prompt injection, including on later MCP iterations, so what gets compressed is the prompt that would actually have been sent. Tool schemas and completion headroom are accounted for with a conservative offline token bound.</p>
+<p>Compression metadata is exposed in non-streaming responses and in streaming usage trailers, and compression events, ratios and durations are exported as metrics. Cloud-proxy passthrough configurations reject compression because LocalAI cannot safely rewrite an opaque provider payload; translate mode is supported. A late failure in an already-started stream is returned as an in-band SSE error followed by <code>[DONE]</code>.</p>
+<blockquote>
+<p>🔗 PRs: #11556</p>
+</blockquote>
+<h3>🖥️ One canonical page per resource</h3>
+<p>Models had a gallery and a separate Host management surface. Backends had a nested Host view for installed binaries. Between them it was not obvious where a resource lived, and the common lifecycle actions sat one level deeper than they needed to.</p>
+<p>Each resource now has one page. <code>/app/models</code> owns <strong>Explore</strong> and <strong>Installed</strong>, <code>/app/backends</code> owns <strong>Catalog</strong> and <strong>Installed</strong>, both with URL-backed search, state and selection, and backends keep their variants, development builds and target-node scope. Explore presents capability-aware <strong>Open</strong> and <strong>Manage installation</strong> actions while destructive model controls stay in Installed. Operate Overview reads host capacity from its shared summary poller, and the nested Host destination is removed. Narrow list/detail views restore focus to the originating row when you come back from a detail view.</p>
+<p>Nothing in the API changed, and existing <code>/app/manage</code> bookmarks keep working through a replace redirect that preserves legacy model and backend query state.</p>
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img width=&quot;2880&quot; height=&quot;1800&quot; alt=&quot;ui-backends-catalog&quot; src=&quot;https://github.com/user-attachments/assets/c18e9272-70bd-4875-bda0-319bea616637&quot; /&gt;
+  &lt;br&gt;&lt;em&gt;Catalog and Installed as views of one page, with target-node scope intact.&lt;/em&gt;
+&lt;/p&gt;
+<blockquote>
+<p>🔗 PRs: #11548</p>
+</blockquote>
+<h3>📥 The import form, rebuilt</h3>
+<p>The import page had taken the new palette but kept its old layout: a 760px column with the primary action detached from the form it submits. Two of its problems were outright bugs.</p>
+<p><code>ImportModel.jsx:808</code> carried no <code>className</code> at all, so the page's single most important control fell through to the user-agent button, with system chrome, system font, the wrong radius and no design-system focus ring. Next to it, <code>class=&quot;btn btn-primary fas fa-save fa-upload&quot;</code> set Font Awesome as the button's own font family, which its label text inherited, while <code>fa-save</code> and <code>fa-upload</code> fought over one <code>::before</code>.</p>
+<p>The layout moves to <code>page--medium</code> with a work column and the format reference beside it, since that reference answers the only question a first-time admin has and used to sit behind a chevron that was closed by default. Below 1024px it becomes a disclosure instead of disappearing. The source field is the hero, monospace because it holds something you paste, and it carries its own Import button, which removes the <code>aria-hidden</code> submit that existed only to compensate for the real action sitting outside the <code>&lt;form&gt;</code>. Simple and Advanced modes are gone: they were about 80% the same surface, and the overlap cost a mode switch, a localStorage key and a three-button Keep/Discard/Cancel dialog whose only job was protecting state the switch would have hidden. What genuinely differs is the kind of input, which is now two tabs: a source, or YAML. The size and VRAM estimate reports under the field that produced it instead of as a banner above the page header.</p>
+<p>A follow-up swept the same class of bug across the rest of the UI: eight header controls on seven pages had two or three elements' classes collapsed into one string.</p>
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img width=&quot;2880&quot; height=&quot;1800&quot; alt=&quot;ui-import-model&quot; src=&quot;https://github.com/user-attachments/assets/d8abd9d6-81fa-4ef7-8062-4bcf3836a27a&quot; /&gt;
+  &lt;br&gt;&lt;em&gt;One form, a collapsible options panel, and the format reference where you can read it.&lt;/em&gt;
+&lt;/p&gt;
+<blockquote>
+<p>🔗 PRs: #11461, #11462, #11488</p>
+</blockquote>
+<h3>🎬 MiniMax-H3: video and audio, jointly</h3>
+<p>vllm.cpp's stable C ABI grew a video slice at v12, and <code>vllm-cpp</code> now serves two things. Text generation is unchanged. When a model config declares the H3 checkpoint set, <code>Load</code> opens a video engine instead and <code>GenerateVideo</code> renders a clip through LocalAI's existing <code>/video</code> endpoint, with <strong>video and audio generated jointly</strong>, so the MP4 comes back with a real AAC track rather than silent. Ask for speech in the prompt and the model lip-syncs it.</p>
+<p>Three things shape the integration:</p>
+<p><strong>The video engine is a second handle, not a mode of the first.</strong> H3 is not a model directory. The DiT, the text encoder and two VAEs are separate artifacts, and vllm.cpp's two loaders refuse each other's checkpoints. <code>parameters.model</code> is the DiT; the rest of the set is named in <code>options:</code>.</p>
+<p><strong>The DiT partition is declared, not detected.</strong> The FL2VA DiT serves <code>t2va</code> and <code>fl2va</code>; <code>ref2va</code> is a different checkpoint. Community GGUF and NVFP4 quantizations strip the release metadata and the two DiTs are byte-structurally identical, so the engine refuses to generate until it is told which it has. Handing reference conditioning to an FL2VA DiT renders for hours and returns a coloured lattice over the frame, so <code>checkPartitionConditioning</code> rejects that combination before the engine is ever called.</p>
+<p><strong>ffmpeg comes from the host.</strong> libvllm writes the frames and the WAV and composes the mux argv, then spawns nothing, which is a deliberate upstream process boundary. The backend substitutes <code>argv[0]</code> and execs it.</p>
+<p>Gallery entries <code>minimax-h3-fl2va-q4</code> (Q4_K_M FL2VA set) and <code>minimax-h3-ref2va-q4</code> ship with it.</p>
+<blockquote>
+<p>🔗 PRs: #11424, #11439</p>
+</blockquote>
+<h3>🗣️ Qwen3-TTS through the llama.cpp backend</h3>
+<p>Qwen3-TTS now runs on the <code>llama-cpp</code> backend, which means text-to-speech on the same accelerator matrix already shipped for text generation (CUDA, ROCm, SYCL, Vulkan, Metal, L4T) using upstream's own GGUF conversion.</p>
+<p><code>grpc-server.cpp</code> is an adapter over llama.cpp's shared <code>server_context</code>, which owns the <code>llama_context</code> and runs the slot scheduler on its own thread, so a gRPC handler driving the gen-audio loop itself would race that scheduler. Making TTS a slot-based <code>SERVER_TASK_TYPE_TTS</code> task is the concurrency-safe integration, following the <code>0001-add-server-task-type-score.patch</code> precedent already in the tree. llama.cpp merged Qwen3-TTS in ggml-org/llama.cpp#26254; the server plumbing in #26603 is still a draft, so it is carried as <code>patches/0002-add-server-task-type-tts.patch</code> and should be deleted once that merges. <code>disable-tts-task.sh</code> keeps turboquant and bonsai compiling, since they copy <code>grpc-server.cpp</code> into forks without our patches.</p>
+<p>Both paths were verified end to end on CPU returning valid 24 kHz mono 16-bit WAV containing real speech, measured rather than eyeballed. Gallery entries: <code>qwen3-tts-llamacpp</code> and <code>qwen3-tts-llamacpp-q4</code>.</p>
+<p>The existing <code>qwen3-tts-cpp</code> backend over qwentts.cpp is untouched. This is a second, independent path, not a replacement.</p>
+<blockquote>
+<p>🔗 PRs: #11392</p>
+</blockquote>
+<h3>🧭 KNN as a first-class router</h3>
+<p><code>classifier: knn</code> promotes KNN search from a cache for the classifier to a primary request router. Unlike <code>score</code> or <code>colbert</code> it needs no classifier model: label knowledge lives in a corpus of labelled example prompts that you seed and curate through the admin API, so routing decisions are deterministic, auditable, and grounded in graded experience rather than a model's opinion.</p>
+<p>There is an explicit epistemic gate. Corpus entries below <code>knn.similarity_threshold</code> cannot vote, and when none clears it the classifier activates no labels and the router takes the fallback: a prompt unlike all labelled experience is treated as undecidable, not guessed. Decisions record <code>nearest_similarity</code>, on fallback rows too, so you can see how far the nearest labelled experience actually was, and the Routing tab explains out-of-corpus fallbacks and shows per-label corpus counts.</p>
+<p>Persistence is one JSONL file per router under <code>&lt;data path&gt;/router-corpus</code> holding text, labels, vector and embedder fingerprint. That file is the source of truth; the local-store index is rebuilt from it at classifier build time and stays a pure in-memory index, and entries recorded under a different embedding model re-embed on load. This also corrects the docs' claim that local-store collections persist: the embedding cache never survived restarts and still does not, while the corpus does.</p>
+<p>Corpus input is API-only by design, since entries may contain example user content: <code>POST /api/router/{name}/corpus</code> seeds (labels validated against declared policies, embedded server-side, indexed immediately), <code>GET .../corpus/stats</code> inspects and returns label counts only (entry texts are never returned by any surface), and <code>DELETE .../corpus</code> wipes. All admin-gated like the sibling router endpoints and exposed as MCP tools.</p>
+<blockquote>
+<p>🔗 PRs: #10652</p>
+</blockquote>
+<h3>📊 Global admission control and running backend traces</h3>
+<p>Admission control existed per backend, which left nothing bounding the process as a whole, and the traces list could grow without limit. HTTP admission is now bounded process-wide.</p>
+<p>Alongside it, backend operations are represented while they are still in flight rather than only once they finish, and running backend traces surface in the UI with immediate links to their logs, so an operation that is taking too long is something you can look at instead of something you wait out.</p>
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img width=&quot;2880&quot; height=&quot;1800&quot; alt=&quot;ui-activity-inflight&quot; src=&quot;https://github.com/user-attachments/assets/fe0acd52-3688-4c20-ae1d-cef9f8b2825e&quot; /&gt;
+  &lt;br&gt;&lt;em&gt;Operations are represented while they are still running, not only once they finish.&lt;/em&gt;
+&lt;/p&gt;
+<blockquote>
+<p>🔗 PRs: #11560</p>
+</blockquote>
+<h3>🕵️ PII pseudonyms that survive the round trip</h3>
+<p>The PII middleware masked values irreversibly, which is right for logs and wrong for a conversation: a model that is handed <code>[REDACTED:EMAIL]</code> twice cannot tell whether it saw one address or two, and anything it says about them comes back unusable.</p>
+<p>Opt-in <code>pii.reverse_in_response</code> turns masked request values into unique deterministic pseudonyms within the request (<code>EMAIL_001</code>, <code>EMAIL_002</code>) and restores them if the backend returns them. Restoration handles normal JSON and SSE tokens split across response writes. Substitution maps stay request-local and are never persisted. Irreversible <code>[REDACTED:...]</code> remains the default.</p>
+<blockquote>
+<p>🔗 PRs: #11272</p>
+</blockquote>
+<h3>📦 Bounded parallel Hugging Face downloads</h3>
+<p>Snapshot materialization fetched every file through the sequential executor, so a repository split into many shards spent most of its wall clock in per-file request latency rather than moving bytes.</p>
+<p><code>DownloadFilesWithConcurrency</code> now runs up to N whole-file transfers at once through an <code>errgroup</code> with <code>SetLimit</code>. Only whole files run in parallel: a single file is never split, so the <code>.partial</code> resume machinery and the per-file SHA check are untouched. The two non-artifact callers (<code>core/gallery/models.go</code> and <code>core/config/model_config_loader.go</code>) keep exactly their previous behaviour through a wrapper passing a limit of 1, so tasks still run in slice order and the first failure still returns before any later task starts.</p>
+<p>Two consequences of the parallel path are worth knowing: <code>completedBytes</code> is now an <code>atomic.Int64</code>, which is not a precaution (with a plain <code>int64</code> the race detector reports three races), and the caller's status callback is serialized to preserve the guarantee the sequential path gave it implicitly. <code>AfterDownload</code> is deliberately not serialized, because it does the verify-and-promote work that the parallelism exists to overlap.</p>
+<blockquote>
+<p>🔗 PRs: #11162</p>
+</blockquote>
+<h3>📞 Realtime WebRTC on one UDP port</h3>
+<p><code>--web-rtc-udp-port</code> / <code>LOCALAI_WEBRTC_UDP_PORT</code> reuses a single Pion ICE UDP mux across Realtime WebRTC calls, so a container or firewall needs one rule rather than a range. UDP bind failures are surfaced through signaling instead of failing opaquely, and the container and firewall setup is documented.</p>
+<p>A follow-up closed the gap it opened. <code>LOCALAI_WEBRTC_ICE_INTERFACES</code> was silently ignored whenever a fixed UDP port was set, which is exactly the combination an operator reaches for: pinning a port to write a firewall rule and restricting interfaces to keep unreachable <code>docker0</code> and <code>veth</code> addresses out of the candidate list usually go together. A wildcard mux made pion derive candidate addresses by enumerating interfaces itself with a nil filter, so on a host with docker bridges the browser received <code>172.18.0.1</code>, <code>172.17.0.1</code>, <code>10.10.10.1</code> and friends, connected on a good pair, then dropped when ICE consent checks failed on the others.</p>
+<blockquote>
+<p>🔗 PRs: #11436, #11466</p>
+</blockquote>
+<h3>🖧 Cold model loads run as durable jobs</h3>
+<p>On a two-replica frontend, loading a 35.7 GB GGUF onto a newly added Jetson Thor worker made the model permanently unloadable from the operator's seat, while staging was in fact progressing normally underneath. Replica A held the per-model advisory lock through roughly twenty minutes of transfer; replica B blocked on <code>pg_advisory_lock</code> for the same model and was killed at 60s by the role's <code>statement_timeout</code>, and every UI retry reproduced it.</p>
+<p>Two defects sat behind that one symptom. The lock's lifetime was the transfer's lifetime, with <code>Route</code> wrapping backend install, multi-GB staging and checkpoint load in <code>advisorylock.WithLockCtx</code>, which turns a millisecond dedup decision into a cluster-wide outage for that model. And <code>WithLockCtx</code> overrode <code>lock_timeout</code> but not <code>statement_timeout</code>, though both abort the same blocking call.</p>
+<p>Cold loads now run as durable jobs, so the lock is held only for the decision it exists to make.</p>
+<blockquote>
+<p>🔗 PRs: #11514</p>
+</blockquote>
+<h3>🎮 vllm-cpp builds for the cards people own</h3>
+<p>The <code>vllm-cpp</code> CUDA images were built for Blackwell only: <code>120a;121a</code> on amd64 and <code>121a</code> alone on arm64, out of the ten architectures vllm.cpp's own release archive builds.</p>
+<p>What makes it worth calling out is the failure mode. An unlisted card is not slower, it dies at the first request with <code>no kernel image is available for execution on the device</code>, long after <code>local-ai backends install vllm-cpp</code> reported success. This was found on a Jetson Thor node that had the backend installed and could serve nothing.</p>
+<p>| | before | after |
+|---|---|---|
+| amd64 | <code>120a;121a</code> | <code>80;86;89;90a;100a;103a;120a;121a</code> |
+| arm64 | <code>121a</code> | <code>87;90a;100a;110;121a</code> |</p>
+<p>The split follows where the silicon exists: Jetson (<code>87</code> Orin, <code>110</code> Thor) is arm64-only, desktop <code>120a</code> is amd64-only, and <code>90a</code>/<code>100a</code> are on both because of the SBSA parts. That adds A100, A10/3090, L4/4090/RTX 6000 Ada, H100/H200, B200, B300, Jetson Orin and Jetson Thor. The CUDA 13 guard now covers both branches rather than amd64 alone, and Triton-AOT stays on.</p>
+<blockquote>
+<p>🔗 PRs: #11512</p>
+</blockquote>
+<h3>🌍 Portuguese (Brazil) and Indonesian</h3>
+<p>A complete <code>pt-BR</code> translation of the WebUI: 14 namespaces at full key parity with <code>en/</code> including <code>modelEditor.json</code>, with every i18next interpolation variable and <code>_one</code>/<code>_other</code> plural key preserved. Indonesian covers the admin, media and navigation strings. Both keep brand, model and technical identifiers untranslated, matching existing locale conventions.</p>
+<blockquote>
+<p>🔗 PRs: #11427, #11493</p>
+</blockquote>
+<h3>🧰 Smaller features worth knowing about</h3>
+<ul>
+<li><strong>Metal is actually on in two macOS backends.</strong> <code>stablediffusion-ggml</code> gated its Metal flags on an <code>OS=Darwin</code> variable the runner never defines, so the Darwin workflow's <code>BUILD_TYPE=metal</code> produced a build without <code>GGML_METAL_EMBED_LIBRARY=ON</code>, shipping a runtime source path that failed to expose <code>kernel_mul_mv_ext_bf16_f32_r1_5</code>. <code>parakeet-cpp</code> never forwarded <code>BUILD_TYPE=metal</code> to <code>PARAKEET_GGML_METAL</code> at all: on an M1 Air the same five-minute sample went from 82.57s to 50.18s with byte-identical output. A dry-run build-contract test now guards the Stable Diffusion flags.</li>
+<li><strong>Backend crashes say why.</strong> An unexpected runtime exit logged its stderr only at debug level, so at default log level operators saw an exit code and nothing else. The final non-empty stderr line now rides the unexpected-exit warning, and a failed gRPC readiness preserves the process exit code plus the last stderr diagnostic bounded to 4 KiB.</li>
+<li><strong>MCP servers stay visible when they fail.</strong> Model-level MCP servers disappeared from Chat whenever connection setup or tool discovery failed, hiding container DNS, routing and VPN reachability problems. They now stay listed as disabled error rows with a per-server error, discovery retries while safely closing partially created sessions, and the model editor documents the expected <code>mcp.remote</code> and <code>mcp.stdio</code> formats.</li>
+<li><strong>Checksum mismatches retry.</strong> A post-download SHA mismatch is now treated as a transient transfer failure: LocalAI removes the mismatched partial and lets the bounded planner retry a stale or corrupted CDN response, while still refusing unverified bytes. Direct <code>URI.DownloadFile</code> callers still see the mismatch immediately.</li>
+<li><strong>Audio transform rejects the wrong contract.</strong> The audio-transform WebSocket accepted <code>realtime_audio</code> models and opened the frame-based <code>AudioTransformStream</code> RPC, which failed after the handshake with <code>NotImplementedError</code> for any-to-any models like <code>liquid-audio</code>. The use case is now validated before the backend loads, and any-to-any callers are pointed at the OpenAI Realtime API.</li>
+<li><strong>Invalid preload JSON names itself.</strong> <code>PRELOAD_MODELS</code> / <code>--preload-models</code> now identifies which input was invalid and rejects non-array top-level values (including booleans and <code>null</code>) with the expected shape in the error.</li>
+</ul>
+<blockquote>
+<p>🔗 PRs: #11531, #11492, #11532, #11447, #11495, #11536, #11565, #11434</p>
+</blockquote>
+<hr />
+<h2>🐛 Bug Fixes (recap)</h2>
+<ul>
+<li><code>fix(auth)</code>: protect HTTP routes by default - #11602</li>
+<li><code>fix(distributed)</code>: run cold model loads as durable jobs instead of holding the advisory lock - #11514</li>
+<li><code>fix(vllm-cpp)</code>: build every CUDA architecture the platform can host - #11512</li>
+<li><code>fix(realtime)</code>: keep the ICE interface allow-list working with a fixed UDP port - #11466</li>
+<li><code>fix(stablediffusion)</code>: embed Metal library - #11531</li>
+<li><code>fix(parakeet-cpp)</code>: enable Metal in macOS builds - #11492</li>
+<li><code>fix(model)</code>: report backend crash diagnostics - #11532</li>
+<li><code>fix(model)</code>: surface backend startup exits - #11447</li>
+<li><code>fix(downloader)</code>: retry checksum mismatches - #11536</li>
+<li><code>fix(audio)</code>: reject incompatible transform streams - #11565</li>
+<li><code>fix(gallery)</code>: parse harmony output of gpt-oss-* models correctly - #11518</li>
+<li><code>fix(gallery)</code>: identify invalid preload JSON - #11434</li>
+<li><code>fix(gallery)</code>: repair DeepSeek V4 fallback - #11480</li>
+<li><code>fix(gallery)</code>: correct Higgs Audio v3 checksum - #11459</li>
+<li><code>fix(fish-speech)</code>: preserve ROCm PyTorch - #11568</li>
+<li><code>fix(vllm)</code>: align Intel basekit runtime to oneAPI 2025.3.2 - #11437</li>
+<li><code>fix(kokoros)</code>: add the missing <code>upscale_image</code> stub to the Backend trait impl - #11414</li>
+<li><code>fix</code>: show MCP connection errors in the UI - #11495</li>
+<li><code>fix(ui)</code>: unmerge the class strings that left buttons in browser chrome - #11462</li>
+<li><code>fix(ui)</code>: keep agent import action visible - #11488</li>
+<li><code>fix</code>: wrap long TTS request text instead of widening the page - #11576</li>
+</ul>
+<hr />
+<h2>🧠 Models</h2>
+<p>85 new gallery entries this cycle, taking the index from 1,622 to 1,707.</p>
+<p>Text generation: Qwen3.8 in 9B, 27B, Ridge and small variants, Gemma 4 agentic and Gemma 4 Scotoma 2, DeepSeek V4 Pro 0813, Ling 3.0 Flash, Nemotron 3.5 Lightning 30B, Tess 4 27B, Ornith 1.0 and 1.5 9B, Muse Glimmer 30B, Grug 12B, BigBang v1, Genesis Hermes V7, TwIL-LM3, BTL-4 Compact, XYZ Aquila mini, North Mini Code, AREX Turbo, Fara1.5 4B, MiniCPM5 1B Q8, Shieldstral 1.0 3B and UI-Mate 9B.</p>
+<p>Vision and OCR: HunyuanOCR, OvisOCR2, LFM2.5 VL 1.6B, and LFM2.5 230M alongside it.</p>
+<p>Audio and video: Higgs Audio v3 TTS, the Qwen3-TTS llama.cpp entries, and the MiniMax-H3 FL2VA and Ref2VA video sets.</p>
+<p>Also a first Carbon genomics family, and text-generation entries for the <code>vllm-cpp</code> backend.</p>
+<blockquote>
+<p>🔗 PRs: #11622, #11603, #11599, #11598, #11594, #11584, #11573, #11571, #11561, #11559, #11557, #11552, #11551, #11549, #11547, #11540, #11533, #11526, #11519, #11511, #11490, #11479, #11478, #11477, #11458, #11456, #11455, #11449, #11446, #11443, #11441, #11439, #11438, #11435</p>
+</blockquote>
+<hr />
+<h2>👒 Dependencies</h2>
+<p>Submodule and pin bumps this cycle:</p>
+<p>| Project | Bumps |
+|---|---|
+| CrispStrobe/CrispASR | 10 |
+| ikawrakow/ik_llama.cpp | 9 |
+| vllm-metal (darwin) | 7 |
+| mudler/vllm.cpp | 6 |
+| 0xShug0/audio.cpp | 5 |
+| ggml-org/llama.cpp | 4 |
+| ggml-org/whisper.cpp | 3 |
+| leejet/stable-diffusion.cpp | 2 |
+| antirez/ds4, mudler/parakeet.cpp, mudler/depth-anything.cpp, NVIDIA/NeMo-Speech.cpp, vllm-project/vllm cu130 wheel | 1 each |</p>
+<p>Plus <code>golang.org/x/net</code> to v0.55.0, vllm 0.26.0 and transformers &gt;=5.15.0 in the Python backends, sentence-transformers 5.7.0, packaging 26.3, dompurify 3.4.13, the Kokoros source pin, inference defaults refreshed from unsloth, and seven gallery checksum refreshes.</p>
+<hr />
+<h2>📖 Documentation</h2>
+<p>New pages for context compression and <code>vllm-cpp</code>, a substantially expanded middleware page covering the PII pseudonym and compression surfaces, and a rewritten authentication page documenting the public and protected route surfaces after the deny-by-default change.</p>
+<p>Video generation gained the MiniMax-H3 setup, text-to-audio the Qwen3-TTS llama.cpp path, distributed mode the durable cold-load behaviour, MCP the configuration formats and container networking implications, and Realtime the shared UDP port and firewall guidance. Embeddings, model gallery, backends and API discovery all picked up corrections, and the broken stars counter came out of the site.</p>
+<blockquote>
+<p>🔗 PRs: #11448, #11581, #11582, #11415</p>
+</blockquote>
+<hr />
+<h2>🙌 New Contributors</h2>
+<ul>
+<li>@tom-mi made their first contribution in #11518</li>
+<li>@kassane made their first contribution in #11427</li>
+<li>@fieryWaters made their first contribution in #11492</li>
+</ul>
+<p>Thanks also to @richiejp, @jimmykarily, @Dennisadira, @dedyf5, @ALameLlama and @walcz-de, and to <a href="https://www.linkedin.com/in/naor-yaacov/">Naor Yaacov</a> for the authentication bypass report.</p>
+&lt;!-- Release notes generated using configuration in .github/release.yml at master --&gt;
+<h2>What's Changed</h2>
+<h3>Breaking Changes 🛠</h3>
+<ul>
+<li>fix(auth): protect HTTP routes by default by @localai-bot in https://github.com/mudler/LocalAI/pull/11602</li>
+</ul>
+<h3>Bug fixes :bug:</h3>
+<ul>
+<li>fix(kokoros): add missing <code>upscale_image</code> stub to Backend trait impl by @mudler with @Copilot in https://github.com/mudler/LocalAI/pull/11414</li>
+<li>fix(gallery): identify invalid preload JSON by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11434</li>
+<li>fix(vllm): align Intel basekit runtime by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11437</li>
+<li>fix(model): surface backend startup exits by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11447</li>
+<li>fix(ui): unmerge the class strings that left buttons in browser chrome by @localai-bot in https://github.com/mudler/LocalAI/pull/11462</li>
+<li>fix(realtime): keep the ICE interface allow-list working with a fixed UDP port by @jimmykarily in https://github.com/mudler/LocalAI/pull/11466</li>
+<li>fix(parakeet-cpp): enable Metal in macOS builds by @fieryWaters in https://github.com/mudler/LocalAI/pull/11492</li>
+<li>fix: Show MCP connection errors in the UI by @richiejp in https://github.com/mudler/LocalAI/pull/11495</li>
+<li>fix(vllm-cpp): build every CUDA architecture the platform can host by @localai-bot in https://github.com/mudler/LocalAI/pull/11512</li>
+<li>fix (gallery): Parse harmony output of gpt-oss-* models correctly (#8037) by @tom-mi in https://github.com/mudler/LocalAI/pull/11518</li>
+<li>fix(ui): keep agent import action visible by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11488</li>
+<li>fix(stablediffusion): embed Metal library by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11531</li>
+<li>fix(model): report backend crash diagnostics by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11532</li>
+<li>fix(distributed): run cold model loads as durable jobs instead of holding the advisory lock by @localai-bot in https://github.com/mudler/LocalAI/pull/11514</li>
+<li>fix(downloader): retry checksum mismatches by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11536</li>
+<li>fix(fish-speech): preserve ROCm PyTorch by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11568</li>
+<li>fix(audio): reject incompatible transform streams by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11565</li>
+<li>fix: tts text wrap by @ALameLlama in https://github.com/mudler/LocalAI/pull/11576</li>
+</ul>
+<h3>Exciting New Features 🎉</h3>
+<ul>
+<li>feat(modelartifacts): support bounded parallel Hugging Face file downloads by @Dennisadira in https://github.com/mudler/LocalAI/pull/11162</li>
+<li>feat(i18n): add pt-BR translation by @kassane in https://github.com/mudler/LocalAI/pull/11427</li>
+<li>feat(vllm-cpp): serve MiniMax-H3 video+audio generation by @localai-bot in https://github.com/mudler/LocalAI/pull/11424</li>
+<li>feat(pii): restore request-scoped pseudonyms by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11272</li>
+<li>feat(llama-cpp): serve Qwen3-TTS through the llama.cpp backend by @localai-bot in https://github.com/mudler/LocalAI/pull/11392</li>
+<li>feat(realtime): add shared WebRTC UDP port by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11436</li>
+<li>feat(ui): rebuild the import form on the restyled design language by @localai-bot in https://github.com/mudler/LocalAI/pull/11461</li>
+<li>i18n(id): translate admin, media, and nav UI strings to Indonesian by @dedyf5 in https://github.com/mudler/LocalAI/pull/11493</li>
+<li>feat(ui): unify model and backend lifecycle by @localai-bot in https://github.com/mudler/LocalAI/pull/11548</li>
+<li>feat: bound global admission and expose running backend traces by @richiejp in https://github.com/mudler/LocalAI/pull/11560</li>
+<li>feat(router): make KNN a first-class classifier with a persisted, curated corpus by @richiejp in https://github.com/mudler/LocalAI/pull/10652</li>
+<li>feat(chat): add end-to-end context compression by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11556</li>
+</ul>
+<h3>🧠 Models</h3>
+<ul>
+<li>feat(gallery): add Grug 12B variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11438</li>
+<li>feat(gallery): add Shieldstral 1.0 3B variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11441</li>
+<li>feat(gallery): add Genesis Hermes V7 variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11435</li>
+<li>feat(gallery): add minimax-h3-ref2va-q4 - the Ref2VA partition, verified coherent by @localai-bot in https://github.com/mudler/LocalAI/pull/11439</li>
+<li>feat(gallery): add BigBang v1 variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11443</li>
+<li>feat(gallery): add Gemma 4 Scotoma 2 variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11458</li>
+<li>feat(gallery): add Muse Glimmer 30B variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11446</li>
+<li>feat(gallery): add Higgs Audio v3 TTS by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11456</li>
+<li>feat(gallery): add BTL-4 Compact by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11449</li>
+<li>feat(gallery): add XYZ Aquila mini variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11455</li>
+<li>fix(gallery): correct Higgs Audio v3 checksum by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11459</li>
+<li>chore: bump inference defaults from unsloth by @github-actions[bot] in https://github.com/mudler/LocalAI/pull/11270</li>
+<li>fix(gallery): align Higgs Audio checksum test by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11476</li>
+<li>feat(gallery): add Nemotron 3.5 Lightning 30B by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11477</li>
+<li>feat(gallery): add TwIL-LM3 variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11478</li>
+<li>fix(gallery): repair DeepSeek V4 fallback by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11480</li>
+<li>feat(gallery): add Fara1.5 4B variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11479</li>
+<li>feat(gallery): add LFM2.5 VL 1.6B variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11490</li>
+<li>feat(gallery): add Qwen3.8 27B variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11519</li>
+<li>feat(gallery): add DeepSeek V4 Pro 0813 by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11533</li>
+<li>feat(gallery): add LFM2.5 230M variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11526</li>
+<li>feat(gallery): add vllm.cpp text-generation models by @localai-bot in https://github.com/mudler/LocalAI/pull/11511</li>
+<li>feat(gallery): add HunyuanOCR variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11540</li>
+<li>feat(gallery): add Tess 4 27B variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11547</li>
+<li>feat(gallery): add AREX Turbo variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11551</li>
+<li>feat(gallery): add OvisOCR2 variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11549</li>
+<li>feat(gallery): add Qwen3.8 9B variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11557</li>
+<li>feat(gallery): add Ornith 1.0 9B variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11552</li>
+<li>feat(gallery): add Qwen3.8 Ridge variant by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11573</li>
+<li>feat(gallery): add Qwen3.8 small variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11571</li>
+<li>feat(gallery): add MiniCPM5 1B Q8 variant by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11561</li>
+<li>chore(model gallery): :robot: add 1 new models via gallery agent by @localai-bot in https://github.com/mudler/LocalAI/pull/11596</li>
+<li>feat(gallery): add North Mini Code variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11559</li>
+<li>feat(gallery): add UI-Mate 9B variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11584</li>
+<li>feat(gallery): add Ling 3.0 Flash variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11598</li>
+<li>feat(gallery): add Hy-MT2 1.8B variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11599</li>
+<li>feat(gallery): add Carbon genomics variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11594</li>
+<li>chore(model gallery): :robot: add 1 new models via gallery agent by @localai-bot in https://github.com/mudler/LocalAI/pull/11605</li>
+<li>feat(gallery): add Ornith 1.5 9B variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11603</li>
+<li>feat(gallery): add Gemma 4 agentic variants by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11622</li>
+</ul>
+<h3>📖 Documentation and examples</h3>
+<ul>
+<li>docs: :arrow_up: update docs version mudler/LocalAI by @localai-bot in https://github.com/mudler/LocalAI/pull/11415</li>
+<li>docs: remove broken stars counter by @richiejp in https://github.com/mudler/LocalAI/pull/11448</li>
+<li>docs(adopters): add walcz.de by @walcz-de in https://github.com/mudler/LocalAI/pull/11581</li>
+<li>docs(ecosystem): add Walcz to contributors by @walcz-de in https://github.com/mudler/LocalAI/pull/11582</li>
+</ul>
+<h3>👒 Dependencies</h3>
+<ul>
+<li>chore: :arrow_up: Update ggml-org/whisper.cpp to <code>592feef04a1802b18cbeffd0fd0eb5d02570c2ec</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11416</li>
+<li>chore(model-gallery): :arrow_up: update checksum by @localai-bot in https://github.com/mudler/LocalAI/pull/11418</li>
+<li>chore: :arrow_up: Update ikawrakow/ik_llama.cpp to <code>40dffce6857b4fe051f096379dc464764c718458</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11403</li>
+<li>chore: :arrow_up: Update CrispStrobe/CrispASR to <code>17a6cc99422bfafadf7161e96dd7294c89da9c36</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11404</li>
+<li>chore: :arrow_up: Update ikawrakow/ik_llama.cpp to <code>f2328aa0c19954d0ab31a3de60fbf50e47c2429f</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11421</li>
+<li>chore(model-gallery): :arrow_up: update checksum by @localai-bot in https://github.com/mudler/LocalAI/pull/11423</li>
+<li>chore: :arrow_up: Update antirez/ds4 to <code>84cc882352757baf628a1776badf7cc54d584e28</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11432</li>
+<li>chore: :arrow_up: Update ikawrakow/ik_llama.cpp to <code>a7c81affa48c6800d63111bdb33469a01d062daa</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11431</li>
+<li>chore(model-gallery): :arrow_up: update checksum by @localai-bot in https://github.com/mudler/LocalAI/pull/11433</li>
+<li>chore: :arrow_up: Update 0xShug0/audio.cpp to <code>748c5e28f6a7228b8f38ad7142ca97d29584544b</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11401</li>
+<li>chore: :arrow_up: Update CrispStrobe/CrispASR to <code>8898b0fee199b1765321a5d0d8314aee51a34583</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11422</li>
+<li>chore(deps): bump dompurify from 3.4.12 to 3.4.13 in /core/http/react-ui in the npm_and_yarn group across 1 directory by @dependabot[bot] in https://github.com/mudler/LocalAI/pull/11425</li>
+<li>chore: :arrow_up: Update ikawrakow/ik_llama.cpp to <code>5763a901de3f525b65ed5574fd57623905685755</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11452</li>
+<li>chore: :arrow_up: Update CrispStrobe/CrispASR to <code>8b91f4c5490b88ae6193673c35644d91d8695821</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11450</li>
+<li>chore: :arrow_up: Update 0xShug0/audio.cpp to <code>9d6e7b39236e0151ad28a70fab0d538b84ce8718</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11451</li>
+<li>chore(model-gallery): :arrow_up: update checksum by @localai-bot in https://github.com/mudler/LocalAI/pull/11453</li>
+<li>chore: :arrow_up: Update ggml-org/llama.cpp to <code>030ebb558a5820b444a8f836ed5cdd46c9b4bd7a</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11454</li>
+<li>chore: :arrow_up: Update mudler/vllm.cpp to <code>24306364ab8beaed9197604a042a56aaccfde493</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11385</li>
+<li>chore: :arrow_up: Update ikawrakow/ik_llama.cpp to <code>26ceed9d4091a1696cf50e2ed87e5767d5811d81</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11475</li>
+<li>chore(model-gallery): :arrow_up: update checksum by @localai-bot in https://github.com/mudler/LocalAI/pull/11471</li>
+<li>chore: :arrow_up: Update mudler/depth-anything.cpp to <code>54abd5c0abfd1f394e01cb3c38f2e3af4daedf85</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11481</li>
+<li>chore: :arrow_up: Update mudler/vllm.cpp to <code>9fd9e8f34408d5dd21d7f9385e96fc755708950b</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11472</li>
+<li>chore: :arrow_up: Update ikawrakow/ik_llama.cpp to <code>c46ffaa5665cfb2d6cf372c9a054dbab896e14fe</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11482</li>
+<li>chore: :arrow_up: Update vllm-metal (darwin) to <code>v0.3.0.dev20260812005333</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11467</li>
+<li>chore: :arrow_up: Update vllm-project/vllm cu130 wheel to <code>0.27.1</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11468</li>
+<li>chore: :arrow_up: Update CrispStrobe/CrispASR to <code>ce521ee178867ceaa5fdc11803616578c8936c19</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11470</li>
+<li>chore: :arrow_up: Update leejet/stable-diffusion.cpp to <code>de298c225bed97c3f9026b73cd7b71e7879bd41b</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11469</li>
+<li>chore(deps): bump backend/rust/kokoros/sources/Kokoros from <code>7089168</code> to <code>29e99ad</code> by @dependabot[bot] in https://github.com/mudler/LocalAI/pull/11496</li>
+<li>chore(deps): bump packaging from 26.2 to 26.3 in /backend/python/coqui by @dependabot[bot] in https://github.com/mudler/LocalAI/pull/11497</li>
+<li>chore: :arrow_up: Update ggml-org/llama.cpp to <code>84e908c625fb60992b4cdef8180fb12fa9b4c4bf</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11473</li>
+<li>chore(deps): update transformers requirement from &gt;=5.14.1 to &gt;=5.15.0 in /backend/python/transformers by @dependabot[bot] in https://github.com/mudler/LocalAI/pull/11500</li>
+<li>chore: :arrow_up: Update vllm-metal (darwin) to <code>v0.3.0.dev20260813121949</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11507</li>
+<li>chore: :arrow_up: Update ikawrakow/ik_llama.cpp to <code>981e5ea0d7579b4803c86afbb09a7cd7d7bf3bb8</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11509</li>
+<li>chore: :arrow_up: Update CrispStrobe/CrispASR to <code>cb082743c456ac77aec0947de36e6420a933da04</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11510</li>
+<li>chore: :arrow_up: Update ikawrakow/ik_llama.cpp to <code>43afea46c25a12aae6db1e3105643267164898b4</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11527</li>
+<li>chore(model-gallery): :arrow_up: update checksum by @localai-bot in https://github.com/mudler/LocalAI/pull/11525</li>
+<li>chore: :arrow_up: Update vllm-metal (darwin) to <code>v0.3.0.dev20260814013332</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11522</li>
+<li>chore: :arrow_up: Update CrispStrobe/CrispASR to <code>cc498701f1a68d88dd489803ebad10053a924322</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11523</li>
+<li>chore: :arrow_up: Update ggml-org/whisper.cpp to <code>1fe009caeda75f69bc864d6370b10674e45a92bd</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11524</li>
+<li>chore(deps): bump sentence-transformers from 5.6.1 to 5.7.0 in /backend/python/transformers by @dependabot[bot] in https://github.com/mudler/LocalAI/pull/11499</li>
+<li>chore(deps): bump vllm from 0.25.1 to 0.26.0 in /backend/python/vllm by @dependabot[bot] in https://github.com/mudler/LocalAI/pull/11402</li>
+<li>chore: :arrow_up: Update ikawrakow/ik_llama.cpp to <code>8337e4cd3861406fc04e0854b1409cd1b027fbc9</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11542</li>
+<li>chore: :arrow_up: Update vllm-metal (darwin) to <code>v0.3.0.dev20260815085651</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11541</li>
+<li>chore(deps): bump golang.org/x/net to v0.55.0 by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11544</li>
+<li>chore: :arrow_up: Update mudler/vllm.cpp to <code>4880c5715f36445a30bd39d3349a06dc96085a11</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11515</li>
+<li>chore: :arrow_up: Update vllm-metal (darwin) to <code>v0.3.0.dev20260816085229</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11553</li>
+<li>chore: :arrow_up: Update CrispStrobe/CrispASR to <code>3721d402f7bcc911dd4143a58e3da1cc67f09cc2</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11554</li>
+<li>chore: :arrow_up: Update vllm-metal (darwin) to <code>v0.3.0.dev20260817081527</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11570</li>
+<li>chore: :arrow_up: Update CrispStrobe/CrispASR to <code>007fda47128aaba7e2ce2279b0947a1c13800d68</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11569</li>
+<li>chore: :arrow_up: Update ggml-org/llama.cpp to <code>0021a77de0a8966059dc94548fb3b96654e0bb12</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11508</li>
+<li>chore: :arrow_up: Update mudler/vllm.cpp to <code>76f2a6d84e41cc9a593146a9a958f63645542731</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11555</li>
+<li>chore: :arrow_up: Update 0xShug0/audio.cpp to <code>3407559d7c83b543bd60ca8fa2b630374e71083f</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11474</li>
+<li>chore: :arrow_up: Update vllm-metal (darwin) to <code>v0.3.0.dev20260818075955</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11586</li>
+<li>chore: :arrow_up: Update 0xShug0/audio.cpp to <code>92816fc5c48d33a58171b49678ccf884d70142fb</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11587</li>
+<li>chore: :arrow_up: Update ggml-org/whisper.cpp to <code>4834a2327d008ace3ec5a9ed00f51454bcabbc1c</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11588</li>
+<li>chore: :arrow_up: Update mudler/vllm.cpp to <code>6e99e4540b8d0811542a9d7690dc9aa0bda5812f</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11589</li>
+<li>chore: :arrow_up: Update ggml-org/llama.cpp to <code>60addddf3c567c43ec3caf70fc953fba3572d96f</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11590</li>
+<li>chore: :arrow_up: Update CrispStrobe/CrispASR to <code>a117d433855ecc36b0cb20bd1abddd852902ed13</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11591</li>
+<li>chore: :arrow_up: Update mudler/parakeet.cpp to <code>e75de9b6b9b688fd293aa22f7e27aa724ea286f8</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11592</li>
+<li>chore: :arrow_up: Update mudler/vllm.cpp to <code>438305e1577768ec0f75729456a4c8b9f425e2ee</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11612</li>
+<li>chore: :arrow_up: Update 0xShug0/audio.cpp to <code>a61da671b6a81c79071500954eea3c91c1a383dd</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11613</li>
+<li>chore: :arrow_up: Update leejet/stable-diffusion.cpp to <code>97d2990807fe6d558e395f8764198d7c7e7b411c</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11616</li>
+<li>chore(model-gallery): :arrow_up: update checksum by @localai-bot in https://github.com/mudler/LocalAI/pull/11615</li>
+<li>chore: :arrow_up: Update CrispStrobe/CrispASR to <code>a153b09b37c90cd55cd9336fccbdf3ba7a289596</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11611</li>
+<li>chore: :arrow_up: Update NVIDIA/NeMo-Speech.cpp to <code>4f9676226f667d14608487df744f375db87127f8</code> by @localai-bot in https://github.com/mudler/LocalAI/pull/11417</li>
+</ul>
+<h3>Other Changes</h3>
+<ul>
+<li>fix(ci): parse current vllm-metal version pins by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11457</li>
+<li>fix(ci): refresh site counters through a PR by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11572</li>
+<li>feat(swagger): update swagger by @localai-bot in https://github.com/mudler/LocalAI/pull/11585</li>
+<li>fix(ci): test stale chunks in split bundle by @localai-org-maint-bot in https://github.com/mudler/LocalAI/pull/11595</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/mudler/LocalAI/compare/v4.8.2...v4.9.0</p>
+<hr />
+<blockquote>
+<p><strong>Source</strong> <a href="https://github.com/mudler/LocalAI">mudler/LocalAI</a> · <code>v4.9.0</code> · 2026-08-20 · <a href="https://github.com/mudler/LocalAI/releases/tag/v4.9.0">upstream release</a></p>
+</blockquote>
+<p><em>Mirrored verbatim for indexing. All rights belong to the upstream project.</em></p></div> </details> </div> <p class="muted" style="margin-top:var(--s8);font-size:12.5px;border-top:1px solid var(--line);padding-top:var(--s4)"> リリースノートは上流プロジェクトが公開したものです。私たちはそれらを整理し、関連付けて、バージョンを一眼で比較できるようにしています。コンテンツの権利はすべて原作者に属します。 </p> <nav class="pager" aria-label="Release navigation"> <a href="/releases/localai/4.10.0"> <span class="k">← 次へ</span> <span class="t">v4.10.0</span> </a> <a href="/releases/localai/4.8.2"> <span class="k">前へ →</span> <span class="t">v4.8.2</span> </a> </nav> <aside class="ad-slot" aria-label="Advertisement" data-astro-cid-fgwukgf6><div class="ad-slot-label" data-astro-cid-fgwukgf6>Advertisement</div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4184355057086168" data-ad-slot="9133765584" data-ad-format="auto" data-full-width-responsive="true" data-astro-cid-fgwukgf6></ins><script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script></aside> </article> <aside class="rail"> <div class="rail-card"> <div class="rail-title">Source</div> <ul class="rail-list"> <li> <a href="https://github.com/mudler/LocalAI/releases/tag/v4.9.0" target="_blank" rel="noopener"> <span>GitHub で見る</span> <span class="d">↗</span> </a> </li> <li> <a href="https://github.com/mudler/LocalAI" target="_blank" rel="noopener"> <span>mudler/LocalAI</span> <span class="d">↗</span> </a> </li> </ul> </div> <div class="rail-card rail-toc"> <div class="rail-title">このページの目次</div> <nav> <a href="#" class>📊 このリリースの数字</a><a href="#" class>📌TL;DR</a><a href="#" class>🚀 新機能と主要な機能強化</a><a href="#" class="lv3">🔐 認証がデフォルトで拒否されるようになりました</a><a href="#" class="lv3">🗜️ エンドツーエンドのコンテキスト圧縮</a><a href="#" class="lv3">🖥️ リソースごとに 1 つの正規ページ</a><a href="#" class="lv3">📥 インポートフォーム、再構築されました</a><a href="#" class="lv3">🎬 MiniMax-H3: ビデオとオーディオを統合</a><a href="#" class="lv3">🗣️ llama.cpp バックエンドを介した Qwen3-TTS</a><a href="#" class="lv3">🧭 ファーストクラスルーターとしての KNN</a><a href="#" class="lv3">📊 グローバル アドミッション コントロールとバックエンド トレースの実行</a><a href="#" class="lv3">🕵️ 往復で生き残る PII の仮名</a><a href="#" class="lv3">📦 制限付き平行ハグフェイスのダウンロード</a><a href="#" class="lv3">📞 1 つの UDP ポート上のリアルタイム WebRTC</a><a href="#" class="lv3">🖧 コールド モデルのロードは永続的なジョブとして実行されます</a><a href="#" class="lv3">🎮 vllm-cpp はユーザーが所有するカード用にビルドします</a><a href="#" class="lv3">🌍 ポルトガル語 (ブラジル) およびインドネシア語</a><a href="#" class="lv3">🧰 知っておく価値のある小さな機能</a><a href="#" class>🐛 バグ修正 (要約)</a><a href="#" class>🧠 モデル</a><a href="#" class>👒 依存関係</a><a href="#" class>📖 ドキュメント</a><a href="#" class>🙌 新しい寄稿者</a><a href="#" class>何が変わったのか</a> </nav> </div> <div class="rail-card"> <div class="rail-title">バージョン履歴</div> <ul class="rail-list"> <li> <a href="/releases/localai/4.12.1"> <span class="v">v4.12.1</span> <span class="d">26-10-23</span> </a> </li><li> <a href="/releases/localai/4.12.0"> <span class="v">v4.12.0</span> <span class="d">26-10-22</span> </a> </li><li> <a href="/releases/localai/4.11.0"> <span class="v">v4.11.0</span> <span class="d">26-10-02</span> </a> </li><li> <a href="/releases/localai/4.10.0"> <span class="v">v4.10.0</span> <span class="d">26-09-17</span> </a> </li><li> <a href="/releases/localai/4.9.0" aria-current="true"> <span class="v">v4.9.0</span> <span class="d">26-08-20</span> </a> </li><li> <a href="/releases/localai/4.8.2"> <span class="v">v4.8.2</span> <span class="d">26-08-07</span> </a> </li><li> <a href="/releases/localai/4.8.1"> <span class="v">v4.8.1</span> <span class="d">26-08-06</span> </a> </li><li> <a href="/releases/localai/4.8.0"> <span class="v">v4.8.0</span> <span class="d">26-08-05</span> </a> </li> </ul> <a href="/ja/releases/localai" class="mono" style="display:inline-block;margin-top:var(--s3);font-size:11.5px;color:var(--ink-3)"> すべての 19 件を見る →
+</a> </div> </aside> </div> </div>  </main> <footer class="site-footer"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/ja/" class="brand" aria-label="STAGS NextStack"><span class="brand-mark" aria-hidden="true">S</span><span class="brand-main">STAGS</span><span class="brand-sub" aria-hidden="true">NextStack</span></a> <p>オープンソースのリリース インテリジェンスが毎日公開されます。</p> </div> <div class="footer-col"> <h3>追跡</h3> <ul> <li><a href="/ja/releases">リリース</a></li> <li><a href="/ja/projects">プロジェクト</a></li> <li><a href="/ja/releases.xml">RSS フィード</a></li> </ul> </div> <div class="footer-col"> <h3>アーカイブ</h3> <ul> <li><a href="/zh/release_note" hreflang="zh-Hans">中文アーカイブ</a></li> <li><a href="/zh/chapters/" hreflang="zh-Hans">技術ノート</a></li> <li><a href="/zh/downloads/">Stags Tracker</a></li> </ul> </div> <div class="footer-col"> <h3>情報</h3> <ul> <li><a href="/privacy">プライバシーポリシー</a></li> <li><a href="/releases.xml">RSS</a></li> <li><a href="/sitemap-index.xml">Sitemap</a></li> </ul> </div> </div> <div class="footer-btm"> <span>© 2026 STAGS</span> <span>Release note は上流プロジェクトに属します。</span> </div> </div> </footer> <!-- 搜索面板 --> <div class="palette-bg" data-palette-bg data-open="false"> <div class="palette" role="dialog" aria-modal="true" aria-label="リリースを検索"> <div class="palette-in"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ink-4);flex:none"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <input type="search" data-palette-input placeholder="リリース、プロジェクト、バージョンを検索…" autocomplete="off" spellcheck="false"> <span class="kbd">esc</span> </div> <ul class="palette-res" data-palette-res></ul> <div class="palette-ft"> <span>↑↓ navigate</span> <span>↵ open</span> <span style="margin-left:auto" data-palette-count></span> </div> </div> </div> <script type="module" src="/assets/Shell.astro_astro_type_script_index_0_lang.0ZkKXV47.js"></script> </body> </html>

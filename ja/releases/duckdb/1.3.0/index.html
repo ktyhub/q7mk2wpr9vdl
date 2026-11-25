@@ -1,0 +1,1154 @@
+<!DOCTYPE html><html lang="ja" dir="ltr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>duckdb v1.3.0 — STAGS NextStack</title><meta name="description" content="This release of DuckDB is named 'Ossivalis' after Bucephala Ossivalis, an ancestor of the Goldeneye duck that lived Millions of years ago."><meta name="keywords" content="オープンソース release note、リリース トラッカー、changelog アグリゲーター、重大な変更、非推奨トラッカー、Kafka リリース、Spring Boot リリース、Kubernetes リリース"><meta name="generator" content="Astro v5.18.2"><link rel="canonical" href="https://www.stags.cn/ja/releases/duckdb/1.3.0/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="STAGS NextStack — releases" href="/ja/releases.xml"><link rel="alternate" hreflang="en" href="https://www.stags.cn/releases/duckdb/1.3.0/"><link rel="alternate" hreflang="zh-Hans" href="https://www.stags.cn/releases/duckdb/1.3.0/"><link rel="alternate" hreflang="x-default" href="https://www.stags.cn/releases/duckdb/1.3.0/"><meta property="og:site_name" content="STAGS"><meta property="og:type" content="article"><meta property="og:title" content="duckdb v1.3.0 — STAGS NextStack"><meta property="og:description" content="This release of DuckDB is named 'Ossivalis' after Bucephala Ossivalis, an ancestor of the Goldeneye duck that lived Millions of years ago."><meta property="og:url" content="https://www.stags.cn/ja/releases/duckdb/1.3.0/"><meta property="og:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><meta property="og:locale" content="ja_JP"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="de_DE"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:locale:alternate" content="es_ES"><meta property="og:locale:alternate" content="pt_BR"><meta property="og:locale:alternate" content="ko_KR"><meta property="og:locale:alternate" content="it_IT"><meta property="og:locale:alternate" content="ru_RU"><meta property="og:locale:alternate" content="tr_TR"><meta property="og:locale:alternate" content="id_ID"><meta property="og:locale:alternate" content="vi_VN"><meta property="og:locale:alternate" content="ar_SA"><meta property="og:locale:alternate" content="sv_SE"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.stags.cn/#website","name":"STAGS","url":"https://www.stags.cn/","inLanguage":"ja","description":"NextStack はインフラストラクチャおよび AI プロジェクトのリリースノートを索引化し、破壊的変更・非推奨・移行情報を英語優先の単一フィードで提供します。","publisher":{"@id":"https://www.stags.cn/#org"}},{"@type":"Organization","@id":"https://www.stags.cn/#org","name":"STAGS","alternateName":"NextStack","url":"https://www.stags.cn/"},{"@type":"TechArticle","@id":"https://www.stags.cn/ja/releases/duckdb/1.3.0/#article","headline":"duckdb v1.3.0 release notes","datePublished":"2025-05-21","inLanguage":"en","isPartOf":{"@id":"https://www.stags.cn/#website"},"about":{"@type":"SoftwareSourceCode","codeRepository":"https://github.com/duckdb/duckdb"}}]}</script><!-- 第三方脚本的连接预热：这两个域名几乎每页都要连，
+         提前建连能省掉 DNS + TCP + TLS 一个往返（移动网络 100~300ms）。
+         AdSense 只在开关打开时预热——关掉广告后连这个域名都没必要。 --><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://pagead2.googlesyndication.com"><!-- Google AdSense：站点所有权校验与广告投放共用同一段脚本，全站只加载一次。
+         未创建广告单元时页面上不渲染任何广告容器，站点保持干净。
+         fetchpriority=low：它不参与首屏渲染，不该跟正文抢带宽。 --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184355057086168" crossorigin="anonymous" fetchpriority="low"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-RFRF1TVRMP" fetchpriority="low"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RFRF1TVRMP");
+    </script><!-- 百度统计（国内流量统计）。官方标准片段，is:inline 原样输出，
+         hm.js 动态插到首个 script 前，异步不阻塞首屏渲染。 --><script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?299e5b4e65b86ed16879bdcbe70531d6";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script><link rel="stylesheet" href="/assets/index.DQGt3qLZ.css">
+<style>.ad-slot[data-astro-cid-fgwukgf6]{margin:var(--s10) 0 0;padding-top:var(--s5);border-top:1px solid var(--line)}.ad-slot-label[data-astro-cid-fgwukgf6]{margin-bottom:var(--s3);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{display:block;min-height:100px}@media(min-width:640px){.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{min-height:250px}}
+</style></head> <body> <a class="skip" href="#main">本文へスキップ</a> <header class="hdr" data-header> <div class="wrap hdr-inner"> <a href="/ja/" class="brand" aria-label="STAGS NextStack — オープンソースのリリース情報"> <span class="brand-mark" aria-hidden="true">S</span> <span class="brand-main">STAGS</span> <span class="brand-sub" aria-hidden="true">NextStack</span> </a> <nav class="nav" aria-label="Primary"> <a href="/ja/releases">リリース</a><a href="/ja/projects">プロジェクト</a> </nav>  <details class="navmenu" data-navmenu> <summary class="navmenu-btn" aria-label="Open menu"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> </summary> <div class="navmenu-panel" role="group" aria-label="Primary"> <a href="/ja/releases" class="navmenu-item">リリース</a><a href="/ja/projects" class="navmenu-item">プロジェクト</a> </div> </details> <div class="hdr-tools"> <button class="searchbtn" type="button" data-search-open aria-label="リリースを検索"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <span class="lbl">検索</span> <span class="kbd">⌘K</span> </button> <details class="langmenu" data-langmenu> <summary class="langmenu-btn" aria-label="言語"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"> <circle cx="12" cy="12" r="9"></circle> <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path> </svg> <span class="langmenu-cur">日</span> <svg class="langmenu-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m2 4 4 4 4-4"></path></svg> </summary> <div class="langmenu-panel" role="group" aria-label="言語"> <p class="langmenu-head">言語</p> <a class="langmenu-item" href="/releases/duckdb/1.3.0/" hreflang="en" lang="en" data-on="false"> <span class="langmenu-label">English</span> <span class="langmenu-code">EN</span> </a><a class="langmenu-item" href="/zh/release_note/duckdb/duckdb_v1.3.0" hreflang="zh-Hans" lang="zh-CN" data-on="false"> <span class="langmenu-label">中文</span> <span class="langmenu-code">中</span> </a><a class="langmenu-item" href="/ja/releases/duckdb/1.3.0/" hreflang="ja" lang="ja" aria-current="true" data-on="true"> <span class="langmenu-label">日本語</span> <span class="langmenu-code">日</span> </a><a class="langmenu-item" href="/de/releases/duckdb/1.3.0/" hreflang="de" lang="de" data-on="false"> <span class="langmenu-label">Deutsch</span> <span class="langmenu-code">DE</span> </a><a class="langmenu-item" href="/fr/releases/duckdb/1.3.0/" hreflang="fr" lang="fr" data-on="false"> <span class="langmenu-label">Français</span> <span class="langmenu-code">FR</span> </a><a class="langmenu-item" href="/es/releases/duckdb/1.3.0/" hreflang="es" lang="es" data-on="false"> <span class="langmenu-label">Español</span> <span class="langmenu-code">ES</span> </a><a class="langmenu-item" href="/pt/releases/duckdb/1.3.0/" hreflang="pt-BR" lang="pt-BR" data-on="false"> <span class="langmenu-label">Português</span> <span class="langmenu-code">PT</span> </a><a class="langmenu-item" href="/ko/releases" hreflang="ko" lang="ko" data-on="false"> <span class="langmenu-label">한국어</span> <span class="langmenu-code">한</span> </a><a class="langmenu-item" href="/it/releases" hreflang="it" lang="it" data-on="false"> <span class="langmenu-label">Italiano</span> <span class="langmenu-code">IT</span> </a><a class="langmenu-item" href="/ru/releases" hreflang="ru" lang="ru" data-on="false"> <span class="langmenu-label">Русский</span> <span class="langmenu-code">RU</span> </a><a class="langmenu-item" href="/tr/releases" hreflang="tr" lang="tr" data-on="false"> <span class="langmenu-label">Türkçe</span> <span class="langmenu-code">TR</span> </a><a class="langmenu-item" href="/id/releases" hreflang="id" lang="id" data-on="false"> <span class="langmenu-label">Bahasa Indonesia</span> <span class="langmenu-code">ID</span> </a><a class="langmenu-item" href="/vi/releases" hreflang="vi" lang="vi" data-on="false"> <span class="langmenu-label">Tiếng Việt</span> <span class="langmenu-code">VI</span> </a><a class="langmenu-item" href="/ar/releases" hreflang="ar" lang="ar" data-on="false"> <span class="langmenu-label">العربية</span> <span class="langmenu-code">ع</span> </a><a class="langmenu-item" href="/sv/releases" hreflang="sv" lang="sv" data-on="false"> <span class="langmenu-label">Svenska</span> <span class="langmenu-code">SV</span> </a> </div> </details> <a class="iconlink" href="/releases.xml" aria-label="RSS"> <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"> <path d="M2 12.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM2 7.5a6.5 6.5 0 0 1 6.5 6.5h-2A4.5 4.5 0 0 0 2 9.5v-2ZM2 2.5A11.5 11.5 0 0 1 13.5 14h-2A9.5 9.5 0 0 0 2 4.5v-2Z"></path> </svg> </a> </div> </div> </header> <main id="main">  <div class="wrap"> <div class="detail"> <article> <header class="detail-hd"> <nav class="crumbs" aria-label="Breadcrumb"> <a href="/ja/">ホーム</a> <span class="sep">/</span> <a href="/ja/releases">リリース</a> <span class="sep">/</span> <a href="/ja/releases/duckdb">duckdb</a> </nav> <h1 class="detail-title"> <span class="p">duckdb</span> v1.3.0 </h1> <div class="detail-meta"> <span class="chip chip--minor">マイナー</span> <span><span class="k">公開日</span>2025年5月21日</span>  <span class="sep" aria-hidden="true"></span> <a href="https://github.com/duckdb/duckdb" target="_blank" rel="noopener"> <span class="k">出典</span>duckdb/duckdb </a>   <span class="sep" aria-hidden="true"></span> <a href="/releases/duckdb/1.3.0/"> English original </a>  <span class="sep" aria-hidden="true"></span> <button class="btn btn--ghost btn--sm" type="button" data-copy="https://www.stags.cn/ja/releases/duckdb/1.3.0/">リンクをコピー</button> </div> </header> <div class="prose" style="margin-top:var(--s8)"> <p class="mt-notice" role="note">このページは機械翻訳です。内容は必ず英文原文をご確認ください。</p>  <div><p>#アヒルデブv1.3.0
+DuckDB のこのリリースは、数百万年前に生息していた <a href="https://en.wikipedia.org/wiki/Common_goldeneye">ゴールデンアイ アヒル</a> の祖先である Bucephala Ossivalis にちなんで「Ossivalis」と名付けられました。
+発表ブログ投稿: https://duckdb.org/2025/05/21/announcing-duckdb-130 も参照してください。</p>
+<h2>何が変わったのか</h2>
+<ul>
+<li>V1.2 histrionicus (@Mytherin 著、https://github.com/duckdb/duckdb/pull/16070)</li>
+<li>V1.2 histrionicus (https://github.com/duckdb/duckdb/pull/16072 の @Mytherin による)</li>
+<li>単体テスト: https://github.com/duckdb/duckdb/pull/16053 の @Mytherin によるテストごとにテスト ディレクトリをクリアします</li>
+<li>ベンチマーク ランナー: エラーをキャッチしてログに記録 + https://github.com/duckdb/duckdb/pull/16054 の @Mytherin による <code>retry load N</code> 構文のサポートを追加</li>
+<li>サポートされていないコマンドが https://github.com/duckdb/duckdb/pull/16009 の @Mytherin によって並行ループで使用されるとエラーがスローされます</li>
+<li>https://github.com/duckdb/duckdb/pull/15955 の @Mytherin によるコミット時のシステム全体の再コンパイルを防ぐために、拡張機能の定義を削除します。
+※https://github.com/duckdb/duckdb/pull/15815の@ashwaniYDVのみ現在選択されているデータベースのスキーマ情報を表示</li>
+<li>問題 #14366: https://github.com/duckdb/duckdb/pull/15864 の @hawkfish による平均間隔</li>
+<li>内部 #2176: @hawkfish による時間 AVG (https://github.com/duckdb/duckdb/pull/15661)</li>
+<li>ディスカッション #15981: https://github.com/duckdb/duckdb/pull/15984 の @komainu8 による「duckdb/tools/shell/shell.cpp」の紛らわしいコメントを削除</li>
+<li>修正 #15466 https://github.com/duckdb/duckdb/pull/15484 の @ashwaniYDV によって準備されたステートメントで指定された順序に基づいて最初に LIMIT または OFFSET を変換する</li>
+<li>ビットパッキング モード情報 (https://github.com/duckdb/duckdb/pull/15623 の @arjenpdevries による)</li>
+<li>https://github.com/duckdb/duckdb/pull/15730 の @pdet による CSV ファイルからの Timestamp_TZ のスニフ</li>
+<li>[no-op] https://github.com/duckdb/duckdb/pull/15937 の @dentiny によるファイルシステム読み取り動作に関するドキュメントを追加</li>
+<li>https://github.com/duckdb/duckdb/pull/15808 の @pdet による日付/タイムスタンプ形式として「自動」を受け入れます</li>
+<li>Parquet Reader クリーンアップ: https://github.com/duckdb/duckdb/pull/16092 の @Mytherin により ColumnReaders を別のファイルに移動</li>
+<li>Parquet Reader: https://github.com/duckdb/duckdb/pull/16100 の @Mytherin によりデコード ロジックを別の Decoder クラスに移動</li>
+<li>BundleStaticLibs は、https://github.com/duckdb/duckdb/pull/16107 の @carlopi による InvokeCI によってもトリガーされます</li>
+<li>Parquet Reader: DeltaByteArray から DeltaLengthByteArray デコーダを分割し、https://github.com/duckdb/duckdb/pull/16105 の @Mytherin によってストリーミング方式で文字列を読み取ります。</li>
+<li>Parquet Dictionary リーダー: https://github.com/duckdb/duckdb/pull/16106 の @Mytherin によって NULL 値を辞書の最後の値として設定</li>
+<li>Parquet Reader: デコーダ間で ResizeableBuffers を共有し、https://github.com/duckdb/duckdb/pull/16113 の @Mytherin によって Plain/PlainReference を統合します</li>
+<li>Linux 用 GitHub ARM ランナーの使用 CLI ビルド (https://github.com/duckdb/duckdb/pull/16119 の @hannes による)</li>
+<li>Parquet Reader: https://github.com/duckdb/duckdb/pull/16117 の @Mytherin による専用の Skip メソッドを実装</li>
+<li>https://github.com/duckdb/duckdb/pull/16126 の @Mytherin による Parquet スキャンでのフィルタリングには ColumnSegment::FilterSelection と SelectionVector を使用します</li>
+<li>[開発] https://github.com/duckdb/duckdb/pull/16128 の @Tishj によってシェルで切り捨てられる出力 (333 文字を超える長い行) を修正</li>
+<li>適応テーブル フィルター: https://github.com/duckdb/duckdb/pull/16127 の @Mytherin によるヒューリスティックに基づいてフィルター順序を初期化します。</li>
+<li>機能 #16044: TimeZone オフセット秒 (@hawkfish による https://github.com/duckdb/duckdb/pull/16048)</li>
+<li>新しいデータの交換を可能にするデータベースの ATTACH OR REPLACE。 @xevix 著、https://github.com/duckdb/duckdb/pull/15355</li>
+<li>[開発] https://github.com/duckdb/duckdb/pull/15980 の @Tishj による <code>upsert_conflict_in_different_chunk.test</code> を削除</li>
+<li>[開発] https://github.com/duckdb/duckdb/pull/15534 の @Tishj によるアンパック列と NOT 演算子に関連する問題を修正</li>
+<li>[Julia] https://github.com/duckdb/duckdb/pull/15621 の @tqml によるプリペアドステートメントの名前付きパラメータのサポートを追加</li>
+<li>Parquet リーダーで適応フィルターを使用する (https://github.com/duckdb/duckdb/pull/16133 の @Mytherin 著)</li>
+<li>Parquet リーダー: https://github.com/duckdb/duckdb/pull/16136 の @Mytherin により、テーブル フィルターを辞書に直接プッシュします。</li>
+<li>Parquet リーダー: プレーン テンプレート - CHECKED をテンプレート パラメーターにし、https://github.com/duckdb/duckdb/pull/16141 で @Mytherin による定義なしで読み取り/スキップするときに memcpy/Bulk Skip を使用します。</li>
+<li>Parquet リーダー: 列が https://github.com/duckdb/duckdb/pull/16144 の @Mytherin によって定義されている場合にのみ、辞書に無効なエントリを設定します</li>
+<li>解釈されたベンチマーク用に uniq_ptr_cast を追加します。 @Tmonster 著、https://github.com/duckdb/duckdb/pull/16151</li>
+<li>https://github.com/duckdb/duckdb/pull/16150 で @hannes が実行する ci を修正できれば幸いです</li>
+<li>https://github.com/duckdb/duckdb/pull/16155 の @hannes による Ubuntu 18 セットアップを使用した最後の CI ジョブを削除しました</li>
+<li>Parquet Reader: <code>CreateReader</code> を 2 つの別々のステージ - <code>ParseSchema</code> と <code>CreateReader</code> (https://github.com/duckdb/duckdb/pull/16161 の @Mytherin により作成) に分割します。</li>
+<li>https://github.com/duckdb/duckdb/pull/16164 の @pdet によって CI で CSV 並列テストを再度実行します</li>
+<li>[Python][開発] https://github.com/duckdb/duckdb/pull/16159 の @Tishj により、pybind11 の最小バージョンを <code>2.6</code> から <code>2.9</code> に変更しました</li>
+<li>https://github.com/duckdb/duckdb/pull/16158 の @NiclasHaderer により StackTraces を FatalExceptions に追加</li>
+<li>https://github.com/duckdb/duckdb/pull/16108 の @carlopi によるリワーク呼び出し</li>
+<li>https://github.com/duckdb/duckdb/pull/16115 の @NiclasHaderer による DuckDB の事前最適化フックを追加</li>
+<li>https://github.com/duckdb/duckdb/pull/15935 の @kryonix により、<code>range</code>/<code>generate_series</code> の動作を PostgreSQL と統合しました</li>
+<li>[CI] https://github.com/duckdb/duckdb/pull/16173 の @carlopi による Linux CLI ジョブのフェイルファストを回避する</li>
+<li>Parquet: https://github.com/duckdb/duckdb/pull/16174 の @Mytherin による読み取りに選択ベクトルをプッシュするために使用できる専用の Select メソッドを追加</li>
+<li>アンベンダー ICU (@m-kuhn 著、https://github.com/duckdb/duckdb/pull/16176)</li>
+<li>Parquet リーダー: https://github.com/duckdb/duckdb/pull/16185 の @Mytherin による RLEBpDecoder でバッファーが利用可能かどうかのバッチ チェック</li>
+<li>Parquet Reader: DeltaLengthByteArray エンコードの場合、https://github.com/duckdb/duckdb/pull/16186 の @Mytherin によってコピーせずにブロックの文字列を直接参照します。</li>
+<li>https://github.com/duckdb/duckdb/pull/16179 の @hmeriann による duckdb 拡張機能の統一名</li>
+<li>https://github.com/duckdb/duckdb/pull/16192 の @Mytherin で <code>--test-temp-dir</code> が指定されていない場合のみテスト ディレクトリを削除します</li>
+<li>修正 #16163: https://github.com/duckdb/duckdb/pull/16193 の @Mytherin により、COLUMNS は識別子を文字列として扱うべきではありません</li>
+<li>Parquet リーダー: https://github.com/duckdb/duckdb/pull/16194 で @Mytherin によって列をキャストしている場合は、ブルーム フィルターの適用を避けてください。</li>
+<li>https://github.com/duckdb/duckdb/pull/16182 の @pdet によるスニファー値をきれいに出力します</li>
+<li>V1.2 histrionicus (@Mytherin 著、https://github.com/duckdb/duckdb/pull/16191)</li>
+<li>ジュリアをバンプする (https://github.com/duckdb/duckdb/pull/16199 の @Mytherin による)</li>
+<li>find_package の後に依存ターゲットが存在することを確認してください。 @BillyONeal 著、https://github.com/duckdb/duckdb/pull/16197</li>
+<li>R および Wasm の同時実行グループ (https://github.com/duckdb/duckdb/pull/16201 の @hmeriann による)</li>
+<li>Parquet Writer のクリーンアップ: https://github.com/duckdb/duckdb/pull/16202 の @Mytherin により ColumnWriters を別のファイルに移動</li>
+<li>[修正] MSVC でビルドするときに bigobj を使用する (https://github.com/duckdb/duckdb/pull/16200 の @m-kuhn により)</li>
+<li>https://github.com/duckdb/duckdb/pull/16210 の @Mytherin により選択ベクトルを使用して複数のリストを一度にネスト解除することにより、<code>UNNEST/UNPIVOT</code> のパフォーマンスを向上させます。</li>
+<li>https://github.com/duckdb/duckdb/pull/15939 に @Tishj による <code>TRY</code> 式を追加</li>
+<li>[Python][Dev] https://github.com/duckdb/duckdb/pull/16160 で @Tishj によって閉じられた場合にデフォルトの接続を置き換えます</li>
+<li>https://github.com/duckdb/duckdb/pull/16198 の @dentiny によるプロファイラーに安定したクロックを使用する</li>
+<li>https://github.com/duckdb/duckdb/pull/16172 で @hehezhou によるハッシュ結合テーブルを構築するときに並列 memset を追加</li>
+<li>https://github.com/duckdb/duckdb/pull/16221 の @Mytherin により、UNNEST の UNPIVOT 演算子の入力列を不必要に投影しないようにします。</li>
+<li>https://github.com/duckdb/duckdb/pull/15881 の @Damon07 による左結合プッシュダウンの最適化</li>
+<li>https://github.com/duckdb/duckdb/pull/16224 の @pdet による PyArrow でのフィルター内プッシュダウンの実行</li>
+<li>https://github.com/duckdb/duckdb/pull/16235 の @cfis により MSVC で _win32 を使用する</li>
+<li>https://github.com/duckdb/duckdb/pull/16236 の @cfis による Windows 上の Python 3 実行可能ファイル名を修正</li>
+<li>https://github.com/duckdb/duckdb/pull/16237 の @cfis による -std=c++11 を修正</li>
+<li>問題 #8265: AsOf ネストされたループ (@hawkfish 著、https://github.com/duckdb/duckdb/pull/16218)</li>
+<li>https://github.com/duckdb/duckdb/pull/16255 の @mlafeldt により、libduckdb に extension_util.hpp を含めます</li>
+<li><code>rowid</code> を仮想列の概念に一般化し、https://github.com/duckdb/duckdb/pull/16248 の @Mytherin によって <code>filename</code> を Parquet/CSV/JSON リーダーの仮想列にしました</li>
+<li>https://github.com/duckdb/duckdb/pull/16261 の @Mytherin によりテストが異なるプラットフォームで一貫性がない可能性があるため、境界をよりあいまいにチェックするようにヒストグラム テストを変更しました。</li>
+<li>[開発] <code>dictionary_expression</code> による <code>TRY</code> 式の問題を修正 https://github.com/duckdb/duckdb/pull/16262 の @Tishj によるベクトル検証</li>
+<li>[Python 開発] https://github.com/duckdb/duckdb/pull/16267 の @Tishj により、コンパイラ (MSVC かどうか) に基づいて <code>-std=c++11</code> フラグの正しいバリアントを追加しました。</li>
+<li>https://github.com/duckdb/duckdb/pull/16268 の @samansmink による拡張インストール モード null を修正</li>
+<li>ちょっとした掃除。 @JasonPunyon 著、https://github.com/duckdb/duckdb/pull/16028</li>
+<li>https://github.com/duckdb/duckdb/pull/16243 の @lnkuiper による Parquet ライターのパフォーマンスの向上</li>
+<li>https://github.com/duckdb/duckdb/pull/16284 の @Mytherin によって v1.2-histrionicus をメインにマージ</li>
+<li>https://github.com/duckdb/duckdb/pull/15825 の @taniabogatsch による多くの再利用ストレージ修正</li>
+<li><code>MinMaxN</code> のアリーナ アロケータと、https://github.com/duckdb/duckdb/pull/16246 で @lnkuuiper によって列挙型を作成するときに <code>NULL</code> をスキップします</li>
+<li>https://github.com/duckdb/duckdb/pull/16274 の @samansmink により、duckdb ログ ストレージを切り詰めるためのプラグマを追加</li>
+<li>https://github.com/duckdb/duckdb/pull/16287 の @lnkuiper による Parquet ライターのパフォーマンス向上</li>
+<li>https://github.com/duckdb/duckdb/pull/16162 の @pdet によって ADBC でピボットを実行できるように、duckdb_extract_statements を実行します</li>
+<li>[開発] VARCHAR -&gt; list/struct/map のエスケープ処理を改善/追加し、https://github.com/duckdb/duckdb/pull/15944 の @Tishj による動作を調整します</li>
+<li>https://github.com/duckdb/duckdb/pull/16302 の @xuke-hat により ValidityMask::RowIsValidUnsafe が本当に安全ではなくなりました</li>
+<li>マルチ ファイル リーダーのリワーク: 単一ファイル リーダーのラップに使用される <code>MultiFileReaderFunction</code> を追加し、https://github.com/duckdb/duckdb/pull/16299 の @Mytherin によって Parquet リーダーに使用されます。</li>
+<li>[Python 開発] https://github.com/duckdb/duckdb/pull/16291 の @Tishj による <code>.table(...)</code> メソッドでの完全修飾参照のサポートを追加</li>
+<li>[開発] MultiFileReader - https://github.com/duckdb/duckdb/pull/16311 の @Tishj により <code>file_row_number</code> の <code>column_indexes</code> に追加</li>
+<li>https://github.com/duckdb/duckdb/pull/16315 での @lnkuiper による寄木細工リーダーのパフォーマンス</li>
+<li>https://github.com/duckdb/duckdb/pull/16323 の @mbarbar による JuliaFixedPointDecimals 依存関係バージョンのバンプ</li>
+<li>https://github.com/duckdb/duckdb/pull/16324 の @Mytherin によって V1.2 histrionicus をメインにマージします</li>
+<li>https://github.com/duckdb/duckdb/pull/12430 の @cryoEncryp による新しい再帰セマンティクス (<code>USING KEY</code>) を追加</li>
+<li>修正: https://github.com/duckdb/duckdb/pull/16326 の @rustyconover による StringStats::SetMaxStringLength を追加</li>
+<li>https://github.com/duckdb/duckdb/pull/16330 で @kryonix による WITH USING KEY の非相関を修正</li>
+<li>問題 #16250: https://github.com/duckdb/duckdb/pull/16320 の @hawkfish によるウィンドウ範囲パフォーマンス</li>
+<li><code>DeltaLengthByteArrayDecoder</code> で UTF-8 を検証し、https://github.com/duckdb/duckdb/pull/16328 で @lnquiper によって高速化します</li>
+<li>https://github.com/duckdb/duckdb/pull/16342 に @Mytherin による不足しているインクルードを追加</li>
+<li>[雑用] OSX Python の ccache なし by @carlopi (https://github.com/duckdb/duckdb/pull/16348)</li>
+<li>Linux CLI: https://github.com/duckdb/duckdb/pull/16347 の @carlopi による ARM manylinux 用のオーバーライド プラットフォーム</li>
+<li>ドキュメント: https://github.com/duckdb/duckdb/pull/13726 の @NickCrews による偶数カーディナリティ入力の中央値の説明を微調整</li>
+<li>[parquet] https://github.com/duckdb/duckdb/pull/16368 の @carlopi による Clang-tidy によってフラグが立てられた暗黙的な idx_t から int64_t への変換を修正</li>
+<li>https://github.com/duckdb/duckdb/pull/16371 で @carlopi によるローカル拡張機能のインストールに失敗した場合のエラー メッセージを改善</li>
+<li>MAIN_BRANCH_VERSIONING: https://github.com/duckdb/duckdb/pull/16366 の @carlopi による v1.2.1-dev1234 ではなく v1.3.0-dev1234 のような記述子を取得するメイン ブランチ</li>
+<li>Parallel HT Zeroing: https://github.com/duckdb/duckdb/pull/16301 の @gropaul により、スレッドの 4 倍のタスクが存在するように、entries_per_task を設定します。</li>
+<li>内部 #2176: https://github.com/duckdb/duckdb/pull/16095 の @hawkfish による時間型の概要</li>
+<li>[SwiftRelease CI] https://github.com/duckdb/duckdb/pull/16376 の @hmeriann による同じ名前のタグが既に存在することを確認する前にタグをフェッチします</li>
+<li>https://github.com/duckdb/duckdb/pull/16356 の @Mytherin によるクエリに不要な配列のスキャンを避けるために、Select を ArrayColumnData にプッシュします</li>
+<li>https://github.com/duckdb/duckdb/pull/16374 の @carlopi による「Linux CLI: ARM manylinux 用のオーバーライド プラットフォーム」を元に戻す</li>
+<li>CSV リーダーを作り直す: https://github.com/duckdb/duckdb/pull/16349 の @Mytherin による新しい MultiFileReaderFunction インターフェイスを使用します。</li>
+<li>https://github.com/duckdb/duckdb/pull/16296 に @samansmink による接続識別子とトランザクション識別子を追加</li>
+<li>https://github.com/duckdb/duckdb/pull/16378 に @hannes による寄木細工の「不明」論理タイプを追加</li>
+<li>内部 #4287: INTERVAL Times DOUBLE by @hawkfish (https://github.com/duckdb/duckdb/pull/16386)</li>
+<li>pb/圧縮ベクトルのシリアル化 (https://github.com/duckdb/duckdb/pull/16066 の @peterboncz による)</li>
+<li>https://github.com/duckdb/duckdb/pull/16391 の @kryonix による問題 #16377 を修正</li>
+<li>https://github.com/duckdb/duckdb/pull/16395 の @hannes による Parquet Float16 のサポートを読む</li>
+<li>MAIN_BRANCH_VERSIONING: Python ビルドと https://github.com/duckdb/duckdb/pull/16400 の @carlopi による統合にも採用</li>
+<li>ファザー修正: https://github.com/duckdb/duckdb/pull/16394 の @Tmonster による TIMESTAMP への NULL キャストの平均を修正</li>
+<li>[FriendlySQL] https://github.com/duckdb/duckdb/pull/16290 の @Tishj による Unpacked COLUMNS 式の機能を拡張</li>
+<li>Python Client: https://github.com/duckdb/duckdb/pull/16431 の @Mytherin による Python オブジェクト変換の高速化</li>
+<li>https://github.com/duckdb/duckdb/pull/16435 で @carlopi によって SETUPTOOLS_SCM_PRETEND_VERSION を正しく渡すことにより #16400 を修正</li>
+<li>問題 #16250: https://github.com/duckdb/duckdb/pull/16438 の @hawkfish によるウィンドウ範囲パフォーマンス</li>
+<li>https://github.com/duckdb/duckdb/pull/16439 の @Mytherin によって v1.2-histrionicus をメインにマージ</li>
+<li>MAIN_BRANCH_VERSIONING: https://github.com/duckdb/duckdb/pull/16441 の @carlopi による prefix_version も追加します</li>
+<li>[no-op] https://github.com/duckdb/duckdb/pull/16440 の @dentiny によって未使用の関数 <code>GetValueRefUnsafe</code> を削除します</li>
+<li>フィルター結合器のクリーンアップ: フィルター プッシュダウンを別の関数に移動し、https://github.com/duckdb/duckdb/pull/16443 の @Mytherin によってコメントアウトされた古いコードを削除します。</li>
+<li>[Python] https://github.com/duckdb/duckdb/pull/16424 の @Tishj により SQLExpression メソッドを式 API に追加</li>
+<li>[開発] https://github.com/duckdb/duckdb/pull/16429 の @Tishj による UNNEST BinderException の問題のある型について言及</li>
+<li>https://github.com/duckdb/duckdb/pull/16447 の @Mytherin によって v1.2 をメインに再度マージします</li>
+<li>Filter Combiner: IN/OR フィルターの rowid プッシュダウンと、https://github.com/duckdb/duckdb/pull/16450 の @Mytherin による時間型のプッシュダウンを許可します。</li>
+<li>Parquet: https://github.com/duckdb/duckdb/pull/16457 の @Mytherin によって複数のファイルをスキャンしている場合は、常に最大スレッドを起動します</li>
+<li>https://github.com/duckdb/duckdb/pull/16357 の @yiyuanliu による C 関数のドキュメントを修正</li>
+<li>https://github.com/duckdb/duckdb/pull/16461 の @Mytherin によるテーブル フィルターの実行用の TableFilterState を追加</li>
+<li>https://github.com/duckdb/duckdb/pull/16464 の @szarnyasg によるディスカッションを内部リポジトリにミラーリングします</li>
+<li>JSON Reader をリワーク: https://github.com/duckdb/duckdb/pull/16477 の @Mytherin による新しい MultiFileReaderFunction インターフェイスを使用します。</li>
+<li>https://github.com/duckdb/duckdb/pull/16484 の @Mytherin によるすべての反復で <code>memchr</code> を使用することによる高速化が含まれます</li>
+<li>https://github.com/duckdb/duckdb/pull/16494 の @Y-- によるエラーケースを修正</li>
+<li>https://github.com/duckdb/duckdb/pull/16430 の @lnkuiper による外部結合を (可能であれば) 防止します。</li>
+<li>https://github.com/duckdb/duckdb/pull/16517 の @Mytherin によって v1.2 をメインにマージ</li>
+<li>https://github.com/duckdb/duckdb/pull/16508 の @lnkuiper による FSST デコードの最適化</li>
+<li>https://github.com/duckdb/duckdb/pull/16226 の @dentiny によりサブシステムを名前で抽出します</li>
+<li>https://github.com/duckdb/duckdb/pull/16532 の @Mytherin によって設定されていない統計に対して圧縮実体化を計算するときに、例外をスローする (その後飲み込まれる) ことを回避します。</li>
+<li>https://github.com/duckdb/duckdb/pull/16505 の @lnkuiper によるチェックサムの下位互換性</li>
+<li>https://github.com/duckdb/duckdb/pull/16507 の @lnkuiper による Parquet ページ ヘッダーのプリフェッチ</li>
+<li>https://github.com/duckdb/duckdb/pull/16534 の @mlafeldt により、GitHub に *.test ファイルを SQL としてレンダリングさせます</li>
+<li>https://github.com/duckdb/duckdb/pull/16526 の @CurtHagenlocher によりテーブル名とスキーマ名を適切に引用するように ADBC を修正</li>
+<li><code>ClientContext</code> をカタログの初期化に渡し、https://github.com/duckdb/duckdb/pull/16536 の @Mytherin による WAL の再生時にインデックス バインドを延期します</li>
+<li>https://github.com/duckdb/duckdb/pull/16540 の @Mytherin により CMake を通じて UNITTEST_ROOT_DIRECTORY を設定できるようにする</li>
+<li>内部 #4347: ISO 年週 (@hawkfish による https://github.com/duckdb/duckdb/pull/16567)</li>
+<li>https://github.com/duckdb/duckdb/pull/16548 の @r-barnes によるスキップリストの throw() -&gt; noExcept</li>
+<li>https://github.com/duckdb/duckdb/pull/16538 の @hmeriann による Linux CLI (arm64) CI を渡すように <code>test/sql/aggregate/aggregates/histogram_table_function.test</code> を修正</li>
+<li>功績: https://github.com/duckdb/duckdb/pull/16546 の @stephaniewang526 により GRANT を予約済みキーワードから予約されていないキーワードに移動</li>
+<li>Python テスト ランナー: https://github.com/duckdb/duckdb/pull/16547 で @Flogex による再起動コマンドを実行するときにプロファイリングを有効にしないようにします。</li>
+<li>https://github.com/duckdb/duckdb/pull/16541 に @Tishj による <code>duckdb_prepared_statements</code> を追加</li>
+<li>[マイナー] https://github.com/duckdb/duckdb/pull/16575 の @dentiny によってビット タイプの健全性チェックの一貫性を維持します</li>
+<li>https://github.com/duckdb/duckdb/pull/16586 の @hannes による CREATE TABLE AS ... WITH NO DATA をサポート</li>
+<li>Parquet FLOAT16 - https://github.com/duckdb/duckdb/pull/16580 の @hannes によるキャストを修正</li>
+<li>https://github.com/duckdb/duckdb/pull/16577 の @hamilton によるナノ秒の例から無効なトークンを削除</li>
+<li>CrossVersion.yml: v1.2.1、v1.2-histrionicus、および @carlopi による main を https://github.com/duckdb/duckdb/pull/16576 に追加</li>
+<li>修正 #16524: DEPENDENT_JOIN が https://github.com/duckdb/duckdb/pull/16537 の @flashmouse によってフラット化されない場合がある</li>
+<li>[Julia] https://github.com/duckdb/duckdb/pull/16512 の @era127 による、duckdb リスト タイプの追加のサポートを追加</li>
+<li>[PySpark] - @mariotaddeucci による <code>expr</code> 関数を https://github.com/duckdb/duckdb/pull/16468 に追加</li>
+<li>regex_replace は、https://github.com/duckdb/duckdb/pull/16380 の @hannes による正規表現エラーを飲み込まなくなりました</li>
+<li>寄木細工ライターのクリーンアップ: <code>CreateWriterRecursive</code> を 2 つのメソッドに分割し、ライターにも <code>ParquetColumnData</code> を使用 (https://github.com/duckdb/duckdb/pull/16592 の @Mytherin により)</li>
+<li>https://github.com/duckdb/duckdb/pull/16593 の @Mytherin により Julia を 1.2.1 にバンプ</li>
+<li>https://github.com/duckdb/duckdb/pull/16599 の @NiclasHaderer によるアペンダー エラー メッセージを改善</li>
+<li>https://github.com/duckdb/duckdb/pull/16597 の @Y-- によって静的変数をスタック上に変更する</li>
+<li>https://github.com/duckdb/duckdb/pull/16595 の @Mytherin により <code>RETURN_STATS</code> から <code>COPY</code> のサポートを追加</li>
+<li>https://github.com/duckdb/duckdb/pull/16585 の @pdet による CSV スキャナーのエラー メッセージの改善</li>
+<li>read_csv で列挙型をサポート - https://github.com/duckdb/duckdb/pull/15710 の @pdet による Python</li>
+<li>https://github.com/duckdb/duckdb/pull/16610 の @pdet による CI Tidy を修正</li>
+<li>いくつかのマイナーなヘルパー関数を追加 (<code>QueryResultIterator::IsNull</code> と、https://github.com/duckdb/duckdb/pull/16611 の @Mytherin による MultiFileList/Reader へのキャスト)</li>
+<li>https://github.com/duckdb/duckdb/pull/16612 の @Mytherin による文法に <code>ALTER TABLE tbl SET PARTITIONED BY (key1, key2, ...)</code> のサポートを追加</li>
+<li>問題テンプレート: https://github.com/duckdb/duckdb/pull/16619 の @szarnyasg によって UI 問題を UI リポジトリに直接送信します</li>
+<li>[開発] https://github.com/duckdb/duckdb/pull/16596 の @Tishj により、<code>MultiFileReaderData</code> タイプセーフでさまざまなマッピングを作成します</li>
+<li>mbedtls を 3.6.2 にバンプし、https://github.com/duckdb/duckdb/pull/16485 の @hannes によるパッチを再適用します。</li>
+<li>https://github.com/duckdb/duckdb/pull/16385 の @pdet による Arrow Types からの複雑な Json の読み取りと書き込み</li>
+<li>https://github.com/duckdb/duckdb/pull/16549 の @mocusez による適切なビルド コマンドを使用して、RISC-V CI の Docker サポートを追加</li>
+<li>https://github.com/duckdb/duckdb/pull/16637 の @davlee1972 による adbc_driver_duckdb.dbapi.connect() の欠落している **kwargs を修正</li>
+<li>[開発] https://github.com/duckdb/duckdb/pull/16608 の @Tishj による CGroup メモリ/CPU 制限検出ロジックをクリーンアップして修正しました</li>
+<li>https://github.com/duckdb/duckdb/pull/16471 の @mt-caret により C API で <code>Value::ToSQLString()</code> を公開します</li>
+<li>https://github.com/duckdb/duckdb/pull/16666 の @liznear による json_serialize_sql の欠落したバインディングを追加</li>
+<li>https://github.com/duckdb/duckdb/pull/16669 の @xuke-hat によって非 null const ベクトルの有効性マスクを作成しないでください。</li>
+<li>修正 #16665: https://github.com/duckdb/duckdb/pull/16677 の @flashmouse による寄木細工 multi_reader ブルーム_プローブ ロジック エラーを修正</li>
+<li>https://github.com/duckdb/duckdb/pull/16600 の @c-herrewijn によってエイリアスをカタログに追加します</li>
+<li>https://github.com/duckdb/duckdb/pull/16545 の @taniabogatsch により、物理的なオペレーターの所有権をオペレーターから切り離します。</li>
+<li>cmake: https://github.com/duckdb/duckdb/pull/16676 の @autoanttwort による外部 ICU を修正</li>
+<li>https://github.com/duckdb/duckdb/pull/16653 の @hannes による文字長と日付関数</li>
+<li>[開発] @Tishj による https://github.com/duckdb/duckdb/pull/16683 に <code>third_party/mbedtls/VERSION</code> を <code>package_build.py</code> とともに含めようとしないでください</li>
+<li>https://github.com/duckdb/duckdb/pull/16626 の @akx によるヘルプ テキスト <code>-ui</code> を CLI に追加</li>
+<li>https://github.com/duckdb/duckdb/pull/16686 の @Damon07 による ReplaceProjectionBindings で失われた列参照のエイリアスを修正</li>
+<li>https://github.com/duckdb/duckdb/pull/16687 の @Mytherin によって v1.2-histrionicus をメインにマージ</li>
+<li>https://github.com/duckdb/duckdb/pull/16690 の @Mytherin による GCC-4.8 の修正</li>
+<li>JSON リーダー: read_position をアトミックにして、https://github.com/duckdb/duckdb/pull/16692 の @Mytherin による JSON ファイルの処理中に進行状況バーでこれを読み取ることができるようにします。</li>
+<li>[Julia] https://github.com/duckdb/duckdb/pull/16701 の @slwu89 によるベクターのバインディングをサポート</li>
+<li>CSV パーサー strict_mode=True が改行区切り文字の混在で失敗するようにします。 @pdet 著、https://github.com/duckdb/duckdb/pull/15959</li>
+<li>[pypi] https://github.com/duckdb/duckdb/pull/16634 の @hmeriann による複数のブランチのクリーンアップ ロジックを修正</li>
+<li>https://github.com/duckdb/duckdb/pull/16714 の @Mytherin による文法に <code>ALTER TABLE tbl SET SORTED BY (key1 DESC, key2, ...)</code> のサポートを追加</li>
+<li>RETURN_STATS: footer_offset を削除し、https://github.com/duckdb/duckdb/pull/16715 の @Mytherin によって書き込まれたパーティション キーを出力します。</li>
+<li>CSV バッチのすべての行がエラーの場合、https://github.com/duckdb/duckdb/pull/16713 の @pdet による処理を続行します。</li>
+<li>https://github.com/duckdb/duckdb/pull/16722 の @samansmink による httpfs ext にパッチを適用するための回避策を追加</li>
+<li>https://github.com/duckdb/duckdb/pull/15819 の @dentiny による UUID v7 の実装</li>
+<li>https://github.com/duckdb/duckdb/pull/16304 の @Tishj による文字列化されたネストされた型のラウンドトリップを修正</li>
+<li>https://github.com/duckdb/duckdb/pull/16730 に @maiadegraaf による外部リポジトリへの通知ワークフローを追加</li>
+<li>https://github.com/duckdb/duckdb/pull/16696 の @joseph-isaacs により、選択ベクターと Slice メソッドを C API に公開します</li>
+<li>https://github.com/duckdb/duckdb/pull/16731 の @Mytherin による RETURN_STATS の <code>column_size_bytes</code> および <code>contains_nan</code> の追跡のサポートを追加</li>
+<li><code>WRITE_EMPTY_FILE</code> オプションのサポートを <code>COPY</code> に追加 - https://github.com/duckdb/duckdb/pull/16737 の @Mytherin による空のファイルの書き込みをスキップできるようにします</li>
+<li>Parquet Writer: https://github.com/duckdb/duckdb/pull/16736 で @Mytherin による統計の書き込みを回避する代わりに、大きな文字列の文字列統計を切り詰めます。</li>
+<li>RLE 圧縮 - https://github.com/duckdb/duckdb/pull/16735 の @Mytherin によってカウントを調整するときに memset アライメント バイトを 0 に設定する</li>
+<li>UUID 統計を Parquet ファイルに書き込み、https://github.com/duckdb/duckdb/pull/16744 の @Mytherin による UUID 統計の読み取りをサポート
+※https://github.com/duckdb/duckdb/pull/16602の@maiadegraafにより<code>list_reduce</code>に初期値を追加</li>
+<li>シェル: https://github.com/duckdb/duckdb/pull/16594 の @mlafeldt により、より多くのエラーに対して -bail が機能するようにする</li>
+<li>https://github.com/duckdb/duckdb/pull/16747 の @maiadegraaf による Invoke CI からの外部リポジトリへの通知の呼び出し</li>
+<li>JSON の @lnkuiper による https://github.com/duckdb/duckdb/pull/16729 のバグ修正</li>
+<li>テーブル関数の実行後に追加情報を動的に提供するためのサポートを追加し、これを使用して、https://github.com/duckdb/duckdb/pull/16749 の @Mytherin によって MultiFileReader によって読み取られたファイルの合計数を出力します。</li>
+<li>[Python 開発] https://github.com/duckdb/duckdb/pull/16739 の @Tishj による夜間の python ビルドのバージョン管理を修正</li>
+<li>シェル: https://github.com/duckdb/duckdb/pull/16761 の @mlafeldt による時々初期化されないエラーを修正</li>
+<li>問題 #16250: https://github.com/duckdb/duckdb/pull/16765 での @hawkfish によるウィンドウ範囲パフォーマンス</li>
+<li>Linux 用にも Python 3.7 ホイールのビルドを避ける (https://github.com/duckdb/duckdb/pull/16769 の @carlopi による)</li>
+<li>Pyodide 0.27.2: https://github.com/duckdb/duckdb/pull/16772 の @carlopi によるテストを条件付きでスキップします</li>
+<li>https://github.com/duckdb/duckdb/pull/16764 の @Mytherin による拡張可能な EntryLookupInfo 構造体を介してカタログ検索をプッシュします</li>
+<li>https://github.com/duckdb/duckdb/pull/16776 の @carlopi による NotifyExternalRepositories / odbc に関する 2 つの軽微な問題を修正</li>
+<li>https://github.com/duckdb/duckdb/pull/16775 の @hmeriann による <code>Fix roundtripping of stringified nested types</code> PR で生じた変更を反映して予想される結果を更新</li>
+<li>https://github.com/duckdb/duckdb/pull/16751 の @pdet による V1.2 -&gt; Main のマージ</li>
+<li>https://github.com/duckdb/duckdb/pull/16774 の @Mytherin により、<code>FROM</code> 句にタイム トラベル構文のサポートを追加</li>
+<li>Python ドキュメント: https://github.com/duckdb/duckdb/pull/16789 の @szarnyasg によるすべての結合タイプのリスト</li>
+<li>[chore] NotifyExternalRepositories.yml: https://github.com/duckdb/duckdb/pull/16793 で @carlopi によって ping されるエンドポイントを修正</li>
+<li>https://github.com/duckdb/duckdb/pull/16795 の @carlopi によって夜間ベースで構築された拡張機能 (メイン ブランチに対して) からデルタを削除</li>
+<li>OSX.yml と Windows.yml: repository_dispatch を削除します。https://github.com/duckdb/duckdb/pull/16796 の @carlopi によって InvokeCI によってすでに処理されています</li>
+<li>拡張機能が https://github.com/duckdb/duckdb/pull/16726 の @JAicewizard によってプライベートで duckdb にリンクされるようにします</li>
+<li>https://github.com/duckdb/duckdb/pull/16801 の @lnkuiper による <code>TemporaryMemoryManager</code> でのアサーションの失敗を回避するために追加の反復を追加</li>
+<li>テンプレート タイプのサイズを使用するように STANDARD_MASK_SIZE 計算を変更します。 @sebastiaan-dev 著、https://github.com/duckdb/duckdb/pull/16807</li>
+<li>https://github.com/duckdb/duckdb/pull/16811 の @Tmonster による夜間テーブルのサンプル エラーを修正</li>
+<li>https://github.com/duckdb/duckdb/pull/16805 の @pdet による整理整頓を修正</li>
+<li>https://github.com/duckdb/duckdb/pull/15654 の @c-herrewijn による関数カタログの「カテゴリ」ラベルをサポート</li>
+<li>https://github.com/duckdb/duckdb/pull/16822 の @c-herrewijn によって関数ヘッダーを再生成します</li>
+<li>内部 #4490: https://github.com/duckdb/duckdb/pull/16816 の @hawkfish によるウィンドウ ジャンプ リセット</li>
+<li>Regression.yml: 実際に、https://github.com/duckdb/duckdb/pull/16824 の @carlopi による適切な Base.sha コミットをチェックアウトします。</li>
+<li>修正: @yihong0618 による https://github.com/duckdb/duckdb/pull/16808 の役に立たない python インポートを削除</li>
+<li>NightlyTests.yml: https://github.com/duckdb/duckdb/pull/16817 の @carlopi によるビルド コマンドに環境変数をインライン化</li>
+<li>ベンチマーク ランナーの概要 (https://github.com/duckdb/duckdb/pull/16759 の @hmeriann による)</li>
+<li>https://github.com/duckdb/duckdb/pull/16800 の @carlopi により、バージョン 1.3.0 の storage_version 66 を追加</li>
+<li>https://github.com/duckdb/duckdb/pull/16834 の @Mytherin による「修正: 役に立たない python インポートを削除」を元に戻す</li>
+<li>[MultiFileReader] <code>MultiFileReader::FinalizeChunk</code> を再加工して、https://github.com/duckdb/duckdb/pull/16630 で @Tishj による式を使用する</li>
+<li>https://github.com/duckdb/duckdb/pull/16832 の @Mytherin によって v1.2 をメインにマージ</li>
+<li>https://github.com/duckdb/duckdb/pull/16825 の @xuke-hat によるマーク結合での NULL キーの処理を修正</li>
+<li>https://github.com/duckdb/duckdb/pull/16648 の @peterboncz による圧縮ベクトルのシリアル化修正</li>
+<li>https://github.com/duckdb/duckdb/pull/16840 の @peterboncz よりこれについては本当に申し訳ありません</li>
+<li>https://github.com/duckdb/duckdb/pull/16845 の @szarnyasg による一意の Python docstring を修正</li>
+<li>[MultiFileReader] https://github.com/duckdb/duckdb/pull/16838 の @Tishj によって、基礎となるリーダーに渡す「ローカル」フィルターを作成します</li>
+<li>https://github.com/duckdb/duckdb/pull/16860 の @Mytherin による「Regression.yml: 実際に適切な Base.sha コミットをチェックアウト」を元に戻す</li>
+<li>[ART] https://github.com/duckdb/duckdb/pull/16727 の @taniabogatsch により空の固定サイズ バッファーを即時に消去します</li>
+<li>https://github.com/duckdb/duckdb/pull/16867 の @Mytherin によって (挿入自体で実行するのではなく) プロジェクションをプッシュすることで、デフォルトと列インデックス マップを解決します</li>
+<li>pypi_cleanup.py スクリプトでの開発バージョンのソートに関する問題を修正し、https://github.com/duckdb/duckdb/pull/16873 の @hmeriann による最新の開発バージョンを PyPi 上に維持します</li>
+<li>https://github.com/duckdb/duckdb/pull/16871 に @lnkuiper による投影マップがある場合、結合を介してフィルターをプッシュできるようにします</li>
+<li>https://github.com/duckdb/duckdb/pull/15801 の @samansmink による create Secret の式</li>
+<li>Python - https://github.com/duckdb/duckdb/pull/16821 の @pdet による from_arrow での Arrow IPC サポート</li>
+<li>[ART] 新しい ARTScanner を導入し、InitMerge と Vacuum を反復処理します (https://github.com/duckdb/duckdb/pull/16861 の @taniabogatsch による)</li>
+<li>バインディングが https://github.com/duckdb/duckdb/pull/16880 の @Damon07 による左結合の右側にのみ一致するフィルターをプッシュダウンしないでください。</li>
+<li>MultiFileReader のリワーク (パート 17) - <code>MultiFileReaderData</code> を削除 - https://github.com/duckdb/duckdb/pull/16882 の @Mytherin によってファイル リーダーから可能な限り移動</li>
+<li>ICU: https://github.com/duckdb/duckdb/pull/16887 の @Mytherin によるコードにアクセスする TimeZone を統合</li>
+<li>ICU の年齢計算を再加工してタイムスタンプに変換し、https://github.com/duckdb/duckdb/pull/16889 の @Mytherin による定期的な間隔の年齢計算を使用します。</li>
+<li>https://github.com/duckdb/duckdb/pull/16849 の @lnkuiper による集計中の割り当てを削減</li>
+<li>CI: https://github.com/duckdb/duckdb/pull/16903 の @szarnyasg によって「古いものではない」ラベルが付けられている問題を「古いもの」としてマークすることを防止します。</li>
+<li>https://github.com/duckdb/duckdb/pull/16862 の @jsbali による Parquet 仕様に失敗するログ行にフィールド名を追加</li>
+<li>内部 #4490: https://github.com/duckdb/duckdb/pull/16879 の @hawkfish によるウィンドウ スレッド クリーンアップ</li>
+<li>https://github.com/duckdb/duckdb/pull/16116 に @hannes による Linux/OSX インストール スクリプトの gzip バージョンのシェルを追加</li>
+<li>https://github.com/duckdb/duckdb/pull/16906 の @kryonix による USING KEY 参照エラーを修正</li>
+<li>[ネストされた] https://github.com/duckdb/duckdb/pull/16870 の @maiadegraaf による <code>LIST_CONCAT</code> での可変引数の有効化</li>
+<li>vsize=2 に関するいくつかの問題を修正し、https://github.com/duckdb/duckdb/pull/16918 の @Mytherin により vsize=2 テストを <code>Main.yml</code> に移動</li>
+<li>C API コメント: https://github.com/duckdb/duckdb/pull/16925 の @szarnyasg によるタイプミスを修正</li>
+<li>https://github.com/duckdb/duckdb/pull/16928 の @lnkuiper による Parquet Writer の <code>FILE_SIZE_BYTES</code>/<code>ROW_GROUPS_PER_FILE</code> によるロックを軽減します</li>
+<li>[Python] <code>join</code> の <code>condition</code> 引数のアノテーションを修正し、https://github.com/duckdb/duckdb/pull/16933 の @MarcoGorelli による <code>Expression</code> を受け入れるようにしました。</li>
+<li>GCC 4.8 を修正し、https://github.com/duckdb/duckdb/pull/16937 の @Mytherin によって <code>Main</code> ワークフローに追加し直しました。</li>
+<li>https://github.com/duckdb/duckdb/pull/16939 の @Mytherin によって v1.2 をメインに再度マージします</li>
+<li>MultiFileReader - https://github.com/duckdb/duckdb/pull/16941 の @Mytherin によるキャストに依存するのではなく、フィールド インデックスのネストされた再マッピングを実行します。</li>
+<li>内部 #4552: https://github.com/duckdb/duckdb/pull/16931 の @hawkfish による短絡 CSE</li>
+<li>@carlopi による manylinux 拡張機能を https://github.com/duckdb/duckdb/pull/16944 に追加し直す</li>
+<li>https://github.com/duckdb/duckdb/pull/16945 の @Mytherin によるマージ グループで CI を実行します</li>
+<li>内部 #4516: https://github.com/duckdb/duckdb/pull/16904 の @hawkfish による間隔 BIGINT バリアント</li>
+<li>https://github.com/duckdb/duckdb/pull/16955 の @Mytherin による複数ステートメント クエリのクエリ文字列の分割</li>
+<li>ベクトル検証: 環境変数 <code>DUCKDB_DEBUG_VERIFY_VECTOR</code> に基づいて実行するように再加工し、https://github.com/duckdb/duckdb/pull/16957 の @Mytherin によって <code>Main.yml</code> に移動します</li>
+<li>https://github.com/duckdb/duckdb/pull/16958 の @Mytherin により、文字列なしのインライン/代替検証ワークフローを Main.yml に移動します</li>
+<li>[Python] https://github.com/duckdb/duckdb/pull/16948 の @MarcoGorelli による <code>shape</code> and <code>columns</code> のタイプ アノテーションを強化</li>
+<li>CMAKE_POLICY_VERSION_MINIMUM を渡し、https://github.com/duckdb/duckdb/pull/16953 の @carlopi によるローカル開発用に修正</li>
+<li>[ART] VerifyAllocations に ARTScanner を使用する (反復的にする) by @taniabogatsch (https://github.com/duckdb/duckdb/pull/16946)</li>
+<li>ThreadSanitizer テストを夜間テストから Main に移動し、https://github.com/duckdb/duckdb/pull/16960 の @Mytherin によるロックの問題を修正</li>
+<li>https://github.com/duckdb/duckdb/pull/16961 の @Mytherin による PR で実行するワークフローを再度有効にする</li>
+<li>https://github.com/duckdb/duckdb/pull/16962 の @Mytherin による Parquet ファイルから NaN 値を選択する問題を修正</li>
+<li>最新のストレージ テストを NightlyRelease に移動 - https://github.com/duckdb/duckdb/pull/16972 の @Mytherin によってオーバーフロー文字列ブロックが正しくクリーンアップされない問題を修正</li>
+<li>アリーナ割り当て物理オペレーター (https://github.com/duckdb/duckdb/pull/16911 の @taniabogatsch による)</li>
+<li><code>file_row_number</code> を仮想列にし、https://github.com/duckdb/duckdb/pull/16979 の @Mytherin により MultiFileReader でファイルごとの仮想列をサポートします</li>
+<li>https://github.com/duckdb/duckdb/pull/16973 の @Mytherin によるバックグラウンド スレッドでのタスクの部分的なスケジュールを可能にする設定 <code>scheduler_process_partial</code> を追加</li>
+<li>フォーマット スクリプトをクリーンアップし、すべてのファイルを収集してから、ディレクトリごとに同時に実行するのではなく、同時に実行します (https://github.com/duckdb/duckdb/pull/16988 の @Mytherin による)</li>
+<li>https://github.com/duckdb/duckdb/pull/17003 の @Mytherin による構造列の変更 (フィールドの追加、フィールドの削除、フィールド名の変更) のサポートを追加</li>
+<li>https://github.com/duckdb/duckdb/pull/16994 の @pdet による CSV ファザー テストを修正</li>
+<li>[修正] https://github.com/duckdb/duckdb/pull/17020 の @taniabogatsch によるサブクエリを含むマクロ + ラムダの元の式を維持する</li>
+<li>テーブルが削除または変更されたときを検出し、https://github.com/duckdb/duckdb/pull/17018 の @Mytherin によるこのシナリオでの削除を防止します</li>
+<li>https://github.com/duckdb/duckdb/pull/16999 の @szarnyasg による、duckdb.org を指すリンクを更新します。</li>
+<li>フローティング列での結合を修正 #16901 (@nickzoic 著、https://github.com/duckdb/duckdb/pull/16965)</li>
+<li>修正: https://github.com/duckdb/duckdb/pull/17023 の @rustyconover により、未使用のストリーム構造体メンバーを ArrowScanLocalState から削除</li>
+<li>[開発] https://github.com/duckdb/duckdb/pull/16974 の @Tishj による <code>UpdateSegment::Update</code> のフラット化された <code>Vector</code> の代わりに <code>UnifiedVectorFormat</code> を使用します</li>
+<li>https://github.com/duckdb/duckdb/pull/17027 の @pdet によりコア エクステンションから Arrow Extenson を削除</li>
+<li>https://github.com/duckdb/duckdb/pull/17026 の @ywelsch により、ClientContext を TaskExecutor に正しく伝播します。</li>
+<li>問題 #17001: https://github.com/duckdb/duckdb/pull/17028 の @hawkfish による AsOf メモリ管理</li>
+<li>[MultiFileReader] マルチファイルリーダーが <code>DeleteFilter</code> を <code>BaseFileReader</code> に追加できるようにします by @Tishj in https://github.com/duckdb/duckdb/pull/17032</li>
+<li>https://github.com/duckdb/duckdb/pull/17035 の @lnuiper により、オプションの <code>OVERRIDE_NEW_DELETE</code> ビルド パラメーターを追加します</li>
+<li>https://github.com/duckdb/duckdb/pull/17038 の @Mytherin によって仮想列をクリーンアップし、MultiFileReader::InitializeReader を仮想化します</li>
+<li>https://github.com/duckdb/duckdb/pull/17039 の @Mytherin により常に COLUMN_IDENTIFIER_ROW_ID であると想定するのではなく、テーブルが削除/更新用に独自の行 ID 列を定義できるようにします。</li>
+<li>圧縮された空の DataPage v2 を使用して Parquet を処理 (https://github.com/duckdb/duckdb/pull/17031 の @EnricoMi による)</li>
+<li>https://github.com/duckdb/duckdb/pull/17036 の @lnkuiper による Parquet Writer での小さな行グループの結合</li>
+<li>https://github.com/duckdb/duckdb/pull/17037 の @carlopi によって v1.2.2 をメインにマージします</li>
+<li>https://github.com/duckdb/duckdb/pull/17048 の @lnkuiper によって httpfs にパッチを送信できるように関数を実装します</li>
+<li>FORCE_ASYNC_SINK_SOURCE: https://github.com/duckdb/duckdb/pull/17053 の @carlopi によって Unittester にも渡されます</li>
+<li>すべての CSV 方言候補で最大行サイズ エラーが発生した場合は、最大行サイズ エラーをスローします。 @pdet 著、https://github.com/duckdb/duckdb/pull/16935</li>
+<li>https://github.com/duckdb/duckdb/pull/17060 の @Mytherin により BindExtraColumns をパブリック関数として公開</li>
+<li>https://github.com/duckdb/duckdb/pull/16949 の @hmeriann による外部リポジトリからの .github/workflows/NightlyBuildsCheck.yml のトリガー</li>
+<li>寄木細工の暗号のマイナーなクリーンアップ: フッター キーを直接渡すことを許可し、https://github.com/duckdb/duckdb/pull/17070 の @Mytherin による設定からキーを常に再読み取りすることを回避します。</li>
+<li>https://github.com/duckdb/duckdb/pull/17074 の @Maxxen によりジュリアを v1.2.2 に更新</li>
+<li>MultiFileReader のリワーク (パート 18): https://github.com/duckdb/duckdb/pull/17071 の @Mytherin によるファイル パスを <code>OpenFileInfo</code> 構造体に置き換えます。</li>
+<li>httpfs パッチを修正: https://github.com/duckdb/duckdb/pull/17075 に @carlopi によるサニタイズされていない <code>error</code> ワードが含まれる可能性があるため、<code>git log</code> は避けてください。</li>
+<li>https://github.com/duckdb/duckdb/pull/17072 の @Tishj によりコアで Avro を再有効化</li>
+<li>[ネストされた] <code>list_value</code> のリスト タイプの最適化 (https://github.com/duckdb/duckdb/pull/17063 の @maiadegraaf による)</li>
+<li>https://github.com/duckdb/duckdb/pull/17061 の @lnkuiper による Parquet ライターで文字列辞書を動的に拡張します</li>
+<li>拡張ファイル情報を OpenFileInfo に追加し、これを使用して暗号化キーとフッター サイズを Parquet リーダーに渡します (https://github.com/duckdb/duckdb/pull/17085 の @Mytherin によって)</li>
+<li>[開発] https://github.com/duckdb/duckdb/pull/17087 の @Tishj による既に消費された結果に対して <code>__arrow_c_stream__</code> を呼び出すと自動的に再実行されます。</li>
+<li>fsst: https://github.com/duckdb/duckdb/pull/17094 の @carlopi による FSST_UNALIGNED_STORE のアライメント情報の伝播を回避します。</li>
+<li>sqlite3 api ラッパー リンクを修正 + R-CMD チェックを削除 + https://github.com/duckdb/duckdb/pull/17095 の @carlopi による夜間テストを追加</li>
+<li>https://github.com/duckdb/duckdb/pull/17064 の @joseph-isaacs による C API での大きな辞書値と定数ベクトルの作成をサポート</li>
+<li>不足しているロックを UpdateSegment::FetchRow に追加し、API をクリーンアップして、https://github.com/duckdb/duckdb/pull/17100 の @Mytherin によるロックを要求します</li>
+<li>Valgrind には、https://github.com/duckdb/duckdb/pull/17101 の @carlopi による tpch が必要です</li>
+<li>https://github.com/duckdb/duckdb/pull/16956 の @hannes により manylinux_2_28 に切り替えます</li>
+<li>https://github.com/duckdb/duckdb/pull/16196 の @ccfelius による mbedtls 暗号化 API の変更</li>
+<li>https://github.com/duckdb/duckdb/pull/17102 の @Mytherin により、オープナー層と仮想ファイル システム層を通じて OpenFileExtended をプルします</li>
+<li>https://github.com/duckdb/duckdb/pull/17109 の @Mytherin によってローカルの追加状態が正しくフラッシュされなかった upsert の問題を修正</li>
+<li>https://github.com/duckdb/duckdb/pull/17106 の @lnkuiper による <code>read_json</code> スキーマ検出を常に並列化します。</li>
+<li>https://github.com/duckdb/duckdb/pull/17034 の @taniabogatsch によりトランザクション クリーンアップをトランザクション ロックの外に移動</li>
+<li>R_CMD_CHECK.yml を削除します。https://github.com/duckdb/duckdb/pull/17127 の @carlopi による duckdb/duckdb-r リポジトリによって処理されるようになりました。</li>
+<li>JSON https://github.com/duckdb/duckdb/pull/17119 の @lnquiper によるバグ修正</li>
+<li>relassert をリファクタリングし、https://github.com/duckdb/duckdb/pull/17104 の @carlopi によってコンパイラ/静的にリンクされた拡張機能にいくつかのバリエーションを追加します。</li>
+<li>extension-upload-from-nightly.sh: https://github.com/duckdb/duckdb/pull/17120 に @carlopi によって --region を追加</li>
+<li>MultiFileReader: 仮想列処理のいくつかの修正と、https://github.com/duckdb/duckdb/pull/17123 の @Mytherin による仮想列処理の拡張可能化</li>
+<li>https://github.com/duckdb/duckdb/pull/17125 の @taniabogatsch によるデータ テーブル内の誤解を招くロック コメントを削除</li>
+<li>[開発] <code>vcpkg.json</code> に「レジストリ」を追加し、レジストリのパッケージを一覧表示するスクリプトを追加します。 @Tishj 著、https://github.com/duckdb/duckdb/pull/17124</li>
+<li>外部ファイル キャッシュ (https://github.com/duckdb/duckdb/pull/16463 の @lnkuiper による)</li>
+<li>https://github.com/duckdb/duckdb/pull/17108 の @hmeriann によって夜間のビルド ステータスを通知します</li>
+<li>https://github.com/duckdb/duckdb/pull/17138 で @lnkuiper によってキャストされた厳密な UUID</li>
+<li>ファイルにコピー: https://github.com/duckdb/duckdb/pull/17142 の @Mytherin によって行が書き込まれていないスレッドに対して Combine を呼び出さないようにします。</li>
+<li>https://github.com/duckdb/duckdb/pull/17144 の @Mytherin によって読み取られたファイルのファイル インデックスを返すマルチ ファイル リーダーに file_index 仮想列を追加します。</li>
+<li>MultiFileReader: 定数の処理を簡素化し、https://github.com/duckdb/duckdb/pull/17149 の @Mytherin によってマルチ ファイル リーダーから返される仮想列を定数にできるようにします。</li>
+<li>エンコーディングを変更して、マップの置換をより柔軟に行えるようにしました。 @pdet 著、https://github.com/duckdb/duckdb/pull/17146</li>
+<li>https://github.com/duckdb/duckdb/pull/17141 の @lnkuiper による大規模な上位 N クエリの最適化</li>
+<li>テーブル サイズに比べて比較的小さい制限が TopN リライトのみをトリガーします。  @Tmonster 著、https://github.com/duckdb/duckdb/pull/17140</li>
+<li>platform.hpp: DUCKDB_EXPLICIT_PLATFORM を伝播し、https://github.com/duckdb/duckdb/pull/17137 での @carlopi による早期リターンを回避します</li>
+<li>@Damon07 による NULL 値を削除しないフィルターを https://github.com/duckdb/duckdb/pull/17045 に保持</li>
+<li>https://github.com/duckdb/duckdb/pull/16893 の @dentiny による Unix プラットフォームでの <code>FileSync</code> 呼び出しを改善</li>
+<li>README: https://github.com/duckdb/duckdb/pull/17161 の @szarnyasg によるリンクの構築を修正</li>
+<li>[InvokeCI] https://github.com/duckdb/duckdb/pull/17163 で @hmeriann による命令を実行するための不足しているパイプを追加</li>
+<li>内部 #4667: https://github.com/duckdb/duckdb/pull/17160 の @hawkfish による 2025b タイムゾーン データ</li>
+<li>https://github.com/duckdb/duckdb/pull/17168の@c-herrewijnによる関数リストを統一</li>
+<li>[開発] https://github.com/duckdb/duckdb/pull/17183 で @Tishj によってハードコーディングする代わりに <code>EXTENSION_SECRET_TYPES</code> を生成します</li>
+<li>https://github.com/duckdb/duckdb/pull/17181 の @handstuyennn による間隔タイプのグループ化機能を修正</li>
+<li>https://github.com/duckdb/duckdb/pull/17166 の @marcoslot による GZIP ストリームへのファイル名追加エラー</li>
+<li>問題 #17115: TimeTZ 近似分位数 (@hawkfish 著、https://github.com/duckdb/duckdb/pull/17162)</li>
+<li>問題 #17046: AsOf 左述部 (https://github.com/duckdb/duckdb/pull/17159 の @hawkfish による)</li>
+<li>[修正] https://github.com/duckdb/duckdb/pull/17176 で @taniabogatsch による更新をコミットするときに削除インデックスを渡す</li>
+<li>Python.yml: https://github.com/duckdb/duckdb/pull/17107 の @carlopi により、Python 3.10 でファスト フェイルを実行するロジックを追加します。</li>
+<li>https://github.com/duckdb/duckdb/pull/17099 の @staticlibs により、Vendor.yml ワークフローを実行するように JDBC リポジトリに通知します</li>
+<li>問題 #17049: @hawkfish による ICU 日付キャスト (https://github.com/duckdb/duckdb/pull/17067)
+*bind_operator コールバックを TableFunction に追加 - https://github.com/duckdb/duckdb/pull/17196 の @Mytherin によってテーブル関数が LogicalOperator を直接発行できるようにします</li>
+<li>[暗号化] https://github.com/duckdb/duckdb/pull/17118 の @ccfelius によりブロック ヘッダー サイズを適応型にします</li>
+<li>問題 #16839: https://github.com/duckdb/duckdb/pull/16899 で @hawkfish による TIMESTAMP キャストを無効にする</li>
+<li>https://github.com/duckdb/duckdb/pull/17199 の @Mytherin によるファイルへのコピーのための明示的な PRESERVE_ORDER フラグのサポートを追加</li>
+<li>https://github.com/duckdb/duckdb/pull/17164 の @lnkuiper により、<code>SYSTEM_PEAK_BUFFER_MANAGER_MEMORY</code> と <code>SYSTEM_PEAK_TEMP_DIRECTORY_SIZE</code> をプロファイラーに追加</li>
+<li>https://github.com/duckdb/duckdb/pull/17212 の @hmeriann による [InvokeCI / NotifyExternalRepository] 予期しない値 'true' を修正</li>
+<li>https://github.com/duckdb/duckdb/pull/17209 の @Mytherin によって、式から別の列の型へのキャストを生成できる Cast_to_type 関数のサポートを追加しました。</li>
+<li>https://github.com/duckdb/duckdb/pull/17139 の @lnkuiper による不等結合/グループ化集計のカーディナリティ推定の向上</li>
+<li>https://github.com/duckdb/duckdb/pull/17205 の @lnkuiper により、<code>ExtendedOpenFileInfo</code> のオプションとして <code>ExternalFileCache</code> 検証を追加</li>
+<li>https://github.com/duckdb/duckdb/pull/17214 で @Mytherin によってファイナライズするときに、<code>PhysicalBatchInsert</code> でスレッドローカルのオプティミスティック ライターを明示的にフラッシュします</li>
+<li>https://github.com/duckdb/duckdb/pull/17213 の @Mytherin によるスキャンに任意の式をプッシュダウン</li>
+<li>修正 #17170: https://github.com/duckdb/duckdb/pull/17180 の @flashmouse による OR 式でのソート選択結果</li>
+<li>[開発] Iceberg、Bump Avro を再度有効にし、拡張機能間の依存関係の <code>generate_extension_functions.py</code> を修正 (https://github.com/duckdb/duckdb/pull/17204 の @Tishj による)</li>
+<li>https://github.com/duckdb/duckdb/pull/17208 の @pdet により無効な Unicode エラーを無効なエンコーディングに変更</li>
+<li>https://github.com/duckdb/duckdb/pull/17219 の @lnkuiper による一時ファイルの直接 IO</li>
+<li>[InvokeCI / NotifyExternalRepository] GitHub アクションを修正すると、ジョブの実行中に内部エラーが発生しました。 @hmeriann 著、https://github.com/duckdb/duckdb/pull/17218</li>
+<li>https://github.com/duckdb/duckdb/pull/17220 の @pdet により CSV リーダーに「thousands」オプションを追加</li>
+<li>https://github.com/duckdb/duckdb/pull/17227 の @jraymakers によりマップと共用体の値を作成する capi 関数を追加</li>
+<li>https://github.com/duckdb/duckdb/pull/17233 の @staticlibs によってすべての実行が成功した場合にのみ JDBC に通知します</li>
+<li>https://github.com/duckdb/duckdb/pull/17248 の @hfrifkin による Friendlier SQL link.md を更新</li>
+<li>https://github.com/duckdb/duckdb/pull/17255 の @lnkuiper による連結された GZIP メンバーの読み取りを実装</li>
+<li>https://github.com/duckdb/duckdb/pull/17249 の @lnkuiper によって破壊された <code>BlockHandle</code> をロードすると、無効な <code>BufferHandle</code> が返されます。</li>
+<li>内部 #4772: https://github.com/duckdb/duckdb/pull/17283 の @hawkfish によるタイムスタンプ エラー パラメーター</li>
+<li>バグ修正: https://github.com/duckdb/duckdb/pull/17259 の @Tmonster による複数のグループ化セットが存在する場合、未使用列の最適化を実行しない</li>
+<li>内部 #4532: https://github.com/duckdb/duckdb/pull/17303 の @hawkfish による 13 か月間隔</li>
+<li>ストレージ タイプが https://github.com/duckdb/duckdb/pull/17241 の @Maxxen によってすでに登録されている場合は、拡張機能をロードしようとしないでください</li>
+<li>https://github.com/duckdb/duckdb/pull/17236 の @lnkuiper による HyperLogLog を使用して、集計中にハッシュ テーブルのサイズを調整します</li>
+<li>https://github.com/duckdb/duckdb/pull/17242 の @J-Meyers により、配列ではなく常にリスト識別子を使用するように切り替えます</li>
+<li>https://github.com/duckdb/duckdb/pull/17271 の @carlopi により、root の query_location を TransformInterval にも追加します</li>
+<li>https://github.com/duckdb/duckdb/pull/17276 の @hmeriann によるヒストグラム テーブル関数のテスト</li>
+<li>https://github.com/duckdb/duckdb/pull/17300 の @lnkuiper による Parquet フッター サイズの推測</li>
+<li>問題 #16563: https://github.com/duckdb/duckdb/pull/17302 の @hawkfish による浮動小数点数から DECIMAL への変換</li>
+<li>機能 #15873: https://github.com/duckdb/duckdb/pull/17304 の @hawkfish によるウィンドウ化された ORDER BY</li>
+<li>https://github.com/duckdb/duckdb/pull/17294 の @kryonix によるボトムアップからトップダウンの無相関化戦略への切り替え</li>
+<li>https://github.com/duckdb/duckdb/pull/17309 の @ccfelius によるキーなしの mbedtls のランダム データの生成</li>
+<li>https://github.com/duckdb/duckdb/pull/17319 の @Mytherin による CI を修正</li>
+<li>[矢印] 10 進数 32 と 64 の使用と生成のサポートを実装します。 by @pdet (https://github.com/duckdb/duckdb/pull/17314)</li>
+<li>論理 get から列 ID を取得します。LogicalGet は必要ありません…by @Tishj in https://github.com/duckdb/duckdb/pull/17315</li>
+<li>https://github.com/duckdb/duckdb/pull/17316 の @samansmink による外部アクセス許可リストを使用して拡張機能のインストールを許可する</li>
+<li>https://github.com/duckdb/duckdb/pull/17243 の @taniabogatsch による再帰的 ART マージ アルゴリズムを置き換える ARTMerge を実装します。</li>
+<li>https://github.com/duckdb/duckdb/pull/17234 の @iceTTTT による定数 null 引数ベクトルと null マスクを共有</li>
+<li>修正 #17311: https://github.com/duckdb/duckdb/pull/17320 の @Mytherin によるトランスフォーマー内の再帰キーの存在を正しくチェックする</li>
+<li>[CSV リーダー] 引用/エスケープ検出コードを簡素化し、より堅牢にし、コメントと Skip_rows オプションを分離します。 @pdet 著、https://github.com/duckdb/duckdb/pull/17284</li>
+<li>https://github.com/duckdb/duckdb/pull/17322 の @lnkuiper により、<code>try_cast</code> を NaN <code>double</code> から <code>decimal</code> に修正しました</li>
+<li>https://github.com/duckdb/duckdb/pull/17321 の @Mytherin による新しい TableColumn 型のシリアル化を追加</li>
+<li>https://github.com/duckdb/duckdb/pull/17297 の @lnkuiper によるインデックス スキャン用のネストされた論理積 AND から式を抽出します</li>
+<li>Parquet リーダーで遅延実体化をサポートし、https://github.com/duckdb/duckdb/pull/17325 の @Mytherin によりマルチ ファイル リーダーで <code>COUNT(*)</code> を直接処理します</li>
+<li>https://github.com/duckdb/duckdb/pull/17327 の @taniabogatsch による Lookup と再帰的 Insert を置き換える ARTOperator を実装します。</li>
+<li>内部 #4723: https://github.com/duckdb/duckdb/pull/17317 の @hawkfish による不等条件プッシュダウン</li>
+<li>https://github.com/duckdb/duckdb/pull/17331 で @lnkuiper によって JSON エラーがスローされたときに文字列を適切にフォーマットする</li>
+<li>https://github.com/duckdb/duckdb/pull/17340 の @npt-1707 による潜在的に脆弱なクローン関数を修正</li>
+<li>https://github.com/duckdb/duckdb/pull/17339 の @npt-1707 による潜在的に脆弱なクローン関数を修正</li>
+<li>https://github.com/duckdb/duckdb/pull/17342 の @carlopi による「Skip MinGW, currently failed on main」を元に戻す</li>
+<li>Parquet メタデータ キャッシュ無効化ロジックを、https://github.com/duckdb/duckdb/pull/17334 の @Mytherin によるキャッシュ ファイル システム キャッシュ無効化と統合します。</li>
+<li>https://github.com/duckdb/duckdb/pull/17332 の @kryonix による空の範囲の問題を修正</li>
+<li>内部 #4797: https://github.com/duckdb/duckdb/pull/17330 の @hawkfish によるタイムスタンプ範囲カーディナリティ</li>
+<li>https://github.com/duckdb/duckdb/pull/17337 の @szarnyasg によるいくつかの細かい修正</li>
+<li>問題 #17299: @hawkfish による整数の丸め (https://github.com/duckdb/duckdb/pull/17328)</li>
+<li>Parquet Reader: キャッシュされたメタデータを持つファイルのパーティション統計を出力し、https://github.com/duckdb/duckdb/pull/17344 の @Mytherin によってグロブされたファイルに追加情報を追加する <code>ListFilesExtended</code> を実装します。</li>
+<li>ファイル名パターンに UUID v7 のサポートを追加 - https://github.com/duckdb/duckdb/pull/17345 の @Mytherin による複合パターンを正しくサポートするようにクリーンアップします。</li>
+<li>HIVE_FILE_PATTERN オプションのサポートを追加 - https://github.com/duckdb/duckdb/pull/17346 の @Mytherin により、パーティション化されたファイルをハイブ スタイルのディレクトリ構造に書き込むことなく書き込むことができます。</li>
+<li>ユーザーが https://github.com/duckdb/duckdb/pull/17347 の @Mytherin によってカタログを切り離したときにトリガーされる OnDetach コールバックをカタログに追加します</li>
+<li>https://github.com/duckdb/duckdb/pull/17333 の @staticlibs によってコミット ID を NotifyExternalRepositories.yml に渡します</li>
+<li>https://github.com/duckdb/duckdb/pull/17355 の @Mytherin により、ベンチマーク ランナーのルート ディレクトリを変更するための BENCHMARK_ROOT_DIRECTORY cmake オプションのサポートを追加し、DuckDB 以外のデータベースのキャッシュを改善するために、cache_file および reload オプションのサポートを追加しました。</li>
+<li>https://github.com/duckdb/duckdb/pull/17354 の @Mytherin による format.py の --directories オプションをサポート</li>
+<li>https://github.com/duckdb/duckdb/pull/17357 で @carlopi によってオプションとして渡された ENCRYPTION_KEY と STORAGE_VERSION の両方を処理します</li>
+<li>https://github.com/duckdb/duckdb/pull/17359 の @Tishj による <code>optional_idx query_id;</code> への無効なインデックスの割り当てによる内部例外を修正</li>
+<li>修正の統合: reqlen は、https://github.com/duckdb/duckdb/pull/17361 で @carlopi によって有効になったアサートでのみ使用されます。</li>
+<li>md5_number: https://github.com/duckdb/duckdb/pull/17336 の @szarnyasg によって UHUGEINT を返します</li>
+<li>https://github.com/duckdb/duckdb/pull/17365 の @Mytherin によってファイル情報に「has_deletes」が設定されている場合、パーティション統計の出力をスキップします。</li>
+<li>ベンチマーク ランナー: <code>argument</code>、<code>include</code>、<code>load_only</code> オプションを追加 - ClickBench が https://github.com/duckdb/duckdb/pull/17367 の @Mytherin によるサブセットの代わりに元のベンチマークを実行するようにします。</li>
+<li>https://github.com/duckdb/duckdb/pull/17373 の @JelteF による range とgenerate_series の行推定における 2 つの off-by-one エラーを修正</li>
+<li>[ネストされた] 修正: 16489 - https://github.com/duckdb/duckdb/pull/17080 の @maiadegraaf による <code>list_position</code> を使用してリスト内の <code>NULL</code> を検索する</li>
+<li>修正 #17258: https://github.com/duckdb/duckdb/pull/17375 の @jjballano により、cli 内でデータベースを読み取り専用モードで開くことを許可</li>
+<li>結合ハッシュ テーブル プローブの最適化: https://github.com/duckdb/duckdb/pull/17062 の @gropaul によるオプションのプローブ選択ベクトル</li>
+<li>https://github.com/duckdb/duckdb/pull/15923 の @carlopi により、Python ホイールにバンドルされている TPCH と TPCDS を削除</li>
+<li>[圧縮] https://github.com/duckdb/duckdb/pull/15637 の @Tishj による <code>DICT_FSST</code> 圧縮方法を紹介</li>
+<li>ラムダ矢印 (-&gt;) を非推奨にし、https://github.com/duckdb/duckdb/pull/17235 の @taniabogatsch によって LAMBDA x : x + 1 に置き換えます。</li>
+<li>https://github.com/duckdb/duckdb/pull/17379 で @Maxxen によって map_extract が null を返した場合にネストされた有効性が設定されない問題を修正</li>
+<li>関数チェーン: https://github.com/duckdb/duckdb/pull/17383 の @Mytherin によって関数が存在する場合、欠落している関数ではなく欠落している列を報告します。</li>
+<li>https://github.com/duckdb/duckdb/pull/17384 の @Mytherin による UPDATE ... SET のエラー メッセージを改善</li>
+<li>COLUMNS 正規表現がどの列にも一致しない場合の候補の提案を追加 (https://github.com/duckdb/duckdb/pull/17385 の @Mytherin による)</li>
+<li>https://github.com/duckdb/duckdb/pull/17390 の @hmeriann による <code>No space left on device</code> を修正するためにディスク領域をクリーンアップする手順を追加</li>
+<li>https://github.com/duckdb/duckdb/pull/17388 の @Mytherin による、小数と指数による文字列 -&gt; hugeint 変換の問題を修正</li>
+<li>https://github.com/duckdb/duckdb/pull/17382 の @Mytherin によるキャスト失敗のエラー メッセージ レポートを改善</li>
+<li>Python CI を修正: https://github.com/duckdb/duckdb/pull/17386 の @Mytherin により virtualenv を以前のバージョンに固定</li>
+<li>https://github.com/duckdb/duckdb/pull/17397 の @Mytherin による欠落している修飾列のエラー レポートを改善</li>
+<li>問題 #17266: 鉛ラグのヌル (@hawkfish 著、https://github.com/duckdb/duckdb/pull/17391)</li>
+<li>修正#17266：https://github.com/duckdb/duckdb/pull/17268の@ditdbによるオフセットがnullの場合のlad/leadの結果</li>
+<li>VirtualFileSystem は入力を受け取り、https://github.com/duckdb/duckdb/pull/17393 の @carlopi による動作のカスタマイズを可能にします</li>
+<li>[開発] <code>QualifiedName::ParseComponents</code> を追加、https://github.com/duckdb/duckdb/pull/17403 の @Tishj によるエラー メッセージへの入力を追加</li>
+<li>https://github.com/duckdb/duckdb/pull/17402 の @Mytherin による OOM エラーに関する提案とドキュメントへのリンクを提供します</li>
+<li>[開発] トップレベルが https://github.com/duckdb/duckdb/pull/17387 の @Tishj による FLAT ベクトルである場合、より深い子ベクトルを平坦化します。</li>
+<li>https://github.com/duckdb/duckdb/pull/17405 の @Mytherin による CLI の軽微な修正</li>
+<li>https://github.com/duckdb/duckdb/pull/17404 の @Mytherin による CREATE OR REPLACE TYPE、CREATE TYPE IF NOT EXISTS、および CREATE TEMPORARY TYPE のサポートを追加</li>
+<li>https://github.com/duckdb/duckdb/pull/17389 の @taniabogatsch による Value::MAP で広告掲載オーダー保存マップを使用します</li>
+<li>https://github.com/duckdb/duckdb/pull/17406 の @lnkuiper による <code>json_each</code>/<code>json_tree</code> を実装</li>
+<li>修正 #16552: https://github.com/duckdb/duckdb/pull/16943 の @flashmouse による結合条件シーケンスを調整</li>
+<li>https://github.com/duckdb/duckdb/pull/17409 の @taniabogatsch による WAL リプレイ インデックスの修正</li>
+<li>ZSTD: 最小サイズを超えた場合、圧縮を無効にする代わりに高いペナルティを使用して、https://github.com/duckdb/duckdb/pull/17412 の @Mytherin による強制圧縮が機能できるようにします。</li>
+<li>内部 #4723: https://github.com/duckdb/duckdb/pull/17400 の @hawkfish による PWMJ 不等式プッシュダウン</li>
+<li>https://github.com/duckdb/duckdb/pull/17420 の @Mytherin によってすべての httplib コードを HTTPUtil クラスに移動</li>
+<li>https://github.com/duckdb/duckdb/pull/17408 の @Mytherin による一時カタログでのデフォルトのビューとマクロの生成を回避します。</li>
+<li>単体テスト: https://github.com/duckdb/duckdb/pull/17419 の @Mytherin による <code>--force-restart</code> テストを実行できるかどうかの検出を改善しました。</li>
+<li>タスクに <code>TaskType</code> を付け、https://github.com/duckdb/duckdb/pull/17421 の @Mytherin による名前を付けます。</li>
+<li>https://github.com/duckdb/duckdb/pull/17360 の @adsharma による scripts/format.py で argparse を使用する</li>
+<li>https://github.com/duckdb/duckdb/pull/17424 で @szarnyasg によって不足しているカンマを追加</li>
+<li>内部 #4830: https://github.com/duckdb/duckdb/pull/17422 の @hawkfish による IEJoin 不等式プッシュダウン</li>
+<li>https://github.com/duckdb/duckdb/pull/16927 に @nickzoic による conn.query_progress() メソッドを追加</li>
+<li>https://github.com/duckdb/duckdb/pull/17425 の @Damon07 によって同じフィルターによって更新された統計を使用するフィルター プルーニングを修正しました</li>
+<li>https://github.com/duckdb/duckdb/pull/17434 の @staticlibs による Ubuntu 22.04 での JSON 拡張コンパイルを修正</li>
+<li>https://github.com/duckdb/duckdb/pull/16685 の @Flogex による SQLLogic Python テスト ランナーで pytest を使用する</li>
+<li>COPY TO/FROM ではバインド時の形式をチェックします。 @pdet 著、https://github.com/duckdb/duckdb/pull/17381</li>
+<li>バグ修正: DELIM_JOINS は、https://github.com/duckdb/duckdb/pull/16910 の @Tmonster による DELIM_GETS との結合における NULL フィルター条件の機能を反映する必要があります。</li>
+<li>https://github.com/duckdb/duckdb/pull/17415 の @Mytherin による Parquet/CSV/JSON ファイルの直接添付を許可</li>
+<li>https://github.com/duckdb/duckdb/pull/17427 の @pdet により、できるだけ早く行を試行するとエラーが強制される</li>
+<li>https://github.com/duckdb/duckdb/pull/17407 の @lnkuiper により、デフォルトで <code>SYSTEM_PEAK_BUFFER_MEMORY</code> および <code>SYSTEM_PEAK_TEMP_DIR_SIZE</code> プロファイリングを有効にします</li>
+<li>[C API] https://github.com/duckdb/duckdb/pull/17449 の @taniabogatsch により、client コンテキスト、接続 ID、およびスカラー関数バインド データを公開します</li>
+<li>[CSV スニファー] https://github.com/duckdb/duckdb/pull/17447 の @pdet によるヘッダーのみのファイルの適切な型置換</li>
+<li><code>remap_struct</code> と MFR ColumnMapper を使用した <code>MAP</code> と <code>LIST</code> への再帰 (https://github.com/duckdb/duckdb/pull/17448 の @Tishj による)</li>
+<li>修正: pyproject.toml には、https://github.com/duckdb/duckdb/pull/17443 の @YUKI2eN3e による tools.setuptools_scm セクションが含まれていません</li>
+<li>[修正] list_has_all 内の不明なパラメーターを使用したマクロ バインディングと、https://github.com/duckdb/duckdb/pull/17450 の @taniabogatsch によるその他のコードの整理</li>
+<li>HTTP インターフェイスを一般化し、https://github.com/duckdb/duckdb/pull/17464 の @Mytherin による <code>httpfs</code> の新しい HTTP インターフェイスを使用します</li>
+<li>[修正] C API での定数ベクトルとフラット ベクトルの切り替え (https://github.com/duckdb/duckdb/pull/17465 の @taniabogatsch による)</li>
+<li>https://github.com/duckdb/duckdb/pull/17468 の @szarnyasg による例の TIMETZ キャストを修正</li>
+<li>https://github.com/duckdb/duckdb/pull/17476 で @emmanuel-ferdman による重複した矢印フェッチ テストを削除</li>
+<li>マルチ ファイル リーダーのリワーク (パート 19): <code>MultiFileReaderInterface</code> を仮想化し、読み取りメソッドを <code>BaseFileReader</code> に移動 (https://github.com/duckdb/duckdb/pull/17475 の @Mytherin により作成)</li>
+<li>[シリアライザー] Lambda 互換性修正 (@maiadegraaf による https://github.com/duckdb/duckdb/pull/17428)</li>
+<li>https://github.com/duckdb/duckdb/pull/17460 の @ccfelius による JSON のブール値の解析を修正</li>
+<li>https://github.com/duckdb/duckdb/pull/17471 の @OmidAfroozeh による、整列されていない開始インデックスを持つ辞書ベクトルを出力</li>
+<li>https://github.com/duckdb/duckdb/pull/17479 に @hannes によるリリース バージョンを追加</li>
+<li>GetTableNames で修飾されたテーブル名を公開し、https://github.com/duckdb/duckdb/pull/17472 の @taniabogatsch によって、duckdb_get_table_names を C API に追加します</li>
+<li>https://github.com/duckdb/duckdb/pull/17482 の @Mytherin による avro、httpfs、mysql、postgres、sqlite のバンプ</li>
+<li>https://github.com/duckdb/duckdb/pull/17481 の @Maxxen による GeoParquet ExpressionColumnReader スキーマを修正</li>
+<li>https://github.com/duckdb/duckdb/pull/17485 の @hmeriann により、regression_threshold_seconds 引数を <code>regression/test_runner.py</code> に追加</li>
+<li>不足しているエントリの DROP は、https://github.com/duckdb/duckdb/pull/17474 の @jeewonhh によるバインドで失敗するはずです</li>
+<li>HTTPFS パラメーターは https://github.com/duckdb/duckdb/pull/17486 の @Mytherin によって修正されました</li>
+<li>HTTPUtil 修正: https://github.com/duckdb/duckdb/pull/17494 の @Mytherin による on_retry を正しく渡すようになりました。</li>
+<li>空間バンプと vss (https://github.com/duckdb/duckdb/pull/17492 の @Maxxen による)</li>
+<li><code>LIST</code> および <code>MAP</code> 列内の構造体の変更 (ドロップ、追加、フィールド名の変更) のサポートを追加しました。 @Tishj 著、https://github.com/duckdb/duckdb/pull/17462</li>
+<li>[Python 開発] https://github.com/duckdb/duckdb/pull/17490 の @Tishj による <code>currentframe</code> オブジェクトと対話するときに python 例外を防ぐ</li>
+<li>統計からの個別カウントが 0 の場合、https://github.com/duckdb/duckdb/pull/17466 の @Tmonster による結合順序オプティマイザーでは使用しないでください。</li>
+<li>エンコーディング拡張機能をコア拡張機能にし、自動ロード可能にします。 @pdet 著、https://github.com/duckdb/duckdb/pull/17206</li>
+<li>https://github.com/duckdb/duckdb/pull/17501 の @carlopi による OVERRIDE_GIT_DESCRIBE 経由でも rc スタイルのバージョンを渡すことを許可します</li>
+<li>https://github.com/duckdb/duckdb/pull/17498 で @carlopi による DUCKDB_EXPLICIT_VERSION の伝播を許可します</li>
+<li>https://github.com/duckdb/duckdb/pull/17500 の @Mytherin による夜間の軽微な修正</li>
+<li>FileSystem::TryRemoveFile を追加 - https://github.com/duckdb/duckdb/pull/17502 の @Mytherin によってファイルが存在する場合にのみファイルを削除します</li>
+<li>OperatorFinalize コールバックをオペレーターに追加 - https://github.com/duckdb/duckdb/pull/17503 の @Mytherin によってパイプラインが終了した後に呼び出されます</li>
+<li>https://github.com/duckdb/duckdb/pull/17504 の @Mytherin により、TopN オプティマイザーの動的フィルター プッシュダウンを既存の TopN ノードにも適用します</li>
+<li>修正: https://github.com/duckdb/duckdb/pull/17505 の @gropaul によるオプションのプローブ選択</li>
+<li>FileHandle ロギング (https://github.com/duckdb/duckdb/pull/16758 の @samansmink による)</li>
+<li>https://github.com/duckdb/duckdb/pull/17478 の @szarnyasg によるタイプミスを修正</li>
+<li>https://github.com/duckdb/duckdb/pull/17509 の @carlopi により OSX Relassert から空間を削除</li>
+<li>https://github.com/duckdb/duckdb/pull/17510 の @Maxxen によりさらに拡張機能を更新</li>
+<li>https://github.com/duckdb/duckdb/pull/17511 の @Mytherin によって HTTPFS を再度バンプします</li>
+<li>特技: https://github.com/duckdb/duckdb/pull/17512 の @rustyconover による関数シリアル化にカタログ名とスキーマ名を含める</li>
+<li>https://github.com/duckdb/duckdb/pull/17514 の @carlopi によるエンコーディングを修正</li>
+<li>https://github.com/duckdb/duckdb/pull/17515 の @Tishj による python 夜間ビルドを修正</li>
+<li>https://github.com/duckdb/duckdb/pull/17520 の @pdet によるエンコード拡張には Catalog::TryAutoLoad を使用します</li>
+<li>[Python 開発] <code>reinterpret_steal</code> を使用すると、https://github.com/duckdb/duckdb/pull/17525 の @Tishj によって渡されたオブジェクトの参照カウントが壊れます</li>
+<li>https://github.com/duckdb/duckdb/pull/17527 の @carlopi による更新拡張機能を修正</li>
+<li>https://github.com/duckdb/duckdb/pull/17528 の @carlopi による例外エラー メッセージの軽微な修正</li>
+<li>[Python 開発] https://github.com/duckdb/duckdb/pull/17529 の @Tishj による Python SQLLogicTester の失敗したテストを修正</li>
+<li>https://github.com/duckdb/duckdb/pull/17516 の @kurtmckee による GitHub ワークフロー <code>set-output</code> の非推奨警告を解決</li>
+<li>[CSV リーダー] スキーマ結合の SQLNULL タイプを検出し、CSV リレーションでスキーマ結合を使用し、files_to_sniff オプションを追加します。  @pdet 著、https://github.com/duckdb/duckdb/pull/17467</li>
+<li>https://github.com/duckdb/duckdb/pull/17536 での @carlopi による拡張テストを修正</li>
+<li>[開発] https://github.com/duckdb/duckdb/pull/17544 で @Tishj によって仮想列を含むテーブルを記述するときに発生するクラッシュを修正</li>
+<li>[HTTPUtil] <code>HTTPUtil</code> インターフェイス経由で行われたリクエストがスキームなしで URI を受け入れられるようにします。 @Tishj 著、https://github.com/duckdb/duckdb/pull/17545
+※https://github.com/duckdb/duckdb/pull/17546の@Mytherinでデータベースタイプを設定後アタッチ</li>
+<li>https://github.com/duckdb/duckdb/pull/17553 で @Mytherin によって最初のファイルを熱心に取得する代わりに、MultiFileGlobalState を InitializeReader に渡し、ファイル リストを CreateMapping に渡します。</li>
+<li>[開発] https://github.com/duckdb/duckdb/pull/17548 の @Tishj による <code>allowed_directories</code> クラッシュを修正</li>
+<li>https://github.com/duckdb/duckdb/pull/17547 の @taniabogatsch によるインデックス スキャン中の重複フィルターを [修正]</li>
+<li>https://github.com/duckdb/duckdb/pull/17539 の @Tmonster によって tpch sf100 のデータを段階的に生成します</li>
+<li>問題 #17537: @hawkfish による小数秒のパディング (https://github.com/duckdb/duckdb/pull/17556)</li>
+<li>https://github.com/duckdb/duckdb/pull/17566 の @Mytherin で MultiFileList::Copy 仮想メソッドを作成</li>
+<li>[開発] https://github.com/duckdb/duckdb/pull/17542 の @Tishj による非推奨の圧縮タイプでは <code>USING COMPRESSION</code> を使用できません</li>
+<li>https://github.com/duckdb/duckdb/pull/17563 の @NiclasHaderer による ExtraOperatorInfo のシリアル化 (逆) を追加</li>
+<li>https://github.com/duckdb/duckdb/pull/17567 で @lnkuiper によってデータが削除される場合の <code>ExternalFileCache</code> の問題を修正</li>
+<li>リモート読み取り: https://github.com/duckdb/duckdb/pull/17557 の @Mytherin によるプリフェッチ用に正しいバッファ サイズを割り当てます。</li>
+<li>パッチを削除し、https://github.com/duckdb/duckdb/pull/17558 で @carlopi によって httpfs をバンプします</li>
+<li>[開発] https://github.com/duckdb/duckdb/pull/17573 の @Tishj による Arrow の固定サイズのバイナリ読み取りを修正</li>
+<li>https://github.com/duckdb/duckdb/pull/17580 の @carlopi による OVERRIDE_GIT_DESCRIBE を正しく処理するように setup.py を修正
+<strong>フル Changelog</strong>: https://github.com/duckdb/duckdb/compare/v1.2.2...v1.3.0</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>ソース</strong> <a href="https://github.com/duckdb/duckdb">duckdb/duckdb</a> · <code>v1.3.0</code> · 2025-05-21 · <a href="https://github.com/duckdb/duckdb/releases/tag/v1.3.0">アップストリーム リリース</a>
+<em>インデックス作成のためにそのままミラーリングされます。すべての権利は上流プロジェクトに帰属します。</em></p>
+</blockquote></div>  <details class="mt-original"> <summary>English original / English original</summary> <div class="prose mt-original-body"><h1>duckdb v1.3.0</h1>
+<p>This release of DuckDB is named &quot;Ossivalis&quot; after Bucephala Ossivalis, an ancestor of the <a href="https://en.wikipedia.org/wiki/Common_goldeneye">Goldeneye duck</a> that lived Millions of years ago.</p>
+<p>Please also refer to the announcement blog post: https://duckdb.org/2025/05/21/announcing-duckdb-130</p>
+<h2>What's Changed</h2>
+<ul>
+<li>V1.2 histrionicus by @Mytherin in https://github.com/duckdb/duckdb/pull/16070</li>
+<li>V1.2 histrionicus by @Mytherin in https://github.com/duckdb/duckdb/pull/16072</li>
+<li>unittests: clear test directory after every test by @Mytherin in https://github.com/duckdb/duckdb/pull/16053</li>
+<li>Benchmark runner: catch and log errors + add support for <code>retry load N</code> syntax by @Mytherin in https://github.com/duckdb/duckdb/pull/16054</li>
+<li>Throw an error when unsupported commands are used in concurrentloop by @Mytherin in https://github.com/duckdb/duckdb/pull/16009</li>
+<li>Remove extension definitions to prevent re-compilation of the entire system on commit by @Mytherin in https://github.com/duckdb/duckdb/pull/15955</li>
+<li>Display schema information of currently selected database only by @ashwaniYDV in https://github.com/duckdb/duckdb/pull/15815</li>
+<li>Issue #14366: Average Intervals  by @hawkfish in https://github.com/duckdb/duckdb/pull/15864</li>
+<li>Internal #2176: Temporal AVG by @hawkfish in https://github.com/duckdb/duckdb/pull/15661</li>
+<li>discussions #15981: remove confusing comment in &quot;duckdb/tools/shell/shell.cpp&quot; by @komainu8 in https://github.com/duckdb/duckdb/pull/15984</li>
+<li>Fix #15466 Transform LIMIT or OFFSET first based on order specified in prepared statement by @ashwaniYDV in https://github.com/duckdb/duckdb/pull/15484</li>
+<li>Bitpacking mode info by @arjenpdevries in https://github.com/duckdb/duckdb/pull/15623</li>
+<li>Sniff Timestamp_TZ from CSV FIles by @pdet in https://github.com/duckdb/duckdb/pull/15730</li>
+<li>[no-op] Add documentation for filesystem read behavior by @dentiny in https://github.com/duckdb/duckdb/pull/15937</li>
+<li>Accept &quot;Auto&quot; as date/timestamp format by @pdet in https://github.com/duckdb/duckdb/pull/15808</li>
+<li>Parquet Reader Cleanup: Move ColumnReaders to separate files by @Mytherin in https://github.com/duckdb/duckdb/pull/16092</li>
+<li>Parquet Reader: Move decoding logic into separate Decoder classes by @Mytherin in https://github.com/duckdb/duckdb/pull/16100</li>
+<li>BundleStaticLibs to be also triggered by InvokeCI by @carlopi in https://github.com/duckdb/duckdb/pull/16107</li>
+<li>Parquet Reader: Split DeltaLengthByteArray decoder from DeltaByteArray, and read the strings in a streaming manner by @Mytherin in https://github.com/duckdb/duckdb/pull/16105</li>
+<li>Parquet Dictionary reader: set NULL values as the last value in the dictionary by @Mytherin in https://github.com/duckdb/duckdb/pull/16106</li>
+<li>Parquet Reader: Share ResizeableBuffers across decoders, and unify Plain/PlainReference by @Mytherin in https://github.com/duckdb/duckdb/pull/16113</li>
+<li>Using GitHub ARM runners for Linux CLI builds by @hannes in https://github.com/duckdb/duckdb/pull/16119</li>
+<li>Parquet Reader: Implement dedicated Skip method by @Mytherin in https://github.com/duckdb/duckdb/pull/16117</li>
+<li>Use ColumnSegment::FilterSelection and SelectionVector for filtering in Parquet scans by @Mytherin in https://github.com/duckdb/duckdb/pull/16126</li>
+<li>[Dev] Fix output (long lines &gt; 333 characters) getting truncated in shell by @Tishj in https://github.com/duckdb/duckdb/pull/16128</li>
+<li>Adaptive table filter: initialize filter order based on heuristics by @Mytherin in https://github.com/duckdb/duckdb/pull/16127</li>
+<li>Feature #16044: TimeZone Offset Seconds by @hawkfish in https://github.com/duckdb/duckdb/pull/16048</li>
+<li>ATTACH OR REPLACE database to allow swapping of new data. by @xevix in https://github.com/duckdb/duckdb/pull/15355</li>
+<li>[Dev] Remove <code>upsert_conflict_in_different_chunk.test</code> by @Tishj in https://github.com/duckdb/duckdb/pull/15980</li>
+<li>[Dev] Fix issue related to unpacked columns and the NOT operator by @Tishj in https://github.com/duckdb/duckdb/pull/15534</li>
+<li>[Julia] Add support for named params in prepared statements by @tqml in https://github.com/duckdb/duckdb/pull/15621</li>
+<li>Use Adaptive Filters in the Parquet reader by @Mytherin in https://github.com/duckdb/duckdb/pull/16133</li>
+<li>Parquet reader: push table filters directly into dictionaries by @Mytherin in https://github.com/duckdb/duckdb/pull/16136</li>
+<li>Parquet reader: Plain templates - make CHECKED a template parameter, and use memcpy/bulk skip when reading/skipping without defines by @Mytherin in https://github.com/duckdb/duckdb/pull/16141</li>
+<li>Parquet reader: only set invalid entry in the dictionary when the column has defines by @Mytherin in https://github.com/duckdb/duckdb/pull/16144</li>
+<li>Add uniq_ptr_cast for interpreted benchmark. by @Tmonster in https://github.com/duckdb/duckdb/pull/16151</li>
+<li>Hopefully fixing ci runs by @hannes in https://github.com/duckdb/duckdb/pull/16150</li>
+<li>Removed the last CI job that used the Ubuntu 18 setup by @hannes in https://github.com/duckdb/duckdb/pull/16155</li>
+<li>Parquet Reader: Split <code>CreateReader</code> into two separate stages - <code>ParseSchema</code> and <code>CreateReader</code> by @Mytherin in https://github.com/duckdb/duckdb/pull/16161</li>
+<li>Have CSV Parellel tests on CI again by @pdet in https://github.com/duckdb/duckdb/pull/16164</li>
+<li>[Python][Dev] Bump the minimum pybind11 version from <code>2.6</code> to <code>2.9</code> by @Tishj in https://github.com/duckdb/duckdb/pull/16159</li>
+<li>Add StackTraces to FatalExceptions by @NiclasHaderer in https://github.com/duckdb/duckdb/pull/16158</li>
+<li>Rework invoke by @carlopi in https://github.com/duckdb/duckdb/pull/16108</li>
+<li>Adds pre-optimization hooks for DuckDB by @NiclasHaderer in https://github.com/duckdb/duckdb/pull/16115</li>
+<li>Unify behavior of <code>range</code>/<code>generate_series</code> with PostgreSQL by @kryonix in https://github.com/duckdb/duckdb/pull/15935</li>
+<li>[CI] Avoid Linux CLI jobs to fail-fast by @carlopi in https://github.com/duckdb/duckdb/pull/16173</li>
+<li>Parquet: Add dedicated Select method that can be used to push selection vectors into the read by @Mytherin in https://github.com/duckdb/duckdb/pull/16174</li>
+<li>Unvendor ICU by @m-kuhn in https://github.com/duckdb/duckdb/pull/16176</li>
+<li>Parquet reader: batch check if buffer is available in RLEBpDecoder by @Mytherin in https://github.com/duckdb/duckdb/pull/16185</li>
+<li>Parquet Reader: for DeltaLengthByteArray encoding, directly refer to strings from the block without copying by @Mytherin in https://github.com/duckdb/duckdb/pull/16186</li>
+<li>unified names for duckdb-extensions by @hmeriann in https://github.com/duckdb/duckdb/pull/16179</li>
+<li>Only delete test directory when <code>--test-temp-dir</code> is not specified by @Mytherin in https://github.com/duckdb/duckdb/pull/16192</li>
+<li>Fix #16163: COLUMNS should not treat identifiers as strings by @Mytherin in https://github.com/duckdb/duckdb/pull/16193</li>
+<li>Parquet reader: Avoid applying bloom filters if we are casting columns by @Mytherin in https://github.com/duckdb/duckdb/pull/16194</li>
+<li>Pretty print sniffer values by @pdet in https://github.com/duckdb/duckdb/pull/16182</li>
+<li>V1.2 histrionicus by @Mytherin in https://github.com/duckdb/duckdb/pull/16191</li>
+<li>Bump Julia by @Mytherin in https://github.com/duckdb/duckdb/pull/16199</li>
+<li>Ensure that dependent targets are present after find_package. by @BillyONeal in https://github.com/duckdb/duckdb/pull/16197</li>
+<li>Concurrency groups for R and Wasm by @hmeriann in https://github.com/duckdb/duckdb/pull/16201</li>
+<li>Parquet Writer Cleanup: Move ColumnWriters to separate files  by @Mytherin in https://github.com/duckdb/duckdb/pull/16202</li>
+<li>[fix] Use bigobj when building with MSVC by @m-kuhn in https://github.com/duckdb/duckdb/pull/16200</li>
+<li>Improve performance of <code>UNNEST/UNPIVOT</code> by using selection vectors to unnest multiple lists at once by @Mytherin in https://github.com/duckdb/duckdb/pull/16210</li>
+<li>Add the <code>TRY</code> expression by @Tishj in https://github.com/duckdb/duckdb/pull/15939</li>
+<li>[Python][Dev] Replace the default connection when it's closed by @Tishj in https://github.com/duckdb/duckdb/pull/16160</li>
+<li>Use steady clock for profiler by @dentiny in https://github.com/duckdb/duckdb/pull/16198</li>
+<li>Add parallel memset when building hash join table by @hehezhou in https://github.com/duckdb/duckdb/pull/16172</li>
+<li>Avoid unnecessarily projecting the input columns of the UNPIVOT operator in the UNNEST by @Mytherin in https://github.com/duckdb/duckdb/pull/16221</li>
+<li>Left join push down optimization by @Damon07 in https://github.com/duckdb/duckdb/pull/15881</li>
+<li>Do In-Filter pushdown in PyArrow by @pdet in https://github.com/duckdb/duckdb/pull/16224</li>
+<li>Use _win32 with MSVC by @cfis in https://github.com/duckdb/duckdb/pull/16235</li>
+<li>Fix Python 3 executable name on Windows by @cfis in https://github.com/duckdb/duckdb/pull/16236</li>
+<li>Fix -std=c++11 by @cfis in https://github.com/duckdb/duckdb/pull/16237</li>
+<li>Issue #8265: AsOf Nested Loop by @hawkfish in https://github.com/duckdb/duckdb/pull/16218</li>
+<li>Include extension_util.hpp in libduckdb by @mlafeldt in https://github.com/duckdb/duckdb/pull/16255</li>
+<li>Generalize <code>rowid</code> into the concept of virtual columns, and make <code>filename</code> a virtual column in the Parquet/CSV/JSON readers by @Mytherin in https://github.com/duckdb/duckdb/pull/16248</li>
+<li>Modify histogram test to more fuzzily check boundaries since the test can be inconsistent on different platforms by @Mytherin in https://github.com/duckdb/duckdb/pull/16261</li>
+<li>[Dev] Fix issue in <code>TRY</code> expression with <code>dictionary_expression</code> Vector verification by @Tishj in https://github.com/duckdb/duckdb/pull/16262</li>
+<li>[Python Dev] Add the correct variant of the <code>-std=c++11</code> flag based on the compiler (MSVC or not) by @Tishj in https://github.com/duckdb/duckdb/pull/16267</li>
+<li>Fix extension install mode null by @samansmink in https://github.com/duckdb/duckdb/pull/16268</li>
+<li>A little cleanup. by @JasonPunyon in https://github.com/duckdb/duckdb/pull/16028</li>
+<li>Improve Parquet writer performance by @lnkuiper in https://github.com/duckdb/duckdb/pull/16243</li>
+<li>Merge v1.2-histrionicus into main by @Mytherin in https://github.com/duckdb/duckdb/pull/16284</li>
+<li>Many reclaim storage fixes by @taniabogatsch in https://github.com/duckdb/duckdb/pull/15825</li>
+<li>Arena allocator for <code>MinMaxN</code> and skip <code>NULL</code>s when creating enum by @lnkuiper in https://github.com/duckdb/duckdb/pull/16246</li>
+<li>Add pragma to truncate duckdb log storage by @samansmink in https://github.com/duckdb/duckdb/pull/16274</li>
+<li>Some more Parquet writer performance improvements by @lnkuiper in https://github.com/duckdb/duckdb/pull/16287</li>
+<li>Do duckdb_extract_statements to be able to execute pivot in ADBC by @pdet in https://github.com/duckdb/duckdb/pull/16162</li>
+<li>[Dev] Improve/Add handling of escapes in VARCHAR -&gt; list/struct/map and align behavior by @Tishj in https://github.com/duckdb/duckdb/pull/15944</li>
+<li>make ValidityMask::RowIsValidUnsafe really unsafe by @xuke-hat in https://github.com/duckdb/duckdb/pull/16302</li>
+<li>Multi File Reader Rework: Add <code>MultiFileReaderFunction</code> that is used to wrap a single-file reader, and use it for the Parquet reader by @Mytherin in https://github.com/duckdb/duckdb/pull/16299</li>
+<li>[Python Dev] Add support for fully qualified references in <code>.table(...)</code> method by @Tishj in https://github.com/duckdb/duckdb/pull/16291</li>
+<li>[Dev] MultiFileReader - Add to the <code>column_indexes</code> for <code>file_row_number</code> by @Tishj in https://github.com/duckdb/duckdb/pull/16311</li>
+<li>Parquet reader performance by @lnkuiper in https://github.com/duckdb/duckdb/pull/16315</li>
+<li>Bump Julia FixedPointDecimals dependency version by @mbarbar in https://github.com/duckdb/duckdb/pull/16323</li>
+<li>Merge V1.2 histrionicus into main by @Mytherin in https://github.com/duckdb/duckdb/pull/16324</li>
+<li>Add new recursive semantics (<code>USING KEY</code>) by @cryoEncryp in https://github.com/duckdb/duckdb/pull/12430</li>
+<li>fix: add StringStats::SetMaxStringLength by @rustyconover in https://github.com/duckdb/duckdb/pull/16326</li>
+<li>Fix decorrelation of WITH USING KEY by @kryonix in https://github.com/duckdb/duckdb/pull/16330</li>
+<li>Issue #16250: Window Range Performance by @hawkfish in https://github.com/duckdb/duckdb/pull/16320</li>
+<li>Verify UTF-8 in <code>DeltaLengthByteArrayDecoder</code> and speed it up by @lnkuiper in https://github.com/duckdb/duckdb/pull/16328</li>
+<li>Add missing include by @Mytherin in https://github.com/duckdb/duckdb/pull/16342</li>
+<li>[chore] No ccache for OSX Python by @carlopi in https://github.com/duckdb/duckdb/pull/16348</li>
+<li>Linux CLI: override platform for ARM manylinux by @carlopi in https://github.com/duckdb/duckdb/pull/16347</li>
+<li>docs: tweak explanation of median for even cardinality inputs by @NickCrews in https://github.com/duckdb/duckdb/pull/13726</li>
+<li>[parquet] Fix implicit idx_t to int64_t conversion flagged by clang-tidy by @carlopi in https://github.com/duckdb/duckdb/pull/16368</li>
+<li>Improve error message on failure to install local extension by @carlopi in https://github.com/duckdb/duckdb/pull/16371</li>
+<li>MAIN_BRANCH_VERSIONING: main branch to get descriptors like v1.3.0-dev1234 instead of v1.2.1-dev1234 by @carlopi in https://github.com/duckdb/duckdb/pull/16366</li>
+<li>Parallel HT Zeroing: Set entries_per_task so that there are 4x more tasks than threads by @gropaul in https://github.com/duckdb/duckdb/pull/16301</li>
+<li>Internal #2176: SUMMARIZE Temporal Types by @hawkfish in https://github.com/duckdb/duckdb/pull/16095</li>
+<li>[SwiftRelease CI] fetch tags before checking there is already a tag with the same name by @hmeriann in https://github.com/duckdb/duckdb/pull/16376</li>
+<li>Push Select into ArrayColumnData to avoid scanning arrays that are not required for the query by @Mytherin in https://github.com/duckdb/duckdb/pull/16356</li>
+<li>Revert &quot;Linux CLI: override platform for ARM manylinux&quot; by @carlopi in https://github.com/duckdb/duckdb/pull/16374</li>
+<li>Rework CSV Reader: use the new MultiFileReaderFunction interface by @Mytherin in https://github.com/duckdb/duckdb/pull/16349</li>
+<li>Add connection and transaction identifiers by @samansmink in https://github.com/duckdb/duckdb/pull/16296</li>
+<li>Add parquet 'unknown' logical type by @hannes in https://github.com/duckdb/duckdb/pull/16378</li>
+<li>Internal #4287: INTERVAL Times DOUBLE by @hawkfish in https://github.com/duckdb/duckdb/pull/16386</li>
+<li>pb/compressed vector serialization by @peterboncz in https://github.com/duckdb/duckdb/pull/16066</li>
+<li>Fix issue #16377 by @kryonix in https://github.com/duckdb/duckdb/pull/16391</li>
+<li>Read support for Parquet Float16 by @hannes in https://github.com/duckdb/duckdb/pull/16395</li>
+<li>MAIN_BRANCH_VERSIONING: Adopt also for Python build and amalgamation by @carlopi in https://github.com/duckdb/duckdb/pull/16400</li>
+<li>Fuzzer Fix: Fix Avg for NULL cast to TIMESTAMP by @Tmonster in https://github.com/duckdb/duckdb/pull/16394</li>
+<li>[FriendlySQL] Expand functionality of the Unpacked COLUMNS expression by @Tishj in https://github.com/duckdb/duckdb/pull/16290</li>
+<li>Python Client: Faster Python Object Conversion by @Mytherin in https://github.com/duckdb/duckdb/pull/16431</li>
+<li>Fixup #16400 by correctly passing down SETUPTOOLS_SCM_PRETEND_VERSION by @carlopi in https://github.com/duckdb/duckdb/pull/16435</li>
+<li>Issue #16250: Window Range Performance by @hawkfish in https://github.com/duckdb/duckdb/pull/16438</li>
+<li>Merge v1.2-histrionicus into main by @Mytherin in https://github.com/duckdb/duckdb/pull/16439</li>
+<li>MAIN_BRANCH_VERSIONING: Add also prefix_version by @carlopi in https://github.com/duckdb/duckdb/pull/16441</li>
+<li>[no-op] Remove unused function <code>GetValueRefUnsafe</code> by @dentiny in https://github.com/duckdb/duckdb/pull/16440</li>
+<li>Filter Combiner Clean-up: move filter pushdown to separate functions, remove old commented out code by @Mytherin in https://github.com/duckdb/duckdb/pull/16443</li>
+<li>[Python] Add the SQLExpression method to the Expression API by @Tishj in https://github.com/duckdb/duckdb/pull/16424</li>
+<li>[Dev] Mention the problematic type in UNNEST BinderException by @Tishj in https://github.com/duckdb/duckdb/pull/16429</li>
+<li>Merge v1.2 into main again by @Mytherin in https://github.com/duckdb/duckdb/pull/16447</li>
+<li>Filter Combiner: Allow rowid pushdown for IN/OR filters and pushdown for temporal types by @Mytherin in https://github.com/duckdb/duckdb/pull/16450</li>
+<li>Parquet: always launch max threads if we are scanning multiple files by @Mytherin in https://github.com/duckdb/duckdb/pull/16457</li>
+<li>fix documents of C functions by @yiyuanliu in https://github.com/duckdb/duckdb/pull/16357</li>
+<li>Add a TableFilterState for execution of table filters by @Mytherin in https://github.com/duckdb/duckdb/pull/16461</li>
+<li>Mirror discussions to the internal repository by @szarnyasg in https://github.com/duckdb/duckdb/pull/16464</li>
+<li>Rework JSON Reader: use the new MultiFileReaderFunction interface by @Mytherin in https://github.com/duckdb/duckdb/pull/16477</li>
+<li>Speed-up contains by using <code>memchr</code> on every iteration by @Mytherin in https://github.com/duckdb/duckdb/pull/16484</li>
+<li>Fix error cases by @Y-- in https://github.com/duckdb/duckdb/pull/16494</li>
+<li>Prevent external joins (if possible) by @lnkuiper in https://github.com/duckdb/duckdb/pull/16430</li>
+<li>Merge v1.2 into main by @Mytherin in https://github.com/duckdb/duckdb/pull/16517</li>
+<li>Optimize FSST decoding by @lnkuiper in https://github.com/duckdb/duckdb/pull/16508</li>
+<li>Extract subsystem by name by @dentiny in https://github.com/duckdb/duckdb/pull/16226</li>
+<li>Avoid throwing an exception (that is then swallowed) when computing compressed materialization over stats that are not set by @Mytherin in https://github.com/duckdb/duckdb/pull/16532</li>
+<li>Checksum backward compatibility by @lnkuiper in https://github.com/duckdb/duckdb/pull/16505</li>
+<li>Prefetch Parquet page header by @lnkuiper in https://github.com/duckdb/duckdb/pull/16507</li>
+<li>Let GitHub render *.test files as SQL by @mlafeldt in https://github.com/duckdb/duckdb/pull/16534</li>
+<li>Fix ADBC to properly quote table and schema names by @CurtHagenlocher in https://github.com/duckdb/duckdb/pull/16526</li>
+<li>Pass <code>ClientContext</code> to catalog initialize, and postpone index binding when replaying the WAL by @Mytherin in https://github.com/duckdb/duckdb/pull/16536</li>
+<li>Allow UNITTEST_ROOT_DIRECTORY to be configured through CMake by @Mytherin in https://github.com/duckdb/duckdb/pull/16540</li>
+<li>Internal #4347: ISO Year Week by @hawkfish in https://github.com/duckdb/duckdb/pull/16567</li>
+<li>throw() -&gt; noexcept in skiplist by @r-barnes in https://github.com/duckdb/duckdb/pull/16548</li>
+<li>Fix <code>test/sql/aggregate/aggregates/histogram_table_function.test</code> to pass the Linux CLI (arm64) CI by @hmeriann in https://github.com/duckdb/duckdb/pull/16538</li>
+<li>feat: move GRANT from reserved to unreserved keyword by @stephaniewang526 in https://github.com/duckdb/duckdb/pull/16546</li>
+<li>Python test runner: Avoid enabling profiling when executing restart command by @Flogex in https://github.com/duckdb/duckdb/pull/16547</li>
+<li>Add <code>duckdb_prepared_statements</code> by @Tishj in https://github.com/duckdb/duckdb/pull/16541</li>
+<li>[minor] Keep bit type sanity check consistent by @dentiny in https://github.com/duckdb/duckdb/pull/16575</li>
+<li>Support CREATE TABLE AS ... WITH NO DATA by @hannes in https://github.com/duckdb/duckdb/pull/16586</li>
+<li>Parquet FLOAT16 - fix cast by @hannes in https://github.com/duckdb/duckdb/pull/16580</li>
+<li>remove invalid tokens from nanosecond example by @hamilton in https://github.com/duckdb/duckdb/pull/16577</li>
+<li>CrossVersion.yml: Add v1.2.1, v1.2-histrionicus and main by @carlopi in https://github.com/duckdb/duckdb/pull/16576</li>
+<li>Fix #16524: DEPENDENT_JOIN may not flatten by @flashmouse in https://github.com/duckdb/duckdb/pull/16537</li>
+<li>[Julia] Add support for appending duckdb List types by @era127 in https://github.com/duckdb/duckdb/pull/16512</li>
+<li>[PySpark] - Add  <code>expr</code> function by @mariotaddeucci in https://github.com/duckdb/duckdb/pull/16468</li>
+<li>regex_replace no longer swallows regex errors by @hannes in https://github.com/duckdb/duckdb/pull/16380</li>
+<li>Parquet Writer Clean-up: Split <code>CreateWriterRecursive</code> into two methods, and use <code>ParquetColumnData</code> for writer as well by @Mytherin in https://github.com/duckdb/duckdb/pull/16592</li>
+<li>Bump Julia to 1.2.1 by @Mytherin in https://github.com/duckdb/duckdb/pull/16593</li>
+<li>Improved appender error message by @NiclasHaderer in https://github.com/duckdb/duckdb/pull/16599</li>
+<li>Change static variables to be on the stack instead by @Y-- in https://github.com/duckdb/duckdb/pull/16597</li>
+<li>Add support for <code>RETURN_STATS</code> to <code>COPY</code> by @Mytherin in https://github.com/duckdb/duckdb/pull/16595</li>
+<li>Better error messages for the CSV Scanner by @pdet in https://github.com/duckdb/duckdb/pull/16585</li>
+<li>Support Enum types in read_csv - Python by @pdet in https://github.com/duckdb/duckdb/pull/15710</li>
+<li>Fix CI Tidy by @pdet in https://github.com/duckdb/duckdb/pull/16610</li>
+<li>Add some minor helper functions (<code>QueryResultIterator::IsNull</code> and casts to MultiFileList/Reader by @Mytherin in https://github.com/duckdb/duckdb/pull/16611</li>
+<li>Add support for <code>ALTER TABLE tbl SET PARTITIONED BY (key1, key2, ...)</code> in the grammar by @Mytherin in https://github.com/duckdb/duckdb/pull/16612</li>
+<li>Issue template: direct UI issues to the UI repository by @szarnyasg in https://github.com/duckdb/duckdb/pull/16619</li>
+<li>[Dev] Make the various mappings in <code>MultiFileReaderData</code> typesafe by @Tishj in https://github.com/duckdb/duckdb/pull/16596</li>
+<li>Bump mbedtls to 3.6.2 and re-apply patches by @hannes in https://github.com/duckdb/duckdb/pull/16485</li>
+<li>Read and Write Complex Json from Arrow Types by @pdet in https://github.com/duckdb/duckdb/pull/16385</li>
+<li>Add Docker support for RISC-V CI with appropriate build commands by @mocusez in https://github.com/duckdb/duckdb/pull/16549</li>
+<li>Fix missing **kwargs in adbc_driver_duckdb.dbapi.connect() by @davlee1972 in https://github.com/duckdb/duckdb/pull/16637</li>
+<li>[Dev] Clean up and fix the CGroup memory/cpu limit discovery logic by @Tishj in https://github.com/duckdb/duckdb/pull/16608</li>
+<li>Expose <code>Value::ToSQLString()</code> in C API  by @mt-caret in https://github.com/duckdb/duckdb/pull/16471</li>
+<li>Add the missing binding for json_serialize_sql by @liznear in https://github.com/duckdb/duckdb/pull/16666</li>
+<li>Do not create validity mask for non-null const vector by @xuke-hat in https://github.com/duckdb/duckdb/pull/16669</li>
+<li>Fix #16665: fix parquet multi_reader bloom_probe logic error by @flashmouse in https://github.com/duckdb/duckdb/pull/16677</li>
+<li>Add alias to catalog by @c-herrewijn in https://github.com/duckdb/duckdb/pull/16600</li>
+<li>Decouple physical operator ownership from operators by @taniabogatsch in https://github.com/duckdb/duckdb/pull/16545</li>
+<li>cmake: fix external icu by @autoantwort in https://github.com/duckdb/duckdb/pull/16676</li>
+<li>Character length and date functions by @hannes in https://github.com/duckdb/duckdb/pull/16653</li>
+<li>[Dev] Don't try to include <code>third_party/mbedtls/VERSION</code> with <code>package_build.py</code> by @Tishj in https://github.com/duckdb/duckdb/pull/16683</li>
+<li>Add <code>-ui</code> to CLI help text by @akx in https://github.com/duckdb/duckdb/pull/16626</li>
+<li>Fix alias of column reference lost in ReplaceProjectionBindings by @Damon07 in https://github.com/duckdb/duckdb/pull/16686</li>
+<li>Merge v1.2-histrionicus into main by @Mytherin in https://github.com/duckdb/duckdb/pull/16687</li>
+<li>Fix for GCC-4.8 by @Mytherin in https://github.com/duckdb/duckdb/pull/16690</li>
+<li>JSON Reader: make read_position atomic so this can be read by the progress bar while processing the JSON file by @Mytherin in https://github.com/duckdb/duckdb/pull/16692</li>
+<li>[Julia] support binding for vectors by @slwu89 in https://github.com/duckdb/duckdb/pull/16701</li>
+<li>Make CSV Parser strict_mode=True fail on a mix of new line delimiters. by @pdet in https://github.com/duckdb/duckdb/pull/15959</li>
+<li>[pypi] Fix cleanup logic for multiple branches by @hmeriann in https://github.com/duckdb/duckdb/pull/16634</li>
+<li>Add support for <code>ALTER TABLE tbl SET SORTED BY (key1 DESC, key2, ...)</code> in the grammar by @Mytherin in https://github.com/duckdb/duckdb/pull/16714</li>
+<li>RETURN_STATS: remove footer_offset, and emit written partition keys by @Mytherin in https://github.com/duckdb/duckdb/pull/16715</li>
+<li>In case all rows of a CSV batch are errors, we continue processing by @pdet in https://github.com/duckdb/duckdb/pull/16713</li>
+<li>add workaround for patching httpfs ext by @samansmink in https://github.com/duckdb/duckdb/pull/16722</li>
+<li>Implement UUID v7 by @dentiny in https://github.com/duckdb/duckdb/pull/15819</li>
+<li>Fix roundtripping of stringified nested types by @Tishj in https://github.com/duckdb/duckdb/pull/16304</li>
+<li>Add Notify External Repositories Workflow by @maiadegraaf in https://github.com/duckdb/duckdb/pull/16730</li>
+<li>Expose a selection vector and the Slice method to the C API by @joseph-isaacs in https://github.com/duckdb/duckdb/pull/16696</li>
+<li>Add support for tracking <code>column_size_bytes</code> and <code>contains_nan</code> in RETURN_STATS by @Mytherin in https://github.com/duckdb/duckdb/pull/16731</li>
+<li>Add support for <code>WRITE_EMPTY_FILE</code> option to <code>COPY</code> - which allows skipping of writing empty files by @Mytherin in https://github.com/duckdb/duckdb/pull/16737</li>
+<li>Parquet Writer: Truncate string stats for large strings, instead of bailing on writing stats by @Mytherin in https://github.com/duckdb/duckdb/pull/16736</li>
+<li>RLE compression - memset alignment bytes to zero when aligning the counts by @Mytherin in https://github.com/duckdb/duckdb/pull/16735</li>
+<li>Write UUID stats to Parquet files and support reading uuid stats by @Mytherin in https://github.com/duckdb/duckdb/pull/16744</li>
+<li>Add an initial value to <code>list_reduce</code> by @maiadegraaf in https://github.com/duckdb/duckdb/pull/16602</li>
+<li>shell: make -bail work for more errors by @mlafeldt in https://github.com/duckdb/duckdb/pull/16594</li>
+<li>Call Notify External Repositories from Invoke CI by @maiadegraaf in https://github.com/duckdb/duckdb/pull/16747</li>
+<li>JSON bugfixes by @lnkuiper in https://github.com/duckdb/duckdb/pull/16729</li>
+<li>Add support for dynamically providing extra info post-execution in table functions, and use this to emit the total number of files read by the MultiFileReader by @Mytherin in https://github.com/duckdb/duckdb/pull/16749</li>
+<li>[Python Dev] Fix the versioning of the nightly python builds by @Tishj in https://github.com/duckdb/duckdb/pull/16739</li>
+<li>shell: fix sometimes-uninitialized error by @mlafeldt in https://github.com/duckdb/duckdb/pull/16761</li>
+<li>Issue #16250: Window Range Performance by @hawkfish in https://github.com/duckdb/duckdb/pull/16765</li>
+<li>Avoid building Python 3.7 wheels also for Linux by @carlopi in https://github.com/duckdb/duckdb/pull/16769</li>
+<li>Pyodide 0.27.2: conditionally skip tests by @carlopi in https://github.com/duckdb/duckdb/pull/16772</li>
+<li>Push catalog lookups through an extensible EntryLookupInfo struct by @Mytherin in https://github.com/duckdb/duckdb/pull/16764</li>
+<li>Fix two minor problems with NotifyExternalRepositories / odbc by @carlopi in https://github.com/duckdb/duckdb/pull/16776</li>
+<li>update expected results reflecting the changes brought ups with <code>Fix roundtripping of stringified nested types</code> PR by @hmeriann in https://github.com/duckdb/duckdb/pull/16775</li>
+<li>Merge V1.2 -&gt; Main by @pdet in https://github.com/duckdb/duckdb/pull/16751</li>
+<li>Add support for time travel syntax in the <code>FROM</code> clause by @Mytherin in https://github.com/duckdb/duckdb/pull/16774</li>
+<li>Python docs: List all join types by @szarnyasg in https://github.com/duckdb/duckdb/pull/16789</li>
+<li>[chore] NotifyExternalRepositories.yml: Fix endpoint to be pinged by @carlopi in https://github.com/duckdb/duckdb/pull/16793</li>
+<li>Remove delta from extensions built on a nightly basis (vs main branch) by @carlopi in https://github.com/duckdb/duckdb/pull/16795</li>
+<li>OSX.yml &amp; Windows.yml: remove repository_dispatch, already handled by InvokeCI by @carlopi in https://github.com/duckdb/duckdb/pull/16796</li>
+<li>Make extensions be linked privitally into duckdb by @JAicewizard in https://github.com/duckdb/duckdb/pull/16726</li>
+<li>Add additional iterations to avoid assertion failure in <code>TemporaryMemoryManager</code> by @lnkuiper in https://github.com/duckdb/duckdb/pull/16801</li>
+<li>Change the STANDARD_MASK_SIZE calculation to use size of template type. by @sebastiaan-dev in https://github.com/duckdb/duckdb/pull/16807</li>
+<li>Fix nightly table sample error by @Tmonster in https://github.com/duckdb/duckdb/pull/16811</li>
+<li>Fix tidy by @pdet in https://github.com/duckdb/duckdb/pull/16805</li>
+<li>support 'categories' label in function catalog by @c-herrewijn in https://github.com/duckdb/duckdb/pull/15654</li>
+<li>regenerate function headers by @c-herrewijn in https://github.com/duckdb/duckdb/pull/16822</li>
+<li>Internal #4490: Window Jump Reset by @hawkfish in https://github.com/duckdb/duckdb/pull/16816</li>
+<li>Regression.yml: Actually checkout proper base.sha commit by @carlopi in https://github.com/duckdb/duckdb/pull/16824</li>
+<li>fix: drop useless python import by @yihong0618 in https://github.com/duckdb/duckdb/pull/16808</li>
+<li>NightlyTests.yml: Inline env variables into build command by @carlopi in https://github.com/duckdb/duckdb/pull/16817</li>
+<li>Benchmark runner summary by @hmeriann in https://github.com/duckdb/duckdb/pull/16759</li>
+<li>Add storage_version 66 for version 1.3.0 by @carlopi in https://github.com/duckdb/duckdb/pull/16800</li>
+<li>Revert &quot;fix: drop useless python import&quot; by @Mytherin in https://github.com/duckdb/duckdb/pull/16834</li>
+<li>[MultiFileReader] Rework <code>MultiFileReader::FinalizeChunk</code> to use Expressions by @Tishj in https://github.com/duckdb/duckdb/pull/16630</li>
+<li>Merge v1.2 into main by @Mytherin in https://github.com/duckdb/duckdb/pull/16832</li>
+<li>Fix NULL key handling in mark join by @xuke-hat in https://github.com/duckdb/duckdb/pull/16825</li>
+<li>compressed vector serialization fixes by @peterboncz in https://github.com/duckdb/duckdb/pull/16648</li>
+<li>really sorry about this by @peterboncz in https://github.com/duckdb/duckdb/pull/16840</li>
+<li>Fix Python docstrings for unique by @szarnyasg in https://github.com/duckdb/duckdb/pull/16845</li>
+<li>[MultiFileReader] Create &quot;local&quot; filters to hand to underlying readers by @Tishj in https://github.com/duckdb/duckdb/pull/16838</li>
+<li>Revert &quot;Regression.yml: Actually checkout proper base.sha commit&quot; by @Mytherin in https://github.com/duckdb/duckdb/pull/16860</li>
+<li>[ART] Immediately erase empty fixed-size buffers by @taniabogatsch in https://github.com/duckdb/duckdb/pull/16727</li>
+<li>Resolve defaults and column index map by pushing a Projection (instead of executing in the insert itself) by @Mytherin in https://github.com/duckdb/duckdb/pull/16867</li>
+<li>Fix issue with sorting dev versions in pypi_cleanup.py script to keep on PyPi the most recent dev versions by @hmeriann in https://github.com/duckdb/duckdb/pull/16873</li>
+<li>Allow filters to be pushed through joins if there are projection maps by @lnkuiper in https://github.com/duckdb/duckdb/pull/16871</li>
+<li>Expressions in create secret by @samansmink in https://github.com/duckdb/duckdb/pull/15801</li>
+<li>Python -  Arrow IPC support in from_arrow by @pdet in https://github.com/duckdb/duckdb/pull/16821</li>
+<li>[ART] Introduce a new ARTScanner and make InitMerge and Vacuum iterative by @taniabogatsch in https://github.com/duckdb/duckdb/pull/16861</li>
+<li>Do not pushdown filters which bindings only match the right side of the left join by @Damon07 in https://github.com/duckdb/duckdb/pull/16880</li>
+<li>MultiFileReader Rework (part 17) - remove <code>MultiFileReaderData</code> - and move as much as possible out of the file readers by @Mytherin in https://github.com/duckdb/duckdb/pull/16882</li>
+<li>ICU: Unify TimeZone accessing code by @Mytherin in https://github.com/duckdb/duckdb/pull/16887</li>
+<li>Rework ICU age computation to convert to a timestamp and use the regular interval age computation by @Mytherin in https://github.com/duckdb/duckdb/pull/16889</li>
+<li>Reduce allocations during aggregations by @lnkuiper in https://github.com/duckdb/duckdb/pull/16849</li>
+<li>CI: Prevent marking issues as 'stale' if they have the 'no stale' label by @szarnyasg in https://github.com/duckdb/duckdb/pull/16903</li>
+<li>Add field name to log line which fails Parquet spec by @jsbali in https://github.com/duckdb/duckdb/pull/16862</li>
+<li>Internal #4490: Window Threading Cleanup by @hawkfish in https://github.com/duckdb/duckdb/pull/16879</li>
+<li>Adding gzip version of shell for linux/osx install script by @hannes in https://github.com/duckdb/duckdb/pull/16116</li>
+<li>Fix USING KEY reference error by @kryonix in https://github.com/duckdb/duckdb/pull/16906</li>
+<li>[Nested] Enable Varargs in <code>LIST_CONCAT</code> by @maiadegraaf in https://github.com/duckdb/duckdb/pull/16870</li>
+<li>Fix several issues with vsize=2, and move vsize=2 tests to <code>Main.yml</code> by @Mytherin in https://github.com/duckdb/duckdb/pull/16918</li>
+<li>C API comments: Fix a/an typos by @szarnyasg in https://github.com/duckdb/duckdb/pull/16925</li>
+<li>Reduce locking with <code>FILE_SIZE_BYTES</code>/<code>ROW_GROUPS_PER_FILE</code> in Parquet writer by @lnkuiper in https://github.com/duckdb/duckdb/pull/16928</li>
+<li>[Python] Fix annotation of <code>condition</code> argument in <code>join</code> so it accepts <code>Expression</code> by @MarcoGorelli in https://github.com/duckdb/duckdb/pull/16933</li>
+<li>Fix GCC 4.8 and add it back to <code>Main</code> workflow by @Mytherin in https://github.com/duckdb/duckdb/pull/16937</li>
+<li>Merge v1.2 into main again by @Mytherin in https://github.com/duckdb/duckdb/pull/16939</li>
+<li>MultiFileReader - Perform nested remapping of field indexes instead of relying on casts by @Mytherin in https://github.com/duckdb/duckdb/pull/16941</li>
+<li>Internal #4552: Short Circuit CSE by @hawkfish in https://github.com/duckdb/duckdb/pull/16931</li>
+<li>Add back manylinux extensions by @carlopi in https://github.com/duckdb/duckdb/pull/16944</li>
+<li>Run CI on merge group by @Mytherin in https://github.com/duckdb/duckdb/pull/16945</li>
+<li>Internal #4516: Interval BIGINT Variants by @hawkfish in https://github.com/duckdb/duckdb/pull/16904</li>
+<li>Split query string for multi-statement queries by @Mytherin in https://github.com/duckdb/duckdb/pull/16955</li>
+<li>Vector Verification: Rework to run based on env variable <code>DUCKDB_DEBUG_VERIFY_VECTOR</code> and move to <code>Main.yml</code> by @Mytherin in https://github.com/duckdb/duckdb/pull/16957</li>
+<li>Move the no string inline/alternative verify workflow to Main.yml by @Mytherin in https://github.com/duckdb/duckdb/pull/16958</li>
+<li>[Python] Tighten type annotations on <code>shape</code> and <code>columns</code> by @MarcoGorelli in https://github.com/duckdb/duckdb/pull/16948</li>
+<li>Pass down CMAKE_POLICY_VERSION_MINIMUM and fix for local development by @carlopi in https://github.com/duckdb/duckdb/pull/16953</li>
+<li>[ART] Use the ARTScanner for VerifyAllocations (make it iterative) by @taniabogatsch in https://github.com/duckdb/duckdb/pull/16946</li>
+<li>Move ThreadSanitizer test from nightly test to Main, and fix locking issue by @Mytherin in https://github.com/duckdb/duckdb/pull/16960</li>
+<li>Re-enable workflows to run on PRs by @Mytherin in https://github.com/duckdb/duckdb/pull/16961</li>
+<li>Fix for selecting NaN values from Parquet files by @Mytherin in https://github.com/duckdb/duckdb/pull/16962</li>
+<li>Move LatestStorage tests to NightlyRelease - and fix issue with overflow string blocks not being cleaned up correctly by @Mytherin in https://github.com/duckdb/duckdb/pull/16972</li>
+<li>Arena-allocate physical operators by @taniabogatsch in https://github.com/duckdb/duckdb/pull/16911</li>
+<li>Make <code>file_row_number</code> a virtual column, and support per-file virtual columns in the MultiFileReader by @Mytherin in https://github.com/duckdb/duckdb/pull/16979</li>
+<li>Add a setting <code>scheduler_process_partial</code> that allows partial scheduling of tasks in the background threads by @Mytherin in https://github.com/duckdb/duckdb/pull/16973</li>
+<li>Clean up format script, gather all files then run concurrently instead of running concurrently per directory by @Mytherin in https://github.com/duckdb/duckdb/pull/16988</li>
+<li>Add support for altering struct columns (adding fields, dropping fields, renaming fields) by @Mytherin in https://github.com/duckdb/duckdb/pull/17003</li>
+<li>Fix CSV fuzzer tests by @pdet in https://github.com/duckdb/duckdb/pull/16994</li>
+<li>[Fix] Keep original expression for macro + lambda's with subqueries by @taniabogatsch in https://github.com/duckdb/duckdb/pull/17020</li>
+<li>Detect when tables have been dropped or altered, and prevent deletes in this scenario by @Mytherin in https://github.com/duckdb/duckdb/pull/17018</li>
+<li>Update links pointing to duckdb.org by @szarnyasg in https://github.com/duckdb/duckdb/pull/16999</li>
+<li>Fix for joining on floating columns #16901 by @nickzoic in https://github.com/duckdb/duckdb/pull/16965</li>
+<li>fix: remove ununsed stream struct member from ArrowScanLocalState by @rustyconover in https://github.com/duckdb/duckdb/pull/17023</li>
+<li>[Dev] Use <code>UnifiedVectorFormat</code> instead of a flattened <code>Vector</code> in <code>UpdateSegment::Update</code> by @Tishj in https://github.com/duckdb/duckdb/pull/16974</li>
+<li>Remove Arrow Extenson from core extensions by @pdet in https://github.com/duckdb/duckdb/pull/17027</li>
+<li>Correctly propagate ClientContext to TaskExecutor by @ywelsch in https://github.com/duckdb/duckdb/pull/17026</li>
+<li>Issue #17001: AsOf memory Management by @hawkfish in https://github.com/duckdb/duckdb/pull/17028</li>
+<li>[MultiFileReader] Make it possible for the multi file reader to add a <code>DeleteFilter</code> to the <code>BaseFileReader</code> by @Tishj in https://github.com/duckdb/duckdb/pull/17032</li>
+<li>Add optional <code>OVERRIDE_NEW_DELETE</code> build parameter by @lnkuiper in https://github.com/duckdb/duckdb/pull/17035</li>
+<li>Clean-up virtual columns and make MultiFileReader::InitializeReader virtual by @Mytherin in https://github.com/duckdb/duckdb/pull/17038</li>
+<li>Allow a table to define their own row-id columns for delete/update, instead of assuming it is always COLUMN_IDENTIFIER_ROW_ID by @Mytherin in https://github.com/duckdb/duckdb/pull/17039</li>
+<li>Handle Parquet with compressed empty DataPage v2 by @EnricoMi in https://github.com/duckdb/duckdb/pull/17031</li>
+<li>Combine small row groups in Parquet writer by @lnkuiper in https://github.com/duckdb/duckdb/pull/17036</li>
+<li>Merge v1.2.2 into main by @carlopi in https://github.com/duckdb/duckdb/pull/17037</li>
+<li>implement function so I can send a patch to httpfs by @lnkuiper in https://github.com/duckdb/duckdb/pull/17048</li>
+<li>FORCE_ASYNC_SINK_SOURCE: pass also to unittester by @carlopi in https://github.com/duckdb/duckdb/pull/17053</li>
+<li>If a Max Line Size Error happens on all CSV dialect candidates, throw a max line size error. by @pdet in https://github.com/duckdb/duckdb/pull/16935</li>
+<li>Expose BindExtraColumns as a public function by @Mytherin in https://github.com/duckdb/duckdb/pull/17060</li>
+<li>trigger .github/workflows/NightlyBuildsCheck.yml from external repo by @hmeriann in https://github.com/duckdb/duckdb/pull/16949</li>
+<li>Minor parquet crypto clean-up: allow footer key to be passed in directly, and avoid constantly re-reading the key from the config by @Mytherin in https://github.com/duckdb/duckdb/pull/17070</li>
+<li>update julia to v1.2.2 by @Maxxen in https://github.com/duckdb/duckdb/pull/17074</li>
+<li>MultiFileReader Rework (part 18): Replace file path with <code>OpenFileInfo</code> struct by @Mytherin in https://github.com/duckdb/duckdb/pull/17071</li>
+<li>Fix httpfs patches: avoid <code>git log</code> since might contain unsanitised <code>error</code> word by @carlopi in https://github.com/duckdb/duckdb/pull/17075</li>
+<li>Re-enable Avro on core by @Tishj in https://github.com/duckdb/duckdb/pull/17072</li>
+<li>[Nested] Optimize List Type in <code>list_value</code> by @maiadegraaf in https://github.com/duckdb/duckdb/pull/17063</li>
+<li>Grow string dictionary dynamically in Parquet writer by @lnkuiper in https://github.com/duckdb/duckdb/pull/17061</li>
+<li>Add extended file info to OpenFileInfo, and use this to pass encryption keys and footer size to Parquet reader by @Mytherin in https://github.com/duckdb/duckdb/pull/17085</li>
+<li>[Dev] Automatically re-execute when calling <code>__arrow_c_stream__</code> on an already-consumed-result by @Tishj in https://github.com/duckdb/duckdb/pull/17087</li>
+<li>fsst: Avoid to propagate alignment information in FSST_UNALIGNED_STORE by @carlopi in https://github.com/duckdb/duckdb/pull/17094</li>
+<li>Fix sqlite3 api wrapper link + remove R-CMD-check + add more nightly tests by @carlopi in https://github.com/duckdb/duckdb/pull/17095</li>
+<li>support large dictionary value and constant vector creation in the C API by @joseph-isaacs in https://github.com/duckdb/duckdb/pull/17064</li>
+<li>Add missing lock to UpdateSegment::FetchRow, and cleanup API to require the lock by @Mytherin in https://github.com/duckdb/duckdb/pull/17100</li>
+<li>Valgrind requires tpch by @carlopi in https://github.com/duckdb/duckdb/pull/17101</li>
+<li>Switch to manylinux_2_28 by @hannes in https://github.com/duckdb/duckdb/pull/16956</li>
+<li>Changing mbedtls encryption API by @ccfelius in https://github.com/duckdb/duckdb/pull/16196</li>
+<li>Pull OpenFileExtended through the opener and virtual file system layers by @Mytherin in https://github.com/duckdb/duckdb/pull/17102</li>
+<li>Fix an issue in upserts where the local append state was not correctly flushed by @Mytherin in https://github.com/duckdb/duckdb/pull/17109</li>
+<li>Always parallelize <code>read_json</code> schema detection by @lnkuiper in https://github.com/duckdb/duckdb/pull/17106</li>
+<li>Move transaction cleanup outside of the transaction lock by @taniabogatsch in https://github.com/duckdb/duckdb/pull/17034</li>
+<li>Remove R_CMD_CHECK.yml, now handled by duckdb/duckdb-r repo by @carlopi in https://github.com/duckdb/duckdb/pull/17127</li>
+<li>JSON Bugfixes by @lnkuiper in https://github.com/duckdb/duckdb/pull/17119</li>
+<li>Refactor relassert runs, adding some variations in compiler / statically linked extensions by @carlopi in https://github.com/duckdb/duckdb/pull/17104</li>
+<li>extension-upload-from-nightly.sh: Add --region by @carlopi in https://github.com/duckdb/duckdb/pull/17120</li>
+<li>MultiFileReader: several fixes for virtual column handling and make virtual column handling extensible by @Mytherin in https://github.com/duckdb/duckdb/pull/17123</li>
+<li>Remove misleading lock comment in data table by @taniabogatsch in https://github.com/duckdb/duckdb/pull/17125</li>
+<li>[Dev] Add &quot;registries&quot; to <code>vcpkg.json</code>, add script to list the packages of the registry. by @Tishj in https://github.com/duckdb/duckdb/pull/17124</li>
+<li>External File Cache by @lnkuiper in https://github.com/duckdb/duckdb/pull/16463</li>
+<li>Notify nightly build status by @hmeriann in https://github.com/duckdb/duckdb/pull/17108</li>
+<li>Strict UUID cast by @lnkuiper in https://github.com/duckdb/duckdb/pull/17138</li>
+<li>Copy To File: avoid calling Combine for threads that have not written any rows by @Mytherin in https://github.com/duckdb/duckdb/pull/17142</li>
+<li>Add file_index virtual column to the multi file reader that returns the file index of the read file by @Mytherin in https://github.com/duckdb/duckdb/pull/17144</li>
+<li>MultiFileReader: simplify constant handling, and allow virtual columns returned by the multi file reader to be constant by @Mytherin in https://github.com/duckdb/duckdb/pull/17149</li>
+<li>Changes to encodings to make them more flexible to replacement maps. by @pdet in https://github.com/duckdb/duckdb/pull/17146</li>
+<li>Optimize large Top N queries by @lnkuiper in https://github.com/duckdb/duckdb/pull/17141</li>
+<li>Only trigger TopN rewrite relatively small limits compared to the table size.  by @Tmonster in https://github.com/duckdb/duckdb/pull/17140</li>
+<li>platform.hpp: Propagate DUCKDB_EXPLICIT_PLATFORM, avoid early return by @carlopi in https://github.com/duckdb/duckdb/pull/17137</li>
+<li>Keeping the filters which do not remove NULL values by @Damon07 in https://github.com/duckdb/duckdb/pull/17045</li>
+<li>Improve <code>FileSync</code> call on unix platform by @dentiny in https://github.com/duckdb/duckdb/pull/16893</li>
+<li>README: Fix to building link by @szarnyasg in https://github.com/duckdb/duckdb/pull/17161</li>
+<li>[InvokeCI] Add missing pipe to run instruction by @hmeriann in https://github.com/duckdb/duckdb/pull/17163</li>
+<li>Internal #4667: 2025b TimeZone Data by @hawkfish in https://github.com/duckdb/duckdb/pull/17160</li>
+<li>Unify function list by @c-herrewijn in https://github.com/duckdb/duckdb/pull/17168</li>
+<li>[Dev] Generate the <code>EXTENSION_SECRET_TYPES</code> instead of hardcoding them by @Tishj in https://github.com/duckdb/duckdb/pull/17183</li>
+<li>Fix grouping feature with interval type by @handstuyennn in https://github.com/duckdb/duckdb/pull/17181</li>
+<li>Add filename to GZIP stream error by @marcoslot in https://github.com/duckdb/duckdb/pull/17166</li>
+<li>Issue #17115: TimeTZ Approximate Quantile by @hawkfish in https://github.com/duckdb/duckdb/pull/17162</li>
+<li>Issue #17046: AsOf Left Predicates  by @hawkfish in https://github.com/duckdb/duckdb/pull/17159</li>
+<li>[Fix] Pass delete indexes when committing updates by @taniabogatsch in https://github.com/duckdb/duckdb/pull/17176</li>
+<li>Python.yml: Add back logic to perform fast-fail on Python 3.10 by @carlopi in https://github.com/duckdb/duckdb/pull/17107</li>
+<li>Notify JDBC repo to run Vendor.yml workflow by @staticlibs in https://github.com/duckdb/duckdb/pull/17099</li>
+<li>Issue #17049: ICU Date Cast by @hawkfish in https://github.com/duckdb/duckdb/pull/17067</li>
+<li>Add bind_operator callback to TableFunction - allowing table functions to directly emit a LogicalOperator by @Mytherin in https://github.com/duckdb/duckdb/pull/17196</li>
+<li>[ENCRYPTION] Make block header size adaptive by @ccfelius in https://github.com/duckdb/duckdb/pull/17118</li>
+<li>Issue #16839: Disable TIMESTAMP Casts by @hawkfish in https://github.com/duckdb/duckdb/pull/16899</li>
+<li>Add support for an explicit PRESERVE_ORDER flag for copy to file by @Mytherin in https://github.com/duckdb/duckdb/pull/17199</li>
+<li>Add <code>SYSTEM_PEAK_BUFFER_MANAGER_MEMORY</code> and <code>SYSTEM_PEAK_TEMP_DIRECTORY_SIZE</code> to profiler by @lnkuiper in https://github.com/duckdb/duckdb/pull/17164</li>
+<li>Fix [InvokeCI / NotifyExternalRepository] Unexpected value 'true' by @hmeriann in https://github.com/duckdb/duckdb/pull/17212</li>
+<li>Add support for the cast_to_type function, that allows generating a cast from an expression to the type of another column by @Mytherin in https://github.com/duckdb/duckdb/pull/17209</li>
+<li>Better cardinality estimates for inequality joins/grouped aggregations by @lnkuiper in https://github.com/duckdb/duckdb/pull/17139</li>
+<li>Add <code>ExternalFileCache</code> validation as option for <code>ExtendedOpenFileInfo</code> by @lnkuiper in https://github.com/duckdb/duckdb/pull/17205</li>
+<li>Explicitly flush the thread-local optimistic writer in <code>PhysicalBatchInsert</code> when finalizing by @Mytherin in https://github.com/duckdb/duckdb/pull/17214</li>
+<li>Pushdown arbitrary expressions into scans by @Mytherin in https://github.com/duckdb/duckdb/pull/17213</li>
+<li>Fix #17170: sort selection result in OR expression by @flashmouse in https://github.com/duckdb/duckdb/pull/17180</li>
+<li>[Dev] Re-enable Iceberg, Bump Avro, fix <code>generate_extension_functions.py</code> for dependencies between extensions by @Tishj in https://github.com/duckdb/duckdb/pull/17204</li>
+<li>Change Invalid Unicode Error to Invalid Encoding by @pdet in https://github.com/duckdb/duckdb/pull/17208</li>
+<li>Direct IO for temp files by @lnkuiper in https://github.com/duckdb/duckdb/pull/17219</li>
+<li>Fix [InvokeCI / NotifyExternalRepository] GitHub Actions has encountered an internal error when running your job. by @hmeriann in https://github.com/duckdb/duckdb/pull/17218</li>
+<li>Add &quot;thousands&quot; option to CSV Reader by @pdet in https://github.com/duckdb/duckdb/pull/17220</li>
+<li>add capi functions to create map and union values by @jraymakers in https://github.com/duckdb/duckdb/pull/17227</li>
+<li>Only notify JDBC when all runs are successful by @staticlibs in https://github.com/duckdb/duckdb/pull/17233</li>
+<li>Update Friendlier SQL link.md by @hfrifkin in https://github.com/duckdb/duckdb/pull/17248</li>
+<li>Implement reading concatenated GZIP members by @lnkuiper in https://github.com/duckdb/duckdb/pull/17255</li>
+<li>Return invalid <code>BufferHandle</code> upon loading a destroyed <code>BlockHandle</code> by @lnkuiper in https://github.com/duckdb/duckdb/pull/17249</li>
+<li>Internal #4772: Timestamp Error Parameter by @hawkfish in https://github.com/duckdb/duckdb/pull/17283</li>
+<li>BUGFIX: do not perform unused columns optimization in presence of multiple grouping sets by @Tmonster in https://github.com/duckdb/duckdb/pull/17259</li>
+<li>Internal #4532: 13 Month Intervals  by @hawkfish in https://github.com/duckdb/duckdb/pull/17303</li>
+<li>Dont try to load extension if storage type is already registered by @Maxxen in https://github.com/duckdb/duckdb/pull/17241</li>
+<li>Adapt size of hash table during aggregation using HyperLogLog by @lnkuiper in https://github.com/duckdb/duckdb/pull/17236</li>
+<li>Switch to always using list identifier instead of array by @J-Meyers in https://github.com/duckdb/duckdb/pull/17242</li>
+<li>Add root's query_location also to TransformInterval by @carlopi in https://github.com/duckdb/duckdb/pull/17271</li>
+<li>Histogram table function test by @hmeriann in https://github.com/duckdb/duckdb/pull/17276</li>
+<li>Guess Parquet footer size by @lnkuiper in https://github.com/duckdb/duckdb/pull/17300</li>
+<li>Issue #16563: FLOAT to DECIMAL by @hawkfish in https://github.com/duckdb/duckdb/pull/17302</li>
+<li>Feature #15873: Windowed ORDER BYs  by @hawkfish in https://github.com/duckdb/duckdb/pull/17304</li>
+<li>Switch from Bottom-Up to Top-Down Decorrelation Strategy by @kryonix in https://github.com/duckdb/duckdb/pull/17294</li>
+<li>Generating random data for mbedtls without key by @ccfelius in https://github.com/duckdb/duckdb/pull/17309</li>
+<li>Fix CI by @Mytherin in https://github.com/duckdb/duckdb/pull/17319</li>
+<li>[Arrow] Implement support to consuming and producing Decimal 32 and 64. by @pdet in https://github.com/duckdb/duckdb/pull/17314</li>
+<li>take the column ids from the logical get, don't require a LogicalGet … by @Tishj in https://github.com/duckdb/duckdb/pull/17315</li>
+<li>Allow installing extensions with external access allowlist by @samansmink in https://github.com/duckdb/duckdb/pull/17316</li>
+<li>Implement ARTMerger replacing the recursive ART merge algorithm by @taniabogatsch in https://github.com/duckdb/duckdb/pull/17243</li>
+<li>Share null mask with constant null arg vector by @iceTTTT in https://github.com/duckdb/duckdb/pull/17234</li>
+<li>Fix #17311: correctly check for presence of recursive keys in transformer by @Mytherin in https://github.com/duckdb/duckdb/pull/17320</li>
+<li>[CSV Reader] Simplify Quote/Escape detection code, make it more robust and decouple comment and skip_rows option. by @pdet in https://github.com/duckdb/duckdb/pull/17284</li>
+<li>Fix <code>try_cast</code> from NaN <code>double</code> to <code>decimal</code> by @lnkuiper in https://github.com/duckdb/duckdb/pull/17322</li>
+<li>Add serialization for new TableColumn type by @Mytherin in https://github.com/duckdb/duckdb/pull/17321</li>
+<li>Extract expressions from nested conjunction AND for index scan by @lnkuiper in https://github.com/duckdb/duckdb/pull/17297</li>
+<li>Support late materialization in the Parquet reader, and handle <code>COUNT(*)</code> directly in the multi file reader by @Mytherin in https://github.com/duckdb/duckdb/pull/17325</li>
+<li>Implement ARTOperator replacing Lookup and the recursive Insert by @taniabogatsch in https://github.com/duckdb/duckdb/pull/17327</li>
+<li>Internal #4723: Inequality Condition Pushdown by @hawkfish in https://github.com/duckdb/duckdb/pull/17317</li>
+<li>Properly format strings when throw JSON errors by @lnkuiper in https://github.com/duckdb/duckdb/pull/17331</li>
+<li>Fix potential vulnerable cloned function by @npt-1707 in https://github.com/duckdb/duckdb/pull/17340</li>
+<li>Fix potential vulnerable cloned function by @npt-1707 in https://github.com/duckdb/duckdb/pull/17339</li>
+<li>Revert &quot;Skip MinGW, currently failing on main&quot; by @carlopi in https://github.com/duckdb/duckdb/pull/17342</li>
+<li>Unify Parquet Metadata cache invalidation logic with Cached File System cache invalidation by @Mytherin in https://github.com/duckdb/duckdb/pull/17334</li>
+<li>Fix issue with empty ranges by @kryonix in https://github.com/duckdb/duckdb/pull/17332</li>
+<li>Internal #4797: Timestamp Range Cardinality by @hawkfish in https://github.com/duckdb/duckdb/pull/17330</li>
+<li>Some nitpicking fixes by @szarnyasg in https://github.com/duckdb/duckdb/pull/17337</li>
+<li>Issue #17299: Integer Rounding by @hawkfish in https://github.com/duckdb/duckdb/pull/17328</li>
+<li>Parquet Reader: emit partition stats for any files that have cached metadata, and implement <code>ListFilesExtended</code> that adds extra info to files globbed by @Mytherin in https://github.com/duckdb/duckdb/pull/17344</li>
+<li>Add support for UUID v7 to Filename Pattern - and clean it up so that it correctly supports composite patterns by @Mytherin in https://github.com/duckdb/duckdb/pull/17345</li>
+<li>Add support for the HIVE_FILE_PATTERN option - that allows partitioned files to be written without writing them to a hive-style directory structure by @Mytherin in https://github.com/duckdb/duckdb/pull/17346</li>
+<li>Add an OnDetach callback to the catalog that is triggered when the user detaches a catalog by @Mytherin in https://github.com/duckdb/duckdb/pull/17347</li>
+<li>Pass commit ID to NotifyExternalRepositories.yml by @staticlibs in https://github.com/duckdb/duckdb/pull/17333</li>
+<li>Add support for BENCHMARK_ROOT_DIRECTORY cmake option to change benchmark runner root directory, and add support for cache_file and reload options to enable better caching for non-DuckDB databases by @Mytherin in https://github.com/duckdb/duckdb/pull/17355</li>
+<li>Support --directories option in format.py by @Mytherin in https://github.com/duckdb/duckdb/pull/17354</li>
+<li>Handle both ENCRYPTION_KEY and STORAGE_VERSION passed as options by @carlopi in https://github.com/duckdb/duckdb/pull/17357</li>
+<li>Fix internal exception from assigning invalid index to <code>optional_idx query_id;</code> by @Tishj in https://github.com/duckdb/duckdb/pull/17359</li>
+<li>Fixup amalgamation: reqlen is only used with assert enabled by @carlopi in https://github.com/duckdb/duckdb/pull/17361</li>
+<li>md5_number: return UHUGEINT by @szarnyasg in https://github.com/duckdb/duckdb/pull/17336</li>
+<li>Skip emitting partition stats if &quot;has_deletes&quot; is set in the file info by @Mytherin in https://github.com/duckdb/duckdb/pull/17365</li>
+<li>Benchmark runner: add <code>argument</code>, <code>include</code> and <code>load_only</code> options - and make ClickBench run the original benchmark instead of a subset by @Mytherin in https://github.com/duckdb/duckdb/pull/17367</li>
+<li>Fix two off-by-one errors in row estimate of range and generate_series by @JelteF in https://github.com/duckdb/duckdb/pull/17373</li>
+<li>[Nested] Fix: 16489 - Find <code>NULL</code>s in lists using <code>list_position</code> by @maiadegraaf in https://github.com/duckdb/duckdb/pull/17080</li>
+<li>fix #17258: Allow to open database in readonly mode within cli by @jjballano in https://github.com/duckdb/duckdb/pull/17375</li>
+<li>Join Hash Table Probing Optimization: Optional Probing Selection Vector by @gropaul in https://github.com/duckdb/duckdb/pull/17062</li>
+<li>Remove bundled TPCH &amp; TPCDS in Python wheels by @carlopi in https://github.com/duckdb/duckdb/pull/15923</li>
+<li>[Compression] Introduce <code>DICT_FSST</code> compression method by @Tishj in https://github.com/duckdb/duckdb/pull/15637</li>
+<li>Deprecate lambda arrow (-&gt;) and replace it with LAMBDA x : x + 1 by @taniabogatsch in https://github.com/duckdb/duckdb/pull/17235</li>
+<li>fix not setting nested validity when map_extract returns null by @Maxxen in https://github.com/duckdb/duckdb/pull/17379</li>
+<li>Function chaining: report missing column instead of missing function if function exists by @Mytherin in https://github.com/duckdb/duckdb/pull/17383</li>
+<li>Improve error messages in UPDATE ... SET by @Mytherin in https://github.com/duckdb/duckdb/pull/17384</li>
+<li>Add candidates suggestion when COLUMNS regex does not match any columns by @Mytherin in https://github.com/duckdb/duckdb/pull/17385</li>
+<li>add step to clean up the disc space to fix <code>No space left on device</code> by @hmeriann in https://github.com/duckdb/duckdb/pull/17390</li>
+<li>Fix issue in string -&gt; hugeint conversion with decimals and exponents by @Mytherin in https://github.com/duckdb/duckdb/pull/17388</li>
+<li>Improve error message reporting for cast failures by @Mytherin in https://github.com/duckdb/duckdb/pull/17382</li>
+<li>Fix Python CI: pin virtualenv to previous version by @Mytherin in https://github.com/duckdb/duckdb/pull/17386</li>
+<li>Improve error reporting for missing qualified columns by @Mytherin in https://github.com/duckdb/duckdb/pull/17397</li>
+<li>Issue #17266: Lead Lag Nulls  by @hawkfish in https://github.com/duckdb/duckdb/pull/17391</li>
+<li>Fix #17266：the result of lad/lead when the offset is null by @ditdb in https://github.com/duckdb/duckdb/pull/17268</li>
+<li>VirtualFileSystem to take an input, allowing to customize behaviour by @carlopi in https://github.com/duckdb/duckdb/pull/17393</li>
+<li>[Dev] Add <code>QualifiedName::ParseComponents</code>, add input to the error messages by @Tishj in https://github.com/duckdb/duckdb/pull/17403</li>
+<li>Provide suggestions and a link to the documentation for OOM errors by @Mytherin in https://github.com/duckdb/duckdb/pull/17402</li>
+<li>[Dev] Flatten any deeper children vectors, when the top level is a FLAT vector by @Tishj in https://github.com/duckdb/duckdb/pull/17387</li>
+<li>Minor fixes for the CLI by @Mytherin in https://github.com/duckdb/duckdb/pull/17405</li>
+<li>Add support for CREATE OR REPLACE TYPE, CREATE TYPE IF NOT EXISTS and CREATE TEMPORARY TYPE by @Mytherin in https://github.com/duckdb/duckdb/pull/17404</li>
+<li>Use an insertion order preserving map in Value::MAP by @taniabogatsch in https://github.com/duckdb/duckdb/pull/17389</li>
+<li>Implement <code>json_each</code>/<code>json_tree</code> by @lnkuiper in https://github.com/duckdb/duckdb/pull/17406</li>
+<li>Fix #16552: adjust join condition sequence by @flashmouse in https://github.com/duckdb/duckdb/pull/16943</li>
+<li>WAL replay index fixes by @taniabogatsch in https://github.com/duckdb/duckdb/pull/17409</li>
+<li>ZSTD: use a high penalty when min size is exceeded instead of disabling compression to allow force compression to work by @Mytherin in https://github.com/duckdb/duckdb/pull/17412</li>
+<li>Internal #4723: PWMJ Inequality Pushdown by @hawkfish in https://github.com/duckdb/duckdb/pull/17400</li>
+<li>Move all httplib code to HTTPUtil class by @Mytherin in https://github.com/duckdb/duckdb/pull/17420</li>
+<li>Avoid generating default views and macros in the temporary catalog by @Mytherin in https://github.com/duckdb/duckdb/pull/17408</li>
+<li>unittest: improve detection of whether or not we can run <code>--force-restart</code> tests by @Mytherin in https://github.com/duckdb/duckdb/pull/17419</li>
+<li>Give tasks a <code>TaskType</code> with a name by @Mytherin in https://github.com/duckdb/duckdb/pull/17421</li>
+<li>Use argparse in scripts/format.py by @adsharma in https://github.com/duckdb/duckdb/pull/17360</li>
+<li>Add missing commas by @szarnyasg in https://github.com/duckdb/duckdb/pull/17424</li>
+<li>Internal #4830: IEJoin Inequality Pushdown by @hawkfish in https://github.com/duckdb/duckdb/pull/17422</li>
+<li>Add conn.query_progress() method by @nickzoic in https://github.com/duckdb/duckdb/pull/16927</li>
+<li>Fixes filter pruning use the statistics updated by the same filter by @Damon07 in https://github.com/duckdb/duckdb/pull/17425</li>
+<li>Fix JSON extension compilation on Ubuntu 22.04 by @staticlibs in https://github.com/duckdb/duckdb/pull/17434</li>
+<li>Use pytest in SQLLogic Python test runner by @Flogex in https://github.com/duckdb/duckdb/pull/16685</li>
+<li>On COPY TO/FROM check the format during binding. by @pdet in https://github.com/duckdb/duckdb/pull/17381</li>
+<li>BUGFIX: DELIM_JOINS should reflect functionality of NULL filtering conditions in joins with DELIM_GETS by @Tmonster in https://github.com/duckdb/duckdb/pull/16910</li>
+<li>Allow directly attaching of Parquet/CSV/JSON files by @Mytherin in https://github.com/duckdb/duckdb/pull/17415</li>
+<li>Force errors when trying lines as early as possible by @pdet in https://github.com/duckdb/duckdb/pull/17427</li>
+<li>Enable <code>SYSTEM_PEAK_BUFFER_MEMORY</code> and <code>SYSTEM_PEAK_TEMP_DIR_SIZE</code> profiling by default by @lnkuiper in https://github.com/duckdb/duckdb/pull/17407</li>
+<li>[C API] Expose the client context, connection id and scalar function bind data by @taniabogatsch in https://github.com/duckdb/duckdb/pull/17449</li>
+<li>[CSV Sniffer] Proper type replacement in header only files by @pdet in https://github.com/duckdb/duckdb/pull/17447</li>
+<li>Recurse into <code>MAP</code> and <code>LIST</code> with the <code>remap_struct</code> and the MFR ColumnMapper by @Tishj in https://github.com/duckdb/duckdb/pull/17448</li>
+<li>Fix: pyproject.toml does not contain a tool.setuptools_scm section by @YUKI2eN3e in https://github.com/duckdb/duckdb/pull/17443</li>
+<li>[Fix] Macro binding with unknown parameters in list_has_all and some other code tidying by @taniabogatsch in https://github.com/duckdb/duckdb/pull/17450</li>
+<li>Generalize HTTP interface and use the new HTTP interface in <code>httpfs</code> by @Mytherin in https://github.com/duckdb/duckdb/pull/17464</li>
+<li>[Fix] Switch between constant and flat vector in C API by @taniabogatsch in https://github.com/duckdb/duckdb/pull/17465</li>
+<li>Fix TIMETZ cast in example by @szarnyasg in https://github.com/duckdb/duckdb/pull/17468</li>
+<li>Remove duplicated arrow fetch test by @emmanuel-ferdman in https://github.com/duckdb/duckdb/pull/17476</li>
+<li>Multi File Reader Rework (Part 19): Make <code>MultiFileReaderInterface</code> virtual, and move reading methods to the <code>BaseFileReader</code> by @Mytherin in https://github.com/duckdb/duckdb/pull/17475</li>
+<li>[Serializer] Lambda Compatibilty Fix by @maiadegraaf in https://github.com/duckdb/duckdb/pull/17428</li>
+<li>fix parsing bool values in JSON by @ccfelius in https://github.com/duckdb/duckdb/pull/17460</li>
+<li>Emit dictionary vectors with unaligned start index by @OmidAfroozeh in https://github.com/duckdb/duckdb/pull/17471</li>
+<li>Add release version by @hannes in https://github.com/duckdb/duckdb/pull/17479</li>
+<li>Expose qualified table names in GetTableNames and add duckdb_get_table_names to C API by @taniabogatsch in https://github.com/duckdb/duckdb/pull/17472</li>
+<li>Bump avro, httpfs, mysql, postgres and sqlite by @Mytherin in https://github.com/duckdb/duckdb/pull/17482</li>
+<li>Fix GeoParquet ExpressionColumnReader schema by @Maxxen in https://github.com/duckdb/duckdb/pull/17481</li>
+<li>add regression_threshold_seconds argument to <code>regression/test_runner.py</code> by @hmeriann in https://github.com/duckdb/duckdb/pull/17485</li>
+<li>DROP of missing entry should fail in binding by @jeewonhh in https://github.com/duckdb/duckdb/pull/17474</li>
+<li>HTTPFS Parameters fix by @Mytherin in https://github.com/duckdb/duckdb/pull/17486</li>
+<li>HTTPUtil Fix: correctly pass in on_retry by @Mytherin in https://github.com/duckdb/duckdb/pull/17494</li>
+<li>Bump spatial &amp; vss by @Maxxen in https://github.com/duckdb/duckdb/pull/17492</li>
+<li>Add support for altering structs (drop, add, rename field) inside <code>LIST</code> and <code>MAP</code> columns. by @Tishj in https://github.com/duckdb/duckdb/pull/17462</li>
+<li>[Python Dev] Guard against python exceptions when interacting with the <code>currentframe</code> object by @Tishj in https://github.com/duckdb/duckdb/pull/17490</li>
+<li>If distinct count from stats is 0, do not use it in Join Order Optimizer by @Tmonster in https://github.com/duckdb/duckdb/pull/17466</li>
+<li>Make the encodings extension a core extension, and make it auto-loadable. by @pdet in https://github.com/duckdb/duckdb/pull/17206</li>
+<li>Allow passing down rc-style version also via OVERRIDE_GIT_DESCRIBE by @carlopi in https://github.com/duckdb/duckdb/pull/17501</li>
+<li>Allow DUCKDB_EXPLICIT_VERSION to be propagated by @carlopi in https://github.com/duckdb/duckdb/pull/17498</li>
+<li>Minor nightly fixes by @Mytherin in https://github.com/duckdb/duckdb/pull/17500</li>
+<li>Add FileSystem::TryRemoveFile - that only removes a file if it exists by @Mytherin in https://github.com/duckdb/duckdb/pull/17502</li>
+<li>Add OperatorFinalize callback to operators - which is called after a pipeline is finished by @Mytherin in https://github.com/duckdb/duckdb/pull/17503</li>
+<li>Apply dynamic filter pushdown of TopN optimizer also to existing TopN nodes by @Mytherin in https://github.com/duckdb/duckdb/pull/17504</li>
+<li>Fix: Optional Probe Selection by @gropaul in https://github.com/duckdb/duckdb/pull/17505</li>
+<li>FileHandle Logging by @samansmink in https://github.com/duckdb/duckdb/pull/16758</li>
+<li>Fix typos by @szarnyasg in https://github.com/duckdb/duckdb/pull/17478</li>
+<li>Remove spatial from OSX Relassert by @carlopi in https://github.com/duckdb/duckdb/pull/17509</li>
+<li>Update more extensions by @Maxxen in https://github.com/duckdb/duckdb/pull/17510</li>
+<li>Bump HTTPFS again by @Mytherin in https://github.com/duckdb/duckdb/pull/17511</li>
+<li>feat: include catalog and schema names in function serialization by @rustyconover in https://github.com/duckdb/duckdb/pull/17512</li>
+<li>Fix encodings by @carlopi in https://github.com/duckdb/duckdb/pull/17514</li>
+<li>Fix python nightly build by @Tishj in https://github.com/duckdb/duckdb/pull/17515</li>
+<li>Use Catalog::TryAutoLoad for encodings extension by @pdet in https://github.com/duckdb/duckdb/pull/17520</li>
+<li>[Python Dev] Using <code>reinterpret_steal</code> breaks the refcount of the passed-in object by @Tishj in https://github.com/duckdb/duckdb/pull/17525</li>
+<li>Fix update extensions by @carlopi in https://github.com/duckdb/duckdb/pull/17527</li>
+<li>Minor fixes to exception error messages by @carlopi in https://github.com/duckdb/duckdb/pull/17528</li>
+<li>[Python Dev] Fix failing tests for the Python SQLLogicTester by @Tishj in https://github.com/duckdb/duckdb/pull/17529</li>
+<li>Resolve GitHub workflow <code>set-output</code> deprecation warnings by @kurtmckee in https://github.com/duckdb/duckdb/pull/17516</li>
+<li>[CSV Reader] Detect SQLNULL types for schema merging, use schema merging in csv relations, add files_to_sniff option.  by @pdet in https://github.com/duckdb/duckdb/pull/17467</li>
+<li>Fix extension test by @carlopi in https://github.com/duckdb/duckdb/pull/17536</li>
+<li>[Dev] Fix crash when describing a table with a virtual column by @Tishj in https://github.com/duckdb/duckdb/pull/17544</li>
+<li>[HTTPUtil] Let requests made through the <code>HTTPUtil</code> interface accept URI's without a scheme. by @Tishj in https://github.com/duckdb/duckdb/pull/17545</li>
+<li>Attach after setting database type by @Mytherin in https://github.com/duckdb/duckdb/pull/17546</li>
+<li>Pass MultiFileGlobalState to InitializeReader, and pass file list to CreateMapping instead of eagerly getting the first file by @Mytherin in https://github.com/duckdb/duckdb/pull/17553</li>
+<li>[Dev] Fix <code>allowed_directories</code> crash by @Tishj in https://github.com/duckdb/duckdb/pull/17548</li>
+<li>[Fix] duplicate filters during index scans by @taniabogatsch in https://github.com/duckdb/duckdb/pull/17547</li>
+<li>Generate data for tpch sf100 in steps by @Tmonster in https://github.com/duckdb/duckdb/pull/17539</li>
+<li>Issue #17537: Fractional Second Padding by @hawkfish in https://github.com/duckdb/duckdb/pull/17556</li>
+<li>Make MultiFileList::Copy a virtual method by @Mytherin in https://github.com/duckdb/duckdb/pull/17566</li>
+<li>[Dev] Can't use <code>USING COMPRESSION</code> with a deprecated compression type by @Tishj in https://github.com/duckdb/duckdb/pull/17542</li>
+<li>Add (de)serialization for ExtraOperatorInfo by @NiclasHaderer in https://github.com/duckdb/duckdb/pull/17563</li>
+<li>Fix issue with <code>ExternalFileCache</code> when data is evicted by @lnkuiper in https://github.com/duckdb/duckdb/pull/17567</li>
+<li>Remote Reads: allocate correct buffer size for prefetch by @Mytherin in https://github.com/duckdb/duckdb/pull/17557</li>
+<li>Remove patch and bump httpfs by @carlopi in https://github.com/duckdb/duckdb/pull/17558</li>
+<li>[Dev] Fix Arrow fixed size binary reading by @Tishj in https://github.com/duckdb/duckdb/pull/17573</li>
+<li>Fix setup.py to correctly handle OVERRIDE_GIT_DESCRIBE by @carlopi in https://github.com/duckdb/duckdb/pull/17580</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/duckdb/duckdb/compare/v1.2.2...v1.3.0</p>
+<hr />
+<blockquote>
+<p><strong>Source</strong> <a href="https://github.com/duckdb/duckdb">duckdb/duckdb</a> · <code>v1.3.0</code> · 2025-05-21 · <a href="https://github.com/duckdb/duckdb/releases/tag/v1.3.0">upstream release</a></p>
+</blockquote>
+<p><em>Mirrored verbatim for indexing. All rights belong to the upstream project.</em></p></div> </details> </div> <p class="muted" style="margin-top:var(--s8);font-size:12.5px;border-top:1px solid var(--line);padding-top:var(--s4)"> リリースノートは上流プロジェクトが公開したものです。私たちはそれらを整理し、関連付けて、バージョンを一眼で比較できるようにしています。コンテンツの権利はすべて原作者に属します。 </p> <nav class="pager" aria-label="Release navigation"> <a href="/releases/duckdb/1.3.1"> <span class="k">← 次へ</span> <span class="t">v1.3.1</span> </a> <a href="/releases/duckdb/1.2.2"> <span class="k">前へ →</span> <span class="t">v1.2.2</span> </a> </nav> <aside class="ad-slot" aria-label="Advertisement" data-astro-cid-fgwukgf6><div class="ad-slot-label" data-astro-cid-fgwukgf6>Advertisement</div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4184355057086168" data-ad-slot="9133765584" data-ad-format="auto" data-full-width-responsive="true" data-astro-cid-fgwukgf6></ins><script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script></aside> </article> <aside class="rail"> <div class="rail-card"> <div class="rail-title">Source</div> <ul class="rail-list"> <li> <a href="https://github.com/duckdb/duckdb/releases/tag/v1.3.0" target="_blank" rel="noopener"> <span>GitHub で見る</span> <span class="d">↗</span> </a> </li> <li> <a href="https://github.com/duckdb/duckdb" target="_blank" rel="noopener"> <span>duckdb/duckdb</span> <span class="d">↗</span> </a> </li> </ul> </div>  <div class="rail-card"> <div class="rail-title">バージョン履歴</div> <ul class="rail-list"> <li> <a href="/releases/duckdb/2.0.1"> <span class="v">v2.0.1</span> <span class="d">26-11-20</span> </a> </li><li> <a href="/releases/duckdb/2.0.0"> <span class="v">v2.0.0</span> <span class="d">26-10-21</span> </a> </li><li> <a href="/releases/duckdb/1.5.6"> <span class="v">v1.5.6</span> <span class="d">26-09-28</span> </a> </li><li> <a href="/releases/duckdb/1.5.5"> <span class="v">v1.5.5</span> <span class="d">26-07-22</span> </a> </li><li> <a href="/releases/duckdb/1.5.4"> <span class="v">v1.5.4</span> <span class="d">26-06-17</span> </a> </li><li> <a href="/releases/duckdb/1.4.5"> <span class="v">v1.4.5</span> <span class="d">26-06-17</span> </a> </li><li> <a href="/releases/duckdb/1.5.3"> <span class="v">v1.5.3</span> <span class="d">26-05-20</span> </a> </li><li> <a href="/releases/duckdb/1.5.2"> <span class="v">v1.5.2</span> <span class="d">26-04-13</span> </a> </li> </ul> <a href="/ja/releases/duckdb" class="mono" style="display:inline-block;margin-top:var(--s3);font-size:11.5px;color:var(--ink-3)"> すべての 20 件を見る →
+</a> </div> </aside> </div> </div>  </main> <footer class="site-footer"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/ja/" class="brand" aria-label="STAGS NextStack"><span class="brand-mark" aria-hidden="true">S</span><span class="brand-main">STAGS</span><span class="brand-sub" aria-hidden="true">NextStack</span></a> <p>オープンソースのリリース インテリジェンスが毎日公開されます。</p> </div> <div class="footer-col"> <h3>追跡</h3> <ul> <li><a href="/ja/releases">リリース</a></li> <li><a href="/ja/projects">プロジェクト</a></li> <li><a href="/ja/releases.xml">RSS フィード</a></li> </ul> </div> <div class="footer-col"> <h3>アーカイブ</h3> <ul> <li><a href="/zh/release_note" hreflang="zh-Hans">中文アーカイブ</a></li> <li><a href="/zh/chapters/" hreflang="zh-Hans">技術ノート</a></li> <li><a href="/zh/downloads/">Stags Tracker</a></li> </ul> </div> <div class="footer-col"> <h3>情報</h3> <ul> <li><a href="/privacy">プライバシーポリシー</a></li> <li><a href="/releases.xml">RSS</a></li> <li><a href="/sitemap-index.xml">Sitemap</a></li> </ul> </div> </div> <div class="footer-btm"> <span>© 2026 STAGS</span> <span>Release note は上流プロジェクトに属します。</span> </div> </div> </footer> <!-- 搜索面板 --> <div class="palette-bg" data-palette-bg data-open="false"> <div class="palette" role="dialog" aria-modal="true" aria-label="リリースを検索"> <div class="palette-in"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ink-4);flex:none"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <input type="search" data-palette-input placeholder="リリース、プロジェクト、バージョンを検索…" autocomplete="off" spellcheck="false"> <span class="kbd">esc</span> </div> <ul class="palette-res" data-palette-res></ul> <div class="palette-ft"> <span>↑↓ navigate</span> <span>↵ open</span> <span style="margin-left:auto" data-palette-count></span> </div> </div> </div> <script type="module" src="/assets/Shell.astro_astro_type_script_index_0_lang.0ZkKXV47.js"></script> </body> </html>

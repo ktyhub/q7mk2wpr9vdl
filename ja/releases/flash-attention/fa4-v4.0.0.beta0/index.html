@@ -1,0 +1,412 @@
+<!DOCTYPE html><html lang="ja" dir="ltr"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>flash-attention fa4-v4.0.0.beta0 — STAGS NextStack</title><meta name="description" content="[BugFix] Fix flash_attn_with_kvcache with scalar cache_seqlen · Add sorting and head swizzle to varlen scheduler · Fixes incorrect variable reference in comment · Update the initialization of dk/dv_semaphore"><meta name="keywords" content="オープンソース release note、リリース トラッカー、changelog アグリゲーター、重大な変更、非推奨トラッカー、Kafka リリース、Spring Boot リリース、Kubernetes リリース"><meta name="generator" content="Astro v5.18.2"><link rel="canonical" href="https://www.stags.cn/ja/releases/flash-attention/fa4-v4.0.0.beta0/"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="alternate" type="application/rss+xml" title="STAGS NextStack — releases" href="/ja/releases.xml"><link rel="alternate" hreflang="en" href="https://www.stags.cn/releases/flash-attention/fa4-v4.0.0.beta0/"><link rel="alternate" hreflang="zh-Hans" href="https://www.stags.cn/releases/flash-attention/fa4-v4.0.0.beta0/"><link rel="alternate" hreflang="x-default" href="https://www.stags.cn/releases/flash-attention/fa4-v4.0.0.beta0/"><meta property="og:site_name" content="STAGS"><meta property="og:type" content="article"><meta property="og:title" content="flash-attention fa4-v4.0.0.beta0 — STAGS NextStack"><meta property="og:description" content="[BugFix] Fix flash_attn_with_kvcache with scalar cache_seqlen · Add sorting and head swizzle to varlen scheduler · Fixes incorrect variable reference in comment · Update the initialization of dk/dv_semaphore"><meta property="og:url" content="https://www.stags.cn/ja/releases/flash-attention/fa4-v4.0.0.beta0/"><meta property="og:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><meta property="og:locale" content="ja_JP"><meta property="og:locale:alternate" content="en_US"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="de_DE"><meta property="og:locale:alternate" content="fr_FR"><meta property="og:locale:alternate" content="es_ES"><meta property="og:locale:alternate" content="pt_BR"><meta property="og:locale:alternate" content="ko_KR"><meta property="og:locale:alternate" content="it_IT"><meta property="og:locale:alternate" content="ru_RU"><meta property="og:locale:alternate" content="tr_TR"><meta property="og:locale:alternate" content="id_ID"><meta property="og:locale:alternate" content="vi_VN"><meta property="og:locale:alternate" content="ar_SA"><meta property="og:locale:alternate" content="sv_SE"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://www.stags.cn/img/stags-tracker-icon.png"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.stags.cn/#website","name":"STAGS","url":"https://www.stags.cn/","inLanguage":"ja","description":"NextStack はインフラストラクチャおよび AI プロジェクトのリリースノートを索引化し、破壊的変更・非推奨・移行情報を英語優先の単一フィードで提供します。","publisher":{"@id":"https://www.stags.cn/#org"}},{"@type":"Organization","@id":"https://www.stags.cn/#org","name":"STAGS","alternateName":"NextStack","url":"https://www.stags.cn/"},{"@type":"TechArticle","@id":"https://www.stags.cn/ja/releases/flash-attention/fa4-v4.0.0.beta0/#article","headline":"flash-attention fa4-v4.0.0.beta0 release notes","datePublished":"2026-03-05","inLanguage":"en","isPartOf":{"@id":"https://www.stags.cn/#website"},"about":{"@type":"SoftwareSourceCode","codeRepository":"https://github.com/Dao-AILab/flash-attention"}}]}</script><!-- 第三方脚本的连接预热：这两个域名几乎每页都要连，
+         提前建连能省掉 DNS + TCP + TLS 一个往返（移动网络 100~300ms）。
+         AdSense 只在开关打开时预热——关掉广告后连这个域名都没必要。 --><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://pagead2.googlesyndication.com"><!-- Google AdSense：站点所有权校验与广告投放共用同一段脚本，全站只加载一次。
+         未创建广告单元时页面上不渲染任何广告容器，站点保持干净。
+         fetchpriority=low：它不参与首屏渲染，不该跟正文抢带宽。 --><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4184355057086168" crossorigin="anonymous" fetchpriority="low"></script><!-- Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-RFRF1TVRMP" fetchpriority="low"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-RFRF1TVRMP");
+    </script><!-- 百度统计（国内流量统计）。官方标准片段，is:inline 原样输出，
+         hm.js 动态插到首个 script 前，异步不阻塞首屏渲染。 --><script>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?299e5b4e65b86ed16879bdcbe70531d6";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script><link rel="stylesheet" href="/assets/index.DQGt3qLZ.css">
+<style>.ad-slot[data-astro-cid-fgwukgf6]{margin:var(--s10) 0 0;padding-top:var(--s5);border-top:1px solid var(--line)}.ad-slot-label[data-astro-cid-fgwukgf6]{margin-bottom:var(--s3);font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4)}.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{display:block;min-height:100px}@media(min-width:640px){.ad-slot[data-astro-cid-fgwukgf6] ins.adsbygoogle{min-height:250px}}
+</style></head> <body> <a class="skip" href="#main">本文へスキップ</a> <header class="hdr" data-header> <div class="wrap hdr-inner"> <a href="/ja/" class="brand" aria-label="STAGS NextStack — オープンソースのリリース情報"> <span class="brand-mark" aria-hidden="true">S</span> <span class="brand-main">STAGS</span> <span class="brand-sub" aria-hidden="true">NextStack</span> </a> <nav class="nav" aria-label="Primary"> <a href="/ja/releases">リリース</a><a href="/ja/projects">プロジェクト</a> </nav>  <details class="navmenu" data-navmenu> <summary class="navmenu-btn" aria-label="Open menu"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <path d="M4 7h16M4 12h16M4 17h16"></path> </svg> </summary> <div class="navmenu-panel" role="group" aria-label="Primary"> <a href="/ja/releases" class="navmenu-item">リリース</a><a href="/ja/projects" class="navmenu-item">プロジェクト</a> </div> </details> <div class="hdr-tools"> <button class="searchbtn" type="button" data-search-open aria-label="リリースを検索"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <span class="lbl">検索</span> <span class="kbd">⌘K</span> </button> <details class="langmenu" data-langmenu> <summary class="langmenu-btn" aria-label="言語"> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"> <circle cx="12" cy="12" r="9"></circle> <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z"></path> </svg> <span class="langmenu-cur">日</span> <svg class="langmenu-chev" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m2 4 4 4 4-4"></path></svg> </summary> <div class="langmenu-panel" role="group" aria-label="言語"> <p class="langmenu-head">言語</p> <a class="langmenu-item" href="/releases/flash-attention/fa4-v4.0.0.beta0/" hreflang="en" lang="en" data-on="false"> <span class="langmenu-label">English</span> <span class="langmenu-code">EN</span> </a><a class="langmenu-item" href="/zh/release_note/flash-attention/flash-attention_fa4-v4.0.0.beta0" hreflang="zh-Hans" lang="zh-CN" data-on="false"> <span class="langmenu-label">中文</span> <span class="langmenu-code">中</span> </a><a class="langmenu-item" href="/ja/releases/flash-attention/fa4-v4.0.0.beta0/" hreflang="ja" lang="ja" aria-current="true" data-on="true"> <span class="langmenu-label">日本語</span> <span class="langmenu-code">日</span> </a><a class="langmenu-item" href="/de/releases/flash-attention/fa4-v4.0.0.beta0/" hreflang="de" lang="de" data-on="false"> <span class="langmenu-label">Deutsch</span> <span class="langmenu-code">DE</span> </a><a class="langmenu-item" href="/fr/releases/flash-attention/fa4-v4.0.0.beta0/" hreflang="fr" lang="fr" data-on="false"> <span class="langmenu-label">Français</span> <span class="langmenu-code">FR</span> </a><a class="langmenu-item" href="/es/releases/flash-attention/fa4-v4.0.0.beta0/" hreflang="es" lang="es" data-on="false"> <span class="langmenu-label">Español</span> <span class="langmenu-code">ES</span> </a><a class="langmenu-item" href="/pt/releases/flash-attention/fa4-v4.0.0.beta0/" hreflang="pt-BR" lang="pt-BR" data-on="false"> <span class="langmenu-label">Português</span> <span class="langmenu-code">PT</span> </a><a class="langmenu-item" href="/ko/releases" hreflang="ko" lang="ko" data-on="false"> <span class="langmenu-label">한국어</span> <span class="langmenu-code">한</span> </a><a class="langmenu-item" href="/it/releases" hreflang="it" lang="it" data-on="false"> <span class="langmenu-label">Italiano</span> <span class="langmenu-code">IT</span> </a><a class="langmenu-item" href="/ru/releases" hreflang="ru" lang="ru" data-on="false"> <span class="langmenu-label">Русский</span> <span class="langmenu-code">RU</span> </a><a class="langmenu-item" href="/tr/releases" hreflang="tr" lang="tr" data-on="false"> <span class="langmenu-label">Türkçe</span> <span class="langmenu-code">TR</span> </a><a class="langmenu-item" href="/id/releases" hreflang="id" lang="id" data-on="false"> <span class="langmenu-label">Bahasa Indonesia</span> <span class="langmenu-code">ID</span> </a><a class="langmenu-item" href="/vi/releases" hreflang="vi" lang="vi" data-on="false"> <span class="langmenu-label">Tiếng Việt</span> <span class="langmenu-code">VI</span> </a><a class="langmenu-item" href="/ar/releases" hreflang="ar" lang="ar" data-on="false"> <span class="langmenu-label">العربية</span> <span class="langmenu-code">ع</span> </a><a class="langmenu-item" href="/sv/releases" hreflang="sv" lang="sv" data-on="false"> <span class="langmenu-label">Svenska</span> <span class="langmenu-code">SV</span> </a> </div> </details> <a class="iconlink" href="/releases.xml" aria-label="RSS"> <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"> <path d="M2 12.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM2 7.5a6.5 6.5 0 0 1 6.5 6.5h-2A4.5 4.5 0 0 0 2 9.5v-2ZM2 2.5A11.5 11.5 0 0 1 13.5 14h-2A9.5 9.5 0 0 0 2 4.5v-2Z"></path> </svg> </a> </div> </div> </header> <main id="main">  <div class="wrap"> <div class="detail"> <article> <header class="detail-hd"> <nav class="crumbs" aria-label="Breadcrumb"> <a href="/ja/">ホーム</a> <span class="sep">/</span> <a href="/ja/releases">リリース</a> <span class="sep">/</span> <a href="/ja/releases/flash-attention">flash-attention</a> </nav> <h1 class="detail-title"> <span class="p">flash-attention</span> fa4-v4.0.0.beta0 </h1> <div class="detail-meta"> <span class="chip chip--release">リリース</span> <span><span class="k">公開日</span>2026年3月5日</span>  <span class="sep" aria-hidden="true"></span> <a href="https://github.com/Dao-AILab/flash-attention" target="_blank" rel="noopener"> <span class="k">出典</span>Dao-AILab/flash-attention </a>   <span class="sep" aria-hidden="true"></span> <a href="/releases/flash-attention/fa4-v4.0.0.beta0/"> English original </a>  <span class="sep" aria-hidden="true"></span> <button class="btn btn--ghost btn--sm" type="button" data-copy="https://www.stags.cn/ja/releases/flash-attention/fa4-v4.0.0.beta0/">リンクをコピー</button> </div> </header> <div class="prose" style="margin-top:var(--s8)"> <p class="mt-notice" role="note">このページは機械翻訳です。内容は必ず英文原文をご確認ください。</p>  <div><h1>フラッシュ注意 fa4-v4.0.0.beta0</h1>
+<h2>何が変わったのか</h2>
+<ul>
+<li>[バグ修正] https://github.com/Dao-AILab/flash-attention/pull/1795 の @stepinto によるスカラーのキャッシュ_seqlen を使用した flash_attn_with_kvcache を修正しました</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/1823 の @jayhshah により、ソートとヘッド スウィズルを varlen スケジューラに追加</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/1775 の @LoserCheems によるコメント内の誤った変数参照を修正</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/1839 の @y-sq による dk/dv_semaphore の初期化を更新</li>
+<li>長いコンテキスト長 (seqlen &gt;=4M) に対する FA3 テンソル サイズ パラメーターの修正 (https://github.com/Dao-AILab/flash-attention/pull/1841 の @ghadiaravi13 による)</li>
+<li>ci: https://github.com/Dao-AILab/flash-attention/pull/1835 の @ko3n1g によりビルド ジョブをワークフロー テンプレートに移動</li>
+<li>ci: https://github.com/Dao-AILab/flash-attention/pull/1844 の @ko3n1g によるワークフロー テンプレートによるビルド</li>
+<li>ci: https://github.com/Dao-AILab/flash-attention/pull/1847 の @ko3n1g による workflow_dispatch への切り替え</li>
+<li>[<code>FA3</code>] https://github.com/Dao-AILab/flash-attention/pull/1851 の @vasqu による kwarg 経由で LSE を返すことを許可します</li>
+<li>[BugFix] https://github.com/Dao-AILab/flash-attention/pull/1856 の @mingyangHao による flash_fwd.FlashAttendantForwardSm80 のバグを修正</li>
+<li>[修正] Sm90 CuTe DSL で m_block_size == 192 および mma_pv_is_rs == False を許可 (https://github.com/Dao-AILab/flash-attention/pull/1858 の @reubenconducts により)</li>
+<li>[バグ] CUDA 13: FA3 を CUDA 13 ビルドと互換性を持たせる (https://github.com/Dao-AILab/flash-attention/pull/1860 の @johnnynunez による)</li>
+<li>[ビルド] SBSA ホイール + CUDA 13 https://github.com/Dao-AILab/flash-attention/pull/1865 の @johnnynunez によるサポート</li>
+<li>ベンチマーク: https://github.com/Dao-AILab/flash-attention/pull/1881 の @rajesh-s によるメソッド リストによってすべての注目バックエンドを修飾します</li>
+<li>ABI 安定版 fa3 (@mikaylagarecki 著、https://github.com/Dao-AILab/flash-attention/pull/1791)</li>
+<li>[NVIDIA] https://github.com/Dao-AILab/flash-attention/pull/1882 の @johnnynunez による Blackwell ファミリ固有の有効化</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/1883 の @henrylhtsang によるローカル アテンションのためのフロップス計算のタイプミスを修正</li>
+<li>flash-attn-cute bwd sm90 by @tzadouri (https://github.com/Dao-AILab/flash-attention/pull/1868)</li>
+<li>[Cute] https://github.com/Dao-AILab/flash-attention/pull/1892 の @drisspg による Cute 用のテスト ユーティリティをスタンドアロンにする</li>
+<li>[かわいい] CuTeDSL 用バンプ ピン by @drisspg (https://github.com/Dao-AILab/flash-attention/pull/1891)</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/1893 の @jayhshah による SPT スケジュールによる因果的後方決定性のパフォーマンスを向上</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/1905 の @johnnynunez による Cutlass v4.2.1 へのアップグレード</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/1906 の @brandon-yujie-sun による Cutlass.utils.get_smem_capacity_in_bytes の使用に切り替える</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/1908 の @JackCharlesZhang によって FA3 QKVpacked に欠落なしグラデーションを追加</li>
+<li>C++11 は、https://github.com/Dao-AILab/flash-attention/pull/1904 の @johnnynunez による警告を修正しました</li>
+<li>[CuteDSL] https://github.com/Dao-AILab/flash-attention/pull/1925 の @drisspg によって Flash Combine 用に明示的にキャストされました</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/1840 の @drisspg による FlexAttend を有効にするためのリファクタリング</li>
+<li>功績: https://github.com/Dao-AILab/flash-attention/pull/1934 の @imbr92 による、cute-dsl sm80 bwd への varlen サポートの追加</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/1924 の @kevin-tong-augment によるソフトマックス for ループの自己参照を削除</li>
+<li>[AMD] https://github.com/Dao-AILab/flash-attention/pull/1756 の @micmelesse によるトーチ コンパイルの問題</li>
+<li>[かわいい] https://github.com/Dao-AILab/flash-attention/pull/1937 の @drisspg によるスコア MOD のパック GQA を有効にする</li>
+<li>プレコミットリストを追加し、https://github.com/Dao-AILab/flash-attention/pull/1941 の @drisspg によってチャンクのコメントを解除します</li>
+<li>[ROCm] pytorch hipify v2 API 用の CK ソースを https://github.com/Dao-AILab/flash-attention/pull/1944 の @jeffdaily によって準備します</li>
+<li>Blackwell FlashAttention-BWD (v1.0) by @tzadouri (https://github.com/Dao-AILab/flash-attention/pull/1945)</li>
+<li>Sm100 BWD (バリア) by @tzadouri in https://github.com/Dao-AILab/flash-attention/pull/1946</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/1949 の @kevmo314 によるホッパー cuda 13 ビルドを修正</li>
+<li>[CuteDSL] https://github.com/Dao-AILab/flash-attention/pull/1953 の @drisspg によるcute.jit デコレータのハッシュ関数を修正</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/1942 の @reubenconducts によるブロック スパーシティおよびフレックス アテンション マスク MOD のサポート</li>
+<li>[NVIDIA] カットラス v4.3.0 (@johnnynunez 著、https://github.com/Dao-AILab/flash-attention/pull/1952)</li>
+<li>[CuTe DSL] 「buffers」名を「aux_tensors」に更新します。 https://github.com/Dao-AILab/flash-attention/pull/1961 の @reubenconducts によるフレックスのバグを修正</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/1957 の @kevmo314 による ABI 安定ビルドでのカスタム CUDA ストリームによる FA3 セグメンテーション違反を修正</li>
+<li>[かわいい] https://github.com/Dao-AILab/flash-attention/pull/1964 の @drisspg による調整をブロックします</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/1970 の @drisspg による BlockSparse 調整</li>
+<li>[かわいい] https://github.com/Dao-AILab/flash-attention/pull/1982 の @drisspg によるメインを修正</li>
+<li>[Cute,Fwd,Sm100] @timmy-feng による SplitKV を https://github.com/Dao-AILab/flash-attention/pull/1940 に実装</li>
+<li>[かわいい] https://github.com/Dao-AILab/flash-attention/pull/1984 の @drisspg による SM80/90 からのブロック スパース ユーティリティの抽出</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/1998 の @drisspg により python-3.10+ を有効にする</li>
+<li>[Cute、Bwd、Sm100] @jayhshah による GQA サポートを https://github.com/Dao-AILab/flash-attention/pull/2004 に追加</li>
+<li>[Cute,Fwd,Sm100] https://github.com/Dao-AILab/flash-attention/pull/2006 の @jayhshah による分割 kv による重大な回帰を修正</li>
+<li>[CuTe DSL] https://github.com/Dao-AILab/flash-attention/pull/1983 の @reubenconducts によるブロック スパース計算カーネル</li>
+<li>[NVIDIA] https://github.com/Dao-AILab/flash-attention/pull/1996 で @johnnynunez による github アクションをバンプする</li>
+<li>[Cute,Fwd,Sm100] https://github.com/Dao-AILab/flash-attention/pull/1999 の @timmy-feng によるサポートページの注目</li>
+<li>[かわいい] ブロック スパース サポート Sm100 by @drisspg (https://github.com/Dao-AILab/flash-attention/pull/1985)</li>
+<li>[Cute,Sm100,Fwd] TMA を使用しないときにエピに補正ワープを使用する (https://github.com/Dao-AILab/flash-attention/pull/2014 の @jayhshah により)</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2020 の @drisspg により、mask_mods に oob 読み取り用の fastdivmod を追加</li>
+<li>[Cute,Fwd,Sm100] https://github.com/Dao-AILab/flash-attention/pull/2026 の @jayhshah によって一般的にマスク_fn を Softmax_step に渡さないでください</li>
+<li>[CuTeDSL] https://github.com/Dao-AILab/flash-attention/pull/2029 の @anakinxc によるデコレータの順序を入れ替えます</li>
+<li>[Cute,Bwd,Sm100] sm100 bwd の決定的モードを有効にし、https://github.com/Dao-AILab/flash-attention/pull/2033 の @jayhshah による競合状態を修正します</li>
+<li>[NFC] https://github.com/Dao-AILab/flash-attention/pull/1928 の @jduprat によるサイレントリンターへの簡単な修正</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2032 の @jduprat により、ライセンスと著者を flash_attn/cute に追加</li>
+<li>[Cute,Fwd] https://github.com/Dao-AILab/flash-attention/pull/2031 の @reubenconducts によるブロックスパーシティなしでマスク MOD を有効にします</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2025 の @drisspg によるバンプピン</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2040 の @drisspg によってすべての小さいファイルを荒らす</li>
+<li>[かわいい] https://github.com/Dao-AILab/flash-attention/pull/2035 の @drisspg による頭の薄暗い 64 bwd を修正</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2041 の @drisspg により、headdim64 テストを競合状態に追加</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/1769 の @guilhermeleovas によるフラッシュ アテンション 3 に torch.compile サポートを追加</li>
+<li>[Cute,Bwd,Sm100] https://github.com/Dao-AILab/flash-attention/pull/2046 の @jayhshah による sm100 bwd のローカルを追加</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2048 の @drisspg による高価なチェックのショートカットにハッシュ属性を追加</li>
+<li>[AMD ROCm] https://github.com/Dao-AILab/flash-attention/pull/2052 の @rocking5566 によるパフォーマンスを向上させるために、最新の composable_kernel に更新します。</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2056 の @liangel-02 によるかわいい bwd func def を修正</li>
+<li>FA3 確定的モードでの解放後の使用を修正。 @skarupke 著、https://github.com/Dao-AILab/flash-attention/pull/2063</li>
+<li>[かわいい] https://github.com/Dao-AILab/flash-attention/pull/2065 で @drisspg による卒業生の事前割り当てを許可します</li>
+<li>[Cute,Fwd] https://github.com/Dao-AILab/flash-attention/pull/2043 の @reubenconducts により、score_mod を可変シーケンス長に拡張</li>
+<li>[かわいい] https://github.com/Dao-AILab/flash-attention/pull/2042 の @drisspg により TVM-FFI を有効にして CPU オーバーヘッドを削減</li>
+<li>ソフトキャップのスコアモッド kwargs のタイプミスを修正。 @LeoZDong 著、https://github.com/Dao-AILab/flash-attention/pull/2072</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2070 に @drisspg によるスコア mod bwd サポートを追加</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2085 の @drisspg により、blackwell 上の bwd に対する blockparse サポートを追加</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2091 の @drisspg による m 境界上の fwd の IMA を修正</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2092 の @drisspg によるcutedsl 4.3.4</li>
+<li>AMD ROCm の README (https://github.com/Dao-AILab/flash-attention/pull/2068 の @seungrokj による)</li>
+<li>[かわいい] シャッフル同期を修正し、varlen sm100 のパック gqa を有効にします (https://github.com/Dao-AILab/flash-attention/pull/2097 の @jayhshah による)</li>
+<li>[NVIDIA] Jetson Thor FA4 を有効にする (@johnnynunez による https://github.com/Dao-AILab/flash-attention/pull/2108)</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2098 の @drisspg によりブロードキャストされた H dim を使用したスパース impl に対する Pack-gqa fwd サポートを追加</li>
+<li>[Cute,Fwd] https://github.com/Dao-AILab/flash-attention/pull/2100 の @reubenconducts によりブロックのスパース性が改善されました</li>
+<li>現時点では xfail する必要があるその他のテスト (https://github.com/Dao-AILab/flash-attention/pull/2127 の @drisspg による)</li>
+<li>未定義のシンボルを修正するために CUTLASS を更新: https://github.com/Dao-AILab/flash-attention/pull/2142 の @HydraQYH による cuDriverGetVersion</li>
+<li>[Cute,Fwd,Sm100] https://github.com/Dao-AILab/flash-attention/pull/1993 の @timmy-feng による推論のために <code>q_stage=1</code> をサポート</li>
+<li>[かわいい] https://github.com/Dao-AILab/flash-attention/pull/2149 で @henrylhtsang によって失敗していた 2 つのテストを修正</li>
+<li>[かわいい、Bwd、Sm100] https://github.com/Dao-AILab/flash-attention/pull/2150 の @jayhshah による sm100 bwd の varlen を追加</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2136 の @drisspg によるブロックスパース逆方向 SM90</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2137 の @drisspg によるスコア修正逆方向 SM90</li>
+<li>[かわいい] https://github.com/Dao-AILab/flash-attention/pull/2143 の @drisspg による微妙なキャッシュキーのバグを明確にして修正</li>
+<li>[かわいい][SM100] https://github.com/Dao-AILab/flash-attention/pull/2146 の @drisspg によるマスク MOD セマンティック変更後の sm100 の後方 gqa を修正</li>
+<li>[かわいい][SM90] https://github.com/Dao-AILab/flash-attention/pull/2145 の @drisspg によってブロードキャストされたマスクモッドで Pack-gqa を有効にします</li>
+<li>[かわいい][SM90] https://github.com/Dao-AILab/flash-attention/pull/2158 の @drisspg による GQA 逆方向非決定的</li>
+<li>[Cute,Bwd,Sm100] https://github.com/Dao-AILab/flash-attention/pull/2167 の @jayhshah による varlen bwd のシーケンスを修正</li>
+<li>[かわいい] https://github.com/Dao-AILab/flash-attention/pull/2170 の @drisspg により、cutedsl を 4.3.5 にバンプします</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2156 の @v0i0 による flash.cute paged_kv cpasync を改善</li>
+<li>[Cute,Flex] https://github.com/Dao-AILab/flash-attention/pull/2171 の @reubenconducts による <strong>cute_hash</strong> を作成してキャッシュするオプションを追加</li>
+<li>[Cute][Flex] https://github.com/Dao-AILab/flash-attention/pull/2172 の @drisspg により不要になったコンティグを削除</li>
+<li>[かわいい] https://github.com/Dao-AILab/flash-attention/pull/2174 の @jayhshah による online_softmax を安全に上書きする前に row_max を更新します</li>
+<li>[Cute][Flex] を https://github.com/Dao-AILab/flash-attention/pull/2177 の @drisspg によってコンティグに追加し直す</li>
+<li>[かわいい][フレックス] https://github.com/Dao-AILab/flash-attention/pull/2180 の @drisspg による Pack-gqa divmod を追加</li>
+<li>[Cute,Fwd,Sm100] ページングされた KV の分散オフセット計算 (https://github.com/Dao-AILab/flash-attention/pull/2104 の @timmy-feng による)</li>
+<li>[Cute,Fwd,Sm100] https://github.com/Dao-AILab/flash-attention/pull/2185 の @henrylhtsang によるローカル マスクの r2p を追加</li>
+<li>[Cute][Flex] https://github.com/Dao-AILab/flash-attention/pull/2189 の @drisspg による拡張テンソルのバグを修正</li>
+<li>[Cute、SM90] https://github.com/Dao-AILab/flash-attention/pull/2194 の @KareemMusleh による H100 の fwd varlen Cute 実装バグを修正</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2079 の @Qubitium によるビルド OOM の可能性を減らす</li>
+<li>[Cute][Flex] https://github.com/Dao-AILab/flash-attention/pull/2187 の @drisspg により、q_offset 1 を許可し、エッジ ケースを明確にするためにブロック サイズを追加します</li>
+<li>ci: https://github.com/Dao-AILab/flash-attention/pull/2195 の @ko3n1g による cu13 の忍者ジョブを 1 つ使用します</li>
+<li>[README.md] https://github.com/Dao-AILab/flash-attention/pull/2210 の @wanglc02 によるビルド依存関係として <code>psutil</code> パッケージを含めるように README を更新</li>
+<li>[Flex][SM100] https://github.com/Dao-AILab/flash-attention/pull/2209 の @drisspg による sm100 のリプレイ拡張修正</li>
+<li>[AMD] ROCm 用 Triton バックエンド #3 (@micmelesse 著、https://github.com/Dao-AILab/flash-attention/pull/2178)</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2221 の @zhuochenKIDD による Benchmark_mask_mod.py で壊れていた compute_block_sparsity を修正</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2229 での @drisspg による共有メモリ競合を修正</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2155 の @janeyx99 により、TORCH_STABLE_ONLY ではなく TORCH_TARGET_VERSION を使用します</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2231 の @v0i0 によるフレックス フラッシュ用の短い Readme</li>
+<li>[FA3] https://github.com/Dao-AILab/flash-attention/pull/2223 の @lw により、現在のメイン バージョンを v3.0.0 安定版としてマークします</li>
+<li>[Cute,Fwd,Sm100] hdim 192 smem 修正 (https://github.com/Dao-AILab/flash-attention/pull/2235 の @jayhshah による)</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2239 に @alexheretic による <code>FLASH_ATTENTION_TRITON_AMD_CONFIG_JSON</code> 環境変数サポートを追加</li>
+<li>[かわいい] https://github.com/Dao-AILab/flash-attention/pull/2216 の @drisspg による Cutedsl へのバンプ</li>
+<li>Python への pytest-dist ラウンドロビン (https://github.com/Dao-AILab/flash-attention/pull/2241 の @drisspg による)</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2242 の @drisspg によるホッパー テストを修正</li>
+<li>[Cute,Flex,Fwd] https://github.com/Dao-AILab/flash-attention/pull/2236 で @reubenconducts によるベクトル化されたスコア_MOD 定義を許可します</li>
+<li>[FA2] https://github.com/Dao-AILab/flash-attention/pull/2260 の @drisspg による int32 オーバーフローを修正</li>
+<li>[Cute][Flex] https://github.com/Dao-AILab/flash-attention/pull/2258 の @drisspg による複数の空のタイルによるカーネルのハングを修正</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2262 の @drisspg による 4.4.0 のかわいい DSL ピンにバンプします</li>
+<li>BWD sm100 2cta by @tzadouri (https://github.com/Dao-AILab/flash-attention/pull/2202)</li>
+<li>[かわいい] ローカル以外の注目のために window_size=(-1, -1) を処理 (https://github.com/Dao-AILab/flash-attention/pull/2251 の @henrylhtsang による)</li>
+<li>🤗 カーネルでの使用法を文書化 (https://github.com/Dao-AILab/flash-attention/pull/2272 の @sayakpaul による)</li>
+<li>[Cute,Sm100,Bwd] https://github.com/Dao-AILab/flash-attention/pull/2270 の @jayhshah による sm100 の hdim 192 hdimv 128 を後方に追加</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2273 の @ankutalev による正しい Cutlass エラー処理</li>
+<li>sm90 で use_2cta_instrs をガード @reubenconducts (https://github.com/Dao-AILab/flash-attention/pull/2274)</li>
+<li>[かわいい] @erikwijmans による return_lse を https://github.com/Dao-AILab/flash-attention/pull/2271 に追加</li>
+<li>[Flex、Sm100] https://github.com/Dao-AILab/flash-attention/pull/2276 の @reubenconducts によるマスク MOD のバグを修正</li>
+<li>[Cute,Sm100,Bwd] https://github.com/Dao-AILab/flash-attention/pull/2280 の @jayhshah による hdim 128 の 2CTA パスを後方修正して有効にしました</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2291 の @drisspg によるセグメンテーション違反を回避するために 4.4.1 にバンプします</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2293 の @drisspg による sm100 fwd に tSrQs 初期化回帰がない問題を修正</li>
+<li>[clang ビルド] <code>LLVM/Clang</code> は C++ 標準に厳密に従っているため、依存型名の前に「typename」が欠落しているという Clang 解析エラーが発生する問題を修正 (https://github.com/Dao-AILab/flash-attention/pull/2295 の @tomflinda により作成)</li>
+<li>[CuTe] https://github.com/Dao-AILab/flash-attention/pull/2298 の @bonpyt による後方コンパイル キャッシュ キーにブロードキャスト ディムを含める</li>
+<li>[かわいい][テスト] https://github.com/Dao-AILab/flash-attention/pull/2283 の @Alkaid-Benetnash によるコンパイル専用テスト パスの偽テンソル モード サポートを追加</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2302 の @v0i0 により hdim=96 bwd を有効にします</li>
+<li>かわいい FLASH バックエンドでの GQA クラッシュを修正: https://github.com/Dao-AILab/flash-attention/pull/2301 の @platers による条件付きの前の init load_Q</li>
+<li>[Cute,Fwd,Sm100] https://github.com/Dao-AILab/flash-attention/pull/2303 の @jayhshah によるページングされた kv を修正</li>
+<li>https://github.com/Dao-AILab/flash-attention/pull/2282 に @drisspg による FA4 公開戦略を追加</li>
+<li>[Cute][Testing] https://github.com/Dao-AILab/flash-attention/pull/2304 の @Alkaid-Benetnash によるcutedsl AOT コンパイル用の永続的なコンパイル キャッシュを追加</li>
+</ul>
+<h2>新しい貢献者</h2>
+<ul>
+<li>@stepinto が https://github.com/Dao-AILab/flash-attention/pull/1795 で最初の投稿を行いました</li>
+<li>@LoserCheems が https://github.com/Dao-AILab/flash-attention/pull/1775 で最初の貢献を行いました</li>
+<li>@y-sq が https://github.com/Dao-AILab/flash-attention/pull/1839 に初めて投稿しました</li>
+<li>@ghadiaravi13 が https://github.com/Dao-AILab/flash-attention/pull/1841 に初めて投稿しました</li>
+<li>@mingyangHao が https://github.com/Dao-AILab/flash-attention/pull/1856 に初めて投稿しました</li>
+<li>@reubenconducts が https://github.com/Dao-AILab/flash-attention/pull/1858 で最初の投稿を行いました</li>
+<li>@johnnynunez が https://github.com/Dao-AILab/flash-attention/pull/1860 で最初の投稿を行いました</li>
+<li>@rajesh-s が https://github.com/Dao-AILab/flash-attention/pull/1881 に初めて投稿しました</li>
+<li>@mikaylkawarecki が https://github.com/Dao-AILab/flash-attention/pull/1791 に初めて投稿しました</li>
+<li>@henrylhtsang が https://github.com/Dao-AILab/flash-attention/pull/1883 で最初の投稿を行いました</li>
+<li>@brandon-yujie-sun が https://github.com/Dao-AILab/flash-attention/pull/1906 に初めて投稿しました</li>
+<li>@JackCharlesZhang が https://github.com/Dao-AILab/flash-attention/pull/1908 で最初の貢献をしました</li>
+<li>@imbr92 が https://github.com/Dao-AILab/flash-attention/pull/1934 に初めて投稿しました</li>
+<li>@kevin-tong-augment が https://github.com/Dao-AILab/flash-attention/pull/1924 で最初の貢献をしました</li>
+<li>@jeffdaily が https://github.com/Dao-AILab/flash-attention/pull/1944 で最初の投稿を行いました</li>
+<li>@timmy-feng が https://github.com/Dao-AILab/flash-attention/pull/1940 に初めて投稿しました</li>
+<li>@anakinxc が https://github.com/Dao-AILab/flash-attention/pull/2029 で最初の投稿を行いました</li>
+<li>@guilhermeleovas が https://github.com/Dao-AILab/flash-attention/pull/1769 で最初の投稿を行いました</li>
+<li>@liangel-02 が https://github.com/Dao-AILab/flash-attention/pull/2056 に初めて投稿しました</li>
+<li>@skarupke が https://github.com/Dao-AILab/flash-attention/pull/2063 で最初の投稿を行いました</li>
+<li>@LeoZDong が https://github.com/Dao-AILab/flash-attention/pull/2072 で最初の投稿を行いました</li>
+<li>@seungrokj が https://github.com/Dao-AILab/flash-attention/pull/2068 に初めて投稿しました</li>
+<li>@HydraQYH が https://github.com/Dao-AILab/flash-attention/pull/2142 で最初の貢献を行いました</li>
+<li>@v0i0 が https://github.com/Dao-AILab/flash-attention/pull/2156 に初めて投稿しました</li>
+<li>@KareemMusleh が https://github.com/Dao-AILab/flash-attention/pull/2194 で最初の貢献をしました</li>
+<li>@wanglc02 が https://github.com/Dao-AILab/flash-attention/pull/2210 に初めて投稿しました</li>
+<li>@zhuochenKIDD が https://github.com/Dao-AILab/flash-attention/pull/2221 で最初の投稿を行いました</li>
+<li>@lw は https://github.com/Dao-AILab/flash-attention/pull/2223 で最初の投稿を行いました</li>
+<li>@alexheretic が https://github.com/Dao-AILab/flash-attention/pull/2239 で最初の投稿を行いました</li>
+<li>@sayakpaul が https://github.com/Dao-AILab/flash-attention/pull/2272 に初めて投稿しました</li>
+<li>@ankutalev が https://github.com/Dao-AILab/flash-attention/pull/2273 で最初の貢献をしました</li>
+<li>@erikwijmans が https://github.com/Dao-AILab/flash-attention/pull/2271 に初めて投稿しました</li>
+<li>@tomflinda が https://github.com/Dao-AILab/flash-attention/pull/2295 に初めて投稿しました</li>
+<li>@bonpyt が https://github.com/Dao-AILab/flash-attention/pull/2298 で最初の貢献をしました</li>
+<li>@Alkaid-Benetnash が https://github.com/Dao-AILab/flash-attention/pull/2283 で最初の貢献をしました</li>
+<li>@platers は https://github.com/Dao-AILab/flash-attention/pull/2301 で最初の貢献をしました
+<strong>フル Changelog</strong>: https://github.com/Dao-AILab/flash-attention/compare/v2.8.3...fa4-v4.0.0.beta0</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>出典</strong> <a href="https://github.com/Dao-AILab/flash-attention">Dao-AILab/フラッシュ注意</a> · <code>fa4-v4.0.0.beta0</code> · 2026-03-05 · <a href="https://github.com/Dao-AILab/flash-attention/releases/tag/fa4-v4.0.0.beta0">アップストリーム リリース</a>
+<em>インデックス作成のためにそのままミラーリングされます。すべての権利は上流プロジェクトに帰属します。</em></p>
+</blockquote></div>  <details class="mt-original"> <summary>English original / English original</summary> <div class="prose mt-original-body"><h1>flash-attention fa4-v4.0.0.beta0</h1>
+<h2>What's Changed</h2>
+<ul>
+<li>[BugFix] Fix flash_attn_with_kvcache with scalar cache_seqlen by @stepinto in https://github.com/Dao-AILab/flash-attention/pull/1795</li>
+<li>Add sorting and head swizzle to varlen scheduler by @jayhshah in https://github.com/Dao-AILab/flash-attention/pull/1823</li>
+<li>Fixes incorrect variable reference in comment by @LoserCheems in https://github.com/Dao-AILab/flash-attention/pull/1775</li>
+<li>Update the initialization of dk/dv_semaphore by @y-sq in https://github.com/Dao-AILab/flash-attention/pull/1839</li>
+<li>FA3 tensor size parameter fix for long context len (seqlen &gt;=4M) by @ghadiaravi13 in https://github.com/Dao-AILab/flash-attention/pull/1841</li>
+<li>ci: Move build job to workflow template by @ko3n1g in https://github.com/Dao-AILab/flash-attention/pull/1835</li>
+<li>ci: Build via workflow template by @ko3n1g in https://github.com/Dao-AILab/flash-attention/pull/1844</li>
+<li>ci: Switch to workflow_dispatch by @ko3n1g in https://github.com/Dao-AILab/flash-attention/pull/1847</li>
+<li>[<code>FA3</code>] Allow returning LSE via kwarg by @vasqu in https://github.com/Dao-AILab/flash-attention/pull/1851</li>
+<li>[BugFix] fix flash_fwd.FlashAttentionForwardSm80  bugs by @mingyangHao in https://github.com/Dao-AILab/flash-attention/pull/1856</li>
+<li>[FIX] Allow m_block_size == 192 and mma_pv_is_rs == False in Sm90 CuTe DSL by @reubenconducts in https://github.com/Dao-AILab/flash-attention/pull/1858</li>
+<li>[BUG] CUDA 13: make FA3 compatible with CUDA 13 Builds by @johnnynunez in https://github.com/Dao-AILab/flash-attention/pull/1860</li>
+<li>[BUILD] SBSA wheels + CUDA 13 Support by @johnnynunez in https://github.com/Dao-AILab/flash-attention/pull/1865</li>
+<li>benchmark: qualify all attention backends by methods list by @rajesh-s in https://github.com/Dao-AILab/flash-attention/pull/1881</li>
+<li>ABI stable fa3 by @mikaylagawarecki in https://github.com/Dao-AILab/flash-attention/pull/1791</li>
+<li>[NVIDIA] Enable Blackwell Family Specific by @johnnynunez in https://github.com/Dao-AILab/flash-attention/pull/1882</li>
+<li>Fix typo in flops calculation for local attention by @henrylhtsang in https://github.com/Dao-AILab/flash-attention/pull/1883</li>
+<li>flash-attn-cute bwd sm90 by @tzadouri in https://github.com/Dao-AILab/flash-attention/pull/1868</li>
+<li>[Cute] Make testing utils standalone for cute by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/1892</li>
+<li>[Cute] Bump pin for CuTeDSL by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/1891</li>
+<li>Improve causal backward determinism perf with SPT schedule by @jayhshah in https://github.com/Dao-AILab/flash-attention/pull/1893</li>
+<li>Upgrade to cutlass v4.2.1 by @johnnynunez in https://github.com/Dao-AILab/flash-attention/pull/1905</li>
+<li>Switch to use cutlass.utils.get_smem_capacity_in_bytes by @brandon-yujie-sun in https://github.com/Dao-AILab/flash-attention/pull/1906</li>
+<li>Add Missing None Gradient in FA3 QKVPacked by @JackCharlesZhang in https://github.com/Dao-AILab/flash-attention/pull/1908</li>
+<li>C++11 fix warnings by @johnnynunez in https://github.com/Dao-AILab/flash-attention/pull/1904</li>
+<li>[CuteDSL] Explicitly cast for Flash Combine by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/1925</li>
+<li>Refactors to enable FlexAttention by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/1840</li>
+<li>feat: Adding varlen support to cute-dsl sm80 bwd by @imbr92 in https://github.com/Dao-AILab/flash-attention/pull/1934</li>
+<li>Remove self refs in softmax for-loop by @kevin-tong-augment in https://github.com/Dao-AILab/flash-attention/pull/1924</li>
+<li>[AMD] Torch Compile Issues by @micmelesse in https://github.com/Dao-AILab/flash-attention/pull/1756</li>
+<li>[CUTE] Enable Pack GQA for score mods by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/1937</li>
+<li>Add precommit list and then uncomment in chunks by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/1941</li>
+<li>[ROCm] prepare CK sources for pytorch hipify v2 APIs by @jeffdaily in https://github.com/Dao-AILab/flash-attention/pull/1944</li>
+<li>Blackwell FlashAttention-BWD (v1.0) by @tzadouri in https://github.com/Dao-AILab/flash-attention/pull/1945</li>
+<li>Sm100 BWD (barrier) by @tzadouri in https://github.com/Dao-AILab/flash-attention/pull/1946</li>
+<li>Fix hopper cuda 13 build by @kevmo314 in https://github.com/Dao-AILab/flash-attention/pull/1949</li>
+<li>[CuteDSL] Fix hash function for cute.jit decorator by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/1953</li>
+<li>Block Sparsity and Flex Attention mask mod support by @reubenconducts in https://github.com/Dao-AILab/flash-attention/pull/1942</li>
+<li>[NVIDIA] cutlass v4.3.0 by @johnnynunez in https://github.com/Dao-AILab/flash-attention/pull/1952</li>
+<li>[CuTe DSL] Update &quot;buffers&quot; name to &quot;aux_tensors&quot;; fix flex bugs by @reubenconducts in https://github.com/Dao-AILab/flash-attention/pull/1961</li>
+<li>Fix FA3 segfault with custom CUDA streams in ABI stable build by @kevmo314 in https://github.com/Dao-AILab/flash-attention/pull/1957</li>
+<li>[Cute] Blocks tweaks by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/1964</li>
+<li>BlockSparse Tweaks by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/1970</li>
+<li>[Cute] Fix main by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/1982</li>
+<li>[Cute,Fwd,Sm100] Implement SplitKV by @timmy-feng in https://github.com/Dao-AILab/flash-attention/pull/1940</li>
+<li>[Cute] Extract block-sparse utilities from SM80/90 by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/1984</li>
+<li>Enable python-3.10+ by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/1998</li>
+<li>[Cute, Bwd, Sm100] Add GQA support by @jayhshah in https://github.com/Dao-AILab/flash-attention/pull/2004</li>
+<li>[Cute,Fwd,Sm100] fix major regression with split kv by @jayhshah in https://github.com/Dao-AILab/flash-attention/pull/2006</li>
+<li>[CuTe DSL] Block sparsity computation kernel by @reubenconducts in https://github.com/Dao-AILab/flash-attention/pull/1983</li>
+<li>[NVIDIA] bump github actions by @johnnynunez in https://github.com/Dao-AILab/flash-attention/pull/1996</li>
+<li>[Cute,Fwd,Sm100] Support paged attention by @timmy-feng in https://github.com/Dao-AILab/flash-attention/pull/1999</li>
+<li>[Cute] Block sparse support Sm100 by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/1985</li>
+<li>[Cute,Sm100,Fwd] use correction warps for epi when not using TMA by @jayhshah in https://github.com/Dao-AILab/flash-attention/pull/2014</li>
+<li>add fastdivmod for oob reads in mask_mods by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2020</li>
+<li>[Cute,Fwd,Sm100] don't pass mask_fn to softmax_step generically by @jayhshah in https://github.com/Dao-AILab/flash-attention/pull/2026</li>
+<li>[CuTeDSL] Swap order of decorators by @anakinxc in https://github.com/Dao-AILab/flash-attention/pull/2029</li>
+<li>[Cute,Bwd,Sm100] enable deterministic mode for sm100 bwd and fix race conditions by @jayhshah in https://github.com/Dao-AILab/flash-attention/pull/2033</li>
+<li>[NFC] Trivial fix to silence linter by @jduprat in https://github.com/Dao-AILab/flash-attention/pull/1928</li>
+<li>Add LICENSE and AUTHORS to flash_attn/cute by @jduprat in https://github.com/Dao-AILab/flash-attention/pull/2032</li>
+<li>[Cute,Fwd] enable mask mod without blocksparsity by @reubenconducts in https://github.com/Dao-AILab/flash-attention/pull/2031</li>
+<li>Bump pin by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2025</li>
+<li>ruff all the smaller files by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2040</li>
+<li>[Cute] Fix head dim 64 bwd by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2035</li>
+<li>Add headdim64 tests to race condition by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2041</li>
+<li>Add torch.compile support to flash attention 3 by @guilhermeleobas in https://github.com/Dao-AILab/flash-attention/pull/1769</li>
+<li>[Cute,Bwd,Sm100] Add local for sm100 bwd by @jayhshah in https://github.com/Dao-AILab/flash-attention/pull/2046</li>
+<li>Add hash attr to shortcut expensive check by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2048</li>
+<li>[AMD ROCm] Update to latest composable_kernel to improve performance by @rocking5566 in https://github.com/Dao-AILab/flash-attention/pull/2052</li>
+<li>fixing cute bwd func def by @liangel-02 in https://github.com/Dao-AILab/flash-attention/pull/2056</li>
+<li>Fix use-after-free in FA3 deterministic mode. by @skarupke in https://github.com/Dao-AILab/flash-attention/pull/2063</li>
+<li>[CUTE] Allow grads to be preallocated by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2065</li>
+<li>[Cute,Fwd] Extend score_mod to variable sequence length by @reubenconducts in https://github.com/Dao-AILab/flash-attention/pull/2043</li>
+<li>[CUTE] Enabling TVM-FFI to reduce cpu overhead by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2042</li>
+<li>Fix softcap scoremod kwargs typo. by @LeoZDong in https://github.com/Dao-AILab/flash-attention/pull/2072</li>
+<li>Add score-mod bwd support  by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2070</li>
+<li>Add blocksparse support for bwd on blackwell by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2085</li>
+<li>Fix IMA in fwd on m boundary by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2091</li>
+<li>cutedsl 4.3.4 by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2092</li>
+<li>README for AMD ROCm by @seungrokj in https://github.com/Dao-AILab/flash-attention/pull/2068</li>
+<li>[Cute] Fix shuffle sync and enable pack gqa for varlen sm100 by @jayhshah in https://github.com/Dao-AILab/flash-attention/pull/2097</li>
+<li>[NVIDIA] Enable Jetson Thor FA4 by @johnnynunez in https://github.com/Dao-AILab/flash-attention/pull/2108</li>
+<li>Add pack-gqa fwd support for sparse impl w/ broadcasted H dim by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2098</li>
+<li>[Cute,Fwd] improved block sparsity by @reubenconducts in https://github.com/Dao-AILab/flash-attention/pull/2100</li>
+<li>Misc tests that should be xfailed for now by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2127</li>
+<li>Update CUTLASS to fix undefined symbol : cuDriverGetVersion by @HydraQYH in https://github.com/Dao-AILab/flash-attention/pull/2142</li>
+<li>[Cute,Fwd,Sm100] Support <code>q_stage=1</code> for inference by @timmy-feng in https://github.com/Dao-AILab/flash-attention/pull/1993</li>
+<li>[Cute] Fix two tests that were failing  by @henrylhtsang in https://github.com/Dao-AILab/flash-attention/pull/2149</li>
+<li>[Cute, Bwd, Sm100] Add varlen for sm100 bwd by @jayhshah in https://github.com/Dao-AILab/flash-attention/pull/2150</li>
+<li>block-sparse backward SM90 by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2136</li>
+<li>score-mod backward SM90 by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2137</li>
+<li>[Cute] Clarify and fix subtle cachekey bug by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2143</li>
+<li>[CUTE][SM100] Fix backward gqa on sm100 post mask-mod semantic change by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2146</li>
+<li>[CUTE][SM90]Enable pack-gqa with broadcasted maskmods by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2145</li>
+<li>[CUTE][SM90] GQA backward non deterministic by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2158</li>
+<li>[Cute,Bwd,Sm100] fix seqused in varlen bwd by @jayhshah in https://github.com/Dao-AILab/flash-attention/pull/2167</li>
+<li>[CUTE] Bump cutedsl to 4.3.5 by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2170</li>
+<li>Improve flash.cute paged_kv cpasync by @v0i0 in https://github.com/Dao-AILab/flash-attention/pull/2156</li>
+<li>[Cute,Flex] Add option to create and cache <strong>cute_hash</strong> by @reubenconducts in https://github.com/Dao-AILab/flash-attention/pull/2171</li>
+<li>[Cute][Flex] Remove no longer needed contig by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2172</li>
+<li>[Cute] update row_max before safe overwrite for online_softmax by @jayhshah in https://github.com/Dao-AILab/flash-attention/pull/2174</li>
+<li>[Cute][Flex] add back in contig by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2177</li>
+<li>[Cute][Flex]Add pack-gqa divmod by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2180</li>
+<li>[Cute,Fwd,Sm100] distributed offset calculation for paged KV by @timmy-feng in https://github.com/Dao-AILab/flash-attention/pull/2104</li>
+<li>[Cute,Fwd,Sm100] Add r2p for local mask by @henrylhtsang in https://github.com/Dao-AILab/flash-attention/pull/2185</li>
+<li>[Cute][Flex] Fix expanded tensor bug by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2189</li>
+<li>[Cute, SM90] fix fwd varlen Cute implementation bug for H100 by @KareemMusleh in https://github.com/Dao-AILab/flash-attention/pull/2194</li>
+<li>Reduce Chance of Build OOM by @Qubitium in https://github.com/Dao-AILab/flash-attention/pull/2079</li>
+<li>[Cute][Flex] Allow q_offset 1 and add block-sizes to disambiguate edge cases by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2187</li>
+<li>ci: Use 1 ninja job for cu13 by @ko3n1g in https://github.com/Dao-AILab/flash-attention/pull/2195</li>
+<li>[README.md] Update README to include <code>psutil</code> package as build dependency by @wanglc02 in https://github.com/Dao-AILab/flash-attention/pull/2210</li>
+<li>[Flex][SM100] Replay expand fix on sm100 by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2209</li>
+<li>[AMD] Triton Backend for ROCm #3 by @micmelesse in https://github.com/Dao-AILab/flash-attention/pull/2178</li>
+<li>fix compute_block_sparsity broken in  benchmark_mask_mod.py by @zhuochenKIDD in https://github.com/Dao-AILab/flash-attention/pull/2221</li>
+<li>Fix shared-memory race by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2229</li>
+<li>Use TORCH_TARGET_VERSION over TORCH_STABLE_ONLY by @janeyx99 in https://github.com/Dao-AILab/flash-attention/pull/2155</li>
+<li>short readme for flex flash by @v0i0 in https://github.com/Dao-AILab/flash-attention/pull/2231</li>
+<li>[FA3] Mark current main version as v3.0.0 stable by @lw in https://github.com/Dao-AILab/flash-attention/pull/2223</li>
+<li>[Cute,Fwd,Sm100] hdim 192 smem fix by @jayhshah in https://github.com/Dao-AILab/flash-attention/pull/2235</li>
+<li>Add <code>FLASH_ATTENTION_TRITON_AMD_CONFIG_JSON</code> env var support by @alexheretic in https://github.com/Dao-AILab/flash-attention/pull/2239</li>
+<li>[CUTE]Bump to Cutedsl by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2216</li>
+<li>pytest-dist round robin to gpus by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2241</li>
+<li>Fix Hopper tests by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2242</li>
+<li>[Cute,Flex,Fwd] Allow vectorized score_mod definitions by @reubenconducts in https://github.com/Dao-AILab/flash-attention/pull/2236</li>
+<li>[FA2] Fix int32 overflow by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2260</li>
+<li>[Cute][Flex] Fix kernel hang w/ multiple empty tiles by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2258</li>
+<li>Bump to 4.4.0 cute dsl pin by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2262</li>
+<li>BWD sm100 2cta by @tzadouri in https://github.com/Dao-AILab/flash-attention/pull/2202</li>
+<li>[Cute] Handle window_size=(-1, -1) for non-local attention by @henrylhtsang in https://github.com/Dao-AILab/flash-attention/pull/2251</li>
+<li>Document usage with 🤗 Kernels by @sayakpaul in https://github.com/Dao-AILab/flash-attention/pull/2272</li>
+<li>[Cute,Sm100,Bwd] Add hdim 192 hdimv 128 backward for sm100 by @jayhshah in https://github.com/Dao-AILab/flash-attention/pull/2270</li>
+<li>Correct Cutlass Error Handling by @ankutalev in https://github.com/Dao-AILab/flash-attention/pull/2273</li>
+<li>guard use_2cta_instrs on sm90 by @reubenconducts in https://github.com/Dao-AILab/flash-attention/pull/2274</li>
+<li>[cute] Add return_lse by @erikwijmans in https://github.com/Dao-AILab/flash-attention/pull/2271</li>
+<li>[Flex, Sm100] fix mask mod bugs by @reubenconducts in https://github.com/Dao-AILab/flash-attention/pull/2276</li>
+<li>[Cute,Sm100,Bwd] Fix and enable 2CTA path for hdim 128 backward by @jayhshah in https://github.com/Dao-AILab/flash-attention/pull/2280</li>
+<li>Bump to 4.4.1 to avoid segfault by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2291</li>
+<li>Fix sm100 fwd missing tSrQs init regression by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2293</li>
+<li>[clang build] Fix clang parse error of missing 'typename' prior to dependent typename occurs because <code>LLVM/Clang</code> is strictly adhering to C++ standards by @tomflinda in https://github.com/Dao-AILab/flash-attention/pull/2295</li>
+<li>[CuTe] Include broadcast dims in backward compile cache keys by @bonpyt in https://github.com/Dao-AILab/flash-attention/pull/2298</li>
+<li>[Cute][Testing] Add fake tensor mode support for compile-only test passes by @Alkaid-Benetnash in https://github.com/Dao-AILab/flash-attention/pull/2283</li>
+<li>Enable hdim=96 bwd by @v0i0 in https://github.com/Dao-AILab/flash-attention/pull/2302</li>
+<li>Fix GQA crash in cute FLASH backend: init load_Q before conditional by @platers in https://github.com/Dao-AILab/flash-attention/pull/2301</li>
+<li>[Cute,Fwd,Sm100] fix paged kv by @jayhshah in https://github.com/Dao-AILab/flash-attention/pull/2303</li>
+<li>Add FA4 publishing strategy by @drisspg in https://github.com/Dao-AILab/flash-attention/pull/2282</li>
+<li>[Cute][Testing] Add persistent compile cache for cutedsl AOT compilation by @Alkaid-Benetnash in https://github.com/Dao-AILab/flash-attention/pull/2304</li>
+</ul>
+<h2>New Contributors</h2>
+<ul>
+<li>@stepinto made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/1795</li>
+<li>@LoserCheems made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/1775</li>
+<li>@y-sq made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/1839</li>
+<li>@ghadiaravi13 made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/1841</li>
+<li>@mingyangHao made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/1856</li>
+<li>@reubenconducts made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/1858</li>
+<li>@johnnynunez made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/1860</li>
+<li>@rajesh-s made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/1881</li>
+<li>@mikaylagawarecki made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/1791</li>
+<li>@henrylhtsang made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/1883</li>
+<li>@brandon-yujie-sun made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/1906</li>
+<li>@JackCharlesZhang made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/1908</li>
+<li>@imbr92 made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/1934</li>
+<li>@kevin-tong-augment made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/1924</li>
+<li>@jeffdaily made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/1944</li>
+<li>@timmy-feng made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/1940</li>
+<li>@anakinxc made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/2029</li>
+<li>@guilhermeleobas made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/1769</li>
+<li>@liangel-02 made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/2056</li>
+<li>@skarupke made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/2063</li>
+<li>@LeoZDong made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/2072</li>
+<li>@seungrokj made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/2068</li>
+<li>@HydraQYH made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/2142</li>
+<li>@v0i0 made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/2156</li>
+<li>@KareemMusleh made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/2194</li>
+<li>@wanglc02 made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/2210</li>
+<li>@zhuochenKIDD made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/2221</li>
+<li>@lw made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/2223</li>
+<li>@alexheretic made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/2239</li>
+<li>@sayakpaul made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/2272</li>
+<li>@ankutalev made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/2273</li>
+<li>@erikwijmans made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/2271</li>
+<li>@tomflinda made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/2295</li>
+<li>@bonpyt made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/2298</li>
+<li>@Alkaid-Benetnash made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/2283</li>
+<li>@platers made their first contribution in https://github.com/Dao-AILab/flash-attention/pull/2301</li>
+</ul>
+<p><strong>Full Changelog</strong>: https://github.com/Dao-AILab/flash-attention/compare/v2.8.3...fa4-v4.0.0.beta0</p>
+<hr />
+<blockquote>
+<p><strong>Source</strong> <a href="https://github.com/Dao-AILab/flash-attention">Dao-AILab/flash-attention</a> · <code>fa4-v4.0.0.beta0</code> · 2026-03-05 · <a href="https://github.com/Dao-AILab/flash-attention/releases/tag/fa4-v4.0.0.beta0">upstream release</a></p>
+</blockquote>
+<p><em>Mirrored verbatim for indexing. All rights belong to the upstream project.</em></p></div> </details> </div> <p class="muted" style="margin-top:var(--s8);font-size:12.5px;border-top:1px solid var(--line);padding-top:var(--s4)"> リリースノートは上流プロジェクトが公開したものです。私たちはそれらを整理し、関連付けて、バージョンを一眼で比較できるようにしています。コンテンツの権利はすべて原作者に属します。 </p> <nav class="pager" aria-label="Release navigation"> <a href="/releases/flash-attention/fa4-v4.0.0.beta1"> <span class="k">← 次へ</span> <span class="t">fa4-v4.0.0.beta1</span> </a> <span></span> </nav> <aside class="ad-slot" aria-label="Advertisement" data-astro-cid-fgwukgf6><div class="ad-slot-label" data-astro-cid-fgwukgf6>Advertisement</div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4184355057086168" data-ad-slot="9133765584" data-ad-format="auto" data-full-width-responsive="true" data-astro-cid-fgwukgf6></ins><script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script></aside> </article> <aside class="rail"> <div class="rail-card"> <div class="rail-title">Source</div> <ul class="rail-list"> <li> <a href="https://github.com/Dao-AILab/flash-attention/releases/tag/fa4-v4.0.0.beta0" target="_blank" rel="noopener"> <span>GitHub で見る</span> <span class="d">↗</span> </a> </li> <li> <a href="https://github.com/Dao-AILab/flash-attention" target="_blank" rel="noopener"> <span>Dao-AILab/flash-attention</span> <span class="d">↗</span> </a> </li> </ul> </div>  <div class="rail-card"> <div class="rail-title">バージョン履歴</div> <ul class="rail-list"> <li> <a href="/releases/flash-attention/2.8.3.post2"> <span class="v">v2.8.3.post2</span> <span class="d">26-10-13</span> </a> </li><li> <a href="/releases/flash-attention/fa4-v4.0.0.beta4"> <span class="v">fa4-v4.0.0.beta4</span> <span class="d">26-03-05</span> </a> </li><li> <a href="/releases/flash-attention/fa4-v4.0.0.beta2"> <span class="v">fa4-v4.0.0.beta2</span> <span class="d">26-03-05</span> </a> </li><li> <a href="/releases/flash-attention/fa4-v4.0.0.beta1"> <span class="v">fa4-v4.0.0.beta1</span> <span class="d">26-03-05</span> </a> </li><li> <a href="/releases/flash-attention/fa4-v4.0.0.beta0" aria-current="true"> <span class="v">fa4-v4.0.0.beta0</span> <span class="d">26-03-05</span> </a> </li> </ul> <a href="/ja/releases/flash-attention" class="mono" style="display:inline-block;margin-top:var(--s3);font-size:11.5px;color:var(--ink-3)"> すべての 5 件を見る →
+</a> </div> </aside> </div> </div>  </main> <footer class="site-footer"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/ja/" class="brand" aria-label="STAGS NextStack"><span class="brand-mark" aria-hidden="true">S</span><span class="brand-main">STAGS</span><span class="brand-sub" aria-hidden="true">NextStack</span></a> <p>オープンソースのリリース インテリジェンスが毎日公開されます。</p> </div> <div class="footer-col"> <h3>追跡</h3> <ul> <li><a href="/ja/releases">リリース</a></li> <li><a href="/ja/projects">プロジェクト</a></li> <li><a href="/ja/releases.xml">RSS フィード</a></li> </ul> </div> <div class="footer-col"> <h3>アーカイブ</h3> <ul> <li><a href="/zh/release_note" hreflang="zh-Hans">中文アーカイブ</a></li> <li><a href="/zh/chapters/" hreflang="zh-Hans">技術ノート</a></li> <li><a href="/zh/downloads/">Stags Tracker</a></li> </ul> </div> <div class="footer-col"> <h3>情報</h3> <ul> <li><a href="/privacy">プライバシーポリシー</a></li> <li><a href="/releases.xml">RSS</a></li> <li><a href="/sitemap-index.xml">Sitemap</a></li> </ul> </div> </div> <div class="footer-btm"> <span>© 2026 STAGS</span> <span>Release note は上流プロジェクトに属します。</span> </div> </div> </footer> <!-- 搜索面板 --> <div class="palette-bg" data-palette-bg data-open="false"> <div class="palette" role="dialog" aria-modal="true" aria-label="リリースを検索"> <div class="palette-in"> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--ink-4);flex:none"> <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path> </svg> <input type="search" data-palette-input placeholder="リリース、プロジェクト、バージョンを検索…" autocomplete="off" spellcheck="false"> <span class="kbd">esc</span> </div> <ul class="palette-res" data-palette-res></ul> <div class="palette-ft"> <span>↑↓ navigate</span> <span>↵ open</span> <span style="margin-left:auto" data-palette-count></span> </div> </div> </div> <script type="module" src="/assets/Shell.astro_astro_type_script_index_0_lang.0ZkKXV47.js"></script> </body> </html>
